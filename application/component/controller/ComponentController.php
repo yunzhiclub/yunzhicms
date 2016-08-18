@@ -23,7 +23,7 @@ class ComponentController extends Rest implements ComponentInterface
 
     public function indexAction()
     {
-
+        
     }
 
     public function createAction()
