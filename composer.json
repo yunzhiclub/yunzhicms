@@ -1,0 +1,22 @@
+{
+    "name": "yunzhiclub/yunzhicms",
+    "description": "a cms base on thinkphp5.0",
+    "type": "project",
+    "keywords": [
+        "cms",
+        "yunzhi"
+    ],
+    "homepage": "http://cms.mengyunzhi.com/",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "panjie",
+            "email": "panjie@mengyunzhi.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "onethink/think": ">=5.0"
+    },
+    "minimum-stability": "dev",
+}
