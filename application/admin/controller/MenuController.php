@@ -1,7 +1,10 @@
 <?php
 namespace app\admin\controller;
 
-class MenuController
+class MenuController extends AdminController
 {
-    
+    public function indexAction()
+    {
+        return $this->fetch();
+    }
 }
