@@ -4,6 +4,7 @@ use think\Request;
 
 class MenuModel extends YunzhiModel
 {
+
     /**
      * 获取用户当前访问的菜单
      * @return MenuModel 
