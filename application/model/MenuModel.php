@@ -15,7 +15,13 @@ class MenuModel extends YunzhiModel
         $pid = 0;
         foreach ($rules as $rule)
         {
-            $map = ['url' => $rule, 'pid' => $pid];
+            // 如果$rule为空，则返回首页
+            if ($rule === '')
+            {
+                $map = ['is_home' => 1];
+            } else {
+                $map = ['url' => $rule, 'pid' => $pid];
+            }
             $menu = self::get($map);
             $pid = $menu->id;
         }
@@ -23,6 +29,6 @@ class MenuModel extends YunzhiModel
     }
 
     protected $type = [
-        'param'     => 'serialize',  // 菜单配置参数
+        'param'     => 'json',  // 菜单配置参数
     ];
 }
