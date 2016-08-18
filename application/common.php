@@ -15,6 +15,10 @@ use think\Db;
 // 查询菜单表，并整理出上下级关系
 $menus = Common::reMakeLinkPath(Db::name('menu')->where('is_hidden', 0)->select());
 
+// 查询组件表
+$components = Db::name('component')->select();
+$components = Common::changeListIndex($components, 'name');
+
 // 注册REST路由信息 
 foreach ($menus as $menu)
 {   
@@ -23,7 +27,7 @@ foreach ($menus as $menu)
     $linkPathArray = array();
     do {
         $pid = (int)$temMenu['pid'];
-        array_push($linkPathArray, $temMenu['link_path']);
+        array_push($linkPathArray, $temMenu['url']);
     } while ($pid !== 0 && $temMenu = $menus[$pid]);
 
     // 将数组进行反转后，转化为可用的字符串
@@ -31,7 +35,12 @@ foreach ($menus as $menu)
     $linkPath = implode($linkPathArray, '/');
 
     // 注册路由
-    Route::resource($linkPath, $menu['router_path']);
+    $componentName = $menu['component_name'];
+    if (isset($components[$componentName]))
+    {
+        $router = 'Component/' . $components[$componentName]['name'];
+        Route::resource($linkPath, $router);
+    }
 }
 
 
