@@ -39,7 +39,16 @@ foreach ($menus as $menu)
     if (isset($components[$componentName]))
     {
         $router = 'Component/' . $components[$componentName]['name'];
-        Route::resource($linkPath, $router);
+
+        // 如果是首页，则注册为普通路由
+        if ((int)$menu['is_home'] === 1)
+        {
+            $router .= '/index';
+            Route::rule('/', $router);
+        } else {
+            // 非首页注册rest路由
+            Route::resource($linkPath, $router);
+        }
     }
 }
 
