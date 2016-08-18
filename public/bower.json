@@ -1,0 +1,20 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/yunzhiclub/yunzhicms",
+  "authors": [
+    "panjie <3792535@qq.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
