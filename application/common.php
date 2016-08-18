@@ -12,49 +12,71 @@ namespace app;
 use think\Route;
 use think\Db;
 
-// 查询菜单表，并整理出上下级关系
-$menus = Common::reMakeLinkPath(Db::name('menu')->where('is_hidden', 0)->select());
+// 初始化
+Common::init();
 
-// 查询组件表
-$components = Db::name('component')->select();
-$components = Common::changeListIndex($components, 'name');
+// 注册路由信息
+Common::registerRouter();
 
-// 注册REST路由信息 
-foreach ($menus as $menu)
-{   
-    // 将路由信息写入数组
-    $temMenu = $menu;
-    $linkPathArray = array();
-    do {
-        $pid = (int)$temMenu['pid'];
-        array_push($linkPathArray, $temMenu['url']);
-    } while ($pid !== 0 && $temMenu = $menus[$pid]);
-
-    // 将数组进行反转后，转化为可用的字符串
-    $linkPathArray = array_reverse($linkPathArray);
-    $linkPath = implode($linkPathArray, '/');
-
-    // 注册路由
-    $componentName = $menu['component_name'];
-    if (isset($components[$componentName]))
+class Common{
+    /**
+     * 注册路由信息
+     * @param  array $menus 菜单列表
+     * @return void        
+     */
+    static public function registerRouter()
     {
-        $router = 'Component/' . $components[$componentName]['name'];
+        // 查询菜单表，并整理出上下级关系
+        $menus = self::reMakeLinkPath(Db::name('menu')->where('is_hidden', 0)->select());
 
-        // 如果是首页，则注册为普通路由
-        if ((int)$menu['is_home'] === 1)
-        {
-            $router .= '/index';
-            Route::rule('/', $router);
-        } else {
-            // 非首页注册rest路由
-            Route::resource($linkPath, $router);
+        // 查询组件表
+        $components = Db::name('component')->select();
+        $components = self::changeListIndex($components, 'name');
+
+        // 注册REST路由信息 
+        foreach ($menus as $menu)
+        {   
+            // 生成linkPath信息
+            $linkPath = self::makeLinkPath($menus, $menu);
+
+            // 注册路由
+            $componentName = $menu['component_name'];
+            if (isset($components[$componentName]))
+            {
+                $router = 'Component/' . $components[$componentName]['name'];
+
+                // 如果是首页，则注册为普通路由
+                if ((int)$menu['is_home'] === 1)
+                {
+                    $router .= '/index';
+                    Route::rule('/', $router);
+                } else {
+                    // 非首页注册rest路由
+                    Route::resource($linkPath, $router);
+                }
+            }
         }
     }
-}
 
+    /**
+     * 生成linkPath信息（即URL）
+     * @param  lists &$menus 二级数组(menu)
+     * @param  list $menu    菜单信息
+     * @return string         拼接后的url信息
+     */
+    static public function makeLinkPath(&$menus, $menu)
+    {
+        // 将路由信息写入数组
+        $linkPathArray = array();
+        do {
+            $pid = (int)$menu['pid'];
+            array_push($linkPathArray, $menu['url']);
+        } while ($pid !== 0 && $menu = $menus[$pid]);
 
-// 为本文件的一些方法提供一个基类供使用
-class Common{
+        // 将数组进行反转后，转化为可用的字符串
+        $linkPathArray = array_reverse($linkPathArray);
+        return implode($linkPathArray, '/');
+    }
 
     // 重新整理菜单中的linkPath, 使其具有上下级菜单的关系，以便重新注册路由
     static public function reMakeLinkPath($menus)
@@ -155,5 +177,20 @@ class Common{
         }
         $list = $arrRes;
         return $arrRes;
+    }
+
+    /**
+     * 系统初始化
+     * @return  
+     */
+    static public function init()
+    {
+        // 定义常量__ROOT__
+        $root = dirname($_SERVER['SCRIPT_NAME']);
+        if ($root === DS)
+        {
+            $root = '';
+        }
+        define('__ROOT__', $root);
     }
 }
