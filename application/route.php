@@ -16,11 +16,14 @@ return [
     // 定义资源路由
     '__rest__'=>[
         // 指向index模块的blog控制器
-        'admin/menu'=> 'Menu',
-        'admin/category' => 'Category',
-        'admin/content'  => 'Content',
-        'admin/system'      => 'System',
-        'admin/component'   => 'Component',
-        'admin/block'       => 'Block',
+        'admin/menutype'                => 'MenuType',
+        'admin/menu'                    => 'menu',
+        'admin/category'                => 'category',
+        'admin/category.content'        => 'Content',
+        'category.content'              => 'Content',
+        'admin/system'                  => 'System',
+        'admin/component'               => 'Component',
+        'admin/block'                   => 'Block',
+        'admin/Template'                => 'Template',
     ],
 ];

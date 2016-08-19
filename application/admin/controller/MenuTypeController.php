@@ -3,7 +3,7 @@ namespace app\admin\controller;
 use app\model\MenuModel;                // 菜单
 use app\model\MenuTypeModel;            // 菜单类型
 
-class MenuController extends AdminController
+class MenutypeController extends AdminController
 {
     public function indexAction()
     {
@@ -12,10 +12,15 @@ class MenuController extends AdminController
         return $this->fetch();
     }
 
-    public function editAction($id)
+    public function readAction($id)
     {
-        $MenuModel = MenuModel::get($id);
-        $this->assign('MenuModel', $MenuModel);
+        $name = $id;
+        $MenuModelType = MenuTypeModel::get($name);
+        $this->assign('MenuModelType', $MenuModelType);
+
+        $MenuModel = new MenuModel;
+        $MenuModels = $MenuModel->getListsByMenuTypeNamePid($name, 0);
+        $this->assign('MenuModels', $MenuModels);
         return $this->fetch();
     }
 }
