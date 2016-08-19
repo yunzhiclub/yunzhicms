@@ -498,13 +498,24 @@ class Route
         } else {
             if (strpos($rule, '.')) {
                 // 注册嵌套资源路由
-                $array = explode('.', $rule);
-                $last  = array_pop($array);
-                $item  = [];
+                $rules      = explode('/', $rule);  
+                $lastRule   = array_pop($rules);            // 取出嵌套路由
+                $firstRule  = array_pop($rules);            // 取出嵌套路由前的模块名
+
+                $array  = explode('.', $lastRule);
+                $last   = array_pop($array);
+                $item   = [];
                 foreach ($array as $val) {
+
                     $item[] = $val . '/:' . (isset($option['var'][$val]) ? $option['var'][$val] : $val . '_id');
                 }
                 $rule = implode('/', $item) . '/' . $last;
+
+                // 存在模块名，则进行模块名的拼接
+                if (isset($firstRule))
+                {
+                    $rule = $firstRule . '/' . $rule;
+                }
             }
             // 注册资源路由
             foreach (self::$rest as $key => $val) {
