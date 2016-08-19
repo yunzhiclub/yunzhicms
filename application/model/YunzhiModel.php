@@ -4,6 +4,13 @@ use think\Model;
 
 class YunzhiModel extends Model
 {
+    protected $autoWriteTimestamp = true;
+
+    public function getCreateTimeAttr($createTime)
+    {
+        return date('Y-m-d', $createTime);
+    }
+
     public function __construct($data = [])
     {
         // 重写对应的数据表名
