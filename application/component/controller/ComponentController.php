@@ -34,6 +34,7 @@ class ComponentController extends Controller implements ComponentInterface
     {
         // 获取用户当前菜单, 并将当前菜单的配置写入config
         $this->currentMenuModel = MenuModel::getCurrentMenu();
+        $this->param = $this->currentMenuModel->param;
 
         // 合并配置信息
         $this->config = $this->_configMerge($this->config, $this->param);
