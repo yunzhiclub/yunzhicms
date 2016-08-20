@@ -14,14 +14,13 @@ class HomeController extends ComponentController
 
     public function indexAction()
     {
+        // 定义配置信息
         $map = [];
         $offset = 10;
-        if (array_key_exists('count', $this->config))
-        {
-            $offset = $this->config['count']['value'];
-        }
-
+        $offset = $this->config['count']['value'];
         $order = ['weight'=>'desc', 'create_time'=>'desc'];
+
+        // 取推荐新闻，并传给首页
         $ContentFrontpageModel = new ContentFrontpageModel;
         $ContentFrontpageModels = $ContentFrontpageModel->order($order)->limit(0, $offset)->select();
         $this->assign('ContentFrontpageModels', $ContentFrontpageModels);

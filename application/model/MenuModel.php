@@ -5,7 +5,8 @@ use think\Request;
 class MenuModel extends YunzhiModel
 {
     protected $type = [
-        'param'     => 'json',  // 菜单配置参数
+        'config'    => 'json',  // 菜单配置参数
+        'filter'    => 'json',  // 过滤器参数
     ];
 
     /**

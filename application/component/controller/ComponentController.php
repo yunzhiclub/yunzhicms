@@ -1,21 +1,23 @@
 <?php
 namespace app\component\controller;
 use think\Controller;
-use app\component\ComponentInterface;
-use app\Model\MenuModel;
+use app\component\ComponentInterface;           // 组件接口
+use app\Model\MenuModel;                        // 菜单
+use app\Model\ComponentModel;                   // 组件
 use think\Request;
 
 class ComponentController extends Controller implements ComponentInterface
 {
-    protected $config = [];
+    protected $config = [];                         // 默认配置信息
+    protected $filter = [];                         // 默认过滤器信息
     protected $currentMenuModel;                    // 当前菜单
-    public function __construct($config = [], Request $request = null)
+    public function __construct(Request $request = null)
     {   
         // 初始化配置信息 
-        $this->initConfig($config);           
+        $this->_initConfig();           
 
         // 初始化过滤器信息
-        
+        $this->_initFilter();
         // 在这进行权限的判断
         //todo 
         
@@ -26,21 +28,27 @@ class ComponentController extends Controller implements ComponentInterface
     }
 
     /**
-     * 初始化配置信息
-     * @param  array $config 用户自定义配置
-     * @return bool          
+     * 初始化配置信息   
      */
-    public function initConfig($config)
+    protected function _initConfig()
     {
         // 获取用户当前菜单, 并将当前菜单的配置写入config
         $this->currentMenuModel = MenuModel::getCurrentMenu();
-        $this->param = $this->currentMenuModel->param;
+        
+        // 获取当前组件配置信息
+        // $this->currentComponent = ComponentModel::getCurrentComponent(get_called_class());
 
         // 合并配置信息
-        $this->config = $this->_configMerge($this->config, $this->param);
-        $this->config = $this->_configMerge($this->config, $config);
+        $this->config = $this->_configMerge($this->config, $this->currentMenuModel->config);
+        $this->filter = $this->_configMerge($this->filter, $this->currentMenuModel->filter);
+    }
 
-        return true;
+    /**
+     * 初始化过滤器
+     */
+    protected function _initFilter()
+    {
+
     }
 
     /**
