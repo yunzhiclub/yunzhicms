@@ -193,4 +193,10 @@ class Common{
         }
         define('__ROOT__', $root);
     }
+
+    static public function filter($value, $rule = [])
+    {
+        return $value;
+    }
 }
+
