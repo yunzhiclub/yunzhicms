@@ -51,8 +51,8 @@ class Common{
                     $router .= '/index';
                     Route::rule('/', $router);
                 } else {
-                    // 非首页注册rest路由
-                    Route::resource($linkPath, $router);
+                    // 非首页注册curd路由
+                    Route::curd($linkPath, $router);
                 }
             }
         }

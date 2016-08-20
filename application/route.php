@@ -14,7 +14,7 @@ return [
     'admin/login' => 'Login/index',
 
     // 定义资源路由
-    '__rest__'=>[
+    '__curd__'=>[
         // 指向index模块的blog控制器
         'admin/menutype'                => 'MenuType',
         'admin/menu'                    => 'menu',
