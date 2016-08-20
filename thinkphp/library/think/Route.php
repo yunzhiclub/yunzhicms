@@ -185,7 +185,7 @@ class Route
             unset($rule['__rest__']);
         }
 
-        // 检查CURD路中
+        // 检查CURD路由
         if (isset($rule['__curd__']))
         {
             self::curd($rule['__curd__']);

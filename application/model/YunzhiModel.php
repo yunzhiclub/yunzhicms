@@ -4,6 +4,7 @@ use think\Model;
 
 class YunzhiModel extends Model
 {
+    // 自动时间戳
     protected $autoWriteTimestamp = true;
 
     public function getCreateTimeAttr($createTime)
