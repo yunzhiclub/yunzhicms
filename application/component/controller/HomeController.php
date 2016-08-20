@@ -9,9 +9,9 @@ class HomeController extends ComponentController
         ];
 
     protected $filter = [
-        'title' => ['function' => 'date'],
+        'title' => ['type' => 'String', 'function' => 'substr', 'param'=>['length'=>6, 'etc' => '..']],
     ];
-    
+
     public function indexAction()
     {
         $map = [];
