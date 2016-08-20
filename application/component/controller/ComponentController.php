@@ -22,7 +22,12 @@ class ComponentController extends Controller implements ComponentInterface
             {
                 if (array_key_exists($key, $this->config))
                 {
-                    array_merge($this->config[$key], $param);
+                    if (is_array($param))
+                    {
+                        $this->config[$key] = array_merge($this->config[$key], $param);
+                    } else {
+                        $this->config[$key]['value'] = $param;
+                    }
                 }
             }
         }
@@ -36,7 +41,7 @@ class ComponentController extends Controller implements ComponentInterface
                 {
                     if (is_array($value))
                     {
-                        array_merge($this->config[$key], $value);
+                        $this->config[$key] = array_merge($this->config[$key], $value);
                     } else {
                         $this->config[$key]['value'] = $value;
                     }
