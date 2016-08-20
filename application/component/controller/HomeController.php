@@ -8,6 +8,10 @@ class HomeController extends ComponentController
         'count'=>['description'=>'显示新闻的条数', 'type'=>'text', 'value'=>3],
         ];
 
+    protected $filter = [
+        'title' => ['function' => 'date'],
+    ];
+    
     public function indexAction()
     {
         $map = [];

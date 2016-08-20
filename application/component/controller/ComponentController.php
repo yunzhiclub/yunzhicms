@@ -14,11 +14,15 @@ class ComponentController extends Controller implements ComponentInterface
         // 初始化配置信息 
         $this->initConfig($config);           
 
+        // 初始化过滤器信息
+        
         // 在这进行权限的判断
         //todo 
         
         // 调用父类的构造函数
         parent::__construct($request);
+        // 送过滤器信息到V层
+        $this->assign('filter', $this->filter);
     }
 
     /**
@@ -30,7 +34,6 @@ class ComponentController extends Controller implements ComponentInterface
     {
         // 获取用户当前菜单, 并将当前菜单的配置写入config
         $this->currentMenuModel = MenuModel::getCurrentMenu();
-        $this->param = $this->currentMenuModel->param;
 
         // 合并配置信息
         $this->config = $this->_configMerge($this->config, $this->param);
