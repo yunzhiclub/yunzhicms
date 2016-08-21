@@ -3,11 +3,28 @@ namespace app\module\controller;
 use think\Controller;
 use app\model\BlockModel;               // 区块
 use app\Common;
+use app\model\BlockMenuModel;           // 
 
 class ModuleController extends Controller
 {
     protected $config = [];
     protected $filter = [];
+
+    public function __construct(BlockModel $BlockModel, Request $request = null)
+    {
+        if (is_array($BlockModel->config))
+        {
+            $this->config = Common::configMerge($this->config, $BlockModel->config);
+        }
+
+        if (is_array($BlockModel->filter))
+        {
+            $this->filter = Common::configMerge($this->filter, $BlockModel->filter);
+        }
+        
+        parent::__construct($request);
+    }
+
     /**
      * 初始化，供Cx中position标签调用
      * @param  string $name 位置名字
@@ -24,21 +41,24 @@ class ModuleController extends Controller
         // 依次进行渲染，拼接
         foreach ($blokcModels as $blockModel)
         {
-            $className = 'app\module\controller\\' . $blockModel->module_name . 'Controller';
-            try 
+            if (self::_isBlockShow($blockModel))
             {
-                // 实例化类 并调用
-                $class = new $className($blockModel);
-                $result = call_user_func([$class, 'fetchHtml']); 
-                if ($result)
+                $className = 'app\module\controller\\' . $blockModel->module_name . 'Controller';
+                try 
                 {
-                    $resultHtml .= $result;
-                }
-            } catch(\Exception $e) {
-                if (config('app_debug'))
-                {
-                    throw $e;
-                }
+                    // 实例化类 并调用
+                    $class = new $className($blockModel);
+                    $result = call_user_func([$class, 'fetchHtml']); 
+                    if ($result)
+                    {
+                        $resultHtml .= $result;
+                    }
+                } catch(\Exception $e) {
+                    if (config('app_debug'))
+                    {
+                        throw $e;
+                    }
+                } 
             }
         }
         
@@ -46,18 +66,16 @@ class ModuleController extends Controller
         echo $resultHtml;
     }
 
-    public function __construct(BlockModel $BlockModel, Request $request = null)
+    static protected function _isBlockShow(BlockModel $BlockModel)
     {
-        if (is_array($BlockModel->config))
+        $currentMenuModel = Common::toggleCurrentMenuModel();
+        $map = ['block_id'=>$BlockModel->id, 'menu_id' => $currentMenuModel->id];
+        $BlockMenuModel = BlockMenuModel::get($map);
+        if (null === $BlockMenuModel)
         {
-            $this->config = Common::configMerge($this->config, $BlockModel->config);
+            return false;
+        } else {
+            return true;
         }
-
-        if (is_array($BlockModel->filter))
-        {
-            $this->filter = Common::configMerge($this->filter, $BlockModel->filter);
-        }
-        
-        parent::__construct($request);
     }
 }

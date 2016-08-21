@@ -1,15 +1,15 @@
 <?php
 namespace app\module\controller;
 /**
- * 幻灯片
+ * 动态案例展示
  */
-class SliderController extends ModuleController
+class ShowCaseSliderController extends ModuleController
 {
     protected $config = [];
     protected $filter = [];
 
     public function fetchHtml()
     {
-        return $this->fetch('module@Slider/fetchHtml');
+        return $this->fetch('module@ShowCaseSlider/fetchHtml');
     }
 }
