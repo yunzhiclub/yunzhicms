@@ -35,7 +35,10 @@ class BlockModel extends YunzhiModel
      */
     public function isShowInCurrentMenu()
     {
+        // 取出当前菜单
         $currentMenuModel = Common::toggleCurrentMenuModel();
+
+        // 判断当前菜单是否拥有此block的显示权限
         $map = ['block_id'=>$this->id, 'menu_id' => $currentMenuModel->id];
         $BlockMenuModel = BlockMenuModel::get($map);
         if (null === $BlockMenuModel)
