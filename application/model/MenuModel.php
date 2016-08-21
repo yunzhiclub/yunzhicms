@@ -4,11 +4,6 @@ use think\Request;
 
 class MenuModel extends YunzhiModel
 {
-    protected $type = [
-        'config'    => 'json',  // 菜单配置参数
-        'filter'    => 'json',  // 过滤器参数
-    ];
-
     /**
      * 获取用户当前访问的菜单
      * @return MenuModel 

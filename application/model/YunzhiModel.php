@@ -7,6 +7,11 @@ class YunzhiModel extends Model
     // 自动时间戳
     protected $autoWriteTimestamp = true;
 
+    protected $type = [
+        'config'    => 'json',
+        'filter'    => 'json',
+    ];
+
     public function getCreateTimeAttr($createTime)
     {
         return date('Y-m-d', $createTime);

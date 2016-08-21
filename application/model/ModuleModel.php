@@ -5,5 +5,5 @@ namespace app\model;
  */
 class ModuleModel extends YunzhiModel
 {
-    
+    protected $pk = 'name';
 }
