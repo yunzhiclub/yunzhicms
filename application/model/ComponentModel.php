@@ -3,11 +3,6 @@ namespace app\model;
 
 class ComponentModel extends YunzhiModel
 {
-    protected $type = [
-        'config'    => 'json',
-        'filter'    => 'json',
-    ];
-
     static public function getCurrentComponent($component)
     {
         $arr = explode('\\', $component);

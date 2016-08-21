@@ -16,10 +16,29 @@ class ModuleController extends Controller
         // 找出所有在当前position下的block
         $BlockModel = new BlockModel;
         $blokcModels = $BlockModel->getActiveListsByPositionName($name);
-        var_dump($blokcModels);
-        echo $name;
+
+        $resultHtml = '';
         // 依次进行渲染，拼接
+        foreach ($blokcModels as $blockModel)
+        {
+            $className = 'app\module\controller\\' . $blockModel->module_name . 'Controller';
+            try 
+            {
+                $class = new $className;
+                $result = call_user_func_array([$class, 'fetchHtml'], [$blockModel->config, $blockModel->filter]); 
+                if ($result)
+                {
+                    $resultHtml .= $result;
+                }
+            } catch(\Exception $e) {
+                if (config('app_debug'))
+                {
+                    throw $e;
+                }
+            }
+        }
+        
         // 返回拼接后的字符串
-        echo 'hello';
+        echo $resultHtml;
     }
 }
