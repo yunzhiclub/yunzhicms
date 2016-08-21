@@ -13,7 +13,7 @@ class BlockModel extends YunzhiModel
     public function getActiveListsByPositionName($name)
     {
         $map = ['position_name' => $name, 'status' => '0'];
-        $order = ['weight' => 'desc', 'id' => 'desc'];
+        $order = ['weight' => 'desc'];
         return $this->where($map)->order($order)->select();
     }
 }

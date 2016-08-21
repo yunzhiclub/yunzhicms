@@ -1,6 +1,7 @@
 <?php
 namespace app\model;
 use think\Request;
+use app\Common;
 
 class MenuModel extends YunzhiModel
 {
@@ -14,26 +15,22 @@ class MenuModel extends YunzhiModel
         if (empty($routeInfo))
         {
             $map = ['is_home' => 1];
-            $menu = self::get($map);
         } else {
             $rules = $routeInfo['rule'];
-            $pid = 0;
-
+            $url = '';
             // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
-            foreach ($rules as $rule)
+            foreach ($rules as $key => $rule)
             {
-                // 如果$rule为空，则返回首页
-                if ($rule === '')
+                if ($key)
                 {
-                    $map = ['is_home' => 1];
+                    $url .= '/' . $rule;
                 } else {
-                    $map = ['url' => $rule, 'pid' => $pid];
+                    $url = $rule;
                 }
-                $menu = self::get($map);
-                $pid = $menu->id;
             }
+            $map = ['url' => $url];
         }
-        
+        $menu = self::get($map);
         return $menu;
     }
 
@@ -63,5 +60,34 @@ class MenuModel extends YunzhiModel
     public function fatherMenu()
     {
         return $this->hasOne('MenuModel', 'pid');
+    }
+
+    public function isActive()
+    {
+        $currentMenuModel = Common::toggleCurrentMenuModel();
+        if ($this->id === $currentMenuModel->id)
+        {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public function isHaveSon()
+    {
+        $menuModels = $this->sonMenuModels();
+        if (empty($menuModels))
+        {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    public function sonMenuModels()
+    {
+        $map = ['pid' => $this->id, 'status'=>0];
+        $menuModels = $this->where($map)->select();
+        return $menuModels;
     }
 }
