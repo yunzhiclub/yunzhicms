@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 08/21/2016 09:50:53 AM
+ Date: 08/21/2016 10:46:08 AM
 */
 
 SET NAMES utf8;
@@ -22,17 +22,24 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_block`;
 CREATE TABLE `yunzhi_block` (
-  `id` int(11) unsigned zerofill NOT NULL,
-  `moudle_name` varchar(40) NOT NULL,
-  `position_id` int(11) NOT NULL,
-  `title` varchar(40) NOT NULL DEFAULT '' COMMENT '标题',
-  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
-  `config` varchar(255) NOT NULL DEFAULT '[]' COMMENT '区块配置信息(json)',
-  `filter` varchar(255) NOT NULL DEFAULT '[]' COMMENT '过滤器配置(json)',
-  `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '状态 0 启用，1禁用',
-  `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `module_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk moudle',
+  `position_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk position',
+  `title` varchar(40) NOT NULL DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0启用 1禁用',
+  `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
+  `config` varchar(255) NOT NULL DEFAULT '[]' COMMENT '配置信息json',
+  `filter` varchar(255) NOT NULL DEFAULT '[]' COMMENT '过滤器信息json',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `yunzhi_block`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_block` VALUES ('1', 'menu', 'menu', '主菜单', '显示在页面上方', '0', '0', '[]', '[]');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `yunzhi_category`
@@ -336,6 +343,26 @@ CREATE TABLE `yunzhi_menu_type` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `yunzhi_menu_type` VALUES ('main', '主菜单', '主菜单');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `yunzhi_module`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_module`;
+CREATE TABLE `yunzhi_module` (
+  `name` varchar(40) NOT NULL,
+  `title` varchar(40) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `config` varchar(255) NOT NULL DEFAULT '[]',
+  `filter` varchar(255) NOT NULL DEFAULT '[]',
+  PRIMARY KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `yunzhi_module`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_module` VALUES ('menu', '菜单', '显示菜单', '[]', '[]');
 COMMIT;
 
 -- ----------------------------
