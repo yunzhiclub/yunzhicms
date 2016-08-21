@@ -687,7 +687,7 @@ class Cx extends Taglib
         $name = !empty($tag['name']) ? $tag['name'] : '';
 
         $parseStr = '<?php ';
-        $parseStr .= 'call_user_func("app\component\controller\PositionController::init", "' . $name . '");';
+        $parseStr .= 'call_user_func("app\module\controller\ModuleController::init", "' . $name . '");';
         $parseStr .= ' ?>';
         return $parseStr; 
     }
