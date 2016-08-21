@@ -8,7 +8,7 @@
                     {volist name="ContentFrontpageModels" key="key" id="ContentFrontpageModel"}
                     <div class="mu-service-single">
                         <span class="fa fa-book"></span>
-                        <h3>{$ContentFrontpageModel->ContentModel->title | app\\Common::filter=$filter['title']}</h3>
+                        <h3><a href="{$ContentFrontpageModel->ContentModel->id | app\\Common::filter=$filter['href']}">{$ContentFrontpageModel->ContentModel->title | app\\Common::filter=$filter['title']}</a></h3>
                         <p>{$ContentFrontpageModel->ContentModel->title}</p>
                     </div>
                     {/volist}
