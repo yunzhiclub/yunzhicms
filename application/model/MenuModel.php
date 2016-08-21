@@ -16,20 +16,29 @@ class MenuModel extends YunzhiModel
     static public function getCurrentMenu()
     {
         $routeInfo = Request::instance()->routeInfo();
-        $rules = $routeInfo['rule'];
-        $pid = 0;
-        foreach ($rules as $rule)
+        if (empty($routeInfo))
         {
-            // 如果$rule为空，则返回首页
-            if ($rule === '')
-            {
-                $map = ['is_home' => 1];
-            } else {
-                $map = ['url' => $rule, 'pid' => $pid];
-            }
+            $map = ['is_home' => 1];
             $menu = self::get($map);
-            $pid = $menu->id;
+        } else {
+            $rules = $routeInfo['rule'];
+            $pid = 0;
+
+            // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
+            foreach ($rules as $rule)
+            {
+                // 如果$rule为空，则返回首页
+                if ($rule === '')
+                {
+                    $map = ['is_home' => 1];
+                } else {
+                    $map = ['url' => $rule, 'pid' => $pid];
+                }
+                $menu = self::get($map);
+                $pid = $menu->id;
+            }
         }
+        
         return $menu;
     }
 
