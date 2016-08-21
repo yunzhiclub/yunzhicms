@@ -10,6 +10,7 @@ class HomeController extends ComponentController
 
     protected $filter = [
         'title' => ['type' => 'String', 'function' => 'substr', 'param'=>['length'=>6, 'etc' => '..']],
+        'href'  => ['type' => 'System', 'function' => 'makeFrontpageContentUrl'],
     ];
 
     public function indexAction()
