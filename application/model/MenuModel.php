@@ -57,11 +57,20 @@ class MenuModel extends YunzhiModel
         return $this->hasMany('MenuModel', 'pid');
     }
 
+    /**
+     * 父菜单
+     * @return MenuModel 
+     */
     public function fatherMenu()
     {
         return $this->hasOne('MenuModel', 'pid');
     }
 
+    /**
+     * 菜单是否被激活
+     * @return boolean 
+     * todo: 多级菜单的激活判断
+     */
     public function isActive()
     {
         $currentMenuModel = Common::toggleCurrentMenuModel();
@@ -73,6 +82,10 @@ class MenuModel extends YunzhiModel
         }
     }
 
+    /**
+     * 当前菜单是否存在子菜单
+     * @return boolean 
+     */
     public function isHaveSon()
     {
         $menuModels = $this->sonMenuModels();
@@ -84,6 +97,11 @@ class MenuModel extends YunzhiModel
         }
     }
 
+    /**
+     * 当前菜单的子菜单
+     * 以sonMenus的区别在于 此函数对菜单的状态进行了判断
+     * @return lists 
+     */
     public function sonMenuModels()
     {
         $map = ['pid' => $this->id, 'status'=>0];
