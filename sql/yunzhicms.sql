@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 08/21/2016 10:46:08 AM
+ Date: 08/21/2016 16:51:26 PM
 */
 
 SET NAMES utf8;
@@ -32,13 +32,13 @@ CREATE TABLE `yunzhi_block` (
   `config` varchar(255) NOT NULL DEFAULT '[]' COMMENT '配置信息json',
   `filter` varchar(255) NOT NULL DEFAULT '[]' COMMENT '过滤器信息json',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `yunzhi_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block` VALUES ('1', 'menu', 'menu', '主菜单', '显示在页面上方', '0', '0', '[]', '[]');
+INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', 'menu', '主菜单', '显示在页面上方', '0', '0', '[]', '[]'), ('2', 'Slider', 'slider', '幻灯片', '', '0', '0', '[]', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -83,7 +83,7 @@ CREATE TABLE `yunzhi_component` (
 --  Records of `yunzhi_component`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0', '{\"count\":{\"description\":\"\\u663e\\u793a\\u65b0\\u95fb\\u7684\\u6761\\u6570\",\"type\":\"text\",\"value\":3}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}}}'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0', '', '[]');
+INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0', '{\"count\":{\"description\":\"\\u663e\\u793a\\u65b0\\u95fb\\u7684\\u6761\\u6570\",\"type\":\"text\",\"value\":3}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}}}'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0', '', '[]'), ('Content', '新闻', '显示一篇新闻', '', '', '', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -313,18 +313,19 @@ CREATE TABLE `yunzhi_menu` (
   `config` varchar(255) NOT NULL DEFAULT '[]' COMMENT '配置参数（json）',
   `filter` varchar(255) NOT NULL DEFAULT '[]' COMMENT '过滤器参数',
   `is_home` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '是否首页',
+  `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
   PRIMARY KEY (`id`),
   KEY `path_menu` (`url`(128),`title`),
   KEY `menu_plid_expand_child` (`title`,`pid`),
   KEY `menu_parents` (`title`),
   KEY `router_path` (`component_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='Contains the individual links within a menu.';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='Contains the individual links within a menu.';
 
 -- ----------------------------
 --  Records of `yunzhi_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":3}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}}}', '1'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '', '[]', '[]', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'school', '0', '0', '', '[]', '[]', '0');
+INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":3}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}}}', '1', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '', '[]', '[]', '0', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '[]', '[]', '0', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":2}', '[]', '0', '0');
 COMMIT;
 
 -- ----------------------------
