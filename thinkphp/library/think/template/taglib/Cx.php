@@ -49,6 +49,7 @@ class Cx extends Taglib
         'for'        => ['attr' => 'start,end,name,comparison,step'],
         'url'        => ['attr' => 'link,vars,suffix,domain', 'close' => 0, 'expression' => true],
         'function'   => ['attr' => 'name,vars,use,call'],
+        'position'   => ['attr' => 'name', 'close' => 0],
     ];
 
     /**
@@ -669,5 +670,25 @@ class Cx extends Taglib
         $parseStr .= ' ?>' . $content . '<?php }; ';
         $parseStr .= $call ? '$' . $name . '(' . $call . '); ?>' : '?>';
         return $parseStr;
+    }
+
+
+    /**
+     * php标签解析
+     * 格式：
+     * {php}echo $name{/php}
+     * @access public
+     * @param array $tag 标签属性
+     * @param string $content 标签内容
+     * @return string
+     */
+    public function tagPosition($tag)
+    {
+        $name = !empty($tag['name']) ? $tag['name'] : '';
+
+        $parseStr = '<?php ';
+        $parseStr .= 'call_user_func("app\module\controller\ModuleController::init", "' . $name . '");';
+        $parseStr .= ' ?>';
+        return $parseStr; 
     }
 }

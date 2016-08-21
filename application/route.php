@@ -10,12 +10,20 @@
 // +----------------------------------------------------------------------
 
 return [
-    '__pattern__' => [
-        'name' => '\w+',
-    ],
-    '[hello]'     => [
-        ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-        ':name' => ['index/hello', ['method' => 'post']],
-    ],
+    'admin' => 'index',
+    'admin/login' => 'Login/index',
 
+    // 定义资源路由
+    '__curd__'=>[
+        // 指向index模块的blog控制器
+        'admin/menutype'                => 'MenuType',
+        'admin/menu'                    => 'menu',
+        'admin/category'                => 'category',
+        'admin/category.content'        => 'Content',
+        'category.content'              => 'Content',
+        'admin/system'                  => 'System',
+        'admin/component'               => 'Component',
+        'admin/block'                   => 'Block',
+        'admin/Template'                => 'Template',
+    ],
 ];
