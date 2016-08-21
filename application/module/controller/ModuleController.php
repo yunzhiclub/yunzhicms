@@ -35,47 +35,31 @@ class ModuleController extends Controller
     {
         // 找出所有在当前position下的block
         $BlockModel = new BlockModel;
-        $blokcModels = $BlockModel->getActiveListsByPositionName($name);
+        $blockModels = $BlockModel->getActiveListsByPositionName($name);
 
         $resultHtml = '';
         // 依次进行渲染，拼接
-        foreach ($blokcModels as $blockModel)
+        foreach ($blockModels as $blockModel)
         {
-            if (self::_isBlockShow($blockModel))
+            $className = 'app\module\controller\\' . $blockModel->module_name . 'Controller';
+            try 
             {
-                $className = 'app\module\controller\\' . $blockModel->module_name . 'Controller';
-                try 
+                // 实例化类 并调用
+                $class = new $className($blockModel);
+                $result = call_user_func([$class, 'fetchHtml']); 
+                if ($result)
                 {
-                    // 实例化类 并调用
-                    $class = new $className($blockModel);
-                    $result = call_user_func([$class, 'fetchHtml']); 
-                    if ($result)
-                    {
-                        $resultHtml .= $result;
-                    }
-                } catch(\Exception $e) {
-                    if (config('app_debug'))
-                    {
-                        throw $e;
-                    }
-                } 
-            }
+                    $resultHtml .= $result;
+                }
+            } catch(\Exception $e) {
+                if (config('app_debug'))
+                {
+                    throw $e;
+                }
+            } 
         }
         
         // 返回拼接后的字符串
         echo $resultHtml;
-    }
-
-    static protected function _isBlockShow(BlockModel $BlockModel)
-    {
-        $currentMenuModel = Common::toggleCurrentMenuModel();
-        $map = ['block_id'=>$BlockModel->id, 'menu_id' => $currentMenuModel->id];
-        $BlockMenuModel = BlockMenuModel::get($map);
-        if (null === $BlockMenuModel)
-        {
-            return false;
-        } else {
-            return true;
-        }
     }
 }

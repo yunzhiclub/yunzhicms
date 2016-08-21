@@ -21,9 +21,11 @@ Common::registerRouter();
 
 class Common{
 
-    // 当前菜单
-    static public $currentMenuModel = null;
-
+    /**
+     * 设置/取出 当前菜单
+     * @param  MenuModel|null $MenuModel 菜单
+     * @return                     
+     */
     static public function toggleCurrentMenuModel(MenuModel $MenuModel = null)
     {
         static $currentMenuModel = null;
@@ -42,21 +44,19 @@ class Common{
      */
     static public function registerRouter()
     {
-        // 查询菜单表，并整理出上下级关系
+        // 查询菜单表
         $menus = self::reMakeLinkPath(Db::name('menu')->where('is_hidden', 0)->select());
 
         // 查询组件表
         $components = Db::name('component')->select();
         $components = self::changeListIndex($components, 'name');
 
-        // 注册REST路由信息 
+        // 注册CURD路由信息 
         foreach ($menus as $menu)
         {   
-            // 生成linkPath信息
-            $linkPath = $menu['url'];
             // 注册路由
             $componentName = $menu['component_name'];
-            if (isset($components[$componentName]))
+            if (array_key_exists($componentName, $components))
             {
                 $router = 'Component/' . $components[$componentName]['name'];
 
@@ -67,7 +67,7 @@ class Common{
                     Route::rule('/', $router);
                 } else {
                     // 非首页注册curd路由
-                    Route::curd($linkPath, $router);
+                    Route::curd($menu['url'], $router);
                 }
             }
         }

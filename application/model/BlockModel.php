@@ -1,5 +1,7 @@
 <?php
 namespace app\model;
+use app\Common;
+
 /**
  * 区块
  */
@@ -14,6 +16,33 @@ class BlockModel extends YunzhiModel
     {
         $map = ['position_name' => $name, 'status' => '0'];
         $order = ['weight' => 'desc'];
-        return $this->where($map)->order($order)->select();
+        $BlockModels = $this->where($map)->order($order)->select();
+        foreach ($BlockModels as $key => &$BlockModel)
+        {
+            // 去除没有权限显示的区块
+            if (!$BlockModel->isShowInCurrentMenu())
+            {
+                unset($BlockModels[$key]);
+            }
+        }
+        return $BlockModels;
+    }
+
+
+    /**
+     * 判断当前BLOCK是否在 正在访问的当前菜单 中显示
+     * @return boolean 
+     */
+    public function isShowInCurrentMenu()
+    {
+        $currentMenuModel = Common::toggleCurrentMenuModel();
+        $map = ['block_id'=>$this->id, 'menu_id' => $currentMenuModel->id];
+        $BlockMenuModel = BlockMenuModel::get($map);
+        if (null === $BlockMenuModel)
+        {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
