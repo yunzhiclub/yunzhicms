@@ -128,12 +128,12 @@ class ComponentController extends Controller implements ComponentInterface
 
     }
 
-    public function readAction()
+    public function readAction($id)
     {
 
     }
 
-    public function editAction()
+    public function editAction($id)
     {
 
     }
@@ -143,7 +143,7 @@ class ComponentController extends Controller implements ComponentInterface
 
     }
 
-    public function deleteAction()
+    public function deleteAction($id)
     {
 
     }

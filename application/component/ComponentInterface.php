@@ -9,8 +9,8 @@ interface ComponentInterface
     public function indexAction();
     public function createAction();
     public function saveAction();
-    public function readAction();
-    public function editAction();
+    public function readAction($id);
+    public function editAction($id);
     public function updateAction();
-    public function deleteAction();
+    public function deleteAction($id);
 }
