@@ -7,15 +7,18 @@
                     <!-- start title -->
                     <div class="mu-title">
                         <h2>{$ContentModel->title}</h2>
-                        <p>{$ContentModel->_filed->body->body_value}</p>
-                        <p>{$ContentModel->_filed->body->body_value}</p>
+                        <p>
+                        {volist name="ContentModel->_filed->body" id="body"}
+                            {$body->body_value} <br />
+                        {/volist}
+                        </p>
                     </div>
                     <!-- end title -->
                     <!-- start contact content -->
                     <div class="mu-contact-content">
                         <div class="row">
                             <div class="col-md-12">
-
+                                
                             </div>
                         </div>
                     </div>

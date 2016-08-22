@@ -5,6 +5,7 @@ use app\Common;
 
 class MenuModel extends YunzhiModel
 {
+    protected $fathermenuModel = null;
     /**
      * 获取用户当前访问的菜单
      * @return MenuModel 
@@ -61,9 +62,9 @@ class MenuModel extends YunzhiModel
      * 父菜单
      * @return MenuModel 
      */
-    public function fatherMenu()
+    public function fatherMenuModel()
     {
-        return $this->hasOne('MenuModel', 'pid');
+        return $this->hasOne('MenuModel', 'id', 'pid');
     }
 
     /**
@@ -74,12 +75,16 @@ class MenuModel extends YunzhiModel
     public function isActive()
     {
         $currentMenuModel = Common::toggleCurrentMenuModel();
-        if ($this->id === $currentMenuModel->id)
-        {
-            return 1;
-        } else {
-            return 0;
-        }
+        do {
+            if ($this->id === $currentMenuModel->id)
+            {
+                return 1;
+            }
+
+            $currentMenuModel = $currentMenuModel->fatherMenuModel;
+        } while (null !== $currentMenuModel);
+
+        return 0;
     }
 
     /**
@@ -107,5 +112,20 @@ class MenuModel extends YunzhiModel
         $map = ['pid' => $this->id, 'status'=>0];
         $menuModels = $this->where($map)->select();
         return $menuModels;
+    }
+
+    /**
+     * 获取当前菜单的菜单树（从根菜单开始，至本菜单结束）
+     * @return lists MenuModel
+     */
+    public function getFatherMenuModleTree()
+    {
+        $tree = [];
+        $MenuModel = $this;
+        do {
+            array_push($tree, $MenuModel);
+            $MenuModel = $MenuModel->fatherMenuModel;
+        } while (null !== $MenuModel);
+        return array_reverse($tree);
     }
 }
