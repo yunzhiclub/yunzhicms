@@ -18,12 +18,12 @@ class StringServer
         $etc = '...';
         if (array_key_exists('length', $param))
         {
-            $length = (int)$param['length'];
+            $length = (int)$param['length']['value'];
         }
 
         if (array_key_exists('etc', $param))
         {
-            $etc = (string)$param['etc'];
+            $etc = (string)$param['etc']['value'];
         }
 
         $result = '';

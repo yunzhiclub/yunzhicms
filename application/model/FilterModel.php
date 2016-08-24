@@ -8,6 +8,16 @@ use app\Common;                         // 通用功能
  */
 class FilterModel extends ModelModel
 {
+
+    public function getParam()
+    {
+        $param = [];
+        if (array_key_exists('param', $this->data))
+        {
+            $param = json_decode($this->data['param'], true);
+        }
+        return $param;
+    }
     /**
      * 通过数组的信息找出filter对象
      * array (size=3)
@@ -42,5 +52,18 @@ class FilterModel extends ModelModel
         }
 
         return $FilterModel;
+    }
+
+    public function filter($value)
+    {
+        $className = 'app\filter\server\\' . $this->data['type'] . 'Server';
+        $result = call_user_func_array(array($className, $this->function), array($value, $this->getParam()));
+
+        if (false === $result)
+        {
+            return $value;
+        }
+
+        return $result;
     }
 }

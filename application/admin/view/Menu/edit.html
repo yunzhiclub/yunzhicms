@@ -7,6 +7,7 @@
                 <h5>{$MenuModel->title}</h5>
             </div>
             <div class="box-content" >
+                
                 <form class="form-horizontal" action="{:url('@admin/menu/' . $MenuModel->id)}" method="post">
                     <input type="hidden" name="_method" value="PUT" /> 
                     <div class="control-group">

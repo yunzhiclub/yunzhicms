@@ -10,10 +10,9 @@
                             <div class="mu-course-container mu-blog-archive">
                                 <ul>
                                 {volist name="ContentModels" id="contentModel"}
-                                    <li><a href="{$contentModel->id | app\\Common::filter=$filter['href']}">{$contentModel->title}</a><span style="float:right">{$contentModel->create_time}</span></li>
+                                    <li><a href="{$contentModel->id | $filterModels['href']->filter}">{$contentModel->title}{$contentModel->id | $filterModels['href']->filter}</a><span style="float:right">{$contentModel->create_time}</span></li>
                                 {/volist}
-                                </ul>
-                                
+                                </ul>                                
                             </div>
                             <!-- end course content container -->
                             <!-- start course pagination -->

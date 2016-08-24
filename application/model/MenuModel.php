@@ -32,9 +32,8 @@ class MenuModel extends ModelModel
         if (null === $this->filter)
         {
             // 合并当前菜单对应的组件过滤器及当前菜单的过滤器
-            $this->filter = Common::configMerge($this->Component->filter, $this->filter);
+            $this->filter = Common::configMerge($this->Component->filter, json_decode($this->data['filter'], true));
         }
-
         return $this->filter;  
     }
 

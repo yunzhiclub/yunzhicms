@@ -12,11 +12,4 @@ class ModelModel extends YunzhiModel
         'filter'    => 'json',
         'param'     => 'json',
     ];
-
-    public function getCreateTimeAttr($createTime)
-    {
-        return date('Y-m-d', $createTime);
-    }
-
-
 }

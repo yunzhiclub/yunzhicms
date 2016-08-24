@@ -192,53 +192,8 @@ class Common{
         }
         define('__ROOT__', $root);
     }
-
+    
     /**
-     * 自动触发过滤器
-     * @param  输入源值 $value 
-     * @param  array  $rule  过滤规则
-     * $rule  = ['type' => 'string', 'function' => 'substr', 'param'=>['length'=>2, 'etc' => '....']]
-     * @return 过滤后的值        
-     */
-    static public function filter($value, $rule = [])
-    {
-        if (is_array($rule))
-        {
-            $className = 'app\filter\server';
-            if (array_key_exists('type', $rule))
-            {
-                $className .= '\\' . $rule['type'] . 'Server';
-                try
-                {
-                    if (array_key_exists('function', $rule))
-                    {
-                        $param = [];
-                        if (array_key_exists('param', $rule))
-                        {
-                            $param = $rule['param'];
-                        }
-
-                        // 调用特定过滤器server的特定方法
-                        $result = call_user_func_array(array($className, $rule['function']), array($value, $param));
-
-                        // 调用成功，则将返回值写入
-                        if ($result !== false)
-                        {
-                            $value = $result;
-                            unset($result);
-                        }
-                    }
-                } catch(\Exception $e)
-                {
-                    // 如果发生错误，则不进行任何处理
-                }
-            }
-        }
-
-        return $value;
-    }
-
-        /**
      * 合并配置信息
      * 将配置2中的配置信息，合并到配置1中
      * 示例：
@@ -298,12 +253,16 @@ class Common{
                     // 按类型进行分类合并
                     if (is_array($config))
                     {
-                        $config1[$key] = seft::configMerge($config1[$key], $config);
-                    } else {
+                        $config1[$key] = self::configMerge($config1[$key], $config);
+                    } elseif (is_array($config1[$key])) {
                         $config1[$key]['value'] = $config;
+                    } else {
+                        $config1[$key] = $config;
                     }
                 }
             }
+        } else {
+            
         }
         return $config1;
     }

@@ -8,8 +8,9 @@
                     <div class="mu-title">
                         <h2>{$ContentModel->title}</h2>
                         <div class="mu-meta">
+
                             <span>By Admin</span>
-                            <span>{$ContentModel->create_time | app\\Common::filter=$filter['date']}</span>
+                            <span>{$ContentModel->create_time | $filterModels['date']->filter}</span>
                             <span><i class="fa fa-comments-o"></i>{$ContentModel->hit}</span>
                         </div>
                     </div>
