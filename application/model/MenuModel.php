@@ -3,7 +3,7 @@ namespace app\model;
 use think\Request;
 use app\Common;
 
-class MenuModel extends YunzhiModel
+class MenuModel extends ModelModel
 {
     protected $fathermenuModel = null;
     /**
@@ -22,13 +22,14 @@ class MenuModel extends YunzhiModel
             // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
             foreach ($rules as $key => $rule)
             {
-                if ($key)
+                // 检测是否为read, 检测到，则直接跳到下一个循环
+                $pattern = '/^:/';
+                if (preg_match($pattern, $rule))
                 {
-                    $url .= '/' . $rule;
-                } else {
-                    $url = $rule;
+                    unset($rules[$key]);
                 }
             }
+            $url = implode("/", $rules);
             $map = ['url' => $url];
         }
         $menu = self::get($map);

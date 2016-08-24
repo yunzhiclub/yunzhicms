@@ -1,22 +1,9 @@
 <?php
-namespace app\model;
+namespace app;
 use think\Model;
 
 class YunzhiModel extends Model
 {
-    // 自动时间戳
-    protected $autoWriteTimestamp = true;
-
-    protected $type = [
-        'config'    => 'json',
-        'filter'    => 'json',
-    ];
-
-    public function getCreateTimeAttr($createTime)
-    {
-        return date('Y-m-d', $createTime);
-    }
-
     public function __construct($data = [])
     {
         // 重写对应的数据表名

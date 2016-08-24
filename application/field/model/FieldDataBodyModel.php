@@ -1,9 +1,9 @@
 <?php
-namespace app\field;
+namespace app\field\model;
 /**
  * body字段
  */
-class FieldDataBodyField extends YunzhiField
+class FieldDataBodyModel extends FieldModel
 {
     /**
      * 获取字段集

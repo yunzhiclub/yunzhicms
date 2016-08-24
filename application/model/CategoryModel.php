@@ -1,7 +1,7 @@
 <?php
 namespace app\model;
 
-class CategoryModel extends YunzhiModel
+class CategoryModel extends ModelModel
 {
 
     protected $pk = 'name';

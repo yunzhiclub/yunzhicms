@@ -1,7 +1,7 @@
 <?php
 namespace app\model;
 
-class MenuTypeModel extends YunzhiModel
+class MenuTypeModel extends ModelModel
 {
     protected $pk = 'name';
 }

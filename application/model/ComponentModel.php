@@ -1,7 +1,7 @@
 <?php
 namespace app\model;
 
-class ComponentModel extends YunzhiModel
+class ComponentModel extends ModelModel
 {
     static public function getCurrentComponent($component)
     {

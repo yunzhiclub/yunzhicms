@@ -28,6 +28,16 @@ class ComponentController extends Controller implements ComponentInterface
         $this->assign('filter', $this->filter);
     }
 
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+    
     /**
      * 初始化配置信息   
      */

@@ -1,7 +1,7 @@
 <?php
 namespace app\model;
 
-class ContentFrontpageModel extends YunzhiModel
+class ContentFrontpageModel extends ModelModel
 {
     protected $pk = 'content_id';
 

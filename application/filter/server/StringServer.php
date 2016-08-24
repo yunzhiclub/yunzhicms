@@ -8,22 +8,22 @@ class StringServer
     /**
      * 字符串截取函数
      * @param  string $string 输入字符串
-     * @param  array  $config 配置信息
+     * @param  array  $param 配置信息
      * $length 截取的长度
      * $etc 截取后缀
      * @return string         过滤后的字符串
      */
-    static public function substr($string, $config = array()) {
+    static public function substr($string, $param = array()) {
         $length = '10';
         $etc = '...';
-        if (array_key_exists('length', $config))
+        if (array_key_exists('length', $param))
         {
-            $length = (int)$config['length'];
+            $length = (int)$param['length'];
         }
 
-        if (array_key_exists('etc', $config))
+        if (array_key_exists('etc', $param))
         {
-            $etc = (string)$config['etc'];
+            $etc = (string)$param['etc'];
         }
 
         $result = '';

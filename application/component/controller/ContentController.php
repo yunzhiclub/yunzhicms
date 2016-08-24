@@ -23,7 +23,6 @@ class ContentController extends ComponentController
 
     public function indexAction()
     {
-
         $id = 1;
         if (array_key_exists('id', $this->config))
         {

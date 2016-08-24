@@ -18,4 +18,5 @@ class MenuController extends AdminController
         $this->assign('MenuModel', $MenuModel);
         return $this->fetch();
     }
+
 }

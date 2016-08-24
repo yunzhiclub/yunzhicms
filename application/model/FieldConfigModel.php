@@ -5,7 +5,7 @@ use think\Loader;
 /**
  * 字段配置
  */
-class FieldConfigModel extends YunzhiModel
+class FieldConfigModel extends ModelModel
 {
     protected $Entity;      // 配置实体
     /**
@@ -56,7 +56,7 @@ class FieldConfigModel extends YunzhiModel
             }
 
             // 实例化字表信息详情表
-            $table = 'app\field\\' . Loader::parseName('field_data_' . $name, 1) . 'Field';
+            $table = 'app\field\model\\' . Loader::parseName('field_data_' . $name, 1) . 'Model';
             $Filed = new $table;
 
             // 返回该实体下的字段信息

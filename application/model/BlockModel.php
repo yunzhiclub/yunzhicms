@@ -5,7 +5,7 @@ use app\Common;
 /**
  * 区块
  */
-class BlockModel extends YunzhiModel
+class BlockModel extends ModelModel
 {
     /**
      * 获取某个position下的所有 启用 的区载信息

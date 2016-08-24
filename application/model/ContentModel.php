@@ -1,7 +1,7 @@
 <?php
 namespace app\model;
 
-class ContentModel extends YunzhiModel
+class ContentModel extends ModelModel
 {
     public function CategoryModel()
     {
@@ -29,7 +29,7 @@ class ContentModel extends YunzhiModel
     public function __get($name)
     {
         // 取字段信息
-        if ('_filed' === $name)
+        if ('_field' === $name)
         {
             // 获取新闻所在的类别
             $CategoryModel = $this->CategoryModel;

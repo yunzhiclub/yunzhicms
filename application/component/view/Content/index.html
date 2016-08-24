@@ -3,27 +3,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="mu-contact-area">
-                    <!-- start title -->
-                    <div class="mu-title">
-                        <h2>{$ContentModel->title}</h2>
-                        <p>
-                        {volist name="ContentModel->_filed->body" id="body"}
-                            {$body->body_value} <br />
-                        {/volist}
-                        </p>
-                    </div>
-                    <!-- end title -->
-                    <!-- start contact content -->
-                    <div class="mu-contact-content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                
-                            </div>
+                <!-- start contact content -->
+                <div class="mu-contact-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {$ContentModel->_field->body->value}
                         </div>
                     </div>
-                    <!-- end contact content -->
                 </div>
+                <!-- end contact content -->
             </div>
         </div>
     </div>

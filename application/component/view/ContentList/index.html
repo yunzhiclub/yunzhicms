@@ -1,0 +1,119 @@
+{layout name="index" /}
+<section id="mu-course-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-course-content-area">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <!-- start course content container -->
+                            <div class="mu-course-container mu-blog-archive">
+                                <ul>
+                                {volist name="ContentModels" id="contentModel"}
+                                    <li><a href="{$contentModel->id | app\\Common::filter=$filter['href']}">{$contentModel->title}</a><span style="float:right">{$contentModel->create_time}</span></li>
+                                {/volist}
+                                </ul>
+                                
+                            </div>
+                            <!-- end course content container -->
+                            <!-- start course pagination -->
+                            <div class="mu-pagination">
+                                <nav>
+                                    {$ContentModels->render()}
+                                </nav>
+                            </div>
+                            <!-- end course pagination -->
+                        </div>
+                        <div class="col-md-3">
+                            <!-- start sidebar -->
+                            <aside class="mu-sidebar">
+                                <!-- start single sidebar -->
+                                <div class="mu-single-sidebar">
+                                    <h3>Categories</h3>
+                                    <ul class="mu-sidebar-catg">
+                                        <li><a href="#">Web Design</a></li>
+                                        <li><a href="">Web Development</a></li>
+                                        <li><a href="">Math</a></li>
+                                        <li><a href="">Physics</a></li>
+                                        <li><a href="">Camestry</a></li>
+                                        <li><a href="">English</a></li>
+                                    </ul>
+                                </div>
+                                <!-- end single sidebar -->
+                                <!-- start single sidebar -->
+                                <div class="mu-single-sidebar">
+                                    <h3>Popular News</h3>
+                                    <div class="mu-sidebar-popular-courses">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="#">
+                                                    <img class="media-object" src="assets/img/courses/1.jpg" alt="img">
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading"><a href="#">Medical Science</a></h4>
+                                                <span class="popular-course-price">$200.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="#">
+                                                    <img class="media-object" src="assets/img/courses/2.jpg" alt="img">
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading"><a href="#">Web Design</a></h4>
+                                                <span class="popular-course-price">$250.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="#">
+                                                    <img class="media-object" src="assets/img/courses/3.jpg" alt="img">
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading"><a href="#">Health &amp; Sports</a></h4>
+                                                <span class="popular-course-price">$90.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end single sidebar -->
+                                <!-- start single sidebar -->
+                                <div class="mu-single-sidebar">
+                                    <h3>Archives</h3>
+                                    <ul class="mu-sidebar-catg mu-sidebar-archives">
+                                        <li><a href="#">May <span>(25)</span></a></li>
+                                        <li><a href="">June <span>(35)</span></a></li>
+                                        <li><a href="">July <span>(20)</span></a></li>
+                                        <li><a href="">August <span>(125)</span></a></li>
+                                        <li><a href="">September <span>(45)</span></a></li>
+                                        <li><a href="">October <span>(85)</span></a></li>
+                                    </ul>
+                                </div>
+                                <!-- end single sidebar -->
+                                <!-- start single sidebar -->
+                                <div class="mu-single-sidebar">
+                                    <h3>Tags Cloud</h3>
+                                    <div class="tag-cloud">
+                                        <a href="#">Health</a>
+                                        <a href="#">Science</a>
+                                        <a href="#">Sports</a>
+                                        <a href="#">Mathematics</a>
+                                        <a href="#">Web Design</a>
+                                        <a href="#">Admission</a>
+                                        <a href="#">History</a>
+                                        <a href="#">Environment</a>
+                                    </div>
+                                </div>
+                                <!-- end single sidebar -->
+                            </aside>
+                            <!-- / end sidebar -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

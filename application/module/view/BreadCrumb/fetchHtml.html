@@ -3,14 +3,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="mu-page-breadcrumb-area">
-                    <?php $currentMenu = array_pop($MenuModels); ?>
-                    <h2>{$currentMenu->title}</h2>
+                    <?php $currentMenuModel = array_pop($MenuModels); ?>
+                    <h2>{$currentMenuModel->title}</h2>
                     <ol class="breadcrumb">
                         <li><a href="{:url('@/')}">首页</a></li>
                         {volist name="MenuModels" key="key" id="menuModel"}
                         <li><a href="{:url('@' . $menuModel->url)}">{$menuModel->title}</a></li>
                         {/volist}
-                        <li class="active">{$currentMenu->title}</li>
+                        <li><a href="{:url('@' . $currentMenuModel->url)}" class="active">{$currentMenuModel->title}</a></li>
                     </ol>
                 </div>
             </div>
