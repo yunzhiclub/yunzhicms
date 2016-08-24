@@ -54,10 +54,29 @@
 
                     <div>
                         <label for="">配置信息</label>
+                        <ul>
+                            {foreach name="MenuModel->getConfig()" key="key" id="_config"}
+                                <li>
+                                    <label>{$_config['title']}</label>
+                                    <input type="text" name="config[{$key}]" value="{$_config['value']}">
+                                </li>
+                            {/foreach}
+                        </ul>
                     </div>
 
                     <div>
                         <label for="">过滤器信息</label>
+                        <ul>
+                            {foreach name="MenuModel->getFilter()" key="key" id="_filter"}
+                                <li>
+                                <label for="">类型</label>
+                                <input type="text" name="type">
+                                    {:var_dump($key)}
+                                    {:var_dump($_filter)}
+                                    }
+                                </li>
+                            {/foreach}
+                        </ul>
                     </div>
 
                     <div class="control-group">
