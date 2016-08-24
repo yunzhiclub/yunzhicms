@@ -54,37 +54,37 @@
 
                     <div>
                         <label for="">配置信息</label>
-                        <ul>
+                        <ol>
                             {foreach name="MenuModel->getConfig()" key="key" id="_config"}
                                 <li>
                                     <label>{$_config['title']}</label>
                                     <input type="text" name="config[{$key}]" value="{$_config['value']}">
                                 </li>
                             {/foreach}
-                        </ul>
+                        </ol>
                     </div>
 
                     <div>
                         <label for="">过滤器信息</label>
-                        <ul>
+                        <ol>
                             {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"}
                                 <li>
                                 <label for="">{$_FilterModel->title}</label>
-                                    <ol>
+                                    <ul>
                                         <li>
                                             <label for="">机读字段</label>
-                                            <input type="text" value="{$key}" />
+                                            <input name="filter[{$key}][name]" type="text" value="{$key}" />
                                         </li>
                                         {foreach name="_FilterModel->param" key="key1" id="_param"}
                                             <li>
                                                 <label>{$_param['title']}</label>
-                                                <input type="text" value="{$_param['value']}" />
+                                                <input name="filter[{$key}][{$key1}]" type="text" value="{$_param['value']}" />
                                             </li>
                                         {/foreach}
-                                    </ol>
+                                    </ul>
                                 </li>
                             {/foreach}
-                        </ul>
+                        </ol>
                     </div>
                     <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
                 </form>
