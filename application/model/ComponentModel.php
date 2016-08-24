@@ -3,6 +3,8 @@ namespace app\model;
 
 class ComponentModel extends ModelModel
 {
+    protected $pk = 'name';
+
     static public function getCurrentComponent($component)
     {
         $arr = explode('\\', $component);

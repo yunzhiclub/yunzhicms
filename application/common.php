@@ -22,22 +22,6 @@ Common::registerRouter();
 class Common{
 
     /**
-     * 设置/取出 当前菜单
-     * @param  MenuModel|null $MenuModel 菜单
-     * @return                     
-     */
-    static public function toggleCurrentMenuModel(MenuModel $MenuModel = null)
-    {
-        static $currentMenuModel = null;
-        if (isset($MenuModel))
-        {
-            $currentMenuModel = $MenuModel;
-        } else {
-            return $currentMenuModel;
-        }
-        
-    }
-    /**
      * 注册路由信息
      * @param  array $menus 菜单列表
      * @return void        
@@ -298,6 +282,11 @@ class Common{
      */
     static public function configMerge($config1, $config2)
     {
+        if (!is_array($config1))
+        {
+            return array();
+        }
+
         if (is_array($config2))
         {
             foreach ($config2 as $key => &$config)

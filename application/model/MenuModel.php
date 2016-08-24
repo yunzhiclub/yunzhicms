@@ -5,35 +5,71 @@ use app\Common;
 
 class MenuModel extends ModelModel
 {
-    protected $fathermenuModel = null;
+    protected $fathermenuModel  = null;
+    private $config             = null;         // 配置信息
+    private $filter             = null;         // 过滤器信息
+
+    public function Component()
+    {
+        return $this->hasOne('ComponentModel', 'name', 'component_name');
+    }
+
+    public function getConfig()
+    {
+        if (null === $this->config)
+        {
+            // 合并当前菜单对应的组件配置及当前菜单的配置
+            $this->config = Common::configMerge($this->Component->config, $this->config);
+        }
+
+        return $this->config;  
+    }
+
+
+    public function getFilter()
+    {
+        if (null === $this->filter)
+        {
+            // 合并当前菜单对应的组件过滤器及当前菜单的过滤器
+            $this->filter = Common::configMerge($this->Component->filter, $this->filter);
+        }
+
+        return $this->filter;  
+    }
+
     /**
      * 获取用户当前访问的菜单
      * @return MenuModel 
      */
-    static public function getCurrentMenu()
+    static public function getCurrentMenuModel()
     {
-        $routeInfo = Request::instance()->routeInfo();
-        if (empty($routeInfo))
+        static $currentMenuModel = null;
+        if (null === $currentMenuModel)
         {
-            $map = ['is_home' => 1];
-        } else {
-            $rules = $routeInfo['rule'];
-            $url = '';
-            // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
-            foreach ($rules as $key => $rule)
+            $routeInfo = Request::instance()->routeInfo();
+            if (empty($routeInfo))
             {
-                // 检测是否为read, 检测到，则直接跳到下一个循环
-                $pattern = '/^:/';
-                if (preg_match($pattern, $rule))
+                $map = ['is_home' => 1];
+            } else {
+                $rules = $routeInfo['rule'];
+                $url = '';
+                // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
+                foreach ($rules as $key => $rule)
                 {
-                    unset($rules[$key]);
+                    // 检测是否为read, 检测到，则直接跳到下一个循环
+                    $pattern = '/^:/';
+                    if (preg_match($pattern, $rule))
+                    {
+                        unset($rules[$key]);
+                    }
                 }
+                $url = implode("/", $rules);
+                $map = ['url' => $url];
             }
-            $url = implode("/", $rules);
-            $map = ['url' => $url];
+            $currentMenuModel = self::get($map);
         }
-        $menu = self::get($map);
-        return $menu;
+
+        return $currentMenuModel;
     }
 
     /**
@@ -75,7 +111,7 @@ class MenuModel extends ModelModel
      */
     public function isActive()
     {
-        $currentMenuModel = Common::toggleCurrentMenuModel();
+        $currentMenuModel = self::getCurrentMenuModel();
         do {
             if ($this->id === $currentMenuModel->id)
             {

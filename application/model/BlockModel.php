@@ -7,6 +7,40 @@ use app\Common;
  */
 class BlockModel extends ModelModel
 {
+    public $config = null;     // 配置信息
+    public $filter = null;     // 过滤器信息
+
+    /**
+     * 区域:模块 = n:1
+     */
+    public function ModuleModel()
+    {
+        return $this->hasOne('ModuleModel', 'name', 'module_name');
+    }
+
+    public function getConfig()
+    {
+        if (null === $this->config)
+        {
+            $this->config = array();
+            $this->config = Common::configMerge($this->ModuleModel->config, $this->config);
+        }
+
+        return $this->config;
+    }
+
+
+    public function getFilter()
+    {
+        if (null === $this->filter)
+        {
+            $this->filter = array();
+            $this->filter = Common::configMerge($this->ModuleModel->filter, $this->filter);
+        }
+
+        return $this->filter;
+    }
+
     /**
      * 获取某个position下的所有 启用 的区载信息
      * @param  string $name position名称
@@ -36,7 +70,7 @@ class BlockModel extends ModelModel
     public function isShowInCurrentMenu()
     {
         // 取出当前菜单
-        $currentMenuModel = Common::toggleCurrentMenuModel();
+        $currentMenuModel = MenuModel::getCurrentMenuModel();
 
         // 判断当前菜单是否拥有此block的显示权限
         $map = ['block_id'=>$this->id, 'menu_id' => $currentMenuModel->id];

@@ -24,7 +24,7 @@ class SystemServer
      */
     static public function makeCurrentMenuReadUrl($id, $param = [])
     {
-        $currentMenuModle = Common::toggleCurrentMenuModel();
+        $currentMenuModle = MenuModel::getCurrentMenuModel();
         return url('@' . $currentMenuModle->url . '/' . $id);
     }
 }

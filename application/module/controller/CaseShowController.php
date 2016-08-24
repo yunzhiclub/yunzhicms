@@ -5,9 +5,6 @@ namespace app\module\controller;
  */
 class CaseshowController extends ModuleController
 {
-	protected $config = [];
-	protected $filter = [];
-
 	public function fetchHtml()
 	{
 		return $this->fetch('module@Caseshow/fetchHtml');

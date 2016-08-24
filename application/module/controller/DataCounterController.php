@@ -5,9 +5,6 @@ namespace app\module\controller;
  */
 class DataCounterController extends ModuleController
 {
-	protected $config = [];
-	protected $filter = [];
-
 	public function fetchHtml()
 	{
 		return $this->fetch('module@DataCounter/fetchHtml');

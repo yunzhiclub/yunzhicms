@@ -1,28 +1,32 @@
 <?php
 namespace app\module\controller;
+
 use think\Controller;
-use app\model\BlockModel;               // 区块
+
 use app\Common;
-use app\model\BlockMenuModel;           // 
+use app\model\BlockModel;               // 区块 模型
+use app\model\BlockMenuModel;           // 区块-菜单 模型
+use app\model\MenuModel;                // 菜单模型
 
 class ModuleController extends Controller
 {
-    protected $config = [];
-    protected $filter = [];
+    protected $config = null;
+    protected $filter = null;
+    protected $currentMenuModel = null;
+
 
     public function __construct(BlockModel $BlockModel, Request $request = null)
     {
-        if (is_array($BlockModel->config))
-        {
-            $this->config = Common::configMerge($this->config, $BlockModel->config);
-        }
+        // 取配置过滤器信息
+        $this->config = $BlockModel->getConfig();;
+        $this->filter = $BlockModel->getFilter();
 
-        if (is_array($BlockModel->filter))
-        {
-            $this->filter = Common::configMerge($this->filter, $BlockModel->filter);
-        }
-        
+        // 取当前菜单信息
+        $this->currentMenuModel = MenuModel::getCurrentMenuModel();
         parent::__construct($request);
+
+        // 送过滤器至V层
+        $this->assign('filter', $this->filter);
     }
 
     /**
