@@ -25,7 +25,8 @@ class ModuleController extends Controller
         $this->currentMenuModel = MenuModel::getCurrentMenuModel();
         parent::__construct($request);
 
-        // 送过滤器至V层
+        // 送配置 过滤器至V层
+        $this->assign('config', $this->config);
         $this->assign('filter', $this->filter);
     }
 
