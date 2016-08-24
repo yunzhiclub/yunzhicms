@@ -5,7 +5,12 @@ namespace app\filter\server;
  */
 class DateServer
 {
-    static public function formart($timestamp, $param = 'Y-m-d') {
-        return date($param, $timestamp);
+    static public function formart($timestamp, $param = array()) {
+        $dataFormat = 'Y-m-d';
+        if (is_array($param) && array_key_exists('dataFormat', $param))
+        {
+            $dataFormat = $param['dataFormat'];
+        }
+        return date($dataFormat, $timestamp);
     }
 }

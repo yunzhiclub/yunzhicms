@@ -10,6 +10,7 @@ class ModelModel extends YunzhiModel
     protected $type = [
         'config'    => 'json',
         'filter'    => 'json',
+        'param'     => 'json',
     ];
 
     public function getCreateTimeAttr($createTime)

@@ -8,6 +8,7 @@ class MenuModel extends ModelModel
     protected $fathermenuModel  = null;
     private $config             = null;         // 配置信息
     private $filter             = null;         // 过滤器信息
+    private $filterModels       = null;         // 过滤器对象
 
     public function Component()
     {
@@ -35,6 +36,25 @@ class MenuModel extends ModelModel
         }
 
         return $this->filter;  
+    }
+
+    /**
+     * 获取过滤器模型
+     * @return lists FilterModels
+     */
+    public function getFilterModels()
+    {
+        if (null === $this->filterModels)
+        {
+            $this->filterModels = array();
+            $filters = $this->getFilter();
+            foreach ($filters as $key => $filter)
+            {
+                $this->filterModels[$key] = FilterModel::getFilterModelByArray($filter);
+            }
+        }
+
+        return $this->filterModels;
     }
 
     /**

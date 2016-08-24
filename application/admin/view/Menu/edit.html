@@ -1,7 +1,6 @@
 {layout name="index" /}
 <div class="row">
     <div class="span16">
-        {:var_dump($MenuModel)}
         <div class="box">
             <div class="box-header">
                 <i class="icon-book"></i>
@@ -67,38 +66,26 @@
                     <div>
                         <label for="">过滤器信息</label>
                         <ul>
-                            {foreach name="MenuModel->getFilter()" key="key" id="_filter"}
+                            {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"}
                                 <li>
-                                <label for="">类型</label>
-                                <input type="text" name="type">
-                                    {:var_dump($key)}
-                                    {:var_dump($_filter)}
-                                    }
+                                <label for="">{$_FilterModel->title}</label>
+                                    <ol>
+                                        <li>
+                                            <label for="">机读字段</label>
+                                            <input type="text" value="{$key}" />
+                                        </li>
+                                        {foreach name="_FilterModel->param" key="key1" id="_param"}
+                                            <li>
+                                                <label>{$_param['title']}</label>
+                                                <input type="text" value="{$_param['value']}" />
+                                            </li>
+                                        {/foreach}
+                                    </ol>
                                 </li>
                             {/foreach}
                         </ul>
                     </div>
-
-                    <div class="control-group">
-                        <label class="control-label" for="inputEmail"></label>
-                        <div class="controls">
-                            <input type="text" id="inputEmail" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="inputPassword">Password</label>
-                        <div class="controls">
-                            <input type="password" id="inputPassword" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <div class="controls">
-                            <label class="checkbox">
-                                <input type="checkbox"> Remember me
-                            </label>
-                            <button type="submit" class="btn">Sign in</button>
-                        </div>
-                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
                 </form>
             </div>
             <div class="box-footer">

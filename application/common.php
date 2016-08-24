@@ -289,13 +289,16 @@ class Common{
 
         if (is_array($config2))
         {
+            // 遍历config2
             foreach ($config2 as $key => &$config)
             {
+                // 当key在config1中存在时，进行合并操作
                 if (array_key_exists($key, $config1))
                 {
+                    // 按类型进行分类合并
                     if (is_array($config))
                     {
-                        $config1[$key] = array_merge($config1[$key], $config);
+                        $config1[$key] = seft::configMerge($config1[$key], $config);
                     } else {
                         $config1[$key]['value'] = $config;
                     }

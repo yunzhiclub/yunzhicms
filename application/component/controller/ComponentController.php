@@ -24,6 +24,7 @@ class ComponentController extends Controller implements ComponentInterface
         $this->config = $this->currentMenuModel->getConfig();
         $this->filter = $this->currentMenuModel->getFilter();
 
+        var_dump($this->filter);
         parent::__construct();
 
         // 配置信息，过滤器信息送入V层
