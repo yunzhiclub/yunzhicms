@@ -2,67 +2,44 @@
 namespace app\component\controller;
 use think\Controller;
 use app\component\ComponentInterface;           // 组件接口
-use app\Model\MenuModel;                        // 菜单
 use app\Model\ComponentModel;                   // 组件
 use think\Request;
-use app\Common;                                 // 通用接口
 
 class ComponentController extends Controller implements ComponentInterface
 {
-    protected $config = [];                         // 默认配置信息
-    protected $filter = [];                         // 默认过滤器信息
-    protected $currentMenuModel;                    // 当前菜单
+    protected $config   = [];       // 配置信息
+    protected $fileter  = [];       // 过滤器信息
+    protected $Model    = null;     // 模型
+
     public function __construct(Request $request = null)
-    {   
-        // 初始化配置信息 
-        $this->_initConfig();           
+    {
+        // 初始化
+        $this->_init();
 
-        // 初始化过滤器信息
-        $this->_initFilter();
-        // 在这进行权限的判断
-        //todo 
-        
-        // 调用父类的构造函数
+        // 获取配置及过滤器信息
+        $this->config = $this->Model->getConfig();
+        $this->filter = $this->Model->getFilter();
+
         parent::__construct($request);
-        // 送过滤器信息到V层
-        $this->assign('filter', $this->filter);
+        $this->assign('filter', $this->filter);         // 过滤器传入V层
     }
 
-    public function getConfig()
+    protected function _init()
     {
-        return $this->config;
-    }
-
-    public function getFilter()
-    {
-        return $this->filter;
-    }
-    
-    /**
-     * 初始化配置信息   
-     */
-    protected function _initConfig()
-    {
-        // 获取用户当前菜单, 并将当前菜单的配置写入config
-        $this->currentMenuModel = MenuModel::getCurrentMenu();
-        Common::toggleCurrentMenuModel($this->currentMenuModel);
-
-        // 获取当前组件配置信息
-        // $this->currentComponent = ComponentModel::getCurrentComponent(get_called_class());
-
-        // 合并配置信息
-        $this->config = Common::configMerge($this->config, $this->currentMenuModel->config);
-        $this->filter = Common::configMerge($this->filter, $this->currentMenuModel->filter);
+        // 获取当前被调用的类的名称
+        $name = $this->_getCalledClassName();
+        $modelName = 'app\component\model\\' . $name . 'Model';
+        $this->Model = new $modelName;
     }
 
     /**
-     * 初始化过滤器
+     * 获取当前被用的组件名
+     * @return string 
      */
-    protected function _initFilter()
+    protected function _getCalledClassName()
     {
-
+        return substr(get_called_class(), strlen('app\component\controller\\'), -strlen('Controller'));
     }
-
 
 
     public function indexAction()

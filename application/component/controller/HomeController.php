@@ -4,15 +4,6 @@ use app\model\ContentFrontpageModel;                // 首页推荐内容
 
 class HomeController extends ComponentController
 {
-    protected $config = [
-        'count'=>['description'=>'显示新闻的条数', 'type'=>'text', 'value'=>3],
-        ];
-
-    protected $filter = [
-        'title' => ['type' => 'String', 'function' => 'substr', 'param'=>['length'=>6, 'etc' => '..']],
-        'href'  => ['type' => 'System', 'function' => 'makeFrontpageContentUrl'],
-    ];
-
     public function indexAction()
     {
         // 定义配置信息

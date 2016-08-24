@@ -19,4 +19,9 @@ class MenuController extends AdminController
         return $this->fetch();
     }
 
+    public function updateAction($id)
+    {
+        var_dump(input('param.'));
+        return 'menu update';
+    }
 }

@@ -5,10 +5,61 @@
         <div class="box">
             <div class="box-header">
                 <i class="icon-book"></i>
-                <h5>{:$MenuModel->title}</h5>
+                <h5>{$MenuModel->title}</h5>
             </div>
-            <div class="box-content">
-                <form class="form-horizontal">
+            <div class="box-content" >
+                <form class="form-horizontal" action="{:url('@admin/menu/' . $MenuModel->id)}" method="post">
+                    <input type="hidden" name="_method" value="PUT" /> 
+                    <div class="control-group">
+                        <label class="control-label" for="_title">标题</label>
+                        <div class="controls">
+                            <input type="text" id="_title" name="title" placeholder="请输入标题" value="{$MenuModel->title}" />
+                        </div>
+                    </div>
+                    <div>
+                        <label>pid</label>
+                        <input type="text" name="pid" value="{$MenuModel->pid}" />
+                    </div>
+
+                    <div>
+                        <label>对应组件名</label>
+                        <input type="text" name="component_name" value="{$MenuModel->component_name}" />
+                    </div>
+                    
+                    <div>
+                        <label for="">url</label>
+                        <input type="text" name="url" value="{$MenuModel->url}" />
+                    </div>
+
+                    <div>
+                        <label for="">是否隐藏</label>
+                        <input type="text" name="is_hidden" value="{$MenuModel->is_hidden}" />
+                    </div>
+
+                    <div>
+                        <label for="">权重</label>
+                        <input type="text" name="weight" value="{$MenuModel->weight}">
+                    </div>
+
+                    <div>
+                        <label for="">描述信息</label>
+                        <input type="text" name="description" value="{$MenuModel->description}" />
+                    </div>
+
+
+                    <div>
+                        <label for="">状态</label>
+                        <input type="text" name="status" value="{$MenuModel->status}" />
+                    </div>
+
+                    <div>
+                        <label for="">配置信息</label>
+                    </div>
+
+                    <div>
+                        <label for="">过滤器信息</label>
+                    </div>
+
                     <div class="control-group">
                         <label class="control-label" for="inputEmail"></label>
                         <div class="controls">
