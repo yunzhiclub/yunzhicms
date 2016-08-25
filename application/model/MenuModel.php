@@ -68,6 +68,12 @@ class MenuModel extends ModelModel
                 $map = ['url' => $url];
             }
             $currentMenuModel = self::get($map);
+
+            // 示找到菜单项，则默认返回首页
+            if (null === $currentMenuModel) {
+                $map = ['is_home' => 1];
+                $currentMenuModel = self::get($map);
+            }
         }
 
         return $currentMenuModel;
