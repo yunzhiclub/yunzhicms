@@ -15,4 +15,15 @@ class YunzhiModel extends Model
 
         parent::__construct($data);
     }
+
+    public function setData($name, $value)
+    {
+        // 标记字段更改
+        if (!isset($this->data[$name]) || ($this->data[$name] != $value && !in_array($name, $this->change))) {
+            $this->change[] = $name;
+        }
+        // 设置数据对象属性
+        $this->data[$name] = $value;
+        return $this;
+    }
 }

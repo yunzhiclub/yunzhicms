@@ -1,5 +1,6 @@
 <?php
 namespace app\admin\controller;
+use app\Common;                         // 通用函数库
 use app\model\MenuModel;                // 菜单
 use app\model\MenuTypeModel;            // 菜单类型
 
@@ -21,7 +22,25 @@ class MenuController extends AdminController
 
     public function updateAction($id)
     {
-        var_dump(input('param.'));
-        return 'menu update';
+        $data = input('param.');
+        $MenuModel = MenuModel::get($id);
+        $MenuModel->setData('title', $data['title']);
+        $MenuModel->setData('pid', $data['pid']);
+        $MenuModel->setData('component_name', $data['component_name']);
+        $MenuModel->setData('url', $data['url']);
+        $MenuModel->setData('is_hidden', $data['is_hidden']);
+        $MenuModel->setData('weight', $data['weight']);
+        $MenuModel->setData('description', $data['description']);
+        $MenuModel->setData('status', $data['status']);
+        $MenuModel->setData('description', $data['description']);
+        $MenuModel->setData('config', json_encode($data['config']));
+
+        $filter = Common::makeFliterArrayFromPostArray($data['filter']);
+        
+        $MenuModel->setData('filter', json_encode($filter));
+        $MenuModel->save();
+
+        $menuType = $MenuModel->getData('menu_type_name');
+        return $this->success('操作成功', url('@admin/menuType/' . $menuType));
     }
 }

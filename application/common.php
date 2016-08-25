@@ -266,5 +266,73 @@ class Common{
         }
         return $config1;
     }
+
+    /**
+     * 通过POST过来的数据信息，生成过滤器JSON配置信息
+     * @param  array $postArray post过来的数据
+     * array (size=3)
+     *    'title' => 
+     *      array (size=5)
+     *        'name' => string 'title' (length=5)
+     *        'type' => string 'String' (length=6)
+     *        'function' => string 'substr' (length=6)
+     *        'length' => string '30' (length=2)
+     *        'ext' => string '...' (length=3)
+     *    'href' => 
+     *      array (size=3)
+     *        'name' => string 'href' (length=4)
+     *        'type' => string 'System' (length=6)
+     *        'function' => string 'makeCurrentMenuReadUrl' (length=22)
+     *    'date' => 
+     *      array (size=4)
+     *        'name' => string 'date' (length=4)
+     *        'type' => string 'Date' (length=4)
+     *        'function' => string 'format' (length=6)
+     *        'dateFormat' => string 'Y-m-d' (length=5)
+     * @return array            适用于存储到数据库的JSON信息
+     * array (size=3)
+     *   'title' => 
+     *     array (size=3)
+     *       'type' => string 'String' (length=6)
+     *       'function' => string 'substr' (length=6)
+     *       'param' => 
+     *         array (size=2)
+     *           'length' => string '30' (length=2)
+     *           'ext' => string '...' (length=3)
+     *   'href' => 
+     *     array (size=3)
+     *       'type' => string 'System' (length=6)
+     *       'function' => string 'makeCurrentMenuReadUrl' (length=22)
+     *       'param' => 
+     *         array (size=0)
+     *           empty
+     *   'date' => 
+     *     array (size=3)
+     *       'type' => string 'Date' (length=4)
+     *       'function' => string 'format' (length=6)
+     *       'param' => 
+     *         array (size=1)
+     *           'dateFormat' => string 'Y-m-d' (length=5)
+     *
+     */
+    static public function makeFliterArrayFromPostArray($postArray)
+    {
+        $filter = array();
+        foreach ($postArray as $value)
+        {
+            $key = $value['name'];
+            $result             = array();
+            $result['type']     = $value['type'];
+            $result['function'] = $value['function'];
+            unset($value['name']);
+            unset($value['type']);
+            unset($value['function']);
+
+            $result['param']    = $value;
+            
+            $filter[$key] = $result;
+        }
+        return $filter;
+    }
 }
 
