@@ -21,4 +21,9 @@ class HomeController extends ComponentController
         unset($ContentFrontpageModel);
         return $this->fetch();
     }
+
+    public function readAction($id)
+    {
+        var_dump($id);
+    }
 }
