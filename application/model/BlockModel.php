@@ -82,4 +82,17 @@ class BlockModel extends ModelModel
             return true;
         }
     }
+
+    public function checkIsShow(MenuModel &$MenuModel)
+    {
+        $map = [];
+        $map['block_id']    = $this->data['id'];
+        $map['menu_id']     = $MenuModel->getData('id');
+        if (null === BlockMenuModel::get($map))
+        {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

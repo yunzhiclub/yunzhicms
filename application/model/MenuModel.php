@@ -8,7 +8,16 @@ class MenuModel extends ModelModel
     protected $fathermenuModel  = null;
     private $config             = null;         // 配置信息
     private $filter             = null;         // 过滤器信息
-    private $filterModels       = null;         // 过滤器对象
+    private $depth              = 0;            // 菜单深度
+
+    public function setDepth($depth) {
+        $this->depth = $depth;
+    }
+
+    public function getDepth()
+    {
+        return $this->depth;
+    }
 
     public function Component()
     {
@@ -27,34 +36,7 @@ class MenuModel extends ModelModel
     }
 
 
-    public function getFilter()
-    {
-        if (null === $this->filter)
-        {
-            // 合并当前菜单对应的组件过滤器及当前菜单的过滤器
-            $this->filter = Common::configMerge($this->Component->filter, json_decode($this->data['filter'], true));
-        }
-        return $this->filter;  
-    }
 
-    /**
-     * 获取过滤器模型
-     * @return lists FilterModels
-     */
-    public function getFilterModels()
-    {
-        if (null === $this->filterModels)
-        {
-            $this->filterModels = array();
-            $filters = $this->getFilter();
-            foreach ($filters as $key => $filter)
-            {
-                $this->filterModels[$key] = FilterModel::getFilterModelByArray($filter);
-            }
-        }
-
-        return $this->filterModels;
-    }
 
     /**
      * 获取用户当前访问的菜单
@@ -184,4 +166,62 @@ class MenuModel extends ModelModel
         } while (null !== $MenuModel);
         return array_reverse($tree);
     }
+
+    /**
+     * 获取指定上级ID的菜单列表 
+     * @param  int $pid 上级ID
+     * @return lists      MenuModels
+     */
+    static public function getMenuModelsByPid($pid)
+    {
+        $map = [];
+        $map['pid'] = $pid;
+        $order = ['menu_type_name' => 'desc', 'weight' => 'desc', 'id' => 'desc'];
+        $MenuModel = new MenuModel;
+        return $MenuModel->where($map)->order($order)->select();
+    }
+
+    /**
+     * 获取伪树状二维数组列表
+     * @param  起始的上级ID  $pid         
+     * @param  lists   &$resultTree 返回数组
+     * @param  integer $Depth       深度
+     * @param  object  $MenuModel   MenuModel
+     * @return lists               MenuModel
+     */
+    static public function getTreeList($pid, $depth = 1, $unDepth = 0, &$MenuModel = null)
+    {
+        $result = array();
+        $map        = [];
+        $map['pid'] = $pid;
+        $order      = ['menu_type_name' => 'desc', 'weight' => 'desc'];
+
+        if (null == $MenuModel)
+        {
+            $MenuModel = new MenuModel;
+        }
+
+        $MenuModels = $MenuModel->where($map)->order($order)->select();
+        foreach ($MenuModels as $key => $_MenuModel)
+        {
+            $_MenuModel->setDepth($unDepth);
+            array_push($result, $_MenuModel);
+            if ($depth > 1) {
+                $result = array_merge($result, self::getTreeList($_MenuModel->getData('id'), $depth - 1, $unDepth + 1,  $MenuModel));
+            }           
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * 获取根菜单列表
+     * @return lists      MenuModels
+     */
+    static public function getRootMenuModels()
+    {
+        return self::getMenuModelsByPid(0);
+    }
+
 }

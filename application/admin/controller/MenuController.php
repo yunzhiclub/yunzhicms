@@ -35,9 +35,12 @@ class MenuController extends AdminController
         $MenuModel->setData('description', $data['description']);
         $MenuModel->setData('config', json_encode($data['config']));
 
-        $filter = Common::makeFliterArrayFromPostArray($data['filter']);
-        
-        $MenuModel->setData('filter', json_encode($filter));
+        if (array_key_exists('filter', $data))
+        {
+            $filter = Common::makeFliterArrayFromPostArray($data['filter']);
+            $MenuModel->setData('filter', json_encode($filter));
+        }
+       
         $MenuModel->save();
 
         $menuType = $MenuModel->getData('menu_type_name');

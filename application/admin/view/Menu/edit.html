@@ -6,10 +6,9 @@
                 <i class="icon-book"></i>
                 <h5>{$MenuModel->title}</h5>
             </div>
-            <div class="box-content" >
-                
+            <div class="box-content">
                 <form class="form-horizontal" action="{:url('@admin/menu/' . $MenuModel->id)}" method="post">
-                    <input type="hidden" name="_method" value="PUT" /> 
+                    <input type="hidden" name="_method" value="PUT" />
                     <div class="control-group">
                         <label class="control-label" for="_title">标题</label>
                         <div class="controls">
@@ -20,33 +19,26 @@
                         <label>pid</label>
                         <input type="text" name="pid" value="{$MenuModel->pid}" />
                     </div>
-
                     <div>
                         <label>对应组件名</label>
                         <input type="text" name="component_name" value="{$MenuModel->component_name}" />
                     </div>
-                    
                     <div>
                         <label for="">url</label>
                         <input type="text" name="url" value="{$MenuModel->url}" />
                     </div>
-
                     <div>
                         <label for="">是否隐藏</label>
                         <input type="text" name="is_hidden" value="{$MenuModel->is_hidden}" />
                     </div>
-
                     <div>
                         <label for="">权重</label>
                         <input type="text" name="weight" value="{$MenuModel->weight}">
                     </div>
-
                     <div>
                         <label for="">描述信息</label>
                         <input type="text" name="description" value="{$MenuModel->description}" />
                     </div>
-
-
                     <div>
                         <label for="">状态</label>
                         <input type="text" name="status" value="{$MenuModel->status}" />
@@ -55,35 +47,18 @@
                         <label for="">配置信息</label>
                         <ol>
                             {foreach name="MenuModel->getConfig()" key="key" id="_config"}
-                                <li>
-                                    <label>{$_config['title']}</label>
-                                    <input type="text" name="config[{$key}]" value="{$_config['value']}">
-                                </li>
+                            <li>
+                                <label>{$_config['title']}</label>
+                                <input type="text" name="config[{$key}]" value="{$_config['value']}">
+                            </li>
                             {/foreach}
                         </ol>
                     </div>
-
                     <div>
                         <label for="">过滤器信息</label>
                         <ol>
-                            {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"}
-                                <li>
-                                <label for="">{$_FilterModel->title}</label>
-                                    <ul>
-                                        <li>
-                                            <label for="">机读字段</label>
-                                            <input name="filter[{$key}][name]" type="text" value="{$key}" />
-                                            <input type="hidden" name="filter[{$key}][type]" type="text" value="{$_FilterModel->getData('type')}" />
-                                            <input type="hidden" name="filter[{$key}][function]" type="text" value="{$_FilterModel->getData('function')}" />
-                                        </li>
-                                        {foreach name="_FilterModel->param" key="key1" id="_param"}
-                                            <li>
-                                                <label>{$_param['title']}</label>
-                                                <input name="filter[{$key}][{$key1}]" type="text" value="{$_param['value']}" />
-                                            </li>
-                                        {/foreach}
-                                    </ul>
-                                </li>
+                            {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"} 
+                                {include file="editFilter" /} 
                             {/foreach}
                         </ol>
                     </div>

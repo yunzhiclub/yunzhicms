@@ -1,0 +1,18 @@
+<!--编辑过滤器信息-->
+<li>
+    <label for="">{$_FilterModel->title}</label>
+    <ul>
+        <li>
+            <label for="">机读字段</label>
+            <input name="filter[{$key}][name]" type="text" value="{$key}" />
+            <input type="hidden" name="filter[{$key}][type]" type="text" value="{$_FilterModel->getData('type')}" />
+            <input type="hidden" name="filter[{$key}][function]" type="text" value="{$_FilterModel->getData('function')}" />
+        </li>
+        {foreach name="_FilterModel->param" key="key1" id="_param"}
+        <li>
+            <label>{$_param['title']}</label>
+            <input name="filter[{$key}][{$key1}]" type="text" value="{$_param['value']}" />
+        </li>
+        {/foreach}
+    </ul>
+</li>
