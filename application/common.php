@@ -29,7 +29,7 @@ class Common{
     static public function registerRouter()
     {
         // 查询菜单表
-        $menus = self::reMakeLinkPath(Db::name('menu')->where('is_hidden', 0)->select());
+        $menus = self::reMakeLinkPath(Db::name('menu')->select());
 
         // 查询组件表
         $components = Db::name('component')->select();

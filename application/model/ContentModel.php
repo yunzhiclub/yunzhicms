@@ -37,11 +37,11 @@ class ContentModel extends ModelModel
             // 初始化字段配置模型
             $FieldConfigModel = new FieldConfigModel();
             // 设置实体 用以查找扩展字段的值
-            $FieldConfigModel->setEntity($CategoryModel);
+            $FieldConfigModel->setObject($this);
             // 设置实体类别
-            $FieldConfigModel->setEntityType($this->name);
+            $FieldConfigModel->setType($this->name);
             // 设置实体名
-            $FieldConfigModel->setBundle($CategoryModel->getData('name'));
+            $FieldConfigModel->setValue($CategoryModel->getData('name'));
 
             return $FieldConfigModel;
         } else {

@@ -94,15 +94,6 @@ class MenuModel extends ModelModel
     }
 
     /**
-     * 子菜单列表
-     * @return [type] [description]
-     */
-    public function sonMenus()
-    {
-        return $this->hasMany('MenuModel', 'pid');
-    }
-
-    /**
      * 父菜单
      * @return MenuModel 
      */
@@ -153,7 +144,7 @@ class MenuModel extends ModelModel
      */
     public function sonMenuModels()
     {
-        $map = ['pid' => $this->id, 'status'=>0];
+        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0'];
         $menuModels = $this->where($map)->select();
         return $menuModels;
     }

@@ -1,7 +1,9 @@
 <?php
 namespace app\filter\server;
-use app\model\MenuModel;
+
 use app\Common;
+use app\model\MenuModel;
+use app\model\ContentModel;         // 文章
 
 class SystemServer
 {
@@ -13,7 +15,7 @@ class SystemServer
      */
     static public function makeFrontpageContentUrl($id, $param = [])
     {
-        return url('component/Content/read?id=' . $id);
+        return url('@hotnews/' . $id);
     }
 
     /**

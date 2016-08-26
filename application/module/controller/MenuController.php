@@ -10,6 +10,7 @@ class MenuController extends ModuleController
 	{
         $map = ['menu_type_name' => $this->config['menu_type_name']['value']];
         $map['pid'] = 0;
+        $map['is_hidden'] = 0;
         $menuModels = MenuModel::where($map)->select();
         $this->assign('menuModels', $menuModels);
 		return $this->fetch('module@Menu/fetchHtml');

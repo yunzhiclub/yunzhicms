@@ -7,16 +7,16 @@ class FieldDataBodyModel extends FieldModel
 {
     /**
      * 获取字段集
-     * @param  string $entityType 实体类型
-     * @param  int $entityId   实体ID
+     * @param  string $type 实体类型
+     * @param  int $key   实体 KEY
      * @param  1|0 $isOne      是否为1：1
      * @return list|lists             
      */
-    public function getResult($entityType, $entityId, $isOne)
+    public function getResult($fieldConfigId, $key, $isOne)
     {
         $map['is_deleted'] = '0';
-        $map['entity_type'] = $entityType;
-        $map['entity_id'] = $entityId;
+        $map['field_config_id'] = $fieldConfigId;
+        $map['key'] = $key;
         if ($isOne)
         {
             return $this->where($map)->find();
