@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 08/24/2016 22:29:06 PM
+ Date: 08/26/2016 09:38:01 AM
 */
 
 SET NAMES utf8;
@@ -31,14 +31,18 @@ CREATE TABLE `yunzhi_block` (
   `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
   `config` varchar(255) NOT NULL DEFAULT '[]' COMMENT '配置信息json',
   `filter` varchar(255) NOT NULL DEFAULT '[]' COMMENT '过滤器信息json',
-  PRIMARY KEY (`id`)
+  `update_time` smallint(6) unsigned NOT NULL,
+  `create_time` smallint(6) unsigned NOT NULL,
+  `delete_time` smallint(6) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `delete_time` (`delete_time`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `yunzhi_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', 'menu', '主菜单', '显示在页面上方', '0', '0', '[]', '[]'), ('2', 'Slider', 'slider', '幻灯片', '', '0', '0', '[]', '[]'), ('3', 'ContentVideo', 'main', '文字视频介绍', '', '0', '0', '[]', '[]'), ('4', 'DataCounter', 'main', '数据统计', '', '0', '0', '[]', '[]'), ('5', 'CaseShow', 'main', '案例展示', '', '0', '0', '[]', '[]'), ('6', 'ShowCaseSlider', 'main', '动态案例展示', '', '0', '0', '[]', '[]'), ('7', 'BreadCrumb', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]');
+INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0'), ('2', 'Slider', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0'), ('3', 'ContentVideo', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0'), ('4', 'DataCounter', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0'), ('5', 'CaseShow', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('6', 'ShowCaseSlider', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('7', 'BreadCrumb', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -49,14 +53,16 @@ CREATE TABLE `yunzhi_block_menu` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `menu_id` int(11) DEFAULT '0' COMMENT 'fk menu',
   `block_id` int(11) DEFAULT '0' COMMENT 'fk block',
+  `create_time` smallint(6) unsigned NOT NULL,
+  `update_time` smallint(6) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Records of `yunzhi_block_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block_menu` VALUES ('1', '4', '1'), ('6', '1', '1'), ('7', '1', '2'), ('8', '1', '3'), ('11', '4', '7'), ('12', '3', '1'), ('13', '3', '7');
+INSERT INTO `yunzhi_block_menu` VALUES ('7', '1', '2', '0', '0'), ('8', '1', '3', '0', '0'), ('32', '1', '1', '65535', '65535'), ('33', '2', '1', '65535', '65535'), ('34', '3', '1', '65535', '65535'), ('35', '4', '1', '65535', '65535'), ('36', '5', '1', '65535', '65535'), ('37', '2', '7', '65535', '65535'), ('38', '3', '7', '65535', '65535'), ('39', '4', '7', '65535', '65535'), ('40', '5', '7', '65535', '65535');
 COMMIT;
 
 -- ----------------------------
@@ -133,7 +139,7 @@ CREATE TABLE `yunzhi_content` (
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472048453', '0', '0', '0', '56', '[]', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1471866129', '0', '0', '0', '29', '[]', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '0', '0', '0', '0', '0', '[]', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472173871', '0', '0', '0', '97', '[]', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472173655', '0', '0', '0', '52', '[]', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472113687', '0', '0', '0', '18', '[]', '0');
 COMMIT;
 
 -- ----------------------------
@@ -180,54 +186,18 @@ DROP TABLE IF EXISTS `yunzhi_field_config`;
 CREATE TABLE `yunzhi_field_config` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk filed',
-  `entity_type` varchar(40) NOT NULL DEFAULT '' COMMENT '绑定的实体类型',
-  `bundle` varchar(40) NOT NULL DEFAULT '' COMMENT '绑定实体类型的具体值',
+  `type` varchar(40) NOT NULL DEFAULT '' COMMENT '绑定的实体类型',
+  `value` varchar(40) NOT NULL DEFAULT '' COMMENT '绑定实体类型的具体值',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用 1禁用',
   `is_one` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否唯一. 1: 1对1 ；2：1对多',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `yunzhi_field_config`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_config` VALUES ('1', 'body', 'Content', 'news', '0', '1'), ('2', 'field_image', 'Content', 'news', '0', '1');
-COMMIT;
-
--- ----------------------------
---  Table structure for `yunzhi_field_config_copy`
--- ----------------------------
-DROP TABLE IF EXISTS `yunzhi_field_config_copy`;
-CREATE TABLE `yunzhi_field_config_copy` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The primary identifier for a field',
-  `field_name` varchar(32) NOT NULL COMMENT 'The name of this field. Non-deleted field names are unique, but multiple deleted fields can have the same name.',
-  `type` varchar(128) NOT NULL COMMENT 'The type of this field.',
-  `module` varchar(128) NOT NULL DEFAULT '' COMMENT 'The module that implements the field type.',
-  `active` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'Boolean indicating whether the module that implements the field type is enabled.',
-  `storage_type` varchar(128) NOT NULL COMMENT 'The storage backend for the field.',
-  `storage_module` varchar(128) NOT NULL DEFAULT '' COMMENT 'The module that implements the storage backend.',
-  `storage_active` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'Boolean indicating whether the module that implements the storage backend is enabled.',
-  `locked` tinyint(4) NOT NULL DEFAULT '0' COMMENT '@TODO',
-  `data` longblob NOT NULL COMMENT 'Serialized data containing the field properties that do not warrant a dedicated column.',
-  `cardinality` tinyint(4) NOT NULL DEFAULT '0',
-  `translatable` tinyint(4) NOT NULL DEFAULT '0',
-  `deleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `field_name` (`field_name`),
-  KEY `active` (`active`),
-  KEY `storage_active` (`storage_active`),
-  KEY `deleted` (`deleted`),
-  KEY `module` (`module`),
-  KEY `storage_module` (`storage_module`),
-  KEY `type` (`type`),
-  KEY `storage_type` (`storage_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `yunzhi_field_config_copy`
--- ----------------------------
-BEGIN;
-INSERT INTO `yunzhi_field_config_copy` VALUES ('1', 'comment_body', 'text_long', 'text', '1', 'field_sql_storage', 'field_sql_storage', '1', '0', 0x613a363a7b733a31323a22656e746974795f7479706573223b613a313a7b693a303b733a373a22636f6d6d656e74223b7d733a31323a227472616e736c617461626c65223b623a303b733a383a2273657474696e6773223b613a303a7b7d733a373a2273746f72616765223b613a343a7b733a343a2274797065223b733a31373a226669656c645f73716c5f73746f72616765223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a31373a226669656c645f73716c5f73746f72616765223b733a363a22616374697665223b693a313b7d733a31323a22666f726569676e206b657973223b613a313a7b733a363a22666f726d6174223b613a323a7b733a353a227461626c65223b733a31333a2266696c7465725f666f726d6174223b733a373a22636f6c756d6e73223b613a313a7b733a363a22666f726d6174223b733a363a22666f726d6174223b7d7d7d733a373a22696e6465786573223b613a313a7b733a363a22666f726d6174223b613a313a7b693a303b733a363a22666f726d6174223b7d7d7d, '1', '0', '0'), ('2', 'body', 'text_with_summary', 'text', '1', 'field_sql_storage', 'field_sql_storage', '1', '0', 0x613a363a7b733a31323a22656e746974795f7479706573223b613a313a7b693a303b733a343a226e6f6465223b7d733a31323a227472616e736c617461626c65223b623a303b733a383a2273657474696e6773223b613a303a7b7d733a373a2273746f72616765223b613a343a7b733a343a2274797065223b733a31373a226669656c645f73716c5f73746f72616765223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a31373a226669656c645f73716c5f73746f72616765223b733a363a22616374697665223b693a313b7d733a31323a22666f726569676e206b657973223b613a313a7b733a363a22666f726d6174223b613a323a7b733a353a227461626c65223b733a31333a2266696c7465725f666f726d6174223b733a373a22636f6c756d6e73223b613a313a7b733a363a22666f726d6174223b733a363a22666f726d6174223b7d7d7d733a373a22696e6465786573223b613a313a7b733a363a22666f726d6174223b613a313a7b693a303b733a363a22666f726d6174223b7d7d7d, '1', '0', '0'), ('3', 'field_tags', 'taxonomy_term_reference', 'taxonomy', '1', 'field_sql_storage', 'field_sql_storage', '1', '0', 0x613a363a7b733a383a2273657474696e6773223b613a313a7b733a31343a22616c6c6f7765645f76616c756573223b613a313a7b693a303b613a323a7b733a31303a22766f636162756c617279223b733a343a2274616773223b733a363a22706172656e74223b693a303b7d7d7d733a31323a22656e746974795f7479706573223b613a303a7b7d733a31323a227472616e736c617461626c65223b623a303b733a373a2273746f72616765223b613a343a7b733a343a2274797065223b733a31373a226669656c645f73716c5f73746f72616765223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a31373a226669656c645f73716c5f73746f72616765223b733a363a22616374697665223b693a313b7d733a31323a22666f726569676e206b657973223b613a313a7b733a333a22746964223b613a323a7b733a353a227461626c65223b733a31383a227461786f6e6f6d795f7465726d5f64617461223b733a373a22636f6c756d6e73223b613a313a7b733a333a22746964223b733a333a22746964223b7d7d7d733a373a22696e6465786573223b613a313a7b733a333a22746964223b613a313a7b693a303b733a333a22746964223b7d7d7d, '-1', '0', '0'), ('4', 'field_image', 'image', 'image', '1', 'field_sql_storage', 'field_sql_storage', '1', '0', 0x613a363a7b733a373a22696e6465786573223b613a313a7b733a333a22666964223b613a313a7b693a303b733a333a22666964223b7d7d733a383a2273657474696e6773223b613a323a7b733a31303a227572695f736368656d65223b733a363a227075626c6963223b733a31333a2264656661756c745f696d616765223b623a303b7d733a373a2273746f72616765223b613a343a7b733a343a2274797065223b733a31373a226669656c645f73716c5f73746f72616765223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a31373a226669656c645f73716c5f73746f72616765223b733a363a22616374697665223b693a313b7d733a31323a22656e746974795f7479706573223b613a303a7b7d733a31323a227472616e736c617461626c65223b623a303b733a31323a22666f726569676e206b657973223b613a313a7b733a333a22666964223b613a323a7b733a353a227461626c65223b733a31323a2266696c655f6d616e61676564223b733a373a22636f6c756d6e73223b613a313a7b733a333a22666964223b733a333a22666964223b7d7d7d7d, '1', '0', '0');
+INSERT INTO `yunzhi_field_config` VALUES ('1', 'body', 'Content', 'news', '0', '1'), ('2', 'field_image', 'Content', 'news', '0', '1'), ('3', 'body', 'Content', 'products', '0', '1');
 COMMIT;
 
 -- ----------------------------
@@ -259,19 +229,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_field_data_body`;
 CREATE TABLE `yunzhi_field_data_body` (
-  `entity_type` varchar(128) NOT NULL DEFAULT '' COMMENT 'The entity type this data is attached to',
-  `bundle` varchar(128) NOT NULL DEFAULT '' COMMENT 'The field instance bundle to which this row belongs, used when deleting a field instance',
-  `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'A boolean indicating whether this data item has been deleted',
-  `entity_id` int(11) unsigned NOT NULL COMMENT 'The entity id this data is attached to',
-  `weight` int(10) unsigned NOT NULL COMMENT 'The sequence number for this data item, used for multi-value fields',
+  `field_config_id` int(11) unsigned NOT NULL COMMENT 'fk field_config',
+  `key` int(11) unsigned NOT NULL COMMENT '对应的 关健字',
+  `weight` int(10) unsigned NOT NULL COMMENT '权重',
   `value` longtext,
   `summary` longtext,
   `format` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`entity_type`,`entity_id`,`is_deleted`,`weight`),
-  KEY `entity_type` (`entity_type`),
-  KEY `bundle` (`bundle`),
-  KEY `deleted` (`is_deleted`),
-  KEY `entity_id` (`entity_id`),
+  `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`key`,`weight`,`field_config_id`),
+  KEY `entity_id` (`key`),
   KEY `body_format` (`format`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Data storage for field 2 (body)';
 
@@ -279,7 +245,7 @@ CREATE TABLE `yunzhi_field_data_body` (
 --  Records of `yunzhi_field_data_body`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_data_body` VALUES ('Content', 'news', '0', '1', '0', '这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题', '这里是关于我们的摘要', 'filtered_html'), ('Content', 'news', '0', '1', '1', '新闻通知1新闻通知1新闻通知1新闻通知1新闻通知1', '', 'filtered_html'), ('node', 'news', '0', '3', '0', '新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2', '', 'filtered_html');
+INSERT INTO `yunzhi_field_data_body` VALUES ('1', '1', '0', '这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题', '这里是关于我们的摘要', 'filtered_html', '0'), ('1', '2', '1', '新闻通知1新闻通知1新闻通知1新闻通知1新闻通知1', '', 'filtered_html', '0'), ('2', '3', '0', '新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2', '', 'filtered_html', '0');
 COMMIT;
 
 -- ----------------------------
@@ -399,18 +365,20 @@ CREATE TABLE `yunzhi_menu` (
   `filter` varchar(255) NOT NULL DEFAULT '[]' COMMENT '过滤器参数',
   `is_home` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '是否首页',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
+  `update_time` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `create_time` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `path_menu` (`url`(128),`title`),
   KEY `menu_plid_expand_child` (`title`,`pid`),
   KEY `menu_parents` (`title`),
   KEY `router_path` (`component_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='Contains the individual links within a menu.';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Contains the individual links within a menu.';
 
 -- ----------------------------
 --  Records of `yunzhi_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":3}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}', '1', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '', '[]', '[]', '0', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '[]', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}}}', '0', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":2}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0');
+INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":3}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}', '1', '0', '0', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"categoryName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '[]', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}}, \"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"}}', '0', '0', '0', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":2}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '0', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '[]', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}}, \"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"}}', '0', '0', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -448,8 +416,39 @@ CREATE TABLE `yunzhi_module` (
 --  Records of `yunzhi_module`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_module` VALUES ('Menu', '菜单', '显示菜单', '{\"menu_type_name\":{\"value\":\"main\",\"title\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"description\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"type\":\"text\"},\"id\":{\"value\":\"mu-menu\",\"title\":\"\"}}', '[]'), ('BreadCrumb', '面包屑', '', '[]', '[]'), ('Slider', '幻灯片', '', '[]', '[]'), ('ContentVideo', '文字视频介绍', '通常用于首页的关于我们', '[]', '[]');
+INSERT INTO `yunzhi_module` VALUES ('Menu', '菜单', '显示菜单', '{\"menu_type_name\":{\"value\":\"main\",\"title\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"description\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"type\":\"text\"},\"id\":{\"value\":\"mu-menu\",\"title\":\"\"}}', '[]'), ('BreadCrumb', '面包屑', '', '[]', '[]'), ('Slider', '幻灯片', '', '[]', '[]'), ('ContentVideo', '文字视频介绍', '通常用于首页的关于我们', '[]', '[]'), ('DataCounter', '数据统计', '数据统计', '[]', '[]'), ('CaseShow', '案例展示', '', '[]', '[]'), ('ShowCaseSlider', '动态案例展示', '', '[]', '[]');
 COMMIT;
+
+-- ----------------------------
+--  Table structure for `yunzhi_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_user`;
+CREATE TABLE `yunzhi_user` (
+  `email` varchar(40) NOT NULL DEFAULT '',
+  `qq_open_id` varchar(40) NOT NULL DEFAULT '' COMMENT 'qq 认证openid',
+  `password` varchar(40) NOT NULL DEFAULT '',
+  `name` varchar(40) NOT NULL DEFAULT '' COMMENT '真实姓名',
+  `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0正常 1冻结',
+  `user_group_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk user_group',
+  `create_time` smallint(6) unsigned NOT NULL,
+  `update_time` smallint(6) unsigned NOT NULL,
+  `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '1已删除',
+  PRIMARY KEY (`email`,`qq_open_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `yunzhi_user_group`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_user_group`;
+CREATE TABLE `yunzhi_user_group` (
+  `name` varchar(40) NOT NULL,
+  `title` varchar(40) NOT NULL DEFAULT '' COMMENT '名称',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `create_time` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `update_time` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  View structure for `english_card_student_card_batch_view`
