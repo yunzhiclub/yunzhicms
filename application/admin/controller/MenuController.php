@@ -3,6 +3,7 @@ namespace app\admin\controller;
 use app\Common;                         // 通用函数库
 use app\model\MenuModel;                // 菜单
 use app\model\MenuTypeModel;            // 菜单类型
+use app\model\UserGroupModel;           // 用户组
 
 class MenuController extends AdminController
 {
@@ -17,6 +18,11 @@ class MenuController extends AdminController
     {
         $MenuModel = MenuModel::get($id);
         $this->assign('MenuModel', $MenuModel);
+
+        // 将用户组信息传入
+        $userGroupModels = UserGroupModel::all();
+        $this->assign('userGroupModels', $userGroupModels);
+
         return $this->fetch();
     }
 

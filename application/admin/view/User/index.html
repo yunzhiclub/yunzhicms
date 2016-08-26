@@ -1,0 +1,23 @@
+{layout name="index" /}
+
+<table>
+    <tr>
+        <th>序号</th>
+        <th>email</th>
+        <th>用户组</th>
+        <th>状态</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    {volist name="userModels" key="key" id="_UserModel"}
+    {/volist}
+    <tr>
+        <td>{$key}</td>
+        <td>{$_UserModel->getData('email')}</td>
+        <td>{$_UserModel->getUserGroupModel()->getData('title')}</td>
+        <td>{$_UserModel->getData('status')}</td>
+        <td>{$_UserModel->getData('create_time')}</td>
+        <td><a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/edit')}">编辑</a></td>
+    </tr>
+    {$userModels->render()}
+</table>

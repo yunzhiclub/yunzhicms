@@ -24,6 +24,8 @@ return [
         'admin/system'                  => 'System',
         'admin/component'               => 'Component',
         'admin/block'                   => 'Block',
+        'admin/user'                    => 'User',
+        'admin/usergroup'               => 'UserGroup',
         'admin/Template'                => 'Template',
     ],
 ];
