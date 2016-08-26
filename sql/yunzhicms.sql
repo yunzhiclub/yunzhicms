@@ -11,11 +11,31 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 08/26/2016 09:38:01 AM
+ Date: 08/26/2016 11:24:24 AM
 */
 
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+--  Table structure for `yunzhi_access`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_access`;
+CREATE TABLE `yunzhi_access` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `source_type` varchar(40) NOT NULL COMMENT '设置源的类型',
+  `source_value` varchar(40) NOT NULL COMMENT '设置源的值',
+  `target_type` varchar(40) NOT NULL COMMENT '目标源的类型',
+  `target_value` varchar(40) NOT NULL COMMENT '目标源的值',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `yunzhi_access`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_access` VALUES ('1', 'Menu', '2', 'UserGroup', '15');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `yunzhi_block`
@@ -424,6 +444,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_user`;
 CREATE TABLE `yunzhi_user` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(40) NOT NULL DEFAULT '',
   `qq_open_id` varchar(40) NOT NULL DEFAULT '' COMMENT 'qq 认证openid',
   `password` varchar(40) NOT NULL DEFAULT '',
@@ -433,8 +454,16 @@ CREATE TABLE `yunzhi_user` (
   `create_time` smallint(6) unsigned NOT NULL,
   `update_time` smallint(6) unsigned NOT NULL,
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '1已删除',
-  PRIMARY KEY (`email`,`qq_open_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `yunzhi_user`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_user` VALUES ('1', 'panjie@yunzhiclub.com', '', '', '潘杰', '1', 'admin', '0', '0', '0');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `yunzhi_user_group`
@@ -449,6 +478,13 @@ CREATE TABLE `yunzhi_user_group` (
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `yunzhi_user_group`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_user_group` VALUES ('admin', '超级管理员', '拥有开发权限', '0', '0', '0'), ('editor', '编辑', '对站点进行管理', '0', '0', '0'), ('register', '注册用户', '注册用户，拥有对权限新闻的查看权限', '0', '0', '0');
+COMMIT;
 
 -- ----------------------------
 --  View structure for `english_card_student_card_batch_view`
