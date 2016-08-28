@@ -57,13 +57,14 @@ class MenuModel extends YunzhiModel
         return $this->hasMany('MenuModel', 'pid');
     }
 
-    public function fatherMenu()
+    public function fatherMenuModel()
     {
         return $this->hasOne('MenuModel', 'pid');
     }
 
     public function isActive()
     {
+        
         $currentMenuModel = Common::toggleCurrentMenuModel();
         if ($this->id === $currentMenuModel->id)
         {
