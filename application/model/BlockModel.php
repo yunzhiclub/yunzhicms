@@ -15,7 +15,7 @@ class BlockModel extends ModelModel
      */
     public function ModuleModel()
     {
-        return $this->hasOne('ModuleModel', 'name', 'module_name');
+        return $this->hasOne('BlockTypeModel', 'name', 'block_type_name');
     }
 
     public function getConfig()
@@ -74,8 +74,8 @@ class BlockModel extends ModelModel
 
         // 判断当前菜单是否拥有此block的显示权限
         $map = ['block_id'=>$this->id, 'menu_id' => $currentMenuModel->id];
-        $BlockMenuModel = BlockMenuModel::get($map);
-        if (null === $BlockMenuModel)
+        $AccessBlockMenuModel = AccessBlockMenuModel::get($map);
+        if (null === $AccessBlockMenuModel)
         {
             return false;
         } else {
@@ -88,7 +88,7 @@ class BlockModel extends ModelModel
         $map = [];
         $map['block_id']    = $this->data['id'];
         $map['menu_id']     = $MenuModel->getData('id');
-        if (null === BlockMenuModel::get($map))
+        if (null === AccessBlockMenuModel::get($map))
         {
             return false;
         } else {

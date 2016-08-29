@@ -1,5 +1,5 @@
 <?php
-namespace app\module\model;
+namespace app\block\model;
 
 class MenuModel extends \app\model\MenuModel
 {

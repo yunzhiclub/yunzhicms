@@ -1,17 +1,17 @@
 <?php
-namespace app\module\controller;
+namespace app\block\controller;
 use app\Common;
 
 /**
  * BreakCrumb
  */
-class BreadCrumbController extends ModuleController
+class BreadCrumbController extends BlockController
 {
     public function fetchHtml()
     {
         $MenuModels = $this->currentMenuModel->getFatherMenuModleTree();
 
         $this->assign('MenuModels', $MenuModels);
-        return $this->fetch('module@BreadCrumb/fetchHtml');
+        return $this->fetch('block@BreadCrumb/fetchHtml');
     }
 }

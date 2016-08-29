@@ -1,11 +1,11 @@
 <?php
-namespace app\module\controller;
-use app\module\model\MenuModel;            // 菜单
+namespace app\block\controller;
+use app\block\model\MenuModel;            // 菜单
 
 /**
  * 菜单
  */
-class MenuController extends ModuleController
+class MenuController extends BlockController
 {
 	public function fetchHtml()
 	{
@@ -15,6 +15,6 @@ class MenuController extends ModuleController
 
         $menuModels = MenuModel::getAvailableSonMenuModelsByPidMenuTypeName($pid, $menuTypeName);
         $this->assign('menuModels', $menuModels);
-		return $this->fetch('module@Menu/fetchHtml');
+		return $this->fetch('block@Menu/fetchHtml');
 	}
 }

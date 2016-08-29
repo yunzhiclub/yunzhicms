@@ -1,5 +1,5 @@
 <?php
-namespace app\module\controller;
+namespace app\block\controller;
 
 use think\Controller;
 
@@ -8,7 +8,7 @@ use app\model\BlockModel;               // 区块 模型
 use app\model\BlockMenuModel;           // 区块-菜单 模型
 use app\model\MenuModel;                // 菜单模型
 
-class ModuleController extends Controller
+class BlockController extends Controller
 {
     protected $config = null;
     protected $filter = null;
@@ -43,10 +43,11 @@ class ModuleController extends Controller
         $blockModels = $BlockModel->getActiveListsByPositionName($name);
 
         $resultHtml = '';
+        
         // 依次进行渲染，拼接
         foreach ($blockModels as $blockModel)
         {
-            $className = 'app\module\controller\\' . $blockModel->module_name . 'Controller';
+            $className = 'app\block\controller\\' . $blockModel->block_type_name . 'Controller';
             try 
             {
                 // 实例化类 并调用

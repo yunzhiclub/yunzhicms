@@ -5,8 +5,6 @@ use app\Common;
 
 class ModelModel extends YunzhiModel
 {
-    // 自动时间戳
-    protected $autoWriteTimestamp = true;
     protected $filterModels = null;             // 过滤器模型信息
     protected $type = [
         'config'    => 'json',
