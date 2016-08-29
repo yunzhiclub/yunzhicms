@@ -10,6 +10,9 @@ class MenuModel extends ModelModel
     private $filter             = null;         // 过滤器信息
     private $depth              = 0;            // 菜单深度
 
+    private $availableSonMenuModels = null;     // 可用的子菜单列表
+    private $isHaveAvailableSonMenus = null;    // 是否存在可用的子菜单列表
+
     public function setDepth($depth) {
         $this->depth = $depth;
     }
@@ -138,6 +141,57 @@ class MenuModel extends ModelModel
     }
 
     /**
+     * 当前菜单是否存在可用的子菜单
+     * 主要考虑两方面因素：
+     * 1. 子菜单是否可见
+     * 2. 当前访问用户是否拥有当前菜单的读权限
+     * @return boolean [description]
+     */
+    public function isHaveAvailableSonMenus()
+    {
+        if (null === $this->isHaveAvailableSonMenus)
+        {
+            $availableSonMenuModels = $this->getAvailableSonMenuModels();
+            if (empty($availableSonMenuModels))
+            {
+                $this->isHaveAvailableSonMenus = false;
+            } else {
+                $this->isHaveAvailableSonMenus = true;
+            }
+        }
+
+        return $this->isHaveAvailableSonMenus;
+    }
+
+    /**
+     * 获取可用的子菜单列表：
+     * 主要考虑两方面因素：
+     * 1. 子菜单是否可见
+     * 2. 当前访问用户是否拥有当前菜单的 读 权限
+     * @return lists
+     */
+    public function getAvailableSonMenuModels()
+    {
+        if (null === $this->availableSonMenuModels)
+        {
+            // 找到当前用户组(每个用户只能有一个用户组)
+            $currentFrontUserModel = UserModel::getCurrentFrontUserModel();
+            $currentFrontUserGroupModel = $currentFrontUserModel->getUserGroupModel();
+
+            $map = ['pid' => $this->getData('id'), 'status' => 0, 'is_hidden' => '0'];
+            $this->availableSonMenuModels = $this->where($map)->select();
+            foreach ($this->availableSonMenuModels as $key => $MenuModel) {
+                if (!$currentFrontUserGroupModel->isIndexAllowedByMenuModel($MenuModel))
+                {
+                    unset($this->availableSonMenuModels[$key]);
+                }
+            }
+        }
+
+        return $this->availableSonMenuModels;
+    }
+
+    /**
      * 当前菜单的子菜单
      * 以sonMenus的区别在于 此函数对菜单的状态进行了判断
      * @return lists 
@@ -219,6 +273,25 @@ class MenuModel extends ModelModel
     static public function getRootMenuModels()
     {
         return self::getMenuModelsByPid(0);
+    }
+
+
+    static public function getAvailableSonMenuModelsByPidMenuTypeName($pid, $menuTypeName)
+    {
+        // 找到当前用户组(每个用户只能有一个用户组)
+        $currentFrontUserModel = UserModel::getCurrentFrontUserModel();
+        $currentFrontUserGroupModel = $currentFrontUserModel->getUserGroupModel();
+
+        $map = ['pid' => $pid, 'status' => 0, 'is_hidden' => '0', 'menu_type_name' => $menuTypeName];
+        $MenuModel = new MenuModel;
+        $availableSonMenuModels = $MenuModel->order('weight desc')->where($map)->select();
+        foreach ($availableSonMenuModels as $key => $MenuModel) {
+            if (!$currentFrontUserGroupModel->isIndexAllowedByMenuModel($MenuModel))
+            {
+                unset($availableSonMenuModels[$key]);
+            }
+        }
+        return $availableSonMenuModels;
     }
 
 }

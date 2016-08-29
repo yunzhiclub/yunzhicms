@@ -18,11 +18,11 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-                    {volist name="menuModels" id="menuModel"} {eq name="menuModel->isHaveSon()" value="1"}
+                    {volist name="menuModels" id="menuModel"} {eq name="menuModel->isHaveAvailableSonMenus()" value="1"}
                     <li class="dropdown {eq name="menuModel->isActive()" value="1"}active"{/eq}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{$menuModel->title} <span class="fa fa-angle-down"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            {volist name="menuModel->sonMenuModels()" id="sonMenuModel"}
+                            {volist name="menuModel->getAvailableSonMenuModels()" id="sonMenuModel"}
                             <li><a href="{:url('@' . $sonMenuModel->url)}" class="{eq name="sonMenuModel->isActive()" value="1"}active{/eq}">{$sonMenuModel->title} </a></li>
                             {/volist}
                         </ul>

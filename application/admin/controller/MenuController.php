@@ -4,6 +4,7 @@ use app\Common;                         // 通用函数库
 use app\model\MenuModel;                // 菜单
 use app\model\MenuTypeModel;            // 菜单类型
 use app\model\UserGroupModel;           // 用户组
+use app\model\AccessUserGroupMenuModel; // 用户组 菜单 权限
 
 class MenuController extends AdminController
 {
@@ -39,8 +40,11 @@ class MenuController extends AdminController
         $MenuModel->setData('description', $data['description']);
         $MenuModel->setData('status', $data['status']);
         $MenuModel->setData('description', $data['description']);
+
+        // 配置信息
         $MenuModel->setData('config', json_encode($data['config']));
 
+        // 过滤器信息
         if (array_key_exists('filter', $data))
         {
             $filter = Common::makeFliterArrayFromPostArray($data['filter']);
@@ -48,6 +52,9 @@ class MenuController extends AdminController
         }
        
         $MenuModel->save();
+
+        // 更新 菜单 用户组 权限
+        AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
 
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('操作成功', url('@admin/menuType/' . $menuType));

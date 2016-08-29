@@ -6,65 +6,84 @@ namespace app\model;
 class UserGroupModel extends ModelModel
 {
     protected $pk = 'name';
+    protected $accessOfAccessValueByMenuModel = 0;
+    private $MenuModelOfAccessValueByMenuModel = null;
+
+    /**
+     * 获取 菜单 对本用户组的权限
+     * @param  MenuModel &$MenuModel [description]
+     * @return [type]                [description]
+     */
     public function getAccessValueByMenuModel(MenuModel &$MenuModel)
     {
-        static $staticMenuModel = null;
-        static $access = 0;
-        if (null === $staticMenuModel || ($staticMenuModel->getData('id') !== $MenuModel->getData('id')))
+        // 使用成员变量，减小请求次数
+        if (null === $this->MenuModelOfAccessValueByMenuModel || ($this->MenuModelOfAccessValueByMenuModel->getData('id') !== $MenuModel->getData('id')))
         { 
+            $this->MenuModelOfAccessValueByMenuModel = $MenuModel;
             $map = [];
             $map['menu_id'] = $MenuModel->getData('id');
             $map['user_group_name'] = $this->getData('name');
             $AccessUserGroupMenuModel = AccessUserGroupMenuModel::get($map);
             if (null !== $AccessUserGroupMenuModel)
             {
-                $access = (int)$AccessUserGroupMenuModel->getData('access');
+                $this->accessOfAccessValueByMenuModel = (int)$AccessUserGroupMenuModel->getData('access');
             } else {
-                $access = 0;
+                $this->accessOfAccessValueByMenuModel = 0;
             }
             unset($AccessUserGroupMenuModel);
         }
-        return $access;
+        return $this->accessOfAccessValueByMenuModel;
     }
 
     /**
-     * 是否当前菜单的的 读(0010) 权限
+     * 是否当前菜单的的 列表(10000) 权限
      * @param  MenuModel &$MenuModel 菜单
      * @return boolean               
      */
-    public function isReadAllowedByMenuModel(MenuModel &$MenuModel)
+    public function isIndexAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByCURDValue($MenuModel, 2);
+        return $this->getAccessByLCURDValue($MenuModel, 16);
     }
 
+
     /**
-     * 是否有当前菜单的 创建(1000) 权限
+     * 是否有当前菜单的 创建(01000) 权限
      * @param  MenuModel &$MenuModel [description]
      * @return boolean               [description]
      */
     public function isCreateAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByCURDValue($MenuModel, 8);
+        return $this->getAccessByLCURDValue($MenuModel, 8);
     }
 
     /**
-     * 是否拥有当前菜单的 更新（0100） 权限
+     * 是否拥有当前菜单的 更新（00100） 权限
      * @param  MenuModel &$MenuModel [description]
      * @return boolean               [description]
      */
     public function isUpdateAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByCURDValue($MenuModel, 4);
+        return $this->getAccessByLCURDValue($MenuModel, 4);
     }
 
     /**
-     * 是否拥有当前菜单的 删除(0001) 权限
+     * 是否当前菜单的的 读(00010) 权限
+     * @param  MenuModel &$MenuModel 菜单
+     * @return boolean               
+     */
+    public function isReadAllowedByMenuModel(MenuModel &$MenuModel)
+    {
+        return $this->getAccessByLCURDValue($MenuModel, 2);
+    }
+
+    /**
+     * 是否拥有当前菜单的 删除(00001) 权限
      * @param  MenuModel &$MenuModel [description]
      * @return boolean               [description]
      */
     public function isDeleteAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByCURDValue($MenuModel, 1);
+        return $this->getAccessByLCURDValue($MenuModel, 1);
     }
 
     /**
@@ -72,7 +91,7 @@ class UserGroupModel extends ModelModel
      * @param  int $CURDValue CURD(1111) 按拉对应
      * @return boolean            
      */
-    public function getAccessByCURDValue(&$MenuModel, $CURDValue)
+    public function getAccessByLCURDValue(&$MenuModel, $CURDValue)
     {
         $access = $this->getAccessValueByMenuModel($MenuModel);
         if ($access & $CURDValue)

@@ -1,6 +1,7 @@
 <?php
 namespace app\model;
 use app\YunzhiModel;
+use app\Common;
 
 class ModelModel extends YunzhiModel
 {
