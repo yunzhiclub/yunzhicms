@@ -49,7 +49,8 @@ class Cx extends Taglib
         'for'        => ['attr' => 'start,end,name,comparison,step'],
         'url'        => ['attr' => 'link,vars,suffix,domain', 'close' => 0, 'expression' => true],
         'function'   => ['attr' => 'name,vars,use,call'],
-        'position'   => ['attr' => 'name', 'close' => 0],
+        'block'      => ['attr' => 'position', 'close' => 0],
+        'plugin'     => ['attr' => 'position', 'close' => 0],
     ];
 
     /**
@@ -674,20 +675,39 @@ class Cx extends Taglib
 
 
     /**
-     * php标签解析
+     * block区块解析标签
      * 格式：
-     * {php}echo $name{/php}
+     * {block position="positionName" /}
      * @access public
      * @param array $tag 标签属性
      * @param string $content 标签内容
      * @return string
      */
-    public function tagPosition($tag)
+    public function tagBlock($tag)
     {
-        $name = !empty($tag['name']) ? $tag['name'] : '';
+        $position = !empty($tag['position']) ? $tag['position'] : '';
 
         $parseStr = '<?php ';
-        $parseStr .= 'call_user_func("app\block\controller\BlockController::init", "' . $name . '");';
+        $parseStr .= 'call_user_func("app\block\controller\BlockController::init", "' . $position . '");';
+        $parseStr .= ' ?>';
+        return $parseStr; 
+    }
+
+    /**
+     * plugin插件解析标签
+     * 格式：
+     * {plugin position="positionName" /}
+     * @access public
+     * @param array $tag 标签属性
+     * @param string $content 标签内容
+     * @return string
+     */
+    public function tagPlugin($tag)
+    {
+        $position = !empty($tag['position']) ? $tag['position'] : '';
+
+        $parseStr = '<?php ';
+        $parseStr .= 'call_user_func("app\plugin\controller\PluginController::init", "' . $position . '");';
         $parseStr .= ' ?>';
         return $parseStr; 
     }

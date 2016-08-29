@@ -2,11 +2,11 @@
 <html lang="zh-hans">
 {include file="head"}
 <body>
-    {position name="menu" /} {position name="slider" /} {position name="breadCrumb" /} 
+    {block position="menu" /} {block position="slider" /} {block position="breadCrumb" /} 
     <!-- Start service  -->
     {__CONTENT__}
     <!-- End service  -->
-    {position name="main" /}
+    {block position="main" /}
     {include file="footer"}
 </body>
 

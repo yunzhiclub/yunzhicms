@@ -32,6 +32,8 @@ return [
     'action_suffix'          => 'Action',
     // 模型名后缀
     'model_suffix'           => 'Model',
+    // 禁止访问模块
+    'deny_module_list'       => ['common', 'block', 'field', 'model', 'plugin', 'theme'],
 
     // +----------------------------------------------------------------------
     // | URL设置
