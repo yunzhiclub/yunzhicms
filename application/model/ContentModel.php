@@ -3,24 +3,11 @@ namespace app\model;
 
 class ContentModel extends ModelModel
 {
-    public function CategoryModel()
+    public function ContentTypeModel()
     {
-        return $this->hasOne('CategoryModel', 'name', 'category_name');
+        return $this->hasOne('ContentTypeModel', 'name', 'content_type_name');
     }
 
-    /**
-     * 将模型做为参数传入后，竟然可以直接输出保护类型的变量了，这点另人费解.
-     * TODO:找规律、查资料，弄清楚为什么将类传入后，直接输出了保护类型的变量。
-     * @param  [type] &$CategoryModel [description]
-     * @return [type]                 [description]
-     */
-    public function test(&$CategoryModel)
-    {
-        var_dump($CategoryModel);
-
-        // 获取新闻所在的类别
-        var_dump($CategoryModel->name);
-    }
     /**
      * 重写__get， 取出扩展的字段值
      * @param  string $name 
@@ -32,7 +19,7 @@ class ContentModel extends ModelModel
         if ('_field' === $name)
         {
             // 获取新闻所在的类别
-            $CategoryModel = $this->CategoryModel;
+            $ContentTypeModel = $this->ContentTypeModel;
 
             // 初始化字段配置模型
             $FieldConfigModel = new FieldConfigModel();
@@ -41,7 +28,7 @@ class ContentModel extends ModelModel
             // 设置实体类别
             $FieldConfigModel->setType($this->name);
             // 设置实体名
-            $FieldConfigModel->setValue($CategoryModel->getData('name'));
+            $FieldConfigModel->setValue($ContentTypeModel->getData('name'));
 
             return $FieldConfigModel;
         } else {

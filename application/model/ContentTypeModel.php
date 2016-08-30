@@ -1,7 +1,7 @@
 <?php
 namespace app\model;
 
-class CategoryModel extends ModelModel
+class ContentTypeModel extends ModelModel
 {
     private $MenuModel;                     // 对应的菜单模型
     protected $pk = 'name';
