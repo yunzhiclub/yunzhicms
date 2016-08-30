@@ -11,30 +11,55 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 08/26/2016 11:24:24 AM
+ Date: 08/30/2016 11:08:33 AM
 */
 
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
---  Table structure for `yunzhi_access`
+--  Table structure for `yunzhi_access_menu_block`
 -- ----------------------------
-DROP TABLE IF EXISTS `yunzhi_access`;
-CREATE TABLE `yunzhi_access` (
-  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
-  `source_type` varchar(40) NOT NULL COMMENT '设置源的类型',
-  `source_value` varchar(40) NOT NULL COMMENT '设置源的值',
-  `target_type` varchar(40) NOT NULL COMMENT '目标源的类型',
-  `target_value` varchar(40) NOT NULL COMMENT '目标源的值',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `yunzhi_access_menu_block`;
+CREATE TABLE `yunzhi_access_menu_block` (
+  `menu_id` int(11) NOT NULL DEFAULT '0' COMMENT 'fk menu',
+  `block_id` int(11) NOT NULL DEFAULT '0' COMMENT 'fk block',
+  PRIMARY KEY (`menu_id`,`block_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='菜单-区块 权限表';
 
 -- ----------------------------
---  Records of `yunzhi_access`
+--  Records of `yunzhi_access_menu_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_access` VALUES ('1', 'Menu', '2', 'UserGroup', '15');
+INSERT INTO `yunzhi_access_menu_block` VALUES ('1', '1'), ('1', '2'), ('1', '3'), ('2', '1'), ('2', '7'), ('3', '1'), ('3', '7'), ('4', '1'), ('4', '7'), ('5', '1'), ('5', '7');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `yunzhi_access_menu_plugin`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_access_menu_plugin`;
+CREATE TABLE `yunzhi_access_menu_plugin` (
+  `menu_id` int(11) unsigned NOT NULL,
+  `plugin_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`menu_id`,`plugin_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单-插件 权限表';
+
+-- ----------------------------
+--  Table structure for `yunzhi_access_user_group_menu`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_access_user_group_menu`;
+CREATE TABLE `yunzhi_access_user_group_menu` (
+  `user_group_name` varchar(40) NOT NULL COMMENT 'fk user_group 用户组外键',
+  `menu_id` int(11) unsigned NOT NULL COMMENT 'fk menu 菜单外键',
+  `access` tinyint(2) unsigned NOT NULL COMMENT '权限CURD（增改查删）用位来记录',
+  PRIMARY KEY (`user_group_name`,`menu_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组-菜单 权限表。权限设置(LCURD)';
+
+-- ----------------------------
+--  Records of `yunzhi_access_user_group_menu`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_access_user_group_menu` VALUES ('public', '4', '18'), ('public', '2', '18'), ('register', '2', '10'), ('editor', '2', '15'), ('public', '1', '18'), ('admin', '2', '15'), ('public', '3', '18'), ('public', '5', '18');
 COMMIT;
 
 -- ----------------------------
@@ -43,7 +68,7 @@ COMMIT;
 DROP TABLE IF EXISTS `yunzhi_block`;
 CREATE TABLE `yunzhi_block` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `module_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk moudle',
+  `block_type_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk block_type',
   `position_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk position',
   `title` varchar(40) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '',
@@ -56,7 +81,7 @@ CREATE TABLE `yunzhi_block` (
   `delete_time` smallint(6) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `delete_time` (`delete_time`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='区块表';
 
 -- ----------------------------
 --  Records of `yunzhi_block`
@@ -66,23 +91,23 @@ INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', 'menu', '主菜单', '显示在�
 COMMIT;
 
 -- ----------------------------
---  Table structure for `yunzhi_block_menu`
+--  Table structure for `yunzhi_block_type`
 -- ----------------------------
-DROP TABLE IF EXISTS `yunzhi_block_menu`;
-CREATE TABLE `yunzhi_block_menu` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `menu_id` int(11) DEFAULT '0' COMMENT 'fk menu',
-  `block_id` int(11) DEFAULT '0' COMMENT 'fk block',
-  `create_time` smallint(6) unsigned NOT NULL,
-  `update_time` smallint(6) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `yunzhi_block_type`;
+CREATE TABLE `yunzhi_block_type` (
+  `name` varchar(40) NOT NULL,
+  `title` varchar(40) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `config` varchar(255) NOT NULL DEFAULT '[]',
+  `filter` varchar(255) NOT NULL DEFAULT '[]',
+  PRIMARY KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='区块类型表';
 
 -- ----------------------------
---  Records of `yunzhi_block_menu`
+--  Records of `yunzhi_block_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block_menu` VALUES ('7', '1', '2', '0', '0'), ('8', '1', '3', '0', '0'), ('32', '1', '1', '65535', '65535'), ('33', '2', '1', '65535', '65535'), ('34', '3', '1', '65535', '65535'), ('35', '4', '1', '65535', '65535'), ('36', '5', '1', '65535', '65535'), ('37', '2', '7', '65535', '65535'), ('38', '3', '7', '65535', '65535'), ('39', '4', '7', '65535', '65535'), ('40', '5', '7', '65535', '65535');
+INSERT INTO `yunzhi_block_type` VALUES ('Menu', '菜单', '显示菜单', '{\"menu_type_name\":{\"value\":\"main\",\"title\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"description\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"type\":\"text\"},\"id\":{\"value\":\"mu-menu\",\"title\":\"\"}}', '[]'), ('BreadCrumb', '面包屑', '', '[]', '[]'), ('Slider', '幻灯片', '', '[]', '[]'), ('ContentVideo', '文字视频介绍', '通常用于首页的关于我们', '[]', '[]'), ('DataCounter', '数据统计', '数据统计', '[]', '[]'), ('CaseShow', '案例展示', '', '[]', '[]'), ('ShowCaseSlider', '动态案例展示', '', '[]', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -101,7 +126,7 @@ CREATE TABLE `yunzhi_category` (
   `fileds` varchar(255) NOT NULL DEFAULT '[]' COMMENT '字段',
   PRIMARY KEY (`id`,`name`),
   UNIQUE KEY `name` (`name`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='类别(文章类型)表';
 
 -- ----------------------------
 --  Records of `yunzhi_category`
@@ -123,13 +148,13 @@ CREATE TABLE `yunzhi_component` (
   `config` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '配置信息',
   `filter` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '字段过滤信息',
   PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='组件（类型）表';
 
 -- ----------------------------
 --  Records of `yunzhi_component`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0', '{\"count\":{\"description\":\"\\u663e\\u793a\\u65b0\\u95fb\\u7684\\u6761\\u6570\",\"type\":\"text\",\"value\":3}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0', '{\"categoryName\":{\"type\":\"text\",\"title\":\"\\u6587\\u7ae0\\u7c7b\\u522b\",\"description\":\"\\u663e\\u793a\\u54ea\\u4e2a\\u7c7b\\u522b\\u7684\\u6587\\u7ae0\",\"value\":\"news\"},\"count\":{\"type\":\"text\",\"title\":\"\\u6bcf\\u9875\\u5927\\u5c0f\",\"description\":\"\\u6bcf\\u9875\\u663e\\u793a\\u591a\\u5c11\\u7bc7\\u6587\\u7ae0\",\"value\":\"1\"},\"order\":{\"type\":\"text\",\"title\":\"\\u6392\\u5e8f\\u65b9\\u5f0f\",\"description\":\"\\u6570\\u636e\\u5b57\\u6bb5\\u7684\\u6392\\u5e8f\\u65b9\\u5f0f\",\"value\":\"weight desc, id desc\"}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":30,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"},\"date\":{\"type\":\"date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}'), ('Content', '新闻', '显示一篇新闻', '', '', '{\"id\":{\"title\":\"\\u6587\\u7ae0\",\"description\":\"\\u5c06\\u9009\\u62e9\\u7684\\u6587\\u7ae0\\u5185\\u5bb9\\u663e\\u793a\\u5728\\u7ec4\\u4ef6\\u4e2d\",\"type\":\"text\",\"value\":\"1\"}}', '[]');
+INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0', '{\"count\":{\"title\":\"显示推荐新闻数量\",\"description\":\"\\u663e\\u793a\\u65b0\\u95fb\\u7684\\u6761\\u6570\",\"type\":\"text\",\"value\":3}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0', '{\"categoryName\":{\"type\":\"text\",\"title\":\"\\u6587\\u7ae0\\u7c7b\\u522b\",\"description\":\"\\u663e\\u793a\\u54ea\\u4e2a\\u7c7b\\u522b\\u7684\\u6587\\u7ae0\",\"value\":\"news\"},\"count\":{\"type\":\"text\",\"title\":\"\\u6bcf\\u9875\\u5927\\u5c0f\",\"description\":\"\\u6bcf\\u9875\\u663e\\u793a\\u591a\\u5c11\\u7bc7\\u6587\\u7ae0\",\"value\":\"1\"},\"order\":{\"type\":\"text\",\"title\":\"\\u6392\\u5e8f\\u65b9\\u5f0f\",\"description\":\"\\u6570\\u636e\\u5b57\\u6bb5\\u7684\\u6392\\u5e8f\\u65b9\\u5f0f\",\"value\":\"weight desc, id desc\"}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":30,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"},\"date\":{\"type\":\"date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}'), ('Content', '新闻', '显示一篇新闻', '', '', '{\"id\":{\"title\":\"\\u6587\\u7ae0\",\"description\":\"\\u5c06\\u9009\\u62e9\\u7684\\u6587\\u7ae0\\u5185\\u5bb9\\u663e\\u793a\\u5728\\u7ec4\\u4ef6\\u4e2d\",\"type\":\"text\",\"value\":\"1\"}}', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -153,13 +178,13 @@ CREATE TABLE `yunzhi_content` (
   KEY `category_name` (`category_name`) USING BTREE,
   KEY `is_freezed` (`is_freezed`) USING BTREE,
   KEY `is_deleted` (`is_deleted`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='文章表';
 
 -- ----------------------------
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472173871', '0', '0', '0', '97', '[]', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472173655', '0', '0', '0', '52', '[]', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472113687', '0', '0', '0', '18', '[]', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '141', '[]', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '54', '[]', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '23', '[]', '0');
 COMMIT;
 
 -- ----------------------------
@@ -171,7 +196,7 @@ CREATE TABLE `yunzhi_content_frontpage` (
   `weight` smallint(6) unsigned NOT NULL COMMENT '0',
   `create_time` int(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`content_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='首页文章表';
 
 -- ----------------------------
 --  Records of `yunzhi_content_frontpage`
@@ -190,7 +215,7 @@ CREATE TABLE `yunzhi_field` (
   `config` varchar(255) NOT NULL DEFAULT '[]' COMMENT '配置信息(json)',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
   PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字段表';
 
 -- ----------------------------
 --  Records of `yunzhi_field`
@@ -211,37 +236,13 @@ CREATE TABLE `yunzhi_field_config` (
   `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用 1禁用',
   `is_one` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否唯一. 1: 1对1 ；2：1对多',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='字段配置表（各个实体的扩展字段配置）';
 
 -- ----------------------------
 --  Records of `yunzhi_field_config`
 -- ----------------------------
 BEGIN;
 INSERT INTO `yunzhi_field_config` VALUES ('1', 'body', 'Content', 'news', '0', '1'), ('2', 'field_image', 'Content', 'news', '0', '1'), ('3', 'body', 'Content', 'products', '0', '1');
-COMMIT;
-
--- ----------------------------
---  Table structure for `yunzhi_field_config_instance`
--- ----------------------------
-DROP TABLE IF EXISTS `yunzhi_field_config_instance`;
-CREATE TABLE `yunzhi_field_config_instance` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The primary identifier for a field instance',
-  `field_id` int(11) NOT NULL COMMENT 'The identifier of the field attached by this instance',
-  `field_name` varchar(32) NOT NULL DEFAULT '',
-  `entity_type` varchar(32) NOT NULL DEFAULT '',
-  `bundle` varchar(128) NOT NULL DEFAULT '',
-  `data` longblob NOT NULL,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `field_name_bundle` (`field_name`,`entity_type`,`bundle`),
-  KEY `deleted` (`deleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-
--- ----------------------------
---  Records of `yunzhi_field_config_instance`
--- ----------------------------
-BEGIN;
-INSERT INTO `yunzhi_field_config_instance` VALUES ('1', '1', 'comment_body', 'comment', 'comment_node_page', 0x613a363a7b733a353a226c6162656c223b733a373a22436f6d6d656e74223b733a383a2273657474696e6773223b613a323a7b733a31353a22746578745f70726f63657373696e67223b693a313b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a383a227265717569726564223b623a313b733a373a22646973706c6179223b613a313a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a31323a22746578745f64656661756c74223b733a363a22776569676874223b693a303b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a343a2274657874223b7d7d733a363a22776964676574223b613a343a7b733a343a2274797065223b733a31333a22746578745f7465787461726561223b733a383a2273657474696e6773223b613a313a7b733a343a22726f7773223b693a353b7d733a363a22776569676874223b693a303b733a363a226d6f64756c65223b733a343a2274657874223b7d733a31313a226465736372697074696f6e223b733a303a22223b7d, '0'), ('2', '2', 'body', 'Content', 'aboutus', 0x613a363a7b733a353a226c6162656c223b733a343a22426f6479223b733a363a22776964676574223b613a343a7b733a343a2274797065223b733a32363a22746578745f74657874617265615f776974685f73756d6d617279223b733a383a2273657474696e6773223b613a323a7b733a343a22726f7773223b693a32303b733a31323a2273756d6d6172795f726f7773223b693a353b7d733a363a22776569676874223b693a2d343b733a363a226d6f64756c65223b733a343a2274657874223b7d733a383a2273657474696e6773223b613a333a7b733a31353a22646973706c61795f73756d6d617279223b623a313b733a31353a22746578745f70726f63657373696e67223b693a313b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a373a22646973706c6179223b613a323a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a31323a22746578745f64656661756c74223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a343a2274657874223b733a363a22776569676874223b693a303b7d733a363a22746561736572223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a32333a22746578745f73756d6d6172795f6f725f7472696d6d6564223b733a383a2273657474696e6773223b613a313a7b733a31313a227472696d5f6c656e677468223b693a3630303b7d733a363a226d6f64756c65223b733a343a2274657874223b733a363a22776569676874223b693a303b7d7d733a383a227265717569726564223b623a303b733a31313a226465736372697074696f6e223b733a303a22223b7d, '0'), ('3', '1', 'comment_body', 'comment', 'comment_node_article', 0x613a363a7b733a353a226c6162656c223b733a373a22436f6d6d656e74223b733a383a2273657474696e6773223b613a323a7b733a31353a22746578745f70726f63657373696e67223b693a313b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a383a227265717569726564223b623a313b733a373a22646973706c6179223b613a313a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a31323a22746578745f64656661756c74223b733a363a22776569676874223b693a303b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a343a2274657874223b7d7d733a363a22776964676574223b613a343a7b733a343a2274797065223b733a31333a22746578745f7465787461726561223b733a383a2273657474696e6773223b613a313a7b733a343a22726f7773223b693a353b7d733a363a22776569676874223b693a303b733a363a226d6f64756c65223b733a343a2274657874223b7d733a31313a226465736372697074696f6e223b733a303a22223b7d, '0'), ('4', '2', 'body', 'node', 'article', 0x613a363a7b733a353a226c6162656c223b733a343a22426f6479223b733a363a22776964676574223b613a343a7b733a343a2274797065223b733a32363a22746578745f74657874617265615f776974685f73756d6d617279223b733a383a2273657474696e6773223b613a323a7b733a343a22726f7773223b693a32303b733a31323a2273756d6d6172795f726f7773223b693a353b7d733a363a22776569676874223b693a2d343b733a363a226d6f64756c65223b733a343a2274657874223b7d733a383a2273657474696e6773223b613a333a7b733a31353a22646973706c61795f73756d6d617279223b623a313b733a31353a22746578745f70726f63657373696e67223b693a313b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a373a22646973706c6179223b613a323a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a31323a22746578745f64656661756c74223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a343a2274657874223b733a363a22776569676874223b693a303b7d733a363a22746561736572223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a32333a22746578745f73756d6d6172795f6f725f7472696d6d6564223b733a383a2273657474696e6773223b613a313a7b733a31313a227472696d5f6c656e677468223b693a3630303b7d733a363a226d6f64756c65223b733a343a2274657874223b733a363a22776569676874223b693a303b7d7d733a383a227265717569726564223b623a303b733a31313a226465736372697074696f6e223b733a303a22223b7d, '0'), ('5', '3', 'field_tags', 'node', 'article', 0x613a363a7b733a353a226c6162656c223b733a343a2254616773223b733a31313a226465736372697074696f6e223b733a35373a22e8be93e585a5e4b880e58897e58d95e8af8de4bba5e68f8fe8bfb0e682a8e79a84e58685e5aeb9e5b9b6e794a8e98097e58fb7e99a94e5bc80223b733a363a22776964676574223b613a343a7b733a343a2274797065223b733a32313a227461786f6e6f6d795f6175746f636f6d706c657465223b733a363a22776569676874223b693a2d343b733a383a2273657474696e6773223b613a323a7b733a343a2273697a65223b693a36303b733a31373a226175746f636f6d706c6574655f70617468223b733a32313a227461786f6e6f6d792f6175746f636f6d706c657465223b7d733a363a226d6f64756c65223b733a383a227461786f6e6f6d79223b7d733a373a22646973706c6179223b613a323a7b733a373a2264656661756c74223b613a353a7b733a343a2274797065223b733a32383a227461786f6e6f6d795f7465726d5f7265666572656e63655f6c696e6b223b733a363a22776569676874223b693a31303b733a353a226c6162656c223b733a353a2261626f7665223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a383a227461786f6e6f6d79223b7d733a363a22746561736572223b613a353a7b733a343a2274797065223b733a32383a227461786f6e6f6d795f7465726d5f7265666572656e63655f6c696e6b223b733a363a22776569676874223b693a31303b733a353a226c6162656c223b733a353a2261626f7665223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a383a227461786f6e6f6d79223b7d7d733a383a2273657474696e6773223b613a313a7b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a383a227265717569726564223b623a303b7d, '0'), ('6', '4', 'field_image', 'node', 'article', 0x613a363a7b733a353a226c6162656c223b733a353a22496d616765223b733a31313a226465736372697074696f6e223b733a33363a22e4b8bae8bf99e7af87e69687e7aba0e4b88ae4bca0e4b880e4b8aae59bbee78987e38082223b733a383a227265717569726564223b623a303b733a383a2273657474696e6773223b613a393a7b733a31343a2266696c655f6469726563746f7279223b733a31313a226669656c642f696d616765223b733a31353a2266696c655f657874656e73696f6e73223b733a31363a22706e6720676966206a7067206a706567223b733a31323a226d61785f66696c6573697a65223b733a303a22223b733a31343a226d61785f7265736f6c7574696f6e223b733a303a22223b733a31343a226d696e5f7265736f6c7574696f6e223b733a303a22223b733a393a22616c745f6669656c64223b623a313b733a31313a227469746c655f6669656c64223b733a303a22223b733a31333a2264656661756c745f696d616765223b693a303b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a363a22776964676574223b613a343a7b733a343a2274797065223b733a31313a22696d6167655f696d616765223b733a383a2273657474696e6773223b613a323a7b733a31383a2270726f67726573735f696e64696361746f72223b733a383a227468726f62626572223b733a31393a22707265766965775f696d6167655f7374796c65223b733a393a227468756d626e61696c223b7d733a363a22776569676874223b693a2d313b733a363a226d6f64756c65223b733a353a22696d616765223b7d733a373a22646973706c6179223b613a323a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a353a22696d616765223b733a383a2273657474696e6773223b613a323a7b733a31313a22696d6167655f7374796c65223b733a353a226c61726765223b733a31303a22696d6167655f6c696e6b223b733a303a22223b7d733a363a22776569676874223b693a2d313b733a363a226d6f64756c65223b733a353a22696d616765223b7d733a363a22746561736572223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a353a22696d616765223b733a383a2273657474696e6773223b613a323a7b733a31313a22696d6167655f7374796c65223b733a363a226d656469756d223b733a31303a22696d6167655f6c696e6b223b733a373a22636f6e74656e74223b7d733a363a22776569676874223b693a2d313b733a363a226d6f64756c65223b733a353a22696d616765223b7d7d7d, '0'), ('7', '1', 'comment_body', 'comment', 'comment_node_aboutus', 0x613a363a7b733a353a226c6162656c223b733a373a22436f6d6d656e74223b733a383a2273657474696e6773223b613a323a7b733a31353a22746578745f70726f63657373696e67223b693a313b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a383a227265717569726564223b623a313b733a373a22646973706c6179223b613a313a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a31323a22746578745f64656661756c74223b733a363a22776569676874223b693a303b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a343a2274657874223b7d7d733a363a22776964676574223b613a343a7b733a343a2274797065223b733a31333a22746578745f7465787461726561223b733a383a2273657474696e6773223b613a313a7b733a343a22726f7773223b693a353b7d733a363a22776569676874223b693a303b733a363a226d6f64756c65223b733a343a2274657874223b7d733a31313a226465736372697074696f6e223b733a303a22223b7d, '0'), ('8', '2', 'body', 'node', 'aboutus', 0x613a363a7b733a353a226c6162656c223b733a343a22426f6479223b733a363a22776964676574223b613a343a7b733a343a2274797065223b733a32363a22746578745f74657874617265615f776974685f73756d6d617279223b733a383a2273657474696e6773223b613a323a7b733a343a22726f7773223b693a32303b733a31323a2273756d6d6172795f726f7773223b693a353b7d733a363a22776569676874223b693a2d343b733a363a226d6f64756c65223b733a343a2274657874223b7d733a383a2273657474696e6773223b613a333a7b733a31353a22646973706c61795f73756d6d617279223b623a313b733a31353a22746578745f70726f63657373696e67223b693a313b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a373a22646973706c6179223b613a323a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a31323a22746578745f64656661756c74223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a343a2274657874223b733a363a22776569676874223b693a303b7d733a363a22746561736572223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a32333a22746578745f73756d6d6172795f6f725f7472696d6d6564223b733a383a2273657474696e6773223b613a313a7b733a31313a227472696d5f6c656e677468223b693a3630303b7d733a363a226d6f64756c65223b733a343a2274657874223b733a363a22776569676874223b693a303b7d7d733a383a227265717569726564223b623a303b733a31313a226465736372697074696f6e223b733a303a22223b7d, '0'), ('9', '1', 'comment_body', 'comment', 'comment_node_news', 0x613a363a7b733a353a226c6162656c223b733a373a22436f6d6d656e74223b733a383a2273657474696e6773223b613a323a7b733a31353a22746578745f70726f63657373696e67223b693a313b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a383a227265717569726564223b623a313b733a373a22646973706c6179223b613a313a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a31323a22746578745f64656661756c74223b733a363a22776569676874223b693a303b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a343a2274657874223b7d7d733a363a22776964676574223b613a343a7b733a343a2274797065223b733a31333a22746578745f7465787461726561223b733a383a2273657474696e6773223b613a313a7b733a343a22726f7773223b693a353b7d733a363a22776569676874223b693a303b733a363a226d6f64756c65223b733a343a2274657874223b7d733a31313a226465736372697074696f6e223b733a303a22223b7d, '0'), ('10', '2', 'body', 'node', 'news', 0x613a363a7b733a353a226c6162656c223b733a343a22426f6479223b733a363a22776964676574223b613a343a7b733a343a2274797065223b733a32363a22746578745f74657874617265615f776974685f73756d6d617279223b733a383a2273657474696e6773223b613a323a7b733a343a22726f7773223b693a32303b733a31323a2273756d6d6172795f726f7773223b693a353b7d733a363a22776569676874223b693a2d343b733a363a226d6f64756c65223b733a343a2274657874223b7d733a383a2273657474696e6773223b613a333a7b733a31353a22646973706c61795f73756d6d617279223b623a313b733a31353a22746578745f70726f63657373696e67223b693a313b733a31383a22757365725f72656769737465725f666f726d223b623a303b7d733a373a22646973706c6179223b613a323a7b733a373a2264656661756c74223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a31323a22746578745f64656661756c74223b733a383a2273657474696e6773223b613a303a7b7d733a363a226d6f64756c65223b733a343a2274657874223b733a363a22776569676874223b693a303b7d733a363a22746561736572223b613a353a7b733a353a226c6162656c223b733a363a2268696464656e223b733a343a2274797065223b733a32333a22746578745f73756d6d6172795f6f725f7472696d6d6564223b733a383a2273657474696e6773223b613a313a7b733a31313a227472696d5f6c656e677468223b693a3630303b7d733a363a226d6f64756c65223b733a343a2274657874223b733a363a22776569676874223b693a303b7d7d733a383a227265717569726564223b623a303b733a31313a226465736372697074696f6e223b733a303a22223b7d, '0');
 COMMIT;
 
 -- ----------------------------
@@ -358,7 +359,7 @@ CREATE TABLE `yunzhi_filter` (
   `demo_url` varchar(100) NOT NULL COMMENT '示例站点URL',
   `email` varchar(100) NOT NULL COMMENT '作者邮箱',
   PRIMARY KEY (`type`,`function`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='过滤器表';
 
 -- ----------------------------
 --  Records of `yunzhi_filter`
@@ -392,13 +393,13 @@ CREATE TABLE `yunzhi_menu` (
   KEY `menu_plid_expand_child` (`title`,`pid`),
   KEY `menu_parents` (`title`),
   KEY `router_path` (`component_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='Contains the individual links within a menu.';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='菜单表（每一个菜单对应唯一的一个组件）';
 
 -- ----------------------------
 --  Records of `yunzhi_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":3}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}', '1', '0', '0', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"categoryName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '[]', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}}, \"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"}}', '0', '0', '0', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":2}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '0', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '[]', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}}, \"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"}}', '0', '0', '0', '0');
+INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"categoryName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"categoryName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"categoryName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0');
 COMMIT;
 
 -- ----------------------------
@@ -410,7 +411,7 @@ CREATE TABLE `yunzhi_menu_type` (
   `title` varchar(32) NOT NULL DEFAULT '' COMMENT '标题',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单类型表（主要为了可以使用区块进行菜单的调用）';
 
 -- ----------------------------
 --  Records of `yunzhi_menu_type`
@@ -420,23 +421,67 @@ INSERT INTO `yunzhi_menu_type` VALUES ('main', '主菜单', '主菜单');
 COMMIT;
 
 -- ----------------------------
---  Table structure for `yunzhi_module`
+--  Table structure for `yunzhi_plugin`
 -- ----------------------------
-DROP TABLE IF EXISTS `yunzhi_module`;
-CREATE TABLE `yunzhi_module` (
-  `name` varchar(40) NOT NULL,
+DROP TABLE IF EXISTS `yunzhi_plugin`;
+CREATE TABLE `yunzhi_plugin` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `plugin_type_name` varchar(40) NOT NULL COMMENT 'fk plugin_type 插件类型',
+  `position_name` varchar(40) NOT NULL COMMENT 'fk of plugin_position',
   `title` varchar(40) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `config` varchar(255) NOT NULL DEFAULT '[]',
-  `filter` varchar(255) NOT NULL DEFAULT '[]',
-  PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `status` tinyint(2) unsigned NOT NULL,
+  `config` varchar(4096) NOT NULL,
+  `filter` varchar(4096) NOT NULL,
+  `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='插件表';
 
 -- ----------------------------
---  Records of `yunzhi_module`
+--  Table structure for `yunzhi_plugin_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_plugin_type`;
+CREATE TABLE `yunzhi_plugin_type` (
+  `name` varchar(40) NOT NULL,
+  `title` varchar(40) NOT NULL DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `config` varchar(4096) NOT NULL DEFAULT '[]',
+  `filter` varchar(4096) NOT NULL DEFAULT '[]',
+  PRIMARY KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='插件类型表';
+
+-- ----------------------------
+--  Table structure for `yunzhi_position`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_position`;
+CREATE TABLE `yunzhi_position` (
+  `name` varchar(40) NOT NULL,
+  `title` varchar(40) NOT NULL DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(40) NOT NULL DEFAULT 'blcok' COMMENT '类型: block 区块，plugin 插件',
+  `theme_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk of theme',
+  PRIMARY KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='位置表，记录着某个主题(theme)下的插件(plugin)及区块(block)位置信息';
+
+-- ----------------------------
+--  Table structure for `yunzhi_theme`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_theme`;
+CREATE TABLE `yunzhi_theme` (
+  `name` varchar(40) NOT NULL,
+  `title` varchar(40) NOT NULL DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `is_current` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '是否激活. 0未激活，1已激活',
+  `author` varchar(40) NOT NULL DEFAULT '',
+  `version` varchar(40) NOT NULL DEFAULT '',
+  PRIMARY KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='主题表';
+
+-- ----------------------------
+--  Records of `yunzhi_theme`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_module` VALUES ('Menu', '菜单', '显示菜单', '{\"menu_type_name\":{\"value\":\"main\",\"title\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"description\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"type\":\"text\"},\"id\":{\"value\":\"mu-menu\",\"title\":\"\"}}', '[]'), ('BreadCrumb', '面包屑', '', '[]', '[]'), ('Slider', '幻灯片', '', '[]', '[]'), ('ContentVideo', '文字视频介绍', '通常用于首页的关于我们', '[]', '[]'), ('DataCounter', '数据统计', '数据统计', '[]', '[]'), ('CaseShow', '案例展示', '', '[]', '[]'), ('ShowCaseSlider', '动态案例展示', '', '[]', '[]');
+INSERT INTO `yunzhi_theme` VALUES ('default', '默认主题', '', '1', '梦云智', '');
 COMMIT;
 
 -- ----------------------------
@@ -456,7 +501,7 @@ CREATE TABLE `yunzhi_user` (
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '1已删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 --  Records of `yunzhi_user`
@@ -477,13 +522,13 @@ CREATE TABLE `yunzhi_user_group` (
   `update_time` smallint(6) unsigned NOT NULL DEFAULT '0',
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组（用户类型）表';
 
 -- ----------------------------
 --  Records of `yunzhi_user_group`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_user_group` VALUES ('admin', '超级管理员', '拥有开发权限', '0', '0', '0'), ('editor', '编辑', '对站点进行管理', '0', '0', '0'), ('register', '注册用户', '注册用户，拥有对权限新闻的查看权限', '0', '0', '0');
+INSERT INTO `yunzhi_user_group` VALUES ('admin', '超级管理员', '拥有开发权限', '0', '0', '0'), ('editor', '站点编辑人员', '对站点进行管理', '0', '0', '0'), ('register', '注册用户', '注册用户，拥有对权限新闻的查看权限', '0', '0', '0'), ('public', '公共用户', '浏览网站的用户', '0', '0', '0');
 COMMIT;
 
 -- ----------------------------
