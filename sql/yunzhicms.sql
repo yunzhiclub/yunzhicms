@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 08/30/2016 11:08:33 AM
+ Date: 08/30/2016 16:11:54 PM
 */
 
 SET NAMES utf8;
@@ -111,31 +111,6 @@ INSERT INTO `yunzhi_block_type` VALUES ('Menu', '菜单', '显示菜单', '{\"me
 COMMIT;
 
 -- ----------------------------
---  Table structure for `yunzhi_category`
--- ----------------------------
-DROP TABLE IF EXISTS `yunzhi_category`;
-CREATE TABLE `yunzhi_category` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) NOT NULL,
-  `access_roles` varchar(255) NOT NULL DEFAULT '[]' COMMENT 'FK 拥有权限的角色',
-  `pname` varchar(40) NOT NULL COMMENT '上级name',
-  `title` varchar(40) NOT NULL,
-  `description` varchar(255) NOT NULL COMMENT '描述',
-  `weight` smallint(6) NOT NULL DEFAULT '0' COMMENT '权重',
-  `hits` int(11) NOT NULL DEFAULT '0' COMMENT '点击数',
-  `fileds` varchar(255) NOT NULL DEFAULT '[]' COMMENT '字段',
-  PRIMARY KEY (`id`,`name`),
-  UNIQUE KEY `name` (`name`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='类别(文章类型)表';
-
--- ----------------------------
---  Records of `yunzhi_category`
--- ----------------------------
-BEGIN;
-INSERT INTO `yunzhi_category` VALUES ('1', 'news', '[]', '', '新闻通知', '新闻通知', '0', '0', '[]'), ('2', 'products', '[]', '', '产品列表', '', '0', '0', '[]');
-COMMIT;
-
--- ----------------------------
 --  Table structure for `yunzhi_component`
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_component`;
@@ -154,7 +129,7 @@ CREATE TABLE `yunzhi_component` (
 --  Records of `yunzhi_component`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0', '{\"count\":{\"title\":\"显示推荐新闻数量\",\"description\":\"\\u663e\\u793a\\u65b0\\u95fb\\u7684\\u6761\\u6570\",\"type\":\"text\",\"value\":3}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0', '{\"categoryName\":{\"type\":\"text\",\"title\":\"\\u6587\\u7ae0\\u7c7b\\u522b\",\"description\":\"\\u663e\\u793a\\u54ea\\u4e2a\\u7c7b\\u522b\\u7684\\u6587\\u7ae0\",\"value\":\"news\"},\"count\":{\"type\":\"text\",\"title\":\"\\u6bcf\\u9875\\u5927\\u5c0f\",\"description\":\"\\u6bcf\\u9875\\u663e\\u793a\\u591a\\u5c11\\u7bc7\\u6587\\u7ae0\",\"value\":\"1\"},\"order\":{\"type\":\"text\",\"title\":\"\\u6392\\u5e8f\\u65b9\\u5f0f\",\"description\":\"\\u6570\\u636e\\u5b57\\u6bb5\\u7684\\u6392\\u5e8f\\u65b9\\u5f0f\",\"value\":\"weight desc, id desc\"}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":30,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"},\"date\":{\"type\":\"date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}'), ('Content', '新闻', '显示一篇新闻', '', '', '{\"id\":{\"title\":\"\\u6587\\u7ae0\",\"description\":\"\\u5c06\\u9009\\u62e9\\u7684\\u6587\\u7ae0\\u5185\\u5bb9\\u663e\\u793a\\u5728\\u7ec4\\u4ef6\\u4e2d\",\"type\":\"text\",\"value\":\"1\"}}', '[]');
+INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0', '{\"count\":{\"title\":\"显示推荐新闻数量\",\"description\":\"\\u663e\\u793a\\u65b0\\u95fb\\u7684\\u6761\\u6570\",\"type\":\"text\",\"value\":3}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0', '{\"contentTypeName\":{\"type\":\"text\",\"title\":\"\\u6587\\u7ae0\\u7c7b\\u522b\",\"description\":\"\\u663e\\u793a\\u54ea\\u4e2a\\u7c7b\\u522b\\u7684\\u6587\\u7ae0\",\"value\":\"news\"},\"count\":{\"type\":\"text\",\"title\":\"\\u6bcf\\u9875\\u5927\\u5c0f\",\"description\":\"\\u6bcf\\u9875\\u663e\\u793a\\u591a\\u5c11\\u7bc7\\u6587\\u7ae0\",\"value\":\"1\"},\"order\":{\"type\":\"text\",\"title\":\"\\u6392\\u5e8f\\u65b9\\u5f0f\",\"description\":\"\\u6570\\u636e\\u5b57\\u6bb5\\u7684\\u6392\\u5e8f\\u65b9\\u5f0f\",\"value\":\"weight desc, id desc\"}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":30,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"},\"date\":{\"type\":\"date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}'), ('Content', '新闻', '显示一篇新闻', '', '', '{\"id\":{\"title\":\"\\u6587\\u7ae0\",\"description\":\"\\u5c06\\u9009\\u62e9\\u7684\\u6587\\u7ae0\\u5185\\u5bb9\\u663e\\u793a\\u5728\\u7ec4\\u4ef6\\u4e2d\",\"type\":\"text\",\"value\":\"1\"}}', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -164,7 +139,7 @@ DROP TABLE IF EXISTS `yunzhi_content`;
 CREATE TABLE `yunzhi_content` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'FK 用户名',
-  `category_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'FK 类别名',
+  `content_type_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'FK 类别名',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `create_time` int(5) unsigned NOT NULL DEFAULT '0',
   `update_time` int(5) unsigned NOT NULL DEFAULT '0',
@@ -175,7 +150,7 @@ CREATE TABLE `yunzhi_content` (
   `access_group` varchar(255) NOT NULL DEFAULT '[]' COMMENT '权限列表',
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `category_name` (`category_name`) USING BTREE,
+  KEY `category_name` (`content_type_name`) USING BTREE,
   KEY `is_freezed` (`is_freezed`) USING BTREE,
   KEY `is_deleted` (`is_deleted`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='文章表';
@@ -184,7 +159,7 @@ CREATE TABLE `yunzhi_content` (
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '141', '[]', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '54', '[]', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '23', '[]', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '147', '[]', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '54', '[]', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '23', '[]', '0');
 COMMIT;
 
 -- ----------------------------
@@ -203,6 +178,30 @@ CREATE TABLE `yunzhi_content_frontpage` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `yunzhi_content_frontpage` VALUES ('1', '0', '0'), ('2', '2', '0'), ('3', '1', '0');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `yunzhi_content_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_content_type`;
+CREATE TABLE `yunzhi_content_type` (
+  `name` varchar(40) NOT NULL,
+  `access_roles` varchar(255) NOT NULL DEFAULT '[]' COMMENT 'FK 拥有权限的角色',
+  `pname` varchar(40) NOT NULL COMMENT '上级name',
+  `title` varchar(40) NOT NULL,
+  `description` varchar(255) NOT NULL COMMENT '描述',
+  `weight` smallint(6) NOT NULL DEFAULT '0' COMMENT '权重',
+  `hits` int(11) NOT NULL DEFAULT '0' COMMENT '点击数',
+  `fileds` varchar(255) NOT NULL DEFAULT '[]' COMMENT '字段',
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `name` (`name`) USING BTREE
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='类别(文章类型)表';
+
+-- ----------------------------
+--  Records of `yunzhi_content_type`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_content_type` VALUES ('news', '[]', '', '新闻通知', '新闻通知', '0', '0', '[]'), ('products', '[]', '', '产品列表', '', '0', '0', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -399,7 +398,7 @@ CREATE TABLE `yunzhi_menu` (
 --  Records of `yunzhi_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"categoryName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"categoryName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"categoryName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0');
+INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"contentType\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0');
 COMMIT;
 
 -- ----------------------------
