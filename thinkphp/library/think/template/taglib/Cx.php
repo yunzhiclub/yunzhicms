@@ -49,8 +49,6 @@ class Cx extends Taglib
         'for'        => ['attr' => 'start,end,name,comparison,step'],
         'url'        => ['attr' => 'link,vars,suffix,domain', 'close' => 0, 'expression' => true],
         'function'   => ['attr' => 'name,vars,use,call'],
-        'block'      => ['attr' => 'position', 'close' => 0],
-        'plugin'     => ['attr' => 'position', 'close' => 0],
     ];
 
     /**
@@ -671,51 +669,5 @@ class Cx extends Taglib
         $parseStr .= ' ?>' . $content . '<?php }; ';
         $parseStr .= $call ? '$' . $name . '(' . $call . '); ?>' : '?>';
         return $parseStr;
-    }
-
-
-    /**
-     * block区块解析标签
-     * 格式：
-     * {block position="positionName" /}
-     * @access public
-     * @param array $tag 标签属性
-     * @param string $content 标签内容
-     * @return string
-     */
-    public function tagBlock($tag)
-    {
-        $position = !empty($tag['position']) ? $tag['position'] : '';
-
-        $parseStr = '<?php ';
-        $parseStr .= 'call_user_func("app\block\controller\BlockController::init", "' . $position . '");';
-        $parseStr .= ' ?>';
-        return $parseStr; 
-    }
-
-    /**
-     * plugin插件解析标签
-     * 格式：
-     * {plugin position="positionName" /}
-     * @access public
-     * @param array $tag 标签属性
-     * @param string $content 标签内容
-     * @return string
-     */
-    public function tagPlugin($tag)
-    {
-        $position   = !empty($tag['position']) ? $tag['position'] : '';
-        $object     = !empty($tag['object']) ? $tag['object'] : '';
-
-        $parseStr = '<?php ';
-        if (empty($object))
-        {
-            $parseStr .= 'call_user_func("app\plugin\controller\PluginController::init", "' . $position . '");';
-        } else {
-            $parseStr .= 'call_user_func_array("app\plugin\controller\PluginController::init", ["' . $position . '", $' . $object . ']);';
-        }
-        
-        $parseStr .= ' ?>';
-        return $parseStr; 
     }
 }
