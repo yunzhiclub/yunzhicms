@@ -1,21 +1,17 @@
 <?php
 namespace app\model;
-use app\Common;
 
-/**
- * 区块
- */
-class BlockModel extends ModelModel
+class PluginModel extends ModelModel
 {
     public $config = null;     // 配置信息
     public $filter = null;     // 过滤器信息
 
     /**
-     * 区域:模块 = n:1
+     * 区域:插件 = n:1
      */
-    public function BlockTypeModel()
+    public function PluginTypeModel()
     {
-        return $this->hasOne('BlockTypeModel', 'name', 'block_type_name');
+        return $this->hasOne('PluginTypeModel', 'name', 'plugin_type_name');
     }
 
     public function getConfig()
@@ -23,7 +19,7 @@ class BlockModel extends ModelModel
         if (null === $this->config)
         {
             $this->config = array();
-            $this->config = Common::configMerge($this->BlockTypeModel->config, $this->config);
+            $this->config = Common::configMerge($this->PluginTypeModel->config, $this->config);
         }
 
         return $this->config;
@@ -35,31 +31,31 @@ class BlockModel extends ModelModel
         if (null === $this->filter)
         {
             $this->filter = array();
-            $this->filter = Common::configMerge($this->BlockTypeModel->filter, $this->filter);
+            $this->filter = Common::configMerge($this->PluginTypeModel->filter, $this->filter);
         }
 
         return $this->filter;
     }
 
     /**
-     * 获取某个position下的所有 启用 的区载信息
+     * 获取某个position下的所有 启用 的插件信息
      * @param  string $name position名称
-     * @return lists       BlockModels
+     * @return lists       PluginModels
      */
     public function getActiveListsByPositionName($name)
     {
         $map = ['position_name' => $name, 'status' => '0'];
         $order = ['weight' => 'desc'];
-        $BlockModels = $this->where($map)->order($order)->select();
-        foreach ($BlockModels as $key => &$BlockModel)
+        $PluginModels = $this->where($map)->order($order)->select();
+        foreach ($PluginModels as $key => &$PluginModel)
         {
             // 去除没有权限显示的区块
-            if (!$BlockModel->isShowInCurrentMenu())
+            if (!$PluginModel->isShowInCurrentMenu())
             {
-                unset($BlockModels[$key]);
+                unset($PluginModels[$key]);
             }
         }
-        return $BlockModels;
+        return $PluginModels;
     }
 
 
@@ -72,10 +68,10 @@ class BlockModel extends ModelModel
         // 取出当前菜单
         $currentMenuModel = MenuModel::getCurrentMenuModel();
 
-        // 判断当前菜单是否拥有此block的显示权限
-        $map = ['block_id'=>$this->id, 'menu_id' => $currentMenuModel->id];
-        $AccessBlockMenuModel = AccessMenuBlockModel::get($map);
-        if (null === $AccessBlockMenuModel)
+        // 判断当前菜单是否拥有此plugin的显示权限
+        $map = ['plugin_id'=>$this->id, 'menu_id' => $currentMenuModel->id];
+        $AccessBlockMenuModel = AccessMenuPluginModel::get($map);
+        if (null === $AccessPluginMenuModel)
         {
             return false;
         } else {
@@ -86,9 +82,9 @@ class BlockModel extends ModelModel
     public function checkIsShow(MenuModel &$MenuModel)
     {
         $map = [];
-        $map['block_id']    = $this->data['id'];
+        $map['plugin_id']    = $this->data['id'];
         $map['menu_id']     = $MenuModel->getData('id');
-        if (null === AccessMenuBlockModel::get($map))
+        if (null === AccessPluginMenuModel::get($map))
         {
             return false;
         } else {

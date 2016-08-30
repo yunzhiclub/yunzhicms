@@ -704,10 +704,17 @@ class Cx extends Taglib
      */
     public function tagPlugin($tag)
     {
-        $position = !empty($tag['position']) ? $tag['position'] : '';
+        $position   = !empty($tag['position']) ? $tag['position'] : '';
+        $object     = !empty($tag['object']) ? $tag['object'] : '';
 
         $parseStr = '<?php ';
-        $parseStr .= 'call_user_func("app\plugin\controller\PluginController::init", "' . $position . '");';
+        if (empty($object))
+        {
+            $parseStr .= 'call_user_func("app\plugin\controller\PluginController::init", "' . $position . '");';
+        } else {
+            $parseStr .= 'call_user_func_array("app\plugin\controller\PluginController::init", ["' . $position . '", $' . $object . ']);';
+        }
+        
         $parseStr .= ' ?>';
         return $parseStr; 
     }
