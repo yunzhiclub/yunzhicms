@@ -81,7 +81,7 @@ class ComponentController extends Controller implements ComponentInterface
     }
 
     /**
-     * 加载模板输出
+     * 重写 加载模板输出
      * @access protected
      * @param string    $template 模板文件名
      * @param array     $vars     模板输出变量

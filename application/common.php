@@ -334,5 +334,19 @@ class Common{
         }
         return $filter;
     }
+
+    /**
+     * 获取控制器名称
+     * @param  string $calledClass 
+     *         app\block\controller\BreadCrumbController
+     * @return string              
+     *         BreadCrumb
+     */
+    static public function getControllerName($calledClass)
+    {
+        $calledClassArray = explode('\\', $calledClass);
+        $calledClass = array_pop($calledClassArray);
+        return substr($calledClass, 0, -strlen('Controller'));
+    }
 }
 
