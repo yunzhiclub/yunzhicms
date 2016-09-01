@@ -44,7 +44,7 @@ class BlockModel extends ModelModel
     {
         if (null === $this->config)
         {
-            $this->config = Common::configMerge($this->BlockTypeModel()->getConfigAttr(), $this->getConfigAttr());
+            $this->config = Common::configMerge($this->BlockTypeModel()->getConfig(), $this->getConfigAttr());
         }
         return $this->config;
     }
@@ -57,7 +57,7 @@ class BlockModel extends ModelModel
     {
         if (null === $this->filter)
         {
-            $this->filter = Common::configMerge($this->BlockTypeModel()->getFilterAttr(), $this->getFilterAttr());
+            $this->filter = Common::configMerge($this->BlockTypeModel()->getFilter(), $this->getFilterAttr());
         }
 
         return $this->filter;

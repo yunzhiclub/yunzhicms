@@ -77,7 +77,6 @@ class ComponentController extends Controller implements ComponentInterface
         // 配置信息，过滤器信息送入V层
         $this->assign('config', $this->config);
         $this->assign('filterModels', $this->filterModels);
-
     }
 
     /**
@@ -99,9 +98,11 @@ class ComponentController extends Controller implements ComponentInterface
             $this->Request->controller() . DS .
             $this->Request->action() .
             '.html';
-
+        // 路径格式化，如果文件不存在，则返回false
+        $themeTemplate = realpath($themeTemplate);
+        
         // 主题文件存在，则调用主题文件进行渲染
-        if (is_file($themeTemplate))
+        if (false !== $themeTemplate)
         {   
             $template = $themeTemplate;
         }

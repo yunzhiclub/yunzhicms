@@ -99,9 +99,11 @@ class BlockController extends Controller
             'block' . DS .
             Common::getControllerName(get_called_class()) . DS .
             'fetchHtml.html';
-
+        // 路径格式化，如果文件不存在，则返回false
+        $themeTemplate = realpath($themeTemplate);
+        
         // 主题文件存在，则调用主题文件进行渲染
-        if (is_file($themeTemplate))
+        if (false !== $themeTemplate)
         {   
             $template = $themeTemplate;
         }

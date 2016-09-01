@@ -6,8 +6,8 @@
         <input type="text" name="title" value="{$BlockModel->title}" />
     </div>
     <div>
-        <label for="">模块名</label>
-        <input type="text" name="module_name" value="{$BlockModel->module_name}" />
+        <label for="">区块类型</label>
+        <input type="text" name="block_type_name" value="{$BlockModel->block_type_name}" />
     </div>
     <div>
         <label for="">描述</label>
@@ -39,7 +39,7 @@
     <div>
         <label for="">过滤器信息</label>
         <ol>
-            {foreach name="$BlockModel->getFilterModels()" key="key" id="_FilterModel"} {include file="editFilter" /} {/foreach}
+            {foreach name="$BlockModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
         </ol>
     </div>
     <div>
