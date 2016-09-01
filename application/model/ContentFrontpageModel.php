@@ -3,10 +3,14 @@ namespace app\model;
 
 class ContentFrontpageModel extends ModelModel
 {
+    protected $ContentModel;
     protected $pk = 'content_id';
 
     public function ContentModel()
     {
-        return $this->hasOne('ContentModel', 'id', 'content_id');
+        if (null === $this->ContentModel) {
+            $this->ContentModel = ContentModel::get(['id' => $this->getData('content_id')]);
+        }
+        return $this->ContentModel;
     }
 }
