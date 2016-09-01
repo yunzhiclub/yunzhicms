@@ -31,10 +31,9 @@ class ContentListController extends ComponentController
         return $this->fetch();
     }
 
-    public function editAction($config = [])
+    public function editAction($id)
     {
-
-        var_dump($this->method);
+        var_dump($id);
         $id = input('param.');
         var_dump($id);
     }

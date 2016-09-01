@@ -348,5 +348,19 @@ class Common{
         $calledClass = array_pop($calledClassArray);
         return substr($calledClass, 0, -strlen('Controller'));
     }
+
+    /**
+     * 根据用户当前访问的URL信息，生成 编辑URL
+     * 当前访问URL为：http://127.0.0.1/yunzhicms/public/news/school/1.html?p=2
+     * 则生成的URL为：http://127.0.0.1/yunzhicms/public/news/school/1/edit.html?p=2
+     * @return string 
+     * @author panjie
+     */
+    static public function getEditUrl()
+    {
+        $requestUri = $_SERVER['REQUEST_URI'];
+
+        return str_replace('.html', '/edit.html', $requestUri);
+    }
 }
 
