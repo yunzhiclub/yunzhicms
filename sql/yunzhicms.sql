@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 08/30/2016 16:11:54 PM
+ Date: 09/01/2016 14:29:18 PM
 */
 
 SET NAMES utf8;
@@ -45,6 +45,13 @@ CREATE TABLE `yunzhi_access_menu_plugin` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单-插件 权限表';
 
 -- ----------------------------
+--  Records of `yunzhi_access_menu_plugin`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_access_menu_plugin` VALUES ('3', '1');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for `yunzhi_access_user_group_menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_access_user_group_menu`;
@@ -69,6 +76,7 @@ DROP TABLE IF EXISTS `yunzhi_block`;
 CREATE TABLE `yunzhi_block` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `block_type_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk block_type',
+  `menu_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'fk menu 菜单FK。模块如果想实现LCURD，则必然需要组件支持。而组件则需要菜单支持。所以关系是区块对应菜单，菜单对应组件。',
   `position_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk position',
   `title` varchar(40) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '',
@@ -87,7 +95,7 @@ CREATE TABLE `yunzhi_block` (
 --  Records of `yunzhi_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0'), ('2', 'Slider', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0'), ('3', 'ContentVideo', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0'), ('4', 'DataCounter', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0'), ('5', 'CaseShow', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('6', 'ShowCaseSlider', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('7', 'BreadCrumb', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0');
+INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', '0', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0'), ('2', 'Slider', '0', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0'), ('3', 'ContentVideo', '0', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0'), ('4', 'DataCounter', '0', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0'), ('5', 'CaseShow', '0', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('6', 'ShowCaseSlider', '0', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('7', 'BreadCrumb', '0', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -147,7 +155,6 @@ CREATE TABLE `yunzhi_content` (
   `is_freezed` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否冻结',
   `weight` smallint(6) NOT NULL,
   `hit` int(11) NOT NULL,
-  `access_group` varchar(255) NOT NULL DEFAULT '[]' COMMENT '权限列表',
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `category_name` (`content_type_name`) USING BTREE,
@@ -159,7 +166,7 @@ CREATE TABLE `yunzhi_content` (
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '147', '[]', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '54', '[]', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '23', '[]', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '310', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '93', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '39', '0');
 COMMIT;
 
 -- ----------------------------
@@ -186,7 +193,7 @@ COMMIT;
 DROP TABLE IF EXISTS `yunzhi_content_type`;
 CREATE TABLE `yunzhi_content_type` (
   `name` varchar(40) NOT NULL,
-  `access_roles` varchar(255) NOT NULL DEFAULT '[]' COMMENT 'FK 拥有权限的角色',
+  `menu_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'fk 菜单。用于被区块调用后，生成LCURD的信息。',
   `pname` varchar(40) NOT NULL COMMENT '上级name',
   `title` varchar(40) NOT NULL,
   `description` varchar(255) NOT NULL COMMENT '描述',
@@ -201,7 +208,7 @@ CREATE TABLE `yunzhi_content_type` (
 --  Records of `yunzhi_content_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content_type` VALUES ('news', '[]', '', '新闻通知', '新闻通知', '0', '0', '[]'), ('products', '[]', '', '产品列表', '', '0', '0', '[]');
+INSERT INTO `yunzhi_content_type` VALUES ('news', '3', '', '新闻通知', '新闻通知', '0', '0', '[]'), ('products', '2', '', '产品列表', '', '0', '0', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -364,7 +371,7 @@ CREATE TABLE `yunzhi_filter` (
 --  Records of `yunzhi_filter`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_filter` VALUES ('System', 'makeFrontpageContentUrl', '[]', '首页新闻链接', '直接生成首页新闻链接（直接链接到 Content组件）', '梦云智', '1.0.0', 'http://www.mengyunzhi.com', 'http://www.mengyunzhi.com', '3792535@qq.com'), ('System', 'makeCurrentMenuReadUrl', '[]', '生成菜单URL', '生成菜单对应的路由URL信息', '', '', '', '', ''), ('String', 'substr', '{\"length\":{\"value\":20,\"title\":\"\\u622a\\u53d6\\u957f\\u5ea6\",\"type\":\"text\",\"description\":\"\\u622a\\u53d6\\u7684UTF8\\u7f16\\u7801\\u7684\\u957f\\u5ea6\"},\"ext\":{\"value\":\"...\",\"title\":\"\\u540e\\u7f00\",\"type\":\"text\",\"description\":\"\\u5c06\\u53d1\\u751f\\u622a\\u53d6\\u64cd\\u4f5c\\u540e\\uff0c\\u586b\\u5145\\u5728\\u6807\\u9898\\u540e\\u9762\\u7684\\u540e\\u7f00\\u4fe1\\u606f\"}}', '标题截取', '对UTF8编码的标题进行截取', '', '', '', '', ''), ('Date', 'format', '{\"dateFormat\":{\"value\":\"Y-m-d\",\"title\":\"\\u65f6\\u95f4\\u6233\\u683c\\u5f0f\\u5316\",\"description\":\"\\u5bf9\\u65f6\\u95f4\\u6233\\u8fdb\\u884c\\u683c\\u5f0f\\u5316\",\"type\":\"text\"}}', '时间戳格式化', '时间戳格式化', '', '', '', '', '');
+INSERT INTO `yunzhi_filter` VALUES ('System', 'makeFrontpageContentUrl', '[]', '首页新闻链接', '直接生成首页新闻链接（直接链接到 Content组件）', '梦云智', '1.0.0', 'http://www.mengyunzhi.com', 'http://www.mengyunzhi.com', '3792535@qq.com'), ('System', 'makeCurrentMenuReadUrl', '[]', '生成菜单URL', '生成菜单对应的路由URL信息', '', '', '', '', ''), ('String', 'substr', '{\"length\":{\"value\":20,\"title\":\"\\u622a\\u53d6\\u957f\\u5ea6\",\"type\":\"text\",\"description\":\"\\u622a\\u53d6\\u7684UTF8\\u7f16\\u7801\\u7684\\u957f\\u5ea6\"},\"ext\":{\"value\":\"...\",\"title\":\"\\u540e\\u7f00\",\"type\":\"text\",\"description\":\"\\u5c06\\u53d1\\u751f\\u622a\\u53d6\\u64cd\\u4f5c\\u540e\\uff0c\\u586b\\u5145\\u5728\\u6807\\u9898\\u540e\\u9762\\u7684\\u540e\\u7f00\\u4fe1\\u606f\"}}', '标题截取', '对UTF8编码的标题进行截取', '', '', '', '', ''), ('Date', 'format', '{\"dateFormat\":{\"value\":\"Y-m-d\",\"title\":\"\\u65f6\\u95f4\\u6233\\u683c\\u5f0f\\u5316\",\"description\":\"\\u5bf9\\u65f6\\u95f4\\u6233\\u8fdb\\u884c\\u683c\\u5f0f\\u5316\",\"type\":\"text\"}}', '时间戳格式化', '时间戳格式化', '', '', '', '', ''), ('System', 'makeContentReadUrl', '[]', '生成新闻读链接', '根据新闻对应的类别信息，取类别的URL信息，生成LCURD路由', '', '', '', '', '');
 COMMIT;
 
 -- ----------------------------
@@ -430,11 +437,18 @@ CREATE TABLE `yunzhi_plugin` (
   `title` varchar(40) NOT NULL,
   `description` varchar(255) NOT NULL,
   `status` tinyint(2) unsigned NOT NULL,
-  `config` varchar(4096) NOT NULL,
-  `filter` varchar(4096) NOT NULL,
+  `config` varchar(4096) NOT NULL DEFAULT '[]',
+  `filter` varchar(4096) NOT NULL DEFAULT '[]',
   `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='插件表';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='插件表';
+
+-- ----------------------------
+--  Records of `yunzhi_plugin`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_plugin` VALUES ('1', 'PreNextContent', 'afterContent', '文章后', '', '0', '', '{\"href\":{\"type\":\"System\",\"function\":\"makeContentReadUrl\"}}', '0');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `yunzhi_plugin_type`
@@ -448,6 +462,13 @@ CREATE TABLE `yunzhi_plugin_type` (
   `filter` varchar(4096) NOT NULL DEFAULT '[]',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='插件类型表';
+
+-- ----------------------------
+--  Records of `yunzhi_plugin_type`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_plugin_type` VALUES ('PreNextContent', '上一篇、下一篇文章', '', '[]', '{\"href\":{\"type\":\"System\",\"function\":\"makeContentReadUrl\"}}');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `yunzhi_position`
