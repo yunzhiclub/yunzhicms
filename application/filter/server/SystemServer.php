@@ -33,12 +33,15 @@ class SystemServer
 
     /**
      * 生成 文章 的Read地址
-     * @param  int $id    文章id
+     * @param  ContentModel  $ContentModel    文章
      * @param  array  $param 传入配置参数
      * @return string        生成的URL地址
      */
-    static public function makeContentReadUrl($id, $param = [])
+    static public function makeContentReadUrl($ContentModel, $param = [])
     {
-        return 'hello';
+        // 查找路由URL，并按LCURD给出R的信息
+        
+        $url = $ContentModel->ContentTypeModel()->MenuModel()->getData('url');
+        return url('@' . $url . '/' . $ContentModel->getData('id'));
     }
 }

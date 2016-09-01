@@ -68,6 +68,7 @@ class ContentModel extends ModelModel
         if (null === $this->preContentModel) {
             $map = [];
             $map['id'] = ['<', $this->getData('id')];
+            $map['content_type_name'] = $this->getData('content_type_name');
             $this->preContentModel = $this->where($map)->order('id desc')->find(); 
         }
         return $this->preContentModel;
@@ -82,6 +83,7 @@ class ContentModel extends ModelModel
         if (null === $this->nextContentModel) {
             $map = [];
             $map['id'] = ['>', $this->getData('id')];
+            $map['content_type_name'] = $this->getData('content_type_name');
             $this->nextContentModel = $this->where($map)->order('id asc')->find();
         }
         return $this->nextContentModel;
