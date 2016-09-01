@@ -45,6 +45,10 @@ class BlockModel extends ModelModel
         return $this->BlockTypeModel;
     }
 
+    /**
+     * 获取合并后，可以供CV使用的配置信息   
+     * @return array 
+     */
     public function getConfig()
     {
         if (null === $this->config)
@@ -54,7 +58,10 @@ class BlockModel extends ModelModel
         return $this->config;
     }
 
-
+    /**
+     * 获取合并后可以供前台使用的过滤器信息
+     * @return array 
+     */
     public function getFilter()
     {
         if (null === $this->filter)
