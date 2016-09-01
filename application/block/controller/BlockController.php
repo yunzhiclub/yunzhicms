@@ -13,12 +13,14 @@ class BlockController extends Controller
 {
     protected $config                   = null;         // 配置信息
     protected $filter                   = null;         // 过滤器信息
+    protected $BlockModel               = null;         // 区块模型
     protected $currentMenuModel         = null;         // 当前菜单
     protected $currentThemeModel        = null;         // 当前主题
     protected $requestController        = '';           // 请求控制器信息
 
     public function __construct(BlockModel $BlockModel, Request $request = null)
     {
+        $this->BlockModel = $BlockModel;
 
         // 取配置过滤器信息
         $this->config = $BlockModel->getConfig();;
