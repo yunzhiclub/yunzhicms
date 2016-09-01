@@ -86,7 +86,8 @@ class PluginModel extends ModelModel
         $map = [];
         $map['plugin_id']    = $this->data['id'];
         $map['menu_id']     = $MenuModel->getData('id');
-        if (null === AccessPluginMenuModel::get($map))
+        $AccessPluginMenuModel = AccessPluginMenuModel::get($map);
+        if ('' === $AccessPluginMenuModel->getData('menu_id'))
         {
             return false;
         } else {
