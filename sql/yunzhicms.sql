@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 09/01/2016 15:33:39 PM
+ Date: 09/01/2016 16:00:26 PM
 */
 
 SET NAMES utf8;
@@ -106,8 +106,6 @@ CREATE TABLE `yunzhi_block_type` (
   `name` varchar(40) NOT NULL,
   `title` varchar(40) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `config` varchar(255) NOT NULL DEFAULT '[]',
-  `filter` varchar(255) NOT NULL DEFAULT '[]',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='区块类型表';
 
@@ -115,7 +113,7 @@ CREATE TABLE `yunzhi_block_type` (
 --  Records of `yunzhi_block_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block_type` VALUES ('Menu', '菜单', '显示菜单', '{\"menu_type_name\":{\"value\":\"main\",\"title\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"description\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"type\":\"text\"},\"id\":{\"value\":\"mu-menu\",\"title\":\"\"}}', '[]'), ('BreadCrumb', '面包屑', '', '[]', '[]'), ('Slider', '幻灯片', '', '[]', '[]'), ('ContentVideo', '文字视频介绍', '通常用于首页的关于我们', '[]', '[]'), ('DataCounter', '数据统计', '数据统计', '[]', '[]'), ('CaseShow', '案例展示', '', '[]', '[]'), ('ShowCaseSlider', '动态案例展示', '', '[]', '[]');
+INSERT INTO `yunzhi_block_type` VALUES ('Menu', '菜单', '显示菜单'), ('BreadCrumb', '面包屑', ''), ('Slider', '幻灯片', ''), ('ContentVideo', '文字视频介绍', '通常用于首页的关于我们'), ('DataCounter', '数据统计', '数据统计'), ('CaseShow', '案例展示', ''), ('ShowCaseSlider', '动态案例展示', '');
 COMMIT;
 
 -- ----------------------------
@@ -128,7 +126,6 @@ CREATE TABLE `yunzhi_component` (
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `version` varchar(255) NOT NULL DEFAULT '' COMMENT '版本',
-  `filter` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '字段过滤信息',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='组件（类型）表';
 
@@ -136,7 +133,7 @@ CREATE TABLE `yunzhi_component` (
 --  Records of `yunzhi_component`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":30,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"},\"date\":{\"type\":\"date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}'), ('Content', '新闻', '显示一篇新闻', '', '', '[]');
+INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0'), ('Content', '新闻', '显示一篇新闻', '', '');
 COMMIT;
 
 -- ----------------------------
