@@ -4,6 +4,7 @@ namespace app\model;
 class ContentModel extends ModelModel
 {
     private $ContentTypeModel       = null;             // 文章类型模型
+    private $CategoryModel          = null;             // 文章类别模型
     protected $preContentModel      = null;             // 上一篇文章
     protected $nextContentModel     = null;             // 下一篇文章
 
@@ -88,4 +89,14 @@ class ContentModel extends ModelModel
         }
         return $this->nextContentModel;
     }
+
+    public function getCategoryModel()
+    {
+        if (null === $this->CategoryModel){
+            $CategoryModel = $this->getData('type_name');
+            $this->CategoryModel = CategoryModel::get($CategoryModel);
+        }
+        return $this->CategoryModel;
+    }
+
 }
