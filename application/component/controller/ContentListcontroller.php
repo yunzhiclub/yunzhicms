@@ -36,5 +36,8 @@ class ContentListController extends ComponentController
         var_dump($id);
         $id = input('param.');
         var_dump($id);
+        // todo:前台直接对内容进行编辑
+        // 引入多字段及富文本编辑器
+        // 引入图片上传功能ng-file-upload
     }
 }
