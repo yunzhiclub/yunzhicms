@@ -8,12 +8,11 @@ return [
             'length'    =>  6,
             'etc'       =>  '..',
         ],
-          
     ], 
 
     // 生成的链接
     'href' => [ 
-      'type'        => 'System',
-      'function'    => 'makeFrontpageContentUrl',
+        'type'        => 'System',
+        'function'    => 'makeFrontpageContentUrl',
     ],    
 ];
