@@ -33,6 +33,10 @@ class BlockController extends Controller
         // 获取当前主题信息
         $this->currentThemeModel = ThemeModel::getCurrentThemeModel();
 
+        // 获取过滤器信息并传入V层
+        $filterModels = $this->BlockModel->getFilterModels();
+        $this->assign('filterModels', $filterModels);
+
         // 送配置 过滤器至V层
         $this->assign('config', $this->config);
         $this->assign('filter', $this->filter);

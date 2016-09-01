@@ -20,16 +20,6 @@ class PluginModel extends ModelModel
         return $this->PluginTypeModel;
     }
 
-    public function getConfigAttr()
-    {
-        return json_decode($this->getData('config'), true);
-    }
-
-    public function getFilterAttr()
-    {
-        return json_decode($this->getData('filter'), true);
-    }
-
     /**
      * 获取合并后，可以供CV使用的配置信息   
      * @return array 

@@ -34,9 +34,23 @@ class MenuModel extends ModelModel
 
     public function getConfigAttr()
     {
-        return json_decode($this->getData('config'));
+        return json_decode($this->getData('config'), true);
     }
 
+    public function getFilterAttr()
+    {
+        return json_decode($this->getData('filter'), true);
+    }
+
+    public function getFilter()
+    {
+        if (null === $this->filter)
+        {
+            // 合并当前菜单对应的组件过滤器及当前菜单的过滤器
+            $this->filter = Common::configMerge($this->ComponentModel()->getFilterAttr(), $this->getFilterAttr());
+        }
+        return $this->filter;  
+    }
 
     public function ComponentModel()
     {

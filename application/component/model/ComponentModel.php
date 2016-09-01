@@ -6,4 +6,5 @@ use app\Model\MenuModel;                        // 菜单
 
 class ComponentModel
 {
+
 }

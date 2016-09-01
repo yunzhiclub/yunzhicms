@@ -21,15 +21,6 @@ class BlockModel extends ModelModel
         'filter'    => '[]',
     ];
 
-    public function getConfigAttr()
-    {
-        return json_decode($this->getData('config'), true);
-    }
-
-    public function getFilterAttr()
-    {
-        return json_decode($this->getData('filter'), true);
-    }
 
     /**
      * 区域:模块 = n:1

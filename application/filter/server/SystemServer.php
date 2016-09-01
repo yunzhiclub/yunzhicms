@@ -29,4 +29,16 @@ class SystemServer
         $currentMenuModle = MenuModel::getCurrentMenuModel();
         return url('@' . $currentMenuModle->url . '/' . $id);
     }
+
+
+    /**
+     * 生成 文章 的Read地址
+     * @param  int $id    文章id
+     * @param  array  $param 传入配置参数
+     * @return string        生成的URL地址
+     */
+    static public function makeContentReadUrl($id, $param = [])
+    {
+        return 'hello';
+    }
 }

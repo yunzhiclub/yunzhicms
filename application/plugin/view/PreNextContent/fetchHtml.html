@@ -2,6 +2,7 @@
     <div class="col-md-6 text-left">
     </div>
     <div class="col-md-6 text-right">
-        {$nextContentModel->getData('id')}
+        {$nextContentModel->getData('id') | $filterModels['href']->filter}
+
     </div>
 </div>
