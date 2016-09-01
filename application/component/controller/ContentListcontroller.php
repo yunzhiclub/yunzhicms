@@ -19,7 +19,7 @@ class ContentListController extends ComponentController
 
 
     public function readAction($id)
-    {   
+    {
         $map = ['id' => $id];
         $ContentModel = ContentModel::get($map);
         $this->assign('ContentModel', $ContentModel);
