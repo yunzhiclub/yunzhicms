@@ -3,9 +3,32 @@ namespace app\model;
 
 class ContentModel extends ModelModel
 {
+    private $ContentTypeModel       = null;             // 文章类型模型
+    protected $preContentModel      = null;             // 上一篇文章
+    protected $nextContentModel     = null;             // 下一篇文章
+
+    protected $data = [
+        'id'    => 0,
+        'user_name' => '',
+        'content_type_name' => '',
+        'title'                 => '',
+        'create_time'           => 0,
+        'update_time'           => 0,
+        'delete_time'           => 0,
+        'is_freezed'            => 0,
+        'weight'                => 0,
+        'hit'                   => 0,
+        'is_deleted'            => 0,
+    ];
+
     public function ContentTypeModel()
     {
-        return $this->hasOne('ContentTypeModel', 'name', 'content_type_name');
+        if (null === $this->ContentTypeModel) {
+            $map = ['name' => $this->getData('content_type_name')];
+            $this->ContentTypeModel = ContentTypeModel::get($map);
+        }
+
+        return $this->ContentTypeModel;
     }
 
     /**
@@ -19,8 +42,8 @@ class ContentModel extends ModelModel
         if ('_field' === $name)
         {
             // 获取新闻所在的类别
-            $ContentTypeModel = $this->ContentTypeModel;
-
+            $ContentTypeModel = $this->ContentTypeModel();
+            
             // 初始化字段配置模型
             $FieldConfigModel = new FieldConfigModel();
             // 设置实体 用以查找扩展字段的值
@@ -34,5 +57,33 @@ class ContentModel extends ModelModel
         } else {
             return parent::__get($name);
         }
+    }
+
+    /**
+     * 获取 上一篇 文章
+     * @return 文章 ContentModel
+     */
+    public function getPreContentModel()
+    {
+        if (null === $this->preContentModel) {
+            $map = [];
+            $map['id'] = ['<', $this->getData('id')];
+            $this->preContentModel = $this->where($map)->order('id desc')->find(); 
+        }
+        return $this->preContentModel;
+    }
+
+    /**
+     * 获取 下一篇 文章
+     * @return 文章 ContentModel
+     */
+    public function getNextContentModel()
+    {
+        if (null === $this->nextContentModel) {
+            $map = [];
+            $map['id'] = ['>', $this->getData('id')];
+            $this->nextContentModel = $this->where($map)->order('id asc')->find();
+        }
+        return $this->nextContentModel;
     }
 }

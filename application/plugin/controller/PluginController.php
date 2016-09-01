@@ -1,13 +1,38 @@
 <?php
 namespace app\plugin\controller;
 use think\Controller;
-use app\model\PluginModel;
+
+use app\model\PluginModel;              // 插件
+use app\model\MenuModel;                // 菜单
+use app\model\ThemeModel;               // 主题
 
 /**
  * 插件管理
  */
 class PluginController extends Controller
 {
+    private $PluginModel = null;            // 当前启用插件
+    
+    public function __construct(PluginModel $PluginModel, Request $request = null)
+    {
+        $this->PluginModel = $PluginModel;
+
+        // 取配置过滤器信息
+        $this->config = $PluginModel->getConfig();
+        $this->filter = $PluginModel->getFilter();
+
+        // 取当前菜单信息
+        $this->currentMenuModel = MenuModel::getCurrentMenuModel();
+        parent::__construct($request);
+
+        // 获取当前主题信息
+        $this->currentThemeModel = ThemeModel::getCurrentThemeModel();
+
+        // 送配置 过滤器至V层
+        $this->assign('config', $this->config);
+        $this->assign('filter', $this->filter);
+    }
+
     /**
      * 初始化，供Cx中position标签调用
      * @param  string $name 位置名字
@@ -29,8 +54,9 @@ class PluginController extends Controller
             $className = 'app\plugin\controller\\' . $pluginModel->plugin_type_name . 'Controller';
             try 
             {
+               
                 // 实例化类 并调用
-                $class = new $className($blockModel);
+                $class = new $className($pluginModel);
                 $result = call_user_func_array([$class, 'fetchHtml'], [$object]); 
                 if ($result)
                 {

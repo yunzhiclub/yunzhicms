@@ -1,6 +1,6 @@
 <?php
 namespace app\block\controller;
-use app\block\model\MenuModel;            // 菜单
+use app\model\MenuModel;                    // 菜单
 
 /**
  * 菜单

@@ -26,4 +26,42 @@ class YunzhiModel extends Model
         $this->data[$name] = $value;
         return $this;
     }
+
+    /**
+     * 重写 查找单条记录
+     * 当返回值为null时，强制返回当前调用对象
+     * @access public
+     * @param mixed        $data  主键值或者查询条件（闭包）
+     * @param array|string $with  关联预查询
+     * @param bool         $cache 是否缓存
+     * @return static
+     * @throws exception\DbException
+     */
+    public static function get($data = null, $with = [], $cache = false)
+    {
+        $query = self::parseQuery($data, $with, $cache);
+        $result = $query->find($data);
+        if (null === $result) {
+            $className = get_called_class();
+            return new $className;
+        } else {
+            return $result;
+        }
+    }
+
+    /**
+     * 获取对象原始数据 如果不存在指定字段返回false
+     * @access public
+     * @param string $name 字段名 留空获取全部
+     * @return mixed
+     * @throws InvalidArgumentException
+     */
+    public function getData($name = null)
+    {
+        try {
+            return parent::getData($name);
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
 }

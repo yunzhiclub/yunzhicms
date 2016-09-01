@@ -5,13 +5,23 @@ use app\Common;
 
 class MenuModel extends ModelModel
 {
-    protected $fathermenuModel  = null;
+    protected $fatherMenuModel  = null;
     private $config             = null;         // 配置信息
     private $filter             = null;         // 过滤器信息
     private $depth              = 0;            // 菜单深度
+    private $ComponentModel     = null;         // 对应的组件
 
     private $availableSonMenuModels = null;     // 可用的子菜单列表
     private $isHaveAvailableSonMenus = null;    // 是否存在可用的子菜单列表
+
+    /**
+     * 默认的一些非 空字符串 的设置
+     * 用来存在放在空的数据对象中
+     */
+    protected $data = [
+        'config'    => '[]',
+        'filter'    => '[]',
+    ];
 
     public function setDepth($depth) {
         $this->depth = $depth;
@@ -22,9 +32,21 @@ class MenuModel extends ModelModel
         return $this->depth;
     }
 
-    public function Component()
+    public function getConfigAttr()
     {
-        return $this->hasOne('ComponentModel', 'name', 'component_name');
+        return json_decode($this->getData('config'));
+    }
+
+
+    public function ComponentModel()
+    {
+        if (null === $this->ComponentModel) {
+            $map = [];
+            $map['name'] = $this->getData('component_name');
+            $this->ComponentModel = ComponentModel::get($map);
+        }
+
+        return $this->ComponentModel;
     }
 
     public function getConfig()
@@ -32,14 +54,11 @@ class MenuModel extends ModelModel
         if (null === $this->config)
         {
             // 合并当前菜单对应的组件配置及当前菜单的配置
-            $this->config = Common::configMerge($this->Component->config, $this->config);
+            $this->config = Common::configMerge($this->ComponentModel()->config, $this->getConfigAttr());
         }
 
-        return $this->config;  
+        return $this->config;
     }
-
-
-
 
     /**
      * 获取用户当前访问的菜单
@@ -72,8 +91,9 @@ class MenuModel extends ModelModel
             }
             $currentMenuModel = self::get($map);
 
+
             // 示找到菜单项，则默认返回首页
-            if (null === $currentMenuModel) {
+            if ('' === $currentMenuModel->getData('id')) {
                 $map = ['is_home' => 1];
                 $currentMenuModel = self::get($map);
             }
@@ -102,7 +122,12 @@ class MenuModel extends ModelModel
      */
     public function fatherMenuModel()
     {
-        return $this->hasOne('MenuModel', 'id', 'pid');
+        if (null === $this->fatherMenuModel) {
+            $map = ['id' => $this->getData('pid')];
+            $this->fatherMenuModel = self::get($map);
+        }
+
+        return $this->fatherMenuModel;
     }
 
     /**
@@ -113,14 +138,16 @@ class MenuModel extends ModelModel
     public function isActive()
     {
         $currentMenuModel = self::getCurrentMenuModel();
+        
         do {
-            if ($this->id === $currentMenuModel->id)
+
+            if ($this->getData('id') === $currentMenuModel->getData('id'))
             {
                 return 1;
             }
 
-            $currentMenuModel = $currentMenuModel->fatherMenuModel;
-        } while (null !== $currentMenuModel);
+            $currentMenuModel = $currentMenuModel->fatherMenuModel();
+        } while ('' !== $currentMenuModel->getData('id'));
 
         return 0;
     }
@@ -214,7 +241,7 @@ class MenuModel extends ModelModel
         do {
             array_push($tree, $MenuModel);
             $MenuModel = $MenuModel->fatherMenuModel;
-        } while (null !== $MenuModel);
+        } while ('' !== $MenuModel->getData('id'));
         return array_reverse($tree);
     }
 

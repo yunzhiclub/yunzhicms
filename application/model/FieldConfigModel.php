@@ -44,10 +44,11 @@ class FieldConfigModel extends ModelModel
 
     public function __get($name)
     {
-        try {
-            return parent::__get($name);
-        } catch (\Exception $e) {
-
+        $result = parent::__get($name);
+        if ('' !== $result)
+        {
+            return $result;
+        } else {
             // 查询当前实体是否配置了当前字段
             $map = [];
             $map['type']        = $this->data['type'];
@@ -55,7 +56,7 @@ class FieldConfigModel extends ModelModel
             $map['field_name']  = $name;
             $map['status']      = 0;
             $FieldConfigModel   = self::get($map);
-            if (null === $FieldConfigModel)
+            if ('' === $FieldConfigModel->getData('id'))
             {
                 return '';
             }

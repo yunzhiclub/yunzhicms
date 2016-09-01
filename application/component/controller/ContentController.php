@@ -24,6 +24,7 @@ class ContentController extends ComponentController
         {
             $id = $this->config['id']['value'];
         }
+
         $ContentModel = ContentModel::get($id);
         $this->assign('ContentModel', $ContentModel);
 

@@ -1,6 +1,8 @@
 <?php
 namespace app\model;
 
+use app\Common;
+
 class PluginModel extends ModelModel
 {
     public $config = null;     // 配置信息
@@ -70,7 +72,7 @@ class PluginModel extends ModelModel
 
         // 判断当前菜单是否拥有此plugin的显示权限
         $map = ['plugin_id'=>$this->id, 'menu_id' => $currentMenuModel->id];
-        $AccessBlockMenuModel = AccessMenuPluginModel::get($map);
+        $AccessPluginMenuModel = AccessMenuPluginModel::get($map);
         if (null === $AccessPluginMenuModel)
         {
             return false;
