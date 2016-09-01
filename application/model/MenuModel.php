@@ -47,7 +47,7 @@ class MenuModel extends ModelModel
         if (null === $this->filter)
         {
             // 合并当前菜单对应的组件过滤器及当前菜单的过滤器
-            $this->filter = Common::configMerge($this->ComponentModel()->getFilterAttr(), $this->getFilterAttr());
+            $this->filter = Common::configMerge($this->ComponentModel()->getFilter(), $this->getFilterAttr());
         }
         return $this->filter;  
     }
