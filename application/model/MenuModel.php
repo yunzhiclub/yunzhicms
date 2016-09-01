@@ -68,7 +68,7 @@ class MenuModel extends ModelModel
         if (null === $this->config)
         {
             // 合并当前菜单对应的组件配置及当前菜单的配置
-            $this->config = Common::configMerge($this->ComponentModel()->config, $this->getConfigAttr());
+            $this->config = Common::configMerge($this->ComponentModel()->getConfig(), $this->getConfigAttr());
         }
 
         return $this->config;
