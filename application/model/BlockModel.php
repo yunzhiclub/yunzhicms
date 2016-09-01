@@ -100,7 +100,8 @@ class BlockModel extends ModelModel
         // 判断当前菜单是否拥有此block的显示权限
         $map = ['block_id'=>$this->id, 'menu_id' => $currentMenuModel->id];
         $AccessBlockMenuModel = AccessMenuBlockModel::get($map);
-        if (0 === $AccessBlockMenuModel->getData('id'))
+
+        if ('' === $AccessBlockMenuModel->getData('menu_id'))
         {
             return false;
         } else {
