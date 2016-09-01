@@ -23,12 +23,12 @@ class BlockModel extends ModelModel
 
     public function getConfigAttr()
     {
-        return json_decode($this->getData('config'));
+        return json_decode($this->getData('config'), true);
     }
 
     public function getFilterAttr()
     {
-        return json_decode($this->getData('filter'));
+        return json_decode($this->getData('filter'), true);
     }
 
     /**
@@ -49,9 +49,8 @@ class BlockModel extends ModelModel
     {
         if (null === $this->config)
         {
-            $this->config = Common::configMerge($this->BlockTypeModel()->config, $this->getConfigAttr());
+            $this->config = Common::configMerge($this->BlockTypeModel()->getConfigAttr(), $this->getConfigAttr());
         }
-
         return $this->config;
     }
 
@@ -60,7 +59,7 @@ class BlockModel extends ModelModel
     {
         if (null === $this->filter)
         {
-            $this->filter = Common::configMerge($this->BlockTypeModel->filter, $this->getFilterAttr());
+            $this->filter = Common::configMerge($this->BlockTypeModel()->getFilterAttr(), $this->getFilterAttr());
         }
 
         return $this->filter;

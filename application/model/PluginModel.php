@@ -5,35 +5,54 @@ use app\Common;
 
 class PluginModel extends ModelModel
 {
-    public $config = null;     // 配置信息
-    public $filter = null;     // 过滤器信息
+    protected $config = null;               // 配置信息
+    protected $filter = null;               // 过滤器信息
+    protected $PluginTypeModel = null;      // 插件类型MODEL
 
     /**
      * 区域:插件 = n:1
      */
     public function PluginTypeModel()
     {
-        return $this->hasOne('PluginTypeModel', 'name', 'plugin_type_name');
+        if (null === $this->PluginTypeModel) {
+            $this->PluginTypeModel = PluginTypeModel::get(['name' => $this->getData('plugin_type_name')]);
+        }
+        return $this->PluginTypeModel;
     }
 
+    public function getConfigAttr()
+    {
+        return json_decode($this->getData('config'), true);
+    }
+
+    public function getFilterAttr()
+    {
+        return json_decode($this->getData('filter'), true);
+    }
+
+    /**
+     * 获取合并后，可以供CV使用的配置信息   
+     * @return array 
+     */
     public function getConfig()
     {
         if (null === $this->config)
         {
-            $this->config = array();
-            $this->config = Common::configMerge($this->PluginTypeModel->config, $this->config);
+            $this->config = Common::configMerge($this->PluginTypeModel()->getConfigAttr(), $this->getConfigAttr());
         }
 
         return $this->config;
     }
 
-
+    /**
+     * 获取合并后可以供前台使用的过滤器信息
+     * @return array 
+     */
     public function getFilter()
     {
         if (null === $this->filter)
         {
-            $this->filter = array();
-            $this->filter = Common::configMerge($this->PluginTypeModel->filter, $this->filter);
+            $this->filter = Common::configMerge($this->PluginTypeModel()->getFilterAttr(), $this->getFilterAttr());
         }
 
         return $this->filter;
