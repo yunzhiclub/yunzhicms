@@ -18,12 +18,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {volist name="CategoryModels" id="CategoryModel"}
+                        {volist name="ContentTypeModels" id="_ContentTypeModel"}
                         <tr>
-                            <td>{$CategoryModel->title}</td>
-                            <td>{$CategoryModel->description}</td>
+                            <td>{$_ContentTypeModel->title}</td>
+                            <td>{$_ContentTypeModel->description}</td>
                             <td class="td-actions">
-                                <a href="{:url('@admin/MenuType/' . $CategoryModel->name)}" class="btn btn-small btn-info">
+                                <a href="{:url('@admin/MenuType/' . $_ContentTypeModel->name)}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 查看
                                 </a>
                                 <a href="" class="btn btn-small btn-info">
