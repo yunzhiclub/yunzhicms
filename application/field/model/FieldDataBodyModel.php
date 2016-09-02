@@ -3,7 +3,7 @@ namespace app\field\model;
 /**
  * body字段
  */
-class FieldDataBodyModel extends FieldModel
+class FieldDataBodyModel extends FieldDataModel
 {
 
 }

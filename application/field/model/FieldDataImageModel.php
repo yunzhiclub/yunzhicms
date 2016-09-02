@@ -3,7 +3,7 @@ namespace app\field\model;
 /**
  * image字段
  */
-class FieldDataImageModel extends FieldModel
+class FieldDataImageModel extends FieldDataModel
 {
 
 }

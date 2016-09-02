@@ -12,21 +12,11 @@ class FieldModel extends ModelModel
     protected $config = null;           // 配置信息
     protected $filter = null;           // 过滤器信息
 
+
     private $getDataByKeyId = null;
     private $getDataByKeyId_KeyId = null;
-    /**
-     * 区域:模块 = n:1
-     */
-    public function BlockTypeModel()
-    {
-        if (null === $this->BlockTypeModel) {
-            $map = [];
-            $map['name'] = $this->getData('block_type_name');
-            $this->BlockTypeModel = BlockTypeModel::get($map);
-        }
+    private $FieldTypeModel = null;             // 字段类型模型
 
-        return $this->BlockTypeModel;
-    }
 
     /**
      * 获取合并后，可以供CV使用的配置信息   
@@ -84,5 +74,15 @@ class FieldModel extends ModelModel
         }
 
         return $this->getDataByKeyId;
+    }
+
+    public function FieldTypeModel()
+    {
+        if (null === $this->FieldTypeModel)
+        {
+            $this->FieldTypeModel = FieldTypeModel::get(['name' => $this->getData('field_type_name')]);
+        }
+        
+        return $this->FieldTypeModel;
     }
 }
