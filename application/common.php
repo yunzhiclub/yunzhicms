@@ -359,8 +359,43 @@ class Common{
     static public function getEditUrl()
     {
         $requestUri = $_SERVER['REQUEST_URI'];
-
         return str_replace('.html', '/edit.html', $requestUri);
     }
+
+    /**
+     * 生成创建URL地址
+     * @return string 
+     * @author panjie
+     */
+    static public function getCreateUrl()
+    {
+        $requestUri = $_SERVER['REQUEST_URI'];
+        return str_replace('.html', '/create.html', $requestUri);
+    }
+
+    /**
+     * 生成 保存 URL地址
+     * @return string 
+     * @author panjie
+     */
+    static public function getSaveUrl()
+    {
+        $requestUris = explode('/', $_SERVER['REQUEST_URI']);
+        array_pop($requestUris);
+        return implode('/', $requestUris) . '.html'; 
+    }
+
+    /**
+     * 生成更新地址
+     * @return   string                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-02T09:21:00+0800
+     */
+    static public function getUpdateUrl()
+    {
+        $requestUri = $_SERVER['REQUEST_URI'];
+        return str_replace('.html', '/update.html', $requestUri);
+    }
+
 }
 
