@@ -80,6 +80,8 @@ class MenuModel extends ModelModel
      */
     static public function getCurrentMenuModel()
     {
+        // 定义路由关键字
+        $routeKeys = ['edit', ':id', 'delete', 'create'];
         static $currentMenuModel = null;
         if (null === $currentMenuModel)
         {
@@ -93,9 +95,9 @@ class MenuModel extends ModelModel
                 // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
                 foreach ($rules as $key => $rule)
                 {
-                    // 检测是否为read, 检测到，则直接跳到下一个循环
-                    $pattern = '/^:/';
-                    if (preg_match($pattern, $rule))
+
+                    // 检测是否为路由关键字, 检测到，则直接跳到下一个循环
+                    if (in_array($rule, $routeKeys))
                     {
                         unset($rules[$key]);
                     }
