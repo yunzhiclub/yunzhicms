@@ -12,7 +12,7 @@
                         </form>
                         这里使用编辑器，来编辑字段
                         <br />
-                            {$ContentModel->_field->body->value}
+                            {$ContentModel->getFieldDataModelByFieldName('body')->getData('value')}
                         </div>
                     </div>
                 </div>

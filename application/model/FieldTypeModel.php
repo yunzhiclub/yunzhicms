@@ -3,9 +3,9 @@ namespace app\model;
 use think\Db;
 use think\Loader;
 /**
- * 字段配置
+ * 类型
  */
-class FieldConfigModel extends ModelModel
+class FieldTypeModel extends ModelModel
 {
     protected $Object;      // 实体。第一篇文章都称为一个特定的实体\对象。
     /**
@@ -68,5 +68,49 @@ class FieldConfigModel extends ModelModel
             // 返回该对象实体下的字段信息
             return $FieldModel->getResult($FieldConfigModel->getData('id'), $this->Object->getData('id'), $FieldConfigModel->getData('is_one'));
         }
+    }
+
+    /**
+     * 读取相关配置文件后，得出配置信息
+     * @return array 
+     */
+    public function getConfig()
+    {
+        if (null === $this->config) {
+            $configFilePath = APP_PATH . 
+                'block' . DS . 
+                'config' . DS .
+                $this->getData('name') . 'Config.php';
+            $configFilePath = realpath($configFilePath);
+            if (false === $configFilePath) {
+                $this->config = [];
+            } else {
+                $this->config = include $configFilePath;
+            }
+        }
+
+        return $this->config;
+    }
+
+    /**
+     * 读取相关 过滤器配置 文件后，得出过滤器信息
+     * @return array 
+     */
+    public function getFilter()
+    {
+        if (null === $this->filter) {
+            $filterFilePath = APP_PATH . 
+                'block' . DS . 
+                'filter' . DS .
+                $this->getData('name') . 'Filter.php';
+            $filterFilePath = realpath($filterFilePath);
+            if (false === $filterFilePath) {
+                $this->filter = [];
+            } else {
+                $this->filter = include $filterFilePath;
+            }
+        }
+
+        return $this->filter;
     }
 }

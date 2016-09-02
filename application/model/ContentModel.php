@@ -21,6 +21,11 @@ class ContentModel extends ModelModel
         'is_deleted'            => 0,
     ];
 
+    /**
+     * 内容类型 n:1
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-02T13:54:47+0800
+     */
     public function ContentTypeModel()
     {
         if (null === $this->ContentTypeModel) {
@@ -31,32 +36,32 @@ class ContentModel extends ModelModel
         return $this->ContentTypeModel;
     }
 
-    /**
-     * 重写__get， 取出扩展的字段值
-     * @param  string $name 
-     * @return        
-     */
-    public function __get($name)
-    {
-        // 取字段信息
-        if ('_field' === $name)
-        {
-            // 获取新闻所在的类别
-            $ContentTypeModel = $this->ContentTypeModel();
-            
-            // 初始化字段配置模型
-            $FieldConfigModel = new FieldConfigModel();
-            // 设置实体 用以查找扩展字段的值
-            $FieldConfigModel->setObject($this);
-            // 设置实体类别
-            $FieldConfigModel->setType($this->name);
-            // 设置实体名
-            $FieldConfigModel->setValue($ContentTypeModel->getData('name'));
 
-            return $FieldConfigModel;
-        } else {
-            return parent::__get($name);
+    /**
+     * 通过扩展字段的 字段名 来获取字段内容
+     * @param    string                   $fieldName 字段名
+     * @return   Object                              FieldDataXXXModel 
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-02T14:13:25+0800
+     */
+    public function getFieldDataModelByFieldName($fieldName)
+    {
+        if (empty($fieldName)) {
+            throw new \Exception("the param can't  empty", 1);
         }
+
+        // 获取对应的全部字段的信息
+        $FieldModels = $this->ContentTypeModel()->FieldModels();
+
+        // 遍历当前 内容类型 的扩展字段信息.
+        foreach ($FieldModels as $FieldModel) {
+            // 找到当字段，则返回当前字段对应的扩展字段对象
+            if ($FieldModel->getData('field_type_name') === $fieldName) {
+                return $FieldModel->getDataByKeyId($this->getData('id'));
+            }
+        }
+
+        throw new \Exception('not found fieldName:' . $fieldName . ' of ContentModel:' . $this->getData('id'), 1);
     }
 
     /**

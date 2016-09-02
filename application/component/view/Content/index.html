@@ -13,7 +13,7 @@
                 
                     <div class="row">
                         <div class="col-md-12">
-                            {$ContentModel->_field->body->value}
+                             {$ContentModel->getFieldDataModelByFieldName('body')->getData('value')}
                         </div>
                     </div>
                 </div>
