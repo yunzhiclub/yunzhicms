@@ -81,7 +81,7 @@ class MenuModel extends ModelModel
     static public function getCurrentMenuModel()
     {
         // 定义路由关键字
-        $routeKeys = ['edit', ':id', 'delete', 'create'];
+        $routeKeys = ['edit', ':id', 'delete', 'create', 'save'];
         static $currentMenuModel = null;
         if (null === $currentMenuModel)
         {
