@@ -11,7 +11,7 @@ use app\model\MenuModel;                        // 菜单模型
 use app\model\UserModel;                        // 用户
 use app\model\ThemeModel;                       // 主题
 
-class ComponentController extends Controller implements ComponentInterface
+class ComponentController extends Controller
 {
     protected $config                   = null;         // 配置信息
     protected $fileter                  = null;         // 过滤器信息
@@ -113,37 +113,48 @@ class ComponentController extends Controller implements ComponentInterface
 
     public function indexAction()
     {
-        
+        var_dump(debug_backtrace()[0]);        
     }
-
+    /**
+     * [createAction description]
+     * @Author   Panjie                   panjie@mengyunzhi.com
+     * @DateTime 2016-09-02T09:15:50+0800
+     * @return   [type]                   [description]
+     */
     public function createAction()
     {
-
+        var_dump(debug_backtrace()[0]);
     }
 
+    /**
+     * [saveAction description]
+     * @return   [type]                   [description]
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-02T09:19:36+0800
+     */
     public function saveAction()
     {
-
+        var_dump(debug_backtrace()[0]);
     }
 
     public function readAction($id)
     {
-
+        var_dump(debug_backtrace()[0]);
     }
 
     public function editAction($id)
     {
-
+        var_dump(debug_backtrace()[0]);
     }
 
     public function updateAction()
     {
-
+        var_dump(debug_backtrace()[0]);
     }
 
     public function deleteAction($id)
     {
-
+        var_dump(debug_backtrace()[0]);
     }
 
 

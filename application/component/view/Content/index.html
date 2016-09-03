@@ -5,9 +5,15 @@
             <div class="col-md-12">
                 <!-- start contact content -->
                 <div class="mu-contact-content">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <a href="{:app\\Common::getCreateUrl()}">编辑</a>
+                    </div>
+                </div>
+                
                     <div class="row">
                         <div class="col-md-12">
-                            {$ContentModel->_field->body->value}
+                             {$ContentModel->getFieldDataModelByFieldName('body')->getData('value')}
                         </div>
                     </div>
                 </div>
