@@ -3,16 +3,19 @@ namespace app\label\controller;
 
 use think\Controller;
 use app\Common;
+use think\Loader;
 
 class LabelController extends Controller
 {
-    private $FieldDataModel = null;
+    private $FieldDataXXXModel = null;                  // 某个扩展字段的模型
+    private $nameTag;                                   // 字段输出时的 name 标签
 
-    public function __construct(&$FieldDataModel = null)
+    public function __construct(&$FieldDataXXXModel = null)
     {
         parent::__construct();
-        $this->FieldDataModel = $FieldDataModel;
-        $this->assign('FieldDataModel', $FieldDataModel);
+        $this->FieldDataXXXModel = $FieldDataXXXModel;
+        $this->assign('FieldDataXXXModel', $FieldDataXXXModel);
+        
     }
 
     /**
@@ -35,6 +38,12 @@ class LabelController extends Controller
         }
     }
 
+    /**
+     * 获取处理后的html代码
+     * @return   String                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T09:51:51+0800
+     */
     public function fetchHtml()
     {
         $calledClassName = Common::getControllerName(get_called_class());

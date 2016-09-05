@@ -64,4 +64,15 @@ class YunzhiModel extends Model
             return '';
         }
     }
+
+    /**
+     * 获取表的名称
+     * @return   String                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T09:57:18+0800
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }
