@@ -1,7 +1,7 @@
 <?php
 namespace app\model;
 use think\Loader;
-use app\label\controller\LabelController;
+use app\field\controller\FieldController;
 
 /**
  * 字段设置
@@ -109,6 +109,6 @@ class FieldModel extends ModelModel
         $FieldDataXXXModel = $this->getFieldDataXXXModelByKeyId($keyId);
 
         // 对扩展字段模型进行标签的渲染
-        return LabelController::renderFieldDataModel($this->FieldTypeModel()->getData('label_type'), $FieldDataXXXModel);
+        return FieldController::renderFieldDataModel($this->FieldTypeModel()->getData('name'), $FieldDataXXXModel);
     }
 }

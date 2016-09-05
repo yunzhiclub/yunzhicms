@@ -1,11 +1,11 @@
 <?php
-namespace app\label\controller;
+namespace app\field\controller;
 
 use think\Controller;
 use app\Common;
 use think\Loader;
 
-class LabelController extends Controller
+class FieldController extends Controller
 {
     private $FieldDataXXXModel = null;                  // 某个扩展字段的模型
     private $nameTag;                                   // 字段输出时的 name 标签
@@ -28,7 +28,7 @@ class LabelController extends Controller
      */
     static public function renderFieldDataModel($labelType, &$FieldDataXXXModel)
     {
-        $className = 'app\label\controller\\' . ucfirst($labelType) . 'Controller';
+        $className = 'app\field\controller\\' . ucfirst($labelType) . 'Controller';
         if (class_exists($className))
         {
             $LabelController = new $className($FieldDataXXXModel);
@@ -47,6 +47,6 @@ class LabelController extends Controller
     public function fetchHtml()
     {
         $calledClassName = Common::getControllerName(get_called_class());
-        return $this->fetch('label@' . $calledClassName . '/fetchHtml');
+        return $this->fetch('field@' . $calledClassName . '/fetchHtml');
     }
 }
