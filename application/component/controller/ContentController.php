@@ -1,5 +1,6 @@
 <?php
 namespace app\component\controller;
+use app\Common;
 use app\model\ContentModel;                 // 文章
 use app\model\CategoryModel;                // 类别
 

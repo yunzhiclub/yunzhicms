@@ -11,7 +11,10 @@
 namespace app;
 use think\Route;
 use think\Db;
+use think\Request;
+use think\Session;
 use app\model\MenuModel;
+use app\model\UserModel;
 
 // 初始化
 Common::init();
@@ -20,6 +23,7 @@ Common::init();
 Common::registerRouter();
 
 class Common{
+    static protected $token = [];
 
     /**
      * 注册路由信息
@@ -397,5 +401,198 @@ class Common{
         return str_replace('.html', '/update.html', $requestUri);
     }
 
+    /**
+     * 检测当前用户触发的权限
+     * @return   bool                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T12:23:44+0800
+     */
+    static public function checkAccess()
+    {
+        
+    }
+
+    /**
+     * 生成token
+     * @return   string                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T13:19:42+0800
+     */
+    static public function makeToken()
+    {
+        // 获取当前访问action
+        $action = Request::instance()->action();
+
+        // 获取当前菜单
+        $currentMenuModel = MenuModel::getCurrentMenuModel();
+        $tokens = Session::get('tokens');
+
+        // 如果不存在，则生成. todo:对session是否过期的判断
+        if (null === $tokens || !isset($tokens[$currentMenuModel->getData('id') . '_' . $action]))
+        {
+            // 生成token
+            $token = sha1($_SERVER['UNIQUE_ID'] . $currentMenuModel->getData('id') . $action .config('token_suffix'));
+            $tokens[$currentMenuModel->getData('id'). '_' . $action] = $token;
+            Session::set('tokens', $tokens);
+        }
+        
+        // 返回当前菜单对应的session
+        return $tokens[$currentMenuModel->getData('id'). '_' . $action];
+    }
+
+    /**
+     * 通过token获取对应的menuModel
+     * @param    string                   $token 
+     * @return   MenuModel                
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T13:26:23+0800
+     */
+    static public function getMenuModelByToken(&$token)
+    {
+        $keys = self::getKeysByToken($token);
+        $menuId = $keys[0];
+        return MenuModel::get(['id'=>$menuId]);
+    }
+
+    /**
+     * 通过token获取 token 对应的action
+     * @param    string                   &$token 
+     * @return   string                           
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T13:56:40+0800
+     */
+    static public function getActionByToken(&$token)
+    {
+        $keys = self::getKeysByToken($token);
+        return $keys[1];
+    }
+
+    /**
+     * 通过token 获取 token 对应的键值 比如 将3_index 转化为 ['3', 'index']
+     * 表示 menu_id = 3 , action = 'index' 
+     * @param    string                   &$token 
+     * @return   array                           ['menu_id', 'action']
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T13:56:59+0800
+     */
+    static public function getKeysByToken(&$token)
+    {
+        $keys = array();
+        $tokens = Session::get('tokens');
+        if (null !== $tokens) {
+            $key = array_search($token, $tokens);
+            if (false !== $key) {
+                $keys = explode('_', $key);
+            }
+        }
+        return $keys;
+    }
+
+    /**
+     * 检测传入的token是否有效
+     * @param    string                   &$token 
+     * @return   bool                           
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T13:59:00+0800
+     */
+    static public function checkTokenisEffective(&$token)
+    {
+        $keys = self::getKeysByToken($token);
+        if (empty($keys))
+        {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    /**
+     * 检测当前用户是否拥有 传入的token对应的action及 菜单权限
+     * @param    string                   &$token 
+     * @return   bool                          
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T13:59:21+0800
+     */
+    static public function checkIsAllowedByToken(&$token)
+    {
+        if (!self::checkTokenisEffective($token)) {
+            return false;
+        }
+
+        $MenuModel = self::getMenuModelByToken($token);
+        $action = self::getActionByToken($token);
+        $access = self::getAccessByAction($action);
+
+        $currentFrontUserModel = UserModel::getCurrentFrontUserModel();
+        if (!$currentFrontUserModel->getUserGroupModel()->getAccessByLCURDValue($MenuModel, $access)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 根据action 获取相应的二进制形式的access值
+     * @param    string                   $action 
+     * @return   int                           00000 五位二进制 分别代码LCURD
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T13:37:27+0800
+     */
+    static public function getAccessByAction($action)
+    {
+        $access = 0;
+        switch ($action) {
+            case 'index':
+                $access = 16;
+                break;
+
+            case 'create':
+            case 'save':
+                $access = 8;
+                break;
+
+            case 'edit':
+            case 'update':
+                $access = 2;
+                break;
+
+            case 'read':
+                $access = 2;
+                break;
+
+
+            case 'delete':
+                $access = 1;
+                break;
+            default:
+                $access = 0;
+                break;
+        }
+        return $access;
+    }
+
+    static public function makeTokenByMCA($module, $controller, $action)
+    {
+        // 获取当前访问action
+        $action = Request::instance()->action();
+
+        // 获取当前菜单
+        $currentMenuModel = MenuModel::getCurrentMenuModel();
+
+        $tokens = Session::get('tokens');
+
+        // 如果不存在，则生成. todo:对session是否过期的判断
+        if (null === $tokens || !isset($tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $action]))
+        {
+            // 生成token
+            $token = sha1($_SERVER['UNIQUE_ID'] . $module . $controller . $action . $currentMenuModel->getData('id') . $action . microtime() . config('token_suffix'));
+            $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $action] = $token;
+            Session::set('tokens', $tokens);
+        }
+        
+        // 返回生成并且注册的token
+        return $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $action];
+    }
 }
 

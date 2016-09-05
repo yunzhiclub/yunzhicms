@@ -58,7 +58,7 @@ class ContentModel extends ModelModel
         foreach ($FieldModels as $FieldModel) {
             // 找到当字段，则返回当前字段对应的扩展字段对象
             if ($FieldModel->getData('field_type_name') === $fieldName) {
-                return $FieldModel->getDataByKeyId($this->getData('id'));
+                return $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id'));
             }
         }
 
