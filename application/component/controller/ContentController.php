@@ -24,9 +24,6 @@ class ContentController extends ComponentController
 
     public function createAction()
     {
-        $token = Common::makeToken();
-        var_dump($token);
-        var_dump(Common::checkIsAllowedByToken($token));
         $this->assign('ContentModel', $this->ContentModel);
         return $this->fetch();
     }
