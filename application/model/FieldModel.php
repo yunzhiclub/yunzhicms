@@ -1,6 +1,7 @@
 <?php
 namespace app\model;
 use think\Loader;
+use app\label\controller\LabelController;
 
 /**
  * 字段设置
@@ -52,7 +53,7 @@ class FieldModel extends ModelModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-02T13:37:08+0800
      */
-    public function getDataByKeyId($keyId)
+    public function getFieldDataXXXModelByKeyId($keyId)
     {
         if ($keyId !== $this->getDataByKeyId_KeyId)
         {
@@ -66,16 +67,17 @@ class FieldModel extends ModelModel
             $table = 'app\field\model\\' . Loader::parseName('field_data_' . $this->getData('field_type_name'), 1) . 'Model';
             $FiledDataModel = new $table;
 
-            if ($this->getData('is_one')) {
-                $this->getDataByKeyId = $FiledDataModel->get($map);
-            } else {
-                $this->getDataByKeyId = $FiledDataModel->where($map)->order('weight desc')->select();
-            }
+            $this->getDataByKeyId = $FiledDataModel->get($map);
         }
 
         return $this->getDataByKeyId;
     }
 
+    /**
+     * 字段 : 字段类型 = n:1
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T09:07:36+0800
+     */
     public function FieldTypeModel()
     {
         if (null === $this->FieldTypeModel)
@@ -84,5 +86,29 @@ class FieldModel extends ModelModel
         }
         
         return $this->FieldTypeModel;
+    }
+
+    /**
+     * 渲染 传入模型的当前字段
+     * @param    Object                   &$Model 任意调用当前字段的模型
+     * @return   string 按字段的label类型 进行html 渲染后输出的 html代码
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T09:35:46+0800
+     */
+    public function render(&$XXXModel)
+    {
+        // 根据关键字得到字段的模型 支持id与name关键字
+        if ($XXXModel->getData('id') !== '')
+        {
+            $keyId = $XXXModel->getData('id');
+        } else {
+            $keyId = $XXXModel->getData('name');
+        }
+
+        // 获取 扩展字段模型
+        $FieldDataXXXModel = $this->getFieldDataXXXModelByKeyId($keyId);
+
+        // 对扩展字段模型进行标签的渲染
+        return LabelController::renderFieldDataModel($this->FieldTypeModel()->getData('label_type'), $FieldDataXXXModel);
     }
 }
