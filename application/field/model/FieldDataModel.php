@@ -2,7 +2,7 @@
 namespace app\field\model;
 use app\YunzhiModel;
 use app\model\FieldModel;
-use app\filter\controller\FieldController;
+use app\label\controller\LabelController;
 
 class FieldDataModel extends YunzhiModel
 {
@@ -25,7 +25,7 @@ class FieldDataModel extends YunzhiModel
      */
     public function render()
     {
-        $FieldController = new FieldController;
-        return $FieldController->renderFieldDataModel($this); 
+        $LabelController = new LabelController;
+        return $LabelController->renderFieldDataModel($this); 
     }
 }

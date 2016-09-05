@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "Bootstrap-Clean-Dashboard-Theme": "https://github.com/keaplogik/Bootstrap-Clean-Dashboard-Theme.git"
+    "Bootstrap-Clean-Dashboard-Theme": "https://github.com/keaplogik/Bootstrap-Clean-Dashboard-Theme.git",
+    "wangEditor": "^2.1.18"
   }
 }
