@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 09/02/2016 14:38:40 PM
+ Date: 09/05/2016 09:42:23 AM
 */
 
 SET NAMES utf8;
@@ -162,7 +162,7 @@ CREATE TABLE `yunzhi_content` (
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '358', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '117', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '41', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '358', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '118', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '41', '0');
 COMMIT;
 
 -- ----------------------------
@@ -218,7 +218,7 @@ CREATE TABLE `yunzhi_field` (
   `relate_value` varchar(40) NOT NULL DEFAULT '' COMMENT '关联实体类型的具体值',
   `title` varchar(40) NOT NULL DEFAULT '' COMMENT '后台 编辑 添加 时显示的信息',
   `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
-  `is_one` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否唯一. 1: 1对1 ；2：1对多',
+  `config` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '字段配置信息 json',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='字段表 各个实体与字段的对应关系写在这里';
 
@@ -226,7 +226,7 @@ CREATE TABLE `yunzhi_field` (
 --  Records of `yunzhi_field`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field` VALUES ('1', 'body', 'Content', 'news', '内容', '0', '1'), ('2', 'image', 'Content', 'news', '新闻图片', '0', '1'), ('3', 'body', 'Content', 'products', '新闻内容', '0', '1');
+INSERT INTO `yunzhi_field` VALUES ('1', 'body', 'Content', 'news', '内容', '0', '[]'), ('2', 'image', 'Content', 'news', '新闻图片', '0', '[]'), ('3', 'body', 'Content', 'products', '新闻内容', '0', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -324,8 +324,7 @@ CREATE TABLE `yunzhi_field_data_image` (
 DROP TABLE IF EXISTS `yunzhi_field_type`;
 CREATE TABLE `yunzhi_field_type` (
   `name` varchar(40) NOT NULL,
-  `type` varchar(40) NOT NULL DEFAULT 'text' COMMENT '类型',
-  `config` varchar(255) NOT NULL DEFAULT '[]' COMMENT '配置信息(json)',
+  `label_type` varchar(40) NOT NULL DEFAULT 'text' COMMENT 'fk label 类型',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字段类型表';
@@ -334,7 +333,7 @@ CREATE TABLE `yunzhi_field_type` (
 --  Records of `yunzhi_field_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_type` VALUES ('body', 'textarea', '[]', '0'), ('image', 'image', '[]', '0');
+INSERT INTO `yunzhi_field_type` VALUES ('body', 'textarea', '0'), ('image', 'image', '0');
 COMMIT;
 
 -- ----------------------------
