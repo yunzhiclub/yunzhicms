@@ -17,18 +17,21 @@ class FieldController extends Controller
      * @return                      
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-05T16:33:41+0800
-     */ 
+     */
     public function ajaxAction()
     {
         // 检测传入的token是否有效
-        // 根据传入的token，调用当前 M 对应的 CA
-        
-        
+        // 根据传入的token，调用相同的action
+        // 取出token对应的action
+        // 送入相关类对应的action方法（注意：在此的action对应当前组件action）
     }
 
 
     public function init(&$FieldDataXXXModel = null)
     {
+        // TODO：添加调用的JS外部链接。然后统一生成在footer的js区域
+        // 
+        
         $this->FieldDataXXXModel = $FieldDataXXXModel;
         // 生成token, makeToken函数，必须重写，否则调无法调用
         $this->token = $this->makeToken();
@@ -68,7 +71,9 @@ class FieldController extends Controller
     public function fetchHtml()
     {
         $calledClassName = Common::getControllerName(get_called_class());
-        return $this->fetch('field@' . $calledClassName . '/fetchHtml');
+        $html = $this->fetch('field@' . $calledClassName . '/fetchHtml');
+        $js = $this->fetch('field@' . $calledClassName . '/fetchJavascript');
+        return $html . $js;
     }
 
     /**
