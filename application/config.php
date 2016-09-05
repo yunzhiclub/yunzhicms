@@ -21,7 +21,9 @@ return [
     'controller_suffix'      => true,
     // 应用类库后缀
     'class_suffix'           => true,
-
+    // token后缀
+    'token_suffix'           => 'yunzhicms',
+    
     // +----------------------------------------------------------------------
     // | 模块设置
     // +----------------------------------------------------------------------
@@ -33,7 +35,7 @@ return [
     // 模型名后缀
     'model_suffix'           => 'Model',
     // 禁止访问模块
-    'deny_module_list'       => ['common', 'block', 'field', 'model', 'plugin', 'theme'],
+    'deny_module_list'       => ['common', 'block', 'model', 'plugin', 'theme'],
 
     // +----------------------------------------------------------------------
     // | URL设置

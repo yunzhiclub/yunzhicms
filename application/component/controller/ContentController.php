@@ -1,5 +1,6 @@
 <?php
 namespace app\component\controller;
+use app\Common;
 use app\model\ContentModel;                 // 文章
 use app\model\CategoryModel;                // 类别
 
@@ -23,6 +24,9 @@ class ContentController extends ComponentController
 
     public function createAction()
     {
+        $token = Common::makeToken();
+        var_dump($token);
+        var_dump(Common::checkIsAllowedByToken($token));
         $this->assign('ContentModel', $this->ContentModel);
         return $this->fetch();
     }

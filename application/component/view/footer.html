@@ -29,11 +29,11 @@
     $(function() {
       $('#file_upload').uploadify({
         'swf'      : '{:__ROOT__}/lib/uploadify/uploadify.swf',
-        'uploader' : '{:__ROOT__}/lib/uploadify/uploadify.php',
+        'uploader' : '{:url("field/Image/ajax")}',
         'debug' : true,
         'onUploadSuccess' : function(file, data, response) {
           console.log(file);
-          console.log(data);
+          $('#return').html(data);
           console.log(response);
         }
       });
