@@ -82,6 +82,14 @@
   <!-- Add fancyBox -->        
   <script type="text/javascript" src="{:__ROOT__}/theme/varsity/js/jquery.fancybox.pack.js"></script>
   
+  <!--wangEditor-->
+  <script type="text/javascript" src="{:__ROOT__}/bower_components/wangEditor/dist/js/wangEditor.min.js"></script>
   
+  <!--这里引用jquery和wangEditor.js-->
+<script type="text/javascript">
+    var editor = new wangEditor('div1');
+    editor.create();
+</script>
+
   <!-- Custom js -->
   <script src="{:__ROOT__}/theme/varsity/js/custom.js"></script> 

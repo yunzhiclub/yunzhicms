@@ -1,7 +1,12 @@
 <div class="row">
     <div class="col-md-6 text-left">
+        {neq name="preContentModel->getData('id')" value=""}
+        << <a href="{$preContentModel | $filterModels['href']->filter}">{$preContentModel->getData('title')}</a>
+        {/neq}
     </div>
     <div class="col-md-6 text-right">
-        {$nextContentModel->getData('id')}
+        {neq name="nextContentModel->getData('id')" value=""}
+        <a href="{$nextContentModel | $filterModels['href']->filter}">{$nextContentModel->getData('title')}</a> >>
+        {/neq}
     </div>
 </div>

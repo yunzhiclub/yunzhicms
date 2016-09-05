@@ -12,14 +12,14 @@ class ModelModel extends YunzhiModel
         'param'     => 'json',
     ];
 
-    public function getFilter()
+    public function getConfigAttr()
     {
-        if (null === $this->filter)
-        {
-            // 合并当前菜单对应的组件过滤器及当前菜单的过滤器
-            $this->filter = Common::configMerge($this->Component->filter, json_decode($this->data['filter'], true));
-        }
-        return $this->filter;  
+        return json_decode($this->getData('config'), true);
+    }
+
+    public function getFilterAttr()
+    {
+        return json_decode($this->getData('filter'), true);
     }
 
     /**

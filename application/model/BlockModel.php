@@ -21,15 +21,6 @@ class BlockModel extends ModelModel
         'filter'    => '[]',
     ];
 
-    public function getConfigAttr()
-    {
-        return json_decode($this->getData('config'), true);
-    }
-
-    public function getFilterAttr()
-    {
-        return json_decode($this->getData('filter'), true);
-    }
 
     /**
      * 区域:模块 = n:1
@@ -53,7 +44,7 @@ class BlockModel extends ModelModel
     {
         if (null === $this->config)
         {
-            $this->config = Common::configMerge($this->BlockTypeModel()->getConfigAttr(), $this->getConfigAttr());
+            $this->config = Common::configMerge($this->BlockTypeModel()->getConfig(), $this->getConfigAttr());
         }
         return $this->config;
     }
@@ -66,7 +57,7 @@ class BlockModel extends ModelModel
     {
         if (null === $this->filter)
         {
-            $this->filter = Common::configMerge($this->BlockTypeModel()->getFilterAttr(), $this->getFilterAttr());
+            $this->filter = Common::configMerge($this->BlockTypeModel()->getFilter(), $this->getFilterAttr());
         }
 
         return $this->filter;

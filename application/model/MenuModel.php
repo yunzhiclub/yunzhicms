@@ -34,9 +34,23 @@ class MenuModel extends ModelModel
 
     public function getConfigAttr()
     {
-        return json_decode($this->getData('config'));
+        return json_decode($this->getData('config'), true);
     }
 
+    public function getFilterAttr()
+    {
+        return json_decode($this->getData('filter'), true);
+    }
+
+    public function getFilter()
+    {
+        if (null === $this->filter)
+        {
+            // 合并当前菜单对应的组件过滤器及当前菜单的过滤器
+            $this->filter = Common::configMerge($this->ComponentModel()->getFilter(), $this->getFilterAttr());
+        }
+        return $this->filter;  
+    }
 
     public function ComponentModel()
     {
@@ -54,7 +68,7 @@ class MenuModel extends ModelModel
         if (null === $this->config)
         {
             // 合并当前菜单对应的组件配置及当前菜单的配置
-            $this->config = Common::configMerge($this->ComponentModel()->config, $this->getConfigAttr());
+            $this->config = Common::configMerge($this->ComponentModel()->getConfig(), $this->getConfigAttr());
         }
 
         return $this->config;
@@ -66,6 +80,8 @@ class MenuModel extends ModelModel
      */
     static public function getCurrentMenuModel()
     {
+        // 定义路由关键字
+        $routeKeys = ['edit', ':id', 'delete', 'create', 'save'];
         static $currentMenuModel = null;
         if (null === $currentMenuModel)
         {
@@ -79,9 +95,9 @@ class MenuModel extends ModelModel
                 // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
                 foreach ($rules as $key => $rule)
                 {
-                    // 检测是否为read, 检测到，则直接跳到下一个循环
-                    $pattern = '/^:/';
-                    if (preg_match($pattern, $rule))
+
+                    // 检测是否为路由关键字, 检测到，则直接跳到下一个循环
+                    if (in_array($rule, $routeKeys))
                     {
                         unset($rules[$key]);
                     }

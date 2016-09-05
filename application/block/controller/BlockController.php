@@ -33,6 +33,10 @@ class BlockController extends Controller
         // 获取当前主题信息
         $this->currentThemeModel = ThemeModel::getCurrentThemeModel();
 
+        // 获取过滤器信息并传入V层
+        $filterModels = $this->BlockModel->getFilterModels();
+        $this->assign('filterModels', $filterModels);
+
         // 送配置 过滤器至V层
         $this->assign('config', $this->config);
         $this->assign('filter', $this->filter);
@@ -95,9 +99,11 @@ class BlockController extends Controller
             'block' . DS .
             Common::getControllerName(get_called_class()) . DS .
             'fetchHtml.html';
-
+        // 路径格式化，如果文件不存在，则返回false
+        $themeTemplate = realpath($themeTemplate);
+        
         // 主题文件存在，则调用主题文件进行渲染
-        if (is_file($themeTemplate))
+        if (false !== $themeTemplate)
         {   
             $template = $themeTemplate;
         }

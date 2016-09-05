@@ -3,7 +3,7 @@
     <tr>
         <th>序号</th>
         <th>区块名</th>
-        <th>对应模块</th>
+        <th>区块类型</th>
         <th>描述</th>
         <th>状态</th>
         <th>位置</th>
@@ -13,7 +13,7 @@
     <tr>
         <td>{$key}</td>
         <td>{$_blockModel->title}</td>
-        <td>{$_blockModel->ModuleModel->title}</td>
+        <td>{$_blockModel->BlockTypeModel()->title}</td>
         <td>{$_blockModel->description}</td>
         <td>{$_blockModel->status}</td>
         <td>{$_blockModel->position_name}</td>

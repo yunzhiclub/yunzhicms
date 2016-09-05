@@ -20,16 +20,6 @@ class PluginModel extends ModelModel
         return $this->PluginTypeModel;
     }
 
-    public function getConfigAttr()
-    {
-        return json_decode($this->getData('config'), true);
-    }
-
-    public function getFilterAttr()
-    {
-        return json_decode($this->getData('filter'), true);
-    }
-
     /**
      * 获取合并后，可以供CV使用的配置信息   
      * @return array 
@@ -38,7 +28,7 @@ class PluginModel extends ModelModel
     {
         if (null === $this->config)
         {
-            $this->config = Common::configMerge($this->PluginTypeModel()->getConfigAttr(), $this->getConfigAttr());
+            $this->config = Common::configMerge($this->PluginTypeModel()->getConfig(), $this->getConfigAttr());
         }
 
         return $this->config;
@@ -52,7 +42,7 @@ class PluginModel extends ModelModel
     {
         if (null === $this->filter)
         {
-            $this->filter = Common::configMerge($this->PluginTypeModel()->getFilterAttr(), $this->getFilterAttr());
+            $this->filter = Common::configMerge($this->PluginTypeModel()->getFilter(), $this->getFilterAttr());
         }
 
         return $this->filter;

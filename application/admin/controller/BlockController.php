@@ -1,9 +1,9 @@
 <?php
 namespace app\admin\controller;
 
-use app\model\BlockModel;                           // 区块
-use app\model\MenuModel;                            // 菜单
-use app\model\BlockMenuModel;                       // 区块菜单
+use app\model\BlockModel;                               // 区块
+use app\model\MenuModel;                                // 菜单
+use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
 
 class BlockController extends AdminController
 {
@@ -31,7 +31,7 @@ class BlockController extends AdminController
 
         $BlockModel = BlockModel::get($id);
         $BlockModel->setData('title', $param['title']);
-        $BlockModel->setData('module_name', $param['module_name']);
+        $BlockModel->setData('block_type_name', $param['block_type_name']);
         $BlockModel->setData('description', $param['description']);
         $BlockModel->setData('position_name', $param['position_name']);
         $BlockModel->setData('status', $param['status']);
@@ -51,9 +51,9 @@ class BlockController extends AdminController
         $BlockModel->save();
 
         // 更新block-menu关联表
-        $BlockMenuModel = new BlockMenuModel;
+        $AccessMenuBlockModel = new AccessMenuBlockModel;
         $map = ['block_id' => $id];
-        $BlockMenuModel->where($map)->delete();
+        $AccessMenuBlockModel->where($map)->delete();
 
         $datas = array();
         if (array_key_exists('menuids', $param))
@@ -61,7 +61,7 @@ class BlockController extends AdminController
             foreach ($param['menuids'] as $key => $value) {
                 array_push($datas, ['block_id' => $id, 'menu_id' => $key]);
             }
-            $BlockMenuModel->saveAll($datas);
+            $AccessMenuBlockModel->saveAll($datas);
         }
 
         return $this->success('操作成功', url('@admin/block'));

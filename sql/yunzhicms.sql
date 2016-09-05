@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 08/30/2016 16:11:54 PM
+ Date: 09/05/2016 09:42:23 AM
 */
 
 SET NAMES utf8;
@@ -45,6 +45,13 @@ CREATE TABLE `yunzhi_access_menu_plugin` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单-插件 权限表';
 
 -- ----------------------------
+--  Records of `yunzhi_access_menu_plugin`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_access_menu_plugin` VALUES ('3', '1');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for `yunzhi_access_user_group_menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_access_user_group_menu`;
@@ -59,7 +66,7 @@ CREATE TABLE `yunzhi_access_user_group_menu` (
 --  Records of `yunzhi_access_user_group_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_access_user_group_menu` VALUES ('public', '4', '18'), ('public', '2', '18'), ('register', '2', '10'), ('editor', '2', '15'), ('public', '1', '18'), ('admin', '2', '15'), ('public', '3', '18'), ('public', '5', '18');
+INSERT INTO `yunzhi_access_user_group_menu` VALUES ('public', '4', '26'), ('public', '2', '18'), ('register', '2', '10'), ('editor', '2', '15'), ('public', '1', '18'), ('admin', '2', '15'), ('public', '3', '18'), ('public', '5', '18');
 COMMIT;
 
 -- ----------------------------
@@ -69,6 +76,7 @@ DROP TABLE IF EXISTS `yunzhi_block`;
 CREATE TABLE `yunzhi_block` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `block_type_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk block_type',
+  `menu_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'fk menu 菜单FK。模块如果想实现LCURD，则必然需要组件支持。而组件则需要菜单支持。所以关系是区块对应菜单，菜单对应组件。',
   `position_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk position',
   `title` varchar(40) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '',
@@ -87,7 +95,7 @@ CREATE TABLE `yunzhi_block` (
 --  Records of `yunzhi_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0'), ('2', 'Slider', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0'), ('3', 'ContentVideo', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0'), ('4', 'DataCounter', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0'), ('5', 'CaseShow', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('6', 'ShowCaseSlider', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('7', 'BreadCrumb', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0');
+INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', '0', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0'), ('2', 'Slider', '0', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0'), ('3', 'ContentVideo', '0', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0'), ('4', 'DataCounter', '0', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0'), ('5', 'CaseShow', '0', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('6', 'ShowCaseSlider', '0', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('7', 'BreadCrumb', '0', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -98,8 +106,6 @@ CREATE TABLE `yunzhi_block_type` (
   `name` varchar(40) NOT NULL,
   `title` varchar(40) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `config` varchar(255) NOT NULL DEFAULT '[]',
-  `filter` varchar(255) NOT NULL DEFAULT '[]',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='区块类型表';
 
@@ -107,7 +113,7 @@ CREATE TABLE `yunzhi_block_type` (
 --  Records of `yunzhi_block_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block_type` VALUES ('Menu', '菜单', '显示菜单', '{\"menu_type_name\":{\"value\":\"main\",\"title\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"description\":\"\\u83dc\\u5355\\u7c7b\\u578b\",\"type\":\"text\"},\"id\":{\"value\":\"mu-menu\",\"title\":\"\"}}', '[]'), ('BreadCrumb', '面包屑', '', '[]', '[]'), ('Slider', '幻灯片', '', '[]', '[]'), ('ContentVideo', '文字视频介绍', '通常用于首页的关于我们', '[]', '[]'), ('DataCounter', '数据统计', '数据统计', '[]', '[]'), ('CaseShow', '案例展示', '', '[]', '[]'), ('ShowCaseSlider', '动态案例展示', '', '[]', '[]');
+INSERT INTO `yunzhi_block_type` VALUES ('Menu', '菜单', '显示菜单'), ('BreadCrumb', '面包屑', ''), ('Slider', '幻灯片', ''), ('ContentVideo', '文字视频介绍', '通常用于首页的关于我们'), ('DataCounter', '数据统计', '数据统计'), ('CaseShow', '案例展示', ''), ('ShowCaseSlider', '动态案例展示', '');
 COMMIT;
 
 -- ----------------------------
@@ -120,8 +126,6 @@ CREATE TABLE `yunzhi_component` (
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
   `author` varchar(255) NOT NULL DEFAULT '' COMMENT '作者',
   `version` varchar(255) NOT NULL DEFAULT '' COMMENT '版本',
-  `config` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '配置信息',
-  `filter` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '字段过滤信息',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='组件（类型）表';
 
@@ -129,7 +133,7 @@ CREATE TABLE `yunzhi_component` (
 --  Records of `yunzhi_component`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0', '{\"count\":{\"title\":\"显示推荐新闻数量\",\"description\":\"\\u663e\\u793a\\u65b0\\u95fb\\u7684\\u6761\\u6570\",\"type\":\"text\",\"value\":3}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":6,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\"}}'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0', '{\"contentTypeName\":{\"type\":\"text\",\"title\":\"\\u6587\\u7ae0\\u7c7b\\u522b\",\"description\":\"\\u663e\\u793a\\u54ea\\u4e2a\\u7c7b\\u522b\\u7684\\u6587\\u7ae0\",\"value\":\"news\"},\"count\":{\"type\":\"text\",\"title\":\"\\u6bcf\\u9875\\u5927\\u5c0f\",\"description\":\"\\u6bcf\\u9875\\u663e\\u793a\\u591a\\u5c11\\u7bc7\\u6587\\u7ae0\",\"value\":\"1\"},\"order\":{\"type\":\"text\",\"title\":\"\\u6392\\u5e8f\\u65b9\\u5f0f\",\"description\":\"\\u6570\\u636e\\u5b57\\u6bb5\\u7684\\u6392\\u5e8f\\u65b9\\u5f0f\",\"value\":\"weight desc, id desc\"}}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":30,\"etc\":\"..\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\"},\"date\":{\"type\":\"date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}'), ('Content', '新闻', '显示一篇新闻', '', '', '{\"id\":{\"title\":\"\\u6587\\u7ae0\",\"description\":\"\\u5c06\\u9009\\u62e9\\u7684\\u6587\\u7ae0\\u5185\\u5bb9\\u663e\\u793a\\u5728\\u7ec4\\u4ef6\\u4e2d\",\"type\":\"text\",\"value\":\"1\"}}', '[]');
+INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0'), ('Content', '新闻', '显示一篇新闻', '', '');
 COMMIT;
 
 -- ----------------------------
@@ -147,7 +151,6 @@ CREATE TABLE `yunzhi_content` (
   `is_freezed` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否冻结',
   `weight` smallint(6) NOT NULL,
   `hit` int(11) NOT NULL,
-  `access_group` varchar(255) NOT NULL DEFAULT '[]' COMMENT '权限列表',
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `category_name` (`content_type_name`) USING BTREE,
@@ -159,7 +162,7 @@ CREATE TABLE `yunzhi_content` (
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '147', '[]', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '54', '[]', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '23', '[]', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '358', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '118', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '41', '0');
 COMMIT;
 
 -- ----------------------------
@@ -186,7 +189,7 @@ COMMIT;
 DROP TABLE IF EXISTS `yunzhi_content_type`;
 CREATE TABLE `yunzhi_content_type` (
   `name` varchar(40) NOT NULL,
-  `access_roles` varchar(255) NOT NULL DEFAULT '[]' COMMENT 'FK 拥有权限的角色',
+  `menu_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'fk 菜单。用于被区块调用后，生成LCURD的信息。',
   `pname` varchar(40) NOT NULL COMMENT '上级name',
   `title` varchar(40) NOT NULL,
   `description` varchar(255) NOT NULL COMMENT '描述',
@@ -201,7 +204,7 @@ CREATE TABLE `yunzhi_content_type` (
 --  Records of `yunzhi_content_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content_type` VALUES ('news', '[]', '', '新闻通知', '新闻通知', '0', '0', '[]'), ('products', '[]', '', '产品列表', '', '0', '0', '[]');
+INSERT INTO `yunzhi_content_type` VALUES ('news', '3', '', '新闻通知', '新闻通知', '0', '0', '[]'), ('products', '2', '', '产品列表', '', '0', '0', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -209,39 +212,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_field`;
 CREATE TABLE `yunzhi_field` (
-  `name` varchar(40) NOT NULL,
-  `type` varchar(40) NOT NULL DEFAULT 'text' COMMENT '类型',
-  `config` varchar(255) NOT NULL DEFAULT '[]' COMMENT '配置信息(json)',
-  `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
-  PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字段表';
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_type_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk filed',
+  `relate_type` varchar(40) NOT NULL DEFAULT '' COMMENT '关联的实体类型',
+  `relate_value` varchar(40) NOT NULL DEFAULT '' COMMENT '关联实体类型的具体值',
+  `title` varchar(40) NOT NULL DEFAULT '' COMMENT '后台 编辑 添加 时显示的信息',
+  `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
+  `config` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '字段配置信息 json',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='字段表 各个实体与字段的对应关系写在这里';
 
 -- ----------------------------
 --  Records of `yunzhi_field`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field` VALUES ('body', 'textarea', '[]', '0'), ('filed_image', 'image', '[]', '0');
-COMMIT;
-
--- ----------------------------
---  Table structure for `yunzhi_field_config`
--- ----------------------------
-DROP TABLE IF EXISTS `yunzhi_field_config`;
-CREATE TABLE `yunzhi_field_config` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `field_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk filed',
-  `type` varchar(40) NOT NULL DEFAULT '' COMMENT '绑定的实体类型',
-  `value` varchar(40) NOT NULL DEFAULT '' COMMENT '绑定实体类型的具体值',
-  `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用 1禁用',
-  `is_one` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否唯一. 1: 1对1 ；2：1对多',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='字段配置表（各个实体的扩展字段配置）';
-
--- ----------------------------
---  Records of `yunzhi_field_config`
--- ----------------------------
-BEGIN;
-INSERT INTO `yunzhi_field_config` VALUES ('1', 'body', 'Content', 'news', '0', '1'), ('2', 'field_image', 'Content', 'news', '0', '1'), ('3', 'body', 'Content', 'products', '0', '1');
+INSERT INTO `yunzhi_field` VALUES ('1', 'body', 'Content', 'news', '内容', '0', '[]'), ('2', 'image', 'Content', 'news', '新闻图片', '0', '[]'), ('3', 'body', 'Content', 'products', '新闻内容', '0', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -249,23 +234,20 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_field_data_body`;
 CREATE TABLE `yunzhi_field_data_body` (
-  `field_config_id` int(11) unsigned NOT NULL COMMENT 'fk field_config',
-  `key` int(11) unsigned NOT NULL COMMENT '对应的 关健字',
+  `field_id` int(11) unsigned NOT NULL COMMENT 'fk field',
+  `key_id` int(11) unsigned NOT NULL COMMENT '对应的关键字ID',
   `weight` int(10) unsigned NOT NULL COMMENT '权重',
-  `value` longtext,
-  `summary` longtext,
-  `format` varchar(255) DEFAULT NULL,
+  `value` longtext NOT NULL,
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`key`,`weight`,`field_config_id`),
-  KEY `entity_id` (`key`),
-  KEY `body_format` (`format`)
+  PRIMARY KEY (`key_id`,`weight`,`field_id`,`is_deleted`),
+  KEY `entity_id` (`key_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Data storage for field 2 (body)';
 
 -- ----------------------------
 --  Records of `yunzhi_field_data_body`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_data_body` VALUES ('1', '1', '0', '这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题', '这里是关于我们的摘要', 'filtered_html', '0'), ('1', '2', '1', '新闻通知1新闻通知1新闻通知1新闻通知1新闻通知1', '', 'filtered_html', '0'), ('2', '3', '0', '新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2', '', 'filtered_html', '0');
+INSERT INTO `yunzhi_field_data_body` VALUES ('1', '1', '0', '这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题', '0'), ('1', '2', '1', '新闻通知1新闻通知1新闻通知1新闻通知1新闻通知1', '0'), ('2', '3', '0', '新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2', '0');
 COMMIT;
 
 -- ----------------------------
@@ -293,33 +275,6 @@ CREATE TABLE `yunzhi_field_data_comment_body` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Data storage for field 1 (comment_body)';
 
 -- ----------------------------
---  Table structure for `yunzhi_field_data_field_image`
--- ----------------------------
-DROP TABLE IF EXISTS `yunzhi_field_data_field_image`;
-CREATE TABLE `yunzhi_field_data_field_image` (
-  `entity_type` varchar(128) NOT NULL DEFAULT '' COMMENT 'The entity type this data is attached to',
-  `bundle` varchar(128) NOT NULL DEFAULT '' COMMENT 'The field instance bundle to which this row belongs, used when deleting a field instance',
-  `deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'A boolean indicating whether this data item has been deleted',
-  `entity_id` int(10) unsigned NOT NULL COMMENT 'The entity id this data is attached to',
-  `revision_id` int(10) unsigned DEFAULT NULL COMMENT 'The entity revision id this data is attached to, or NULL if the entity type is not versioned',
-  `language` varchar(32) NOT NULL DEFAULT '' COMMENT 'The language for this data item.',
-  `delta` int(10) unsigned NOT NULL COMMENT 'The sequence number for this data item, used for multi-value fields',
-  `field_image_fid` int(10) unsigned DEFAULT NULL COMMENT 'The test_file_managed.fid being referenced in this field.',
-  `field_image_alt` varchar(512) DEFAULT NULL COMMENT 'Alternative image text, for the image’s ’alt’ attribute.',
-  `field_image_title` varchar(1024) DEFAULT NULL COMMENT 'Image title text, for the image’s ’title’ attribute.',
-  `field_image_width` int(10) unsigned DEFAULT NULL COMMENT 'The width of the image in pixels.',
-  `field_image_height` int(10) unsigned DEFAULT NULL COMMENT 'The height of the image in pixels.',
-  PRIMARY KEY (`entity_type`,`entity_id`,`deleted`,`delta`,`language`),
-  KEY `entity_type` (`entity_type`),
-  KEY `bundle` (`bundle`),
-  KEY `deleted` (`deleted`),
-  KEY `entity_id` (`entity_id`),
-  KEY `revision_id` (`revision_id`),
-  KEY `language` (`language`),
-  KEY `field_image_fid` (`field_image_fid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Data storage for field 4 (field_image)';
-
--- ----------------------------
 --  Table structure for `yunzhi_field_data_field_tags`
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_field_data_field_tags`;
@@ -343,6 +298,45 @@ CREATE TABLE `yunzhi_field_data_field_tags` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Data storage for field 3 (field_tags)';
 
 -- ----------------------------
+--  Table structure for `yunzhi_field_data_image`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_field_data_image`;
+CREATE TABLE `yunzhi_field_data_image` (
+  `field_id` int(10) unsigned NOT NULL COMMENT 'The entity id this data is attached to',
+  `key_id` int(11) unsigned NOT NULL,
+  `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'A boolean indicating whether this data item has been deleted',
+  `weight` mediumint(6) unsigned NOT NULL COMMENT '权重',
+  `alt` varchar(512) DEFAULT NULL COMMENT 'Alternative image text, for the image’s ’alt’ attribute.',
+  `title` varchar(1024) DEFAULT NULL COMMENT 'Image title text, for the image’s ’title’ attribute.',
+  `width` int(10) unsigned DEFAULT NULL COMMENT 'The width of the image in pixels.',
+  `height` int(10) unsigned DEFAULT NULL COMMENT 'The height of the image in pixels.',
+  `path` varchar(512) DEFAULT NULL COMMENT '路径',
+  `filename` varchar(40) DEFAULT NULL COMMENT '文件名',
+  `ext` varchar(20) DEFAULT NULL COMMENT '扩展名',
+  PRIMARY KEY (`field_id`,`is_deleted`,`key_id`,`weight`),
+  KEY `deleted` (`is_deleted`),
+  KEY `entity_id` (`field_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Data storage for field 4 (field_image)';
+
+-- ----------------------------
+--  Table structure for `yunzhi_field_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_field_type`;
+CREATE TABLE `yunzhi_field_type` (
+  `name` varchar(40) NOT NULL,
+  `label_type` varchar(40) NOT NULL DEFAULT 'text' COMMENT 'fk label 类型',
+  `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
+  PRIMARY KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字段类型表';
+
+-- ----------------------------
+--  Records of `yunzhi_field_type`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_field_type` VALUES ('body', 'textarea', '0'), ('image', 'image', '0');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for `yunzhi_filter`
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_filter`;
@@ -364,7 +358,7 @@ CREATE TABLE `yunzhi_filter` (
 --  Records of `yunzhi_filter`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_filter` VALUES ('System', 'makeFrontpageContentUrl', '[]', '首页新闻链接', '直接生成首页新闻链接（直接链接到 Content组件）', '梦云智', '1.0.0', 'http://www.mengyunzhi.com', 'http://www.mengyunzhi.com', '3792535@qq.com'), ('System', 'makeCurrentMenuReadUrl', '[]', '生成菜单URL', '生成菜单对应的路由URL信息', '', '', '', '', ''), ('String', 'substr', '{\"length\":{\"value\":20,\"title\":\"\\u622a\\u53d6\\u957f\\u5ea6\",\"type\":\"text\",\"description\":\"\\u622a\\u53d6\\u7684UTF8\\u7f16\\u7801\\u7684\\u957f\\u5ea6\"},\"ext\":{\"value\":\"...\",\"title\":\"\\u540e\\u7f00\",\"type\":\"text\",\"description\":\"\\u5c06\\u53d1\\u751f\\u622a\\u53d6\\u64cd\\u4f5c\\u540e\\uff0c\\u586b\\u5145\\u5728\\u6807\\u9898\\u540e\\u9762\\u7684\\u540e\\u7f00\\u4fe1\\u606f\"}}', '标题截取', '对UTF8编码的标题进行截取', '', '', '', '', ''), ('Date', 'format', '{\"dateFormat\":{\"value\":\"Y-m-d\",\"title\":\"\\u65f6\\u95f4\\u6233\\u683c\\u5f0f\\u5316\",\"description\":\"\\u5bf9\\u65f6\\u95f4\\u6233\\u8fdb\\u884c\\u683c\\u5f0f\\u5316\",\"type\":\"text\"}}', '时间戳格式化', '时间戳格式化', '', '', '', '', '');
+INSERT INTO `yunzhi_filter` VALUES ('System', 'makeFrontpageContentUrl', '[]', '首页新闻链接', '直接生成首页新闻链接（直接链接到 Content组件）', '梦云智', '1.0.0', 'http://www.mengyunzhi.com', 'http://www.mengyunzhi.com', '3792535@qq.com'), ('System', 'makeCurrentMenuReadUrl', '[]', '生成菜单URL', '生成菜单对应的路由URL信息', '', '', '', '', ''), ('String', 'substr', '{\"length\":{\"value\":20,\"title\":\"\\u622a\\u53d6\\u957f\\u5ea6\",\"type\":\"text\",\"description\":\"\\u622a\\u53d6\\u7684UTF8\\u7f16\\u7801\\u7684\\u957f\\u5ea6\"},\"ext\":{\"value\":\"...\",\"title\":\"\\u540e\\u7f00\",\"type\":\"text\",\"description\":\"\\u5c06\\u53d1\\u751f\\u622a\\u53d6\\u64cd\\u4f5c\\u540e\\uff0c\\u586b\\u5145\\u5728\\u6807\\u9898\\u540e\\u9762\\u7684\\u540e\\u7f00\\u4fe1\\u606f\"}}', '标题截取', '对UTF8编码的标题进行截取', '', '', '', '', ''), ('Date', 'format', '{\"dateFormat\":{\"value\":\"Y-m-d\",\"title\":\"\\u65f6\\u95f4\\u6233\\u683c\\u5f0f\\u5316\",\"description\":\"\\u5bf9\\u65f6\\u95f4\\u6233\\u8fdb\\u884c\\u683c\\u5f0f\\u5316\",\"type\":\"text\"}}', '时间戳格式化', '时间戳格式化', '', '', '', '', ''), ('System', 'makeContentReadUrl', '[]', '生成新闻读链接', '根据新闻对应的类别信息，取类别的URL信息，生成LCURD路由', '', '', '', '', '');
 COMMIT;
 
 -- ----------------------------
@@ -430,11 +424,18 @@ CREATE TABLE `yunzhi_plugin` (
   `title` varchar(40) NOT NULL,
   `description` varchar(255) NOT NULL,
   `status` tinyint(2) unsigned NOT NULL,
-  `config` varchar(4096) NOT NULL,
-  `filter` varchar(4096) NOT NULL,
+  `config` varchar(4096) NOT NULL DEFAULT '[]',
+  `filter` varchar(4096) NOT NULL DEFAULT '[]',
   `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='插件表';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='插件表';
+
+-- ----------------------------
+--  Records of `yunzhi_plugin`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_plugin` VALUES ('1', 'PreNextContent', 'afterContent', '文章后', '', '0', '', '{\"href\":{\"type\":\"System\",\"function\":\"makeContentReadUrl\"}}', '0');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `yunzhi_plugin_type`
@@ -444,10 +445,15 @@ CREATE TABLE `yunzhi_plugin_type` (
   `name` varchar(40) NOT NULL,
   `title` varchar(40) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '',
-  `config` varchar(4096) NOT NULL DEFAULT '[]',
-  `filter` varchar(4096) NOT NULL DEFAULT '[]',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='插件类型表';
+
+-- ----------------------------
+--  Records of `yunzhi_plugin_type`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_plugin_type` VALUES ('PreNextContent', '上一篇、下一篇文章', '');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `yunzhi_position`
