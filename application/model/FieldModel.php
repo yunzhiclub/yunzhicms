@@ -64,7 +64,7 @@ class FieldModel extends ModelModel
             $map['is_deleted']  = 0;
 
             // 实例化 字段信息详情表
-            $table = 'app\field\model\\' . Loader::parseName('field_data_' . $this->getData('field_type_name'), 1) . 'Model';
+            $table = 'app\model\\' . Loader::parseName('field_data_' . $this->getData('field_type_name'), 1) . 'Model';
             $FiledDataModel = new $table;
 
             $this->getDataByKeyId = $FiledDataModel->get($map);

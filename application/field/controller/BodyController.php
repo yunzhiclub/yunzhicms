@@ -9,4 +9,9 @@ class BodyController extends FieldController
     {
         return Common::makeTokenByMCA('field', 'Body', 'upload');
     }
+
+    public function upload()
+    {
+        
+    }
 }

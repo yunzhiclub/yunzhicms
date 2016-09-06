@@ -1,10 +1,8 @@
 <?php
-namespace app\field\model;
-use app\YunzhiModel;
-use app\model\FieldModel;
+namespace app\model;
 use think\Loader;
 
-class FieldDataModel extends YunzhiModel
+class FieldDataModel extends ModelModel
 {
     private $FieldModel = null;
 

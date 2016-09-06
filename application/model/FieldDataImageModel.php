@@ -1,5 +1,5 @@
 <?php
-namespace app\field\model;
+namespace app\model;
 /**
  * image字段
  */

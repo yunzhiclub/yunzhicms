@@ -82,7 +82,6 @@ class MenuModel extends ModelModel
      */
     static public function getCurrentMenuModel()
     {
-        
         if (null === self::$currentMenuModel)
         {
             // 定义路由关键字
@@ -108,7 +107,6 @@ class MenuModel extends ModelModel
                 $map = ['url' => $url];
             }
             self::$currentMenuModel = self::get($map);
-
 
             // 示找到菜单项，则默认返回首页
             if ('' === self::$currentMenuModel->getData('id')) {

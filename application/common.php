@@ -198,6 +198,10 @@ class Common{
             $root = '';
         }
         define('__ROOT__', $root);
+
+        // 定义常量PUBLIC_PATH
+        $publicPath = realpath(ROOT_PATH) . DS . 'public';
+        define('PUBLIC_PATH' , $publicPath);
     }
     
     /**
@@ -416,34 +420,6 @@ class Common{
     }
 
     /**
-     * 生成token
-     * @return   string                   
-     * @author panjie panjie@mengyunzhi.com
-     * @DateTime 2016-09-05T13:19:42+0800
-     */
-    static public function makeToken()
-    {
-        // 获取当前访问action
-        $action = Request::instance()->action();
-
-        // 获取当前菜单
-        $currentMenuModel = MenuModel::getCurrentMenuModel();
-        $tokens = Session::get('tokens');
-
-        // 如果不存在，则生成. todo:对session是否过期的判断
-        if (null === $tokens || !isset($tokens[$currentMenuModel->getData('id') . '_' . $action]))
-        {
-            // 生成token
-            $token = sha1($_SERVER['UNIQUE_ID'] . $currentMenuModel->getData('id') . $action .config('token_suffix'));
-            $tokens[$currentMenuModel->getData('id'). '_' . $action] = $token;
-            Session::set('tokens', $tokens);
-        }
-        
-        // 返回当前菜单对应的session
-        return $tokens[$currentMenuModel->getData('id'). '_' . $action];
-    }
-
-    /**
      * 通过token获取对应的menuModel
      * @param    string                   $token 
      * @return   MenuModel                
@@ -578,7 +554,7 @@ class Common{
     static public function makeTokenByMCA($module, $controller, $action)
     {
         // 获取当前访问action
-        $action = Request::instance()->action();
+        $currentAction = Request::instance()->action();
 
         // 获取当前菜单
         $currentMenuModel = MenuModel::getCurrentMenuModel();
@@ -586,17 +562,29 @@ class Common{
         $tokens = Session::get('tokens');
 
         // 如果不存在，则生成. todo:对session是否过期的判断
-        if (null === $tokens || !isset($tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $action]))
+        if (null === $tokens || !isset($tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $currentAction]))
         {
             // 生成token
             $token = sha1($_SERVER['UNIQUE_ID'] . $module . $controller . $action . $currentMenuModel->getData('id') . $action . microtime() . config('token_suffix'));
-            $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $action] = $token;
+            $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $currentAction] = $token;
             Session::set('tokens', $tokens);
         }
         
         // 返回生成并且注册的token
-        return $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $action];
+        return $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $currentAction];
     }
+
+    static public function getKeyByToken(&$token)
+    {
+        $tokens = Session::get('tokens');
+        if (null === $tokens) {
+            return false;
+        } 
+
+        $key = array_search($token, $tokens);
+        return $key;
+    }
+
 
     /**
      * 添加CSS引用路径

@@ -65,7 +65,6 @@ class FieldController extends Controller
             Common::addCss($this->getConfig()['css']['value']);
         }
 
-
         // 送入依赖js
         if (isset($this->getConfig()['js'])) {
             Common::addJs($this->getConfig()['js']['value']);
