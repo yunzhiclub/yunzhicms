@@ -23,7 +23,10 @@ Common::init();
 Common::registerRouter();
 
 class Common{
-    static protected $token = [];
+    static protected $token = [];       // token 用于安全验证
+    static protected $css   = [];       // css 用于模板链接css文件
+    static protected $js    = [];       // js 用于模板链接js文件
+
 
     /**
      * 注册路由信息
@@ -593,6 +596,106 @@ class Common{
         
         // 返回生成并且注册的token
         return $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $action];
+    }
+
+    /**
+     * 添加CSS引用路径
+     * @param    string                   $key      键值 模块名_控制器名
+     * @param    string                  $linkPath 相对于public的绝对路径。比如:lib/css/text.css
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-06T07:42:49+0800
+     */
+    static public function addCss($linkPath)
+    {   
+        $linkPaths = explode(',', $linkPath);
+        foreach ($linkPaths as $_linkPath) {
+            if (!in_array($_linkPath, self::$css))
+            {
+                array_push(self::$css, $_linkPath);
+            }
+        }
+
+        return self::$css;
+    }
+
+    /**
+     * 添加js引用路径
+     * @param    string                   $key      键值 模块名_控制器名
+     * @param    [type]                   $linkPath 相对于public的绝对路径。比如:lib/js/text.js
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-06T07:46:38+0800
+     */
+    static public function addJs($linkPath)
+    {   
+        $linkPaths = explode(',', $linkPath);
+        foreach ($linkPaths as $_linkPath) {
+            if (!in_array($_linkPath, self::$js))
+            {
+                array_push(self::$js, $_linkPath);
+            }
+        }
+        
+        return self::$js;
+    }
+
+    /**
+     * 获取CSS路径信息
+     * @return   array               
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-06T07:49:09+0800
+     */
+    static public function getCss()
+    {
+        return self::$css;
+    }
+
+    /**
+     * 获取当前页面所有的css链接
+     * @return   string                   拼接后的路径信息
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-06T08:44:33+0800
+     */
+    static public function getCssLinks()
+    {
+        $css = self::getCss();
+        $html = '';
+        foreach ($css as $_css)
+        {
+            $html .= '
+            <link href="'. __ROOT__ . $_css . '" rel="stylesheet">
+            ';
+        }
+        return $html;
+    }
+
+    /**
+     * 获取js路径信息
+     * @return   array                 
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-06T07:49:50+0800
+     */
+    static public function getJs()
+    {
+        return self::$js;
+    }
+
+    /**
+     * 获取当前页面所有的js链接
+     * @return   string                   拼接后的路径信息
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-06T08:44:33+0800
+     */
+    static public function getJsLinks()
+    {
+        $js = self::getJs();
+        $html = '';
+        foreach ($js as $_js)
+        {
+            $html .= '
+            <script type="text/javascript" src="'. __ROOT__ . $_js . '"></script>
+            ';
+        }
+        return $html;
     }
 }
 

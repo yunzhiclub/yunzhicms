@@ -1,0 +1,14 @@
+<script type="text/javascript">
+$(function() {
+    $('#file_upload').uploadify({
+        'swf': '{:__ROOT__}/lib/uploadify/uploadify.swf',
+        'uploader': '{:url("field/Image/ajax")}',
+        'debug': true,
+        'onUploadSuccess': function(file, data, response) {
+            console.log(file);
+            $('#return').html(data);
+            console.log(response);
+        }
+    });
+});
+</script>

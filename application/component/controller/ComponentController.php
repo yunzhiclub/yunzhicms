@@ -44,6 +44,9 @@ class ComponentController extends Controller
             return $this->error('您无权限访问该页面或您访问的页面不存在. TODO:404页面', url('@/'));
         }
 
+        // 传Common供前台使用
+        $this->assign('Common', new Common);
+
         // 取配置信息、过滤器信息
         $this->config = $this->currentMenuModel->getConfig();
         $this->filter = $this->currentMenuModel->getFilter();

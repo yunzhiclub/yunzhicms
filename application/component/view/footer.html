@@ -2,8 +2,7 @@
 
   <!-- End footer -->
   
-  <!-- jQuery library -->
-  <script src="{:__ROOT__}/theme/varsity/js/jquery.min.js"></script>  
+
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="{:__ROOT__}/theme/varsity/js/bootstrap.js"></script>   
   <!-- Slick slider -->
@@ -15,29 +14,18 @@
   <script type="text/javascript" src="{:__ROOT__}/theme/varsity/js/jquery.mixitup.js"></script>
   <!-- Add fancyBox -->        
   <script type="text/javascript" src="{:__ROOT__}/theme/varsity/js/jquery.fancybox.pack.js"></script>
-  
-  <!--wangEditor-->
-  <script type="text/javascript" src="{:__ROOT__}/bower_components/wangEditor/dist/js/wangEditor.min.js"></script>
-  
-   <!--uplodify-->
-  <script type="text/javascript" src="{:__ROOT__}/lib/uploadify/jquery.uploadify.min.js"></script>
+
+  <!--第三方CSS-->
+  {:$Common->getCssLinks()}
+
+  <!--第三方JS-->
+  {:$Common->getJsLinks()}
+
   <!--这里引用jquery和wangEditor.js-->
   <script type="text/javascript">
-      var editor = new wangEditor('div1');
-      editor.create();
 
-    $(function() {
-      $('#file_upload').uploadify({
-        'swf'      : '{:__ROOT__}/lib/uploadify/uploadify.swf',
-        'uploader' : '{:url("field/Image/ajax")}',
-        'debug' : true,
-        'onUploadSuccess' : function(file, data, response) {
-          console.log(file);
-          $('#return').html(data);
-          console.log(response);
-        }
-      });
-    });
+
+
   </script>
 
  
