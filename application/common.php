@@ -408,7 +408,7 @@ class Common{
     static public function getUpdateUrl()
     {
         $requestUri = $_SERVER['REQUEST_URI'];
-        return str_replace('.html', '/update.html', $requestUri);
+        return str_replace('/edit', '', $requestUri);
     }
 
     /**
