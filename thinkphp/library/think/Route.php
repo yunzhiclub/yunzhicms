@@ -55,7 +55,7 @@ class Route
         'edit'   => ['GET', '/:id/edit', 'edit'],
         'read'   => ['GET', '/:id', 'read'],
         'save'   => ['POST', '', 'save'],
-        'update' => ['PUT', '/:id', 'update'],
+        'update' => ['POST', '/:id', 'update'],
         'delete' => ['GET', '/:id/delete', 'delete'],
     ];
 

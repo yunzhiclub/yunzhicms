@@ -153,4 +153,33 @@ class FieldModel extends ModelModel
 
         return $this->token;
     }
+
+
+    static public function updateLists(&$lists, $keyId)
+    {
+        foreach ($lists as $fieldId => $value) {
+            try {
+                $FieldModel = self::get(['id' => $fieldId]);
+                $dataName = ucfirst($FieldModel->getData('field_type_name'));
+                $className = 'app\model\FieldData' . $dataName . 'Model';
+                call_user_func_array([$className, 'updateList'], [$fieldId, $keyId, $value]);
+            } catch (\Exception $e){
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * 更新扩展字段
+     * @param    int                   $fieldId 字段id
+     * @param    int                   $keyId   关键字id
+     * @param    |||                   $value   值
+     * @return    更新的id值                          
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-07T15:21:43+0800
+     */
+    static public function updateList($fieldId, $keyId, $value)
+    {
+        var_dump('请重写该函数用于数据字段的更新');
+    }
 }
