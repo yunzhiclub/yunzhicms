@@ -1,0 +1,29 @@
+{layout name="index" /}
+<section id="mu-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- start contact content -->
+                <div class="mu-contact-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="{:app\\Common::getUpdateUrl()}" method="post">
+                            <div>
+                                <label>标题:</label>
+                                <input type="text" name="title" value="{$ContentModel->getData('title')}" />
+                            </div>
+                                {foreach name="ContentModel->ContentTypeModel()->FieldModels()" id="_FieldModel"}
+                                <div>
+                                {:$_FieldModel->render($ContentModel)}
+                                </div>
+                                {/foreach}
+                                <button>submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- end contact content -->
+            </div>
+        </div>
+    </div>
+</section>

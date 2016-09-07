@@ -22,7 +22,7 @@
                                 {yz:plugin position="beforeContent" object="ContentModel"}
                             </div>
                             <div class="col-md-12">
-                                 {$ContentModel->getFieldDataModelByFieldName('body')->getData('value')}
+                                 {$ContentModel->getFieldDataModelByFieldName('body')->getData('value') | htmlspecialchars_decode}
                             </div>
                             <div class="col-md-12">
                                 {yz:plugin position="afterContent"  object="ContentModel"}

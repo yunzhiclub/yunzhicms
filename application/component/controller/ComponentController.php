@@ -125,7 +125,7 @@ class ComponentController extends Controller
         var_dump(debug_backtrace()[0]);
     }
 
-    public function updateAction()
+    public function updateAction($id)
     {
         var_dump(debug_backtrace()[0]);
     }
