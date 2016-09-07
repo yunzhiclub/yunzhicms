@@ -27,28 +27,19 @@ class ImageController extends FieldController
                 'status' => 'error',
                 'message'  => '传入的文件name值非Filedata,或未上传任何文件'
             ];
-        }
-
-        // 调用上传操作
-        try {
-            
-            // $image['url'] = ;
-            $result['data'] = $FieldDataImageModel->upload($file);
-        } catch (\Exception $e) {
-            $result = [
-                'status' => 'error',
-                'message'  => '上传文件发生错误，错误信息：' . $e->getMessage(),
-            ];
+        } else {
+            // 调用上传操作
+            try {
+                $result['data'] = $FieldDataImageModel->upload($file);
+            } catch (\Exception $e) {
+                $result = [
+                    'status' => 'error',
+                    'message'  => '上传文件发生错误，错误信息：' . $e->getMessage(),
+                ];
+            }
         }
 
         // 返回信息
         return json_encode($result);
-        
-    }
-
-    public function fetchHtml()
-    {
-        $this->assign('id', mt_rand(1, 1024));
-        return parent::fetchHtml();
     }
 }

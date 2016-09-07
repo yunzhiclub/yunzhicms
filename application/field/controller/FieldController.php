@@ -80,6 +80,9 @@ class FieldController extends Controller
      */
     public function fetchHtml()
     {
+        // 建立1个1024以内的随机数，防止ID重复
+        $this->assign('randId', mt_rand(1, 1024));
+
         $calledClassName = Common::getControllerName(get_called_class());
         $html = $css = $js = '';
 

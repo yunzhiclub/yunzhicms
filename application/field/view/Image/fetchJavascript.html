@@ -13,8 +13,8 @@ $(function() {
                     alert('上传发生错误:' + data.message);
                 } else {
                     var image = data.data;
-                    $('#field_data_image_show_{$id}').attr('src', image.url);
-                    $('#field_data_image_{$id}').val(image.id);
+                    $('#field_data_image_show_{$randId}').attr('src', image.url);
+                    $('#field_data_image_{$randId}').val(image.id);
                 }
             }
         }

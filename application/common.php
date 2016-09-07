@@ -565,7 +565,7 @@ class Common{
         if (null === $tokens || !isset($tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $currentAction]))
         {
             // 生成token
-            $token = sha1($_SERVER['UNIQUE_ID'] . $module . $controller . $action . $currentMenuModel->getData('id') . $action . microtime() . config('token_suffix'));
+            $token = sha1($module . $controller . $action . $currentMenuModel->getData('id') . $action . microtime() . config('token_suffix'));
             $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $currentAction] = $token;
             Session::set('tokens', $tokens);
         }
