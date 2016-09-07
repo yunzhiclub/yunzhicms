@@ -1,7 +1,8 @@
 <?php
 namespace app\model;
 use think\Loader;
-use app\label\controller\LabelController;
+use app\Common;
+use app\field\controller\FieldController;
 
 /**
  * 字段设置
@@ -10,9 +11,9 @@ class FieldModel extends ModelModel
 {
    
 
-    protected $config = null;           // 配置信息
-    protected $filter = null;           // 过滤器信息
-
+    protected $config       = null;             // 配置信息
+    protected $filter       = null;             // 过滤器信息
+    protected $token        = null;             // token
 
     private $getDataByKeyId = null;
     private $getDataByKeyId_KeyId = null;
@@ -25,10 +26,33 @@ class FieldModel extends ModelModel
      */
     public function getConfig()
     {
-        if (null === $this->config)
-        {
-            $this->config = Common::configMerge($this->BlockTypeModel()->getConfig(), $this->getConfigAttr());
+        
+        if (null === $this->config) {
+            // todo:获取 数据表配置信息
+            
+            // 获取 文件配置信息 进行覆盖
+            $configName = substr($this->name, 9) ;
+
+            // 拼接主题模板信息
+            $configFilePath = APP_PATH . 
+                'field' . DS . 
+                'config' . DS .
+                $configName . 'Config.php';
+            // 路径格式化，如果文件不存在，则返回false
+            $configFilePath = realpath($configFilePath);
+
+            // 配置文件存在，则抓取
+            if (false !== $configFilePath)
+            {
+                $this->config = include $configFilePath;
+            } else {
+                $this->config = [];
+            }
+
+            // todo:合并配置信息
+            // $this->config = Common::configMerge($this->BlockTypeModel()->getConfig(), $this->getConfigAttr());
         }
+
         return $this->config;
     }
 
@@ -61,10 +85,9 @@ class FieldModel extends ModelModel
             $map                = [];
             $map['field_id']    = $this->getData('id');
             $map['key_id']      = $keyId;
-            $map['is_deleted']  = 0;
 
             // 实例化 字段信息详情表
-            $table = 'app\field\model\\' . Loader::parseName('field_data_' . $this->getData('field_type_name'), 1) . 'Model';
+            $table = 'app\model\\' . Loader::parseName('field_data_' . $this->getData('field_type_name'), 1) . 'Model';
             $FiledDataModel = new $table;
 
             $this->getDataByKeyId = $FiledDataModel->get($map);
@@ -109,6 +132,25 @@ class FieldModel extends ModelModel
         $FieldDataXXXModel = $this->getFieldDataXXXModelByKeyId($keyId);
 
         // 对扩展字段模型进行标签的渲染
-        return LabelController::renderFieldDataModel($this->FieldTypeModel()->getData('label_type'), $FieldDataXXXModel);
+        return FieldController::renderFieldDataModel($this, $FieldDataXXXModel);
+    }
+
+    /**
+     * 生成认证使用的token
+     * @return   string                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T15:38:43+0800
+     */
+    public function makeToken()
+    {
+        if (null === $this->token) {
+            // 如果你的字段有ajax或其它交互，则必须重写此函数：
+            $module         = 'field';
+            $controller     = 'Field';
+            $action         = 'init';
+            $this->token = Common::makeTokenByMCA($module, $controller, $action);
+        }
+
+        return $this->token;
     }
 }

@@ -35,40 +35,18 @@ class ComponentController extends Controller
         $this->Request = Request::instance();
         // 根据action，计算访问权限值index->list
         $action = $this->Request->action();
-        switch ($action) {
-            case 'index':
-                $access = 16;
-                break;
-
-            case 'create':
-            case 'save':
-                $access = 8;
-                break;
-
-            case 'edit':
-            case 'update':
-                $access = 2;
-                break;
-
-            case 'read':
-                $access = 2;
-                break;
-
-
-            case 'delete':
-                $access = 1;
-                break;
-            default:
-                $access = 0;
-                break;
-        }
+        // 获取权限值
+        $access = Common::getAccessByAction($action);
 
         // 权限判断
         if (!$this->currentFrontUserModel->getUserGroupModel()->getAccessByLCURDValue($this->currentMenuModel, $access))
         {
             return $this->error('您无权限访问该页面或您访问的页面不存在. TODO:404页面', url('@/'));
         }
-        
+
+        // 传Common供前台使用
+        $this->assign('Common', new Common);
+
         // 取配置信息、过滤器信息
         $this->config = $this->currentMenuModel->getConfig();
         $this->filter = $this->currentMenuModel->getFilter();

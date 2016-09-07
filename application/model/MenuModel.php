@@ -5,7 +5,8 @@ use app\Common;
 
 class MenuModel extends ModelModel
 {
-    protected $fatherMenuModel  = null;
+    static private $currentMenuModel = null;    // 当前菜单
+    
     private $config             = null;         // 配置信息
     private $filter             = null;         // 过滤器信息
     private $depth              = 0;            // 菜单深度
@@ -14,6 +15,7 @@ class MenuModel extends ModelModel
     private $availableSonMenuModels = null;     // 可用的子菜单列表
     private $isHaveAvailableSonMenus = null;    // 是否存在可用的子菜单列表
 
+    protected $fatherMenuModel  = null;
     /**
      * 默认的一些非 空字符串 的设置
      * 用来存在放在空的数据对象中
@@ -80,11 +82,10 @@ class MenuModel extends ModelModel
      */
     static public function getCurrentMenuModel()
     {
-        // 定义路由关键字
-        $routeKeys = ['edit', ':id', 'delete', 'create', 'save'];
-        static $currentMenuModel = null;
-        if (null === $currentMenuModel)
+        if (null === self::$currentMenuModel)
         {
+            // 定义路由关键字
+            $routeKeys = ['edit', ':id', 'delete', 'create', 'save'];
             $routeInfo = Request::instance()->routeInfo();
             if (empty($routeInfo))
             {
@@ -105,17 +106,16 @@ class MenuModel extends ModelModel
                 $url = implode("/", $rules);
                 $map = ['url' => $url];
             }
-            $currentMenuModel = self::get($map);
-
+            self::$currentMenuModel = self::get($map);
 
             // 示找到菜单项，则默认返回首页
-            if ('' === $currentMenuModel->getData('id')) {
+            if ('' === self::$currentMenuModel->getData('id')) {
                 $map = ['is_home' => 1];
-                $currentMenuModel = self::get($map);
+                self::$currentMenuModel = self::get($map);
             }
         }
 
-        return $currentMenuModel;
+        return self::$currentMenuModel;
     }
 
     /**
