@@ -2,7 +2,7 @@
 namespace app\model;
 use think\Loader;
 
-class FieldDataModel extends ModelModel
+class FieldDataModel extends FieldModel
 {
     private $FieldModel = null;
 

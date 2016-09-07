@@ -19,10 +19,11 @@ class ApiController
         // 判断token是否正确
         if (!$tokenKey = Common::getKeyByToken($token)) {
             
-            // todo 根据不同的类型，反回不同类型的错误信息
+            // todo 根据不同的类型，返回不同类型的错误信息
             return 'Token is incorrect!';
         }
 
+        // 根据token 调用对应的方法
         $tokenKeys = explode('_', $tokenKey);
         $className = '\app\\' . $tokenKeys[0] . '\controller\\' . $tokenKeys[1] . 'Controller';
         $param = ['menuId' => $className[3], 'action' => $className[4]];

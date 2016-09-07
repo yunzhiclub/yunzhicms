@@ -5,9 +5,12 @@ $(function() {
         'uploader': '{:url("api/Api/index?token=" . $token)}',
         'debug': true,
         'onUploadSuccess': function(file, data, response) {
-            console.log(file);
-            $('#return').html(data);
-            console.log(response);
+            if (!response) {
+                alert('目标地址无响应');
+            } else {
+                data = JSON.parse(data);
+                console.log(data);
+            }
         }
     });
 });
