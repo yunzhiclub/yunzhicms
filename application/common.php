@@ -16,6 +16,9 @@ use think\Session;
 use app\model\MenuModel;
 use app\model\UserModel;
 
+// 定义变量过滤。在获取变量值时，禁用input()助手函数
+Request::instance()->filter('htmlspecialchars');
+
 // 初始化
 Common::init();
 
