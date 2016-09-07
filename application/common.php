@@ -16,6 +16,9 @@ use think\Session;
 use app\model\MenuModel;
 use app\model\UserModel;
 
+// 定义变量过滤。在获取变量值时，禁用input()助手函数
+Request::instance()->filter('htmlspecialchars');
+
 // 初始化
 Common::init();
 
@@ -405,7 +408,7 @@ class Common{
     static public function getUpdateUrl()
     {
         $requestUri = $_SERVER['REQUEST_URI'];
-        return str_replace('.html', '/update.html', $requestUri);
+        return str_replace('/edit', '', $requestUri);
     }
 
     /**
