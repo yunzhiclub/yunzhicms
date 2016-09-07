@@ -5,9 +5,10 @@ use think\File;
 /**
  * image字段
  */
-class FieldDataImageModel extends FieldDataModel
+class FieldDataImageModel extends FieldDataModel 
 {   
     private $uploadPath   = null;             // 上传路径
+    private $url          = null;             // URL
     public function makeToken()
     {
         return Common::makeTokenByMCA('field', 'Image', 'upload');
@@ -83,7 +84,7 @@ class FieldDataImageModel extends FieldDataModel
     }
 
     /**
-     * 获取文件上传的路径设置
+     * 获取文件上传的路径设置(相对于服务器实际路径)
      * @return   string                   
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-07T10:45:20+0800
@@ -102,5 +103,35 @@ class FieldDataImageModel extends FieldDataModel
 
         return $this->uploadPath;
     }
+
+
+    /**
+     * 获取url (相对于站点的路径)
+     * @return   string                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-07T13:58:16+0800
+     */
+    public function getUrl()
+    {
+        if (null === $this->url) {
+            $this->url = __ROOT__ . $this->getConfig()['uploadPath']['value'] . '/' . $this->getData('save_name');
+        }
+
+        return $this->url;
+    }
+
+    /**
+     * json数据，进行json_encode时，将自动处发该方法，并将其返回值进行序列化
+     * @return   array                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-07T13:58:56+0800
+     */
+    public function jsonSerialize() 
+    {
+        $data = $this->getData();
+        $data['url'] = $this->getUrl();
+        return $data;
+    }
+
 }
 

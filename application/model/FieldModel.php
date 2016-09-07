@@ -132,7 +132,7 @@ class FieldModel extends ModelModel
         $FieldDataXXXModel = $this->getFieldDataXXXModelByKeyId($keyId);
 
         // 对扩展字段模型进行标签的渲染
-        return FieldController::renderFieldDataModel($this->FieldTypeModel()->getData('name'), $FieldDataXXXModel);
+        return FieldController::renderFieldDataModel($this, $FieldDataXXXModel);
     }
 
     /**

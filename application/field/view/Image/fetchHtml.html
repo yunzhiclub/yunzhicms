@@ -1,5 +1,6 @@
-<input type="text" id="{$FieldDataXXXModel->FieldModel()->getData('id')}" name="{:$FieldDataXXXModel->getParseName()}[]" value="{$FieldDataXXXModel->FieldModel()->getData('id')}"/>
-<image idsrc="{:$FieldDataXXXModel->getData('path')}" />
+
+<input type="hidden" id="field_data_image_{$id}" name="field_[{:$FieldModel->getData('id')}]" value="{$FieldDataXXXModel->getData('id')}"/>
+<img id="field_data_image_show_{$id}" src="{:$FieldDataXXXModel->getData('path')}" class="field_data_image"/>
 <div id="queue"></div>
         <input id="file_upload" name="file_upload" type="file" multiple="true">
 <div id="return">

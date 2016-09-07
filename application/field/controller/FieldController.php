@@ -9,6 +9,7 @@ use think\Request;
 class FieldController extends Controller
 {
     private $FieldDataXXXModel = null;                  // 某个扩展字段的模型
+    private $FieldModel;                                // 字段模型
     private $nameTag;                                   // 字段输出时的 name 标签
     private $token;                                     // token
     private $config;                                    // 配置信息
@@ -27,9 +28,10 @@ class FieldController extends Controller
         // 送入相关类对应的action方法（注意：在此的action对应当前组件action）
     }
 
-    public function init(&$FieldDataXXXModel = null)
+    public function init(&$FieldModel, &$FieldDataXXXModel = null)
     {
-        $this->FieldDataXXXModel = $FieldDataXXXModel;
+        $this->FieldModel           = $FieldModel;
+        $this->FieldDataXXXModel    = $FieldDataXXXModel;
 
         // 送入依赖css, 用于在footer中进行统一引用。
         if (isset($FieldDataXXXModel->getConfig()['css'])) {
@@ -43,7 +45,9 @@ class FieldController extends Controller
 
         // 传值
         $this->assign('token', $this->FieldDataXXXModel->makeToken());        // 传入token，用于进行二次调用
+        $this->assign('FieldModel', $FieldModel);
         $this->assign('FieldDataXXXModel', $FieldDataXXXModel);
+
     }
 
     /**
@@ -54,16 +58,17 @@ class FieldController extends Controller
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-05T08:32:24+0800
      */
-    static public function renderFieldDataModel($labelType, &$FieldDataXXXModel)
+    static public function renderFieldDataModel(&$FieldModel, &$FieldDataXXXModel)
     {
-        $className = 'app\field\controller\\' . ucfirst($labelType) . 'Controller';
+        $typeName = $FieldModel->FieldTypeModel()->getData('name');
+        $className = 'app\field\controller\\' . ucfirst($typeName) . 'Controller';
         if (class_exists($className))
         {
             $FieldXXXController = new $className();
-            $FieldXXXController->init($FieldDataXXXModel);
+            $FieldXXXController->init($FieldModel, $FieldDataXXXModel);
             return $FieldXXXController->fetchHtml();
         } else {
-            return 'field type is ' . $labelType . '. But ' . $className . ' not found in Label module!';
+            return 'field type is ' . $typeName . '. But ' . $className . ' not found in Label module!';
         }
     }
 
@@ -76,9 +81,19 @@ class FieldController extends Controller
     public function fetchHtml()
     {
         $calledClassName = Common::getControllerName(get_called_class());
+        $html = $css = $js = '';
+
         $html = $this->fetch('field@' . $calledClassName . '/fetchHtml');
-        $js = $this->fetch('field@' . $calledClassName . '/fetchJavascript');
-        return $html . $js;
+
+        try {
+            $js = $this->fetch('field@' . $calledClassName . '/fetchJavascript');
+        } catch (\Exception $e) {}
+
+        try {
+            $css = $this->fetch('field@' . $calledClassName . '/fetchCss');
+        } catch (\Exception $e) {}
+
+        return $html . $js . $css;
     }
 
 }

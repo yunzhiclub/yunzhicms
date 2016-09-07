@@ -31,7 +31,9 @@ class ImageController extends FieldController
 
         // 调用上传操作
         try {
-            $result['data'] = $FieldDataImageModel->upload($file)->getData();
+            
+            // $image['url'] = ;
+            $result['data'] = $FieldDataImageModel->upload($file);
         } catch (\Exception $e) {
             $result = [
                 'status' => 'error',
@@ -42,5 +44,11 @@ class ImageController extends FieldController
         // 返回信息
         return json_encode($result);
         
+    }
+
+    public function fetchHtml()
+    {
+        $this->assign('id', mt_rand(1, 1024));
+        return parent::fetchHtml();
     }
 }
