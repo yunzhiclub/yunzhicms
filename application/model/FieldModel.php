@@ -56,19 +56,11 @@ class FieldModel extends ModelModel
         return $this->config;
     }
 
-    /**
-     * 获取合并后可以供前台使用的过滤器信息
-     * @return array 
-     */
     public function getFilter()
     {
-        if (null === $this->filter)
-        {
-            $this->filter = Common::configMerge($this->BlockTypeModel()->getFilter(), $this->getFilterAttr());
-        }
-
-        return $this->filter;
+        return json_decode($this->getData('filter'), true);
     }
+
 
     /**
      * 通过 关键字值 获取数据对象信息

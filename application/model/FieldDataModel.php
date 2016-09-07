@@ -25,4 +25,9 @@ class FieldDataModel extends FieldModel
     {
         return Loader::parseName($this->name);
     }
+
+    public function filter()
+    {
+        
+    }
 }

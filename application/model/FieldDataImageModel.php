@@ -158,5 +158,10 @@ class FieldDataImageModel extends FieldDataModel
             return $Object->save();
         }
     }
+
+    public function filter()
+    {
+        
+    }
 }
 
