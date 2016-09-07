@@ -40,7 +40,7 @@
                                 <a href="">过滤器设置</a>
                             </td>
                         </tr>
-                            {volist name="MenuModel->sonMenuModels" id="MenuModel"}
+                            {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
                             <tr>
                                 <td>|----{$MenuModel->title}</td>
                                 <td>{$MenuModel->url}</td>
@@ -58,7 +58,7 @@
                                     <a href="">过滤器设置</a>
                                 </td>
                             </tr>
-                                {volist name="MenuModel->sonMenuModels" id="MenuModel"}
+                                {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
                                 <tr>
                                     <td>|----|----{$MenuModel->title}</td>
                                     <td>{$MenuModel->url}</td>
