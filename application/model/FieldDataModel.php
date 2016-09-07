@@ -2,7 +2,7 @@
 namespace app\model;
 use think\Loader;
 
-class FieldDataModel extends ModelModel
+class FieldDataModel extends FieldModel
 {
     private $FieldModel = null;
 
@@ -24,5 +24,10 @@ class FieldDataModel extends ModelModel
     public function getParseName()
     {
         return Loader::parseName($this->name);
+    }
+
+    public function filter()
+    {
+        
     }
 }

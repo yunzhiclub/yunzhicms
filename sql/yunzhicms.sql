@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 09/05/2016 09:42:23 AM
+ Date: 09/07/2016 17:01:40 PM
 */
 
 SET NAMES utf8;
@@ -162,7 +162,7 @@ CREATE TABLE `yunzhi_content` (
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '358', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '118', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '41', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '390', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '140', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '41', '0');
 COMMIT;
 
 -- ----------------------------
@@ -219,6 +219,7 @@ CREATE TABLE `yunzhi_field` (
   `title` varchar(40) NOT NULL DEFAULT '' COMMENT '后台 编辑 添加 时显示的信息',
   `weight` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '权重',
   `config` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '字段配置信息 json',
+  `filter` varchar(4096) NOT NULL DEFAULT '[]' COMMENT '过滤器，用于前台的输出. 使用字段与实体类型绑定的方法实现过滤器后的输出',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='字段表 各个实体与字段的对应关系写在这里';
 
@@ -226,7 +227,7 @@ CREATE TABLE `yunzhi_field` (
 --  Records of `yunzhi_field`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field` VALUES ('1', 'body', 'Content', 'news', '内容', '0', '[]'), ('2', 'image', 'Content', 'news', '新闻图片', '0', '[]'), ('3', 'body', 'Content', 'products', '新闻内容', '0', '[]');
+INSERT INTO `yunzhi_field` VALUES ('1', 'body', 'Content', 'news', '内容', '0', '[]', '{\"type\":\"System\",\"function\":\"htmlspecialchars_decode\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}}'), ('2', 'image', 'Content', 'news', '新闻图片', '1', '[]', '[]'), ('3', 'body', 'Content', 'products', '新闻内容', '0', '[]', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -236,10 +237,9 @@ DROP TABLE IF EXISTS `yunzhi_field_data_body`;
 CREATE TABLE `yunzhi_field_data_body` (
   `field_id` int(11) unsigned NOT NULL COMMENT 'fk field',
   `key_id` int(11) unsigned NOT NULL COMMENT '对应的关键字ID',
-  `weight` int(10) unsigned NOT NULL COMMENT '权重',
   `value` longtext NOT NULL,
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`key_id`,`weight`,`field_id`,`is_deleted`),
+  PRIMARY KEY (`key_id`,`field_id`,`is_deleted`),
   KEY `entity_id` (`key_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Data storage for field 2 (body)';
 
@@ -247,7 +247,7 @@ CREATE TABLE `yunzhi_field_data_body` (
 --  Records of `yunzhi_field_data_body`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_data_body` VALUES ('1', '1', '0', '这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题', '0'), ('1', '2', '1', '新闻通知1新闻通知1新闻通知1新闻通知1新闻通知1', '0'), ('2', '3', '0', '新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2', '0');
+INSERT INTO `yunzhi_field_data_body` VALUES ('1', '1', '   &lt;p&gt;    &lt;p&gt;    &lt;p&gt;    &lt;p&gt;    &lt;p&gt;    &lt;p&gt;    &lt;p&gt; 这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题这里是关于我们的主题&lt;img src=&quot;/yunzhicms/public/upload/20160907/fecddd331f269a93b55fc16c7c742121.png&quot; alt=&quot;个人真实性核验单 (1)&quot; style=&quot;line-height: 1; max-width: 100%;&quot;&gt;&lt;br style=&quot;line-height: 1;&quot;&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;/p&gt;\r\n&lt;/p&gt;\r\n&lt;/p&gt;\r\n&lt;/p&gt;\r\n&lt;/p&gt;\r\n&lt;/p&gt;\r\n', '0'), ('1', '2', '   &lt;p&gt; 新闻通知1新闻通知1新闻通知1新闻通知1新闻通知1&lt;/p&gt;\r\n', '0'), ('2', '3', '新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2新闻通知2', '0');
 COMMIT;
 
 -- ----------------------------
@@ -302,21 +302,30 @@ CREATE TABLE `yunzhi_field_data_field_tags` (
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_field_data_image`;
 CREATE TABLE `yunzhi_field_data_image` (
-  `field_id` int(10) unsigned NOT NULL COMMENT 'The entity id this data is attached to',
-  `key_id` int(11) unsigned NOT NULL,
-  `is_deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'A boolean indicating whether this data item has been deleted',
-  `weight` mediumint(6) unsigned NOT NULL COMMENT '权重',
-  `alt` varchar(512) DEFAULT NULL COMMENT 'Alternative image text, for the image’s ’alt’ attribute.',
-  `title` varchar(1024) DEFAULT NULL COMMENT 'Image title text, for the image’s ’title’ attribute.',
-  `width` int(10) unsigned DEFAULT NULL COMMENT 'The width of the image in pixels.',
-  `height` int(10) unsigned DEFAULT NULL COMMENT 'The height of the image in pixels.',
-  `path` varchar(512) DEFAULT NULL COMMENT '路径',
-  `filename` varchar(40) DEFAULT NULL COMMENT '文件名',
-  `ext` varchar(20) DEFAULT NULL COMMENT '扩展名',
-  PRIMARY KEY (`field_id`,`is_deleted`,`key_id`,`weight`),
-  KEY `deleted` (`is_deleted`),
-  KEY `entity_id` (`field_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Data storage for field 4 (field_image)';
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The entity id this data is attached to',
+  `key_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `user_name` varchar(40) NOT NULL DEFAULT '' COMMENT 'fk of user_name',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '原始文件名',
+  `save_name` varchar(100) NOT NULL DEFAULT '' COMMENT '保存文件名',
+  `ext` varchar(10) NOT NULL DEFAULT '' COMMENT '扩展名',
+  `sha1` varchar(40) NOT NULL,
+  `md5` varchar(32) NOT NULL,
+  `size` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '文件大小B',
+  `mime` varchar(40) NOT NULL DEFAULT '' COMMENT 'MIME',
+  PRIMARY KEY (`id`),
+  KEY `field_id` (`field_id`) USING BTREE,
+  KEY `key_id` (`key_id`) USING BTREE,
+  KEY `sha1` (`sha1`) USING BTREE,
+  KEY `md5` (`md5`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 COMMENT='Data storage for field 4 (field_image)';
+
+-- ----------------------------
+--  Records of `yunzhi_field_data_image`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_field_data_image` VALUES ('5', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('6', '0', '0', '', '69947EE9-DD40-427D-8F43-390AED15FE92.png', '20160907/10cc6ec3f5c48ec37c28e9a2787a61de.png', 'png', '7cd5cd6c76fa20156c68dfe296b1443bd066a15e', 'aab1f603556216ac2e5a1b3fc971ca73', '174132', 'image/jpeg'), ('7', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('8', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('9', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('10', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('11', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('12', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('13', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('14', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('15', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('16', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('17', '0', '0', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('18', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('19', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('20', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('21', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('22', '0', '0', '', '69947EE9-DD40-427D-8F43-390AED15FE92.png', '20160907/10cc6ec3f5c48ec37c28e9a2787a61de.png', 'png', '7cd5cd6c76fa20156c68dfe296b1443bd066a15e', 'aab1f603556216ac2e5a1b3fc971ca73', '174132', 'image/jpeg'), ('23', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('24', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('25', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('26', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('27', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('28', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('29', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('30', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('31', '0', '0', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('32', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('33', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('34', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('35', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('36', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('37', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('38', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('39', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('40', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('41', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('42', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('43', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('44', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('47', '2', '1', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('48', '0', '0', '', 'IMG_2897.JPG', '20160907/7b29c9c6b5e03d5f00f95ca2a61e9260.JPG', 'jpg', '6c02ab91d7101a3c60edec84c7a320ba8e56ea60', '23305e519817b6e5f01cfc3e92b8621a', '1908619', 'image/jpeg');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `yunzhi_field_type`
@@ -324,7 +333,6 @@ CREATE TABLE `yunzhi_field_data_image` (
 DROP TABLE IF EXISTS `yunzhi_field_type`;
 CREATE TABLE `yunzhi_field_type` (
   `name` varchar(40) NOT NULL,
-  `label_type` varchar(40) NOT NULL DEFAULT 'text' COMMENT 'fk label 类型',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字段类型表';
@@ -333,7 +341,7 @@ CREATE TABLE `yunzhi_field_type` (
 --  Records of `yunzhi_field_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_type` VALUES ('body', 'textarea', '0'), ('image', 'image', '0');
+INSERT INTO `yunzhi_field_type` VALUES ('body', '0'), ('image', '0');
 COMMIT;
 
 -- ----------------------------
