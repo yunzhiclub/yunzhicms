@@ -30,5 +30,17 @@ class FieldDataBodyModel extends FieldDataModel
         $Object->setData('value', $value);
         return $Object->save();
     }
+
+    public function filter()
+    {
+        $value = $this->getData('value');
+        $filter = $this->FieldModel()->getFilter();
+        if (null === $filter) {
+            return $value;
+        }
+        $className = 'app\filter\server\\' . $filter['type'] . 'Server';
+        return call_user_func_array([$className, $filter['function']], [$value, $filter['param']]);
+    }
+     
 }
 
