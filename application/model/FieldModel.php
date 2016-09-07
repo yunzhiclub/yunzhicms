@@ -157,7 +157,6 @@ class FieldModel extends ModelModel
 
     static public function updateLists(&$lists, $keyId)
     {
-        var_dump($lists);
         foreach ($lists as $fieldId => $value) {
             try {
                 $FieldModel = self::get(['id' => $fieldId]);
