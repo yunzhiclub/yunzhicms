@@ -1,0 +1,27 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5>
+                {:$ComponentModel->name}组件配置信息
+                </h5>
+            </div>
+            <div class="box-content">
+                <div class="form-horizontal">
+                    <div class="control-group">
+                        <div class="controls">
+                            {foreach name="ComponentModel->getConfig()" key="key" id="_config"}
+                                <li>
+                                    <label>{$_config['title']}</label>
+                                    <input type="text" name="config[{$key}]" value="{$_config['value']}">
+                                </li>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
