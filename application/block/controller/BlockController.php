@@ -20,6 +20,13 @@ class BlockController extends Controller
     protected $requestController        = '';           // 请求控制器信息
     protected $token                    = null;         // token
 
+    public function __construct()
+    {
+        $this->currentThemeModel = ThemeModel::getCurrentThemeModel();
+        parent::__construct();
+    }
+
+
     static public function instance(BlockModel $BlockModel)
     {
         // todo: 
@@ -95,23 +102,31 @@ class BlockController extends Controller
      */
     protected function fetch($template = '', $vars = [], $replace = [], $config = [])
     {
+        $controller = Common::getControllerName(get_called_class());
+        $action = debug_backtrace()[1]['function'];
+
         // 拼接主题模板信息
         $themeTemplate = APP_PATH . 
             'theme' . DS . 
             $this->currentThemeModel->getData('name') . DS .
             'block' . DS .
-            Common::getControllerName(get_called_class()) . DS .
-            'fetchHtml.html';
+            $controller . DS .
+            $action . '.html';
+
         // 路径格式化，如果文件不存在，则返回false
         $themeTemplate = realpath($themeTemplate);
-        
+
         // 主题文件存在，则调用主题文件进行渲染
         if (false !== $themeTemplate)
         {   
             $template = $themeTemplate;
+
+        // 不存在，则进行同模块VIEW规则渲染
+        } else {
+            $template = 'block@' . $controller . '/' . $action;
         }
 
-        // 获取当前主题
-        return $this->view->fetch($template, $vars, $replace, $config);
+        // 渲染模板(直接调用$this->fetch()将导致死循环)
+        return parent::fetch($template);
     }
 }
