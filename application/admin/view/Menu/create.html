@@ -32,6 +32,14 @@
                         </select>
                     </div>
                     <div>
+                        <label>菜单类型</label>
+                        <select class="form-control" name="menu_type_name">
+                            {volist name="MenuTypeModels" id="MenuTypeModel"}
+                            <option value="{$MenuTypeModel->name}">{$MenuTypeModel->name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <div>
                         <label for="">url</label>
                         <input type="text" name="url" />
                     </div>

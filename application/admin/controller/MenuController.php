@@ -21,6 +21,14 @@ class MenuController extends AdminController
         $MenuModel = MenuModel::get($id);
         $this->assign('MenuModel', $MenuModel);
 
+        // 所有菜单类型
+        $MenuTypeModels = MenuTypeModel::all();
+        $this->assign('MenuTypeModels',$MenuTypeModels);
+
+        // 所有的组件
+        $Components = ComponentModel::all();
+        $this->assign('Components', $Components);
+
         // 将用户组信息传入
         $userGroupModels = UserGroupModel::all();
         $this->assign('userGroupModels', $userGroupModels);
@@ -32,12 +40,11 @@ class MenuController extends AdminController
     {
         $data = input('param.');
 
-        var_dump($data);
-        die();
         $MenuModel = MenuModel::get($id);
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);
         $MenuModel->setData('component_name', $data['component_name']);
+        $MenuModel->setData('menu_type_name', $data['menu_type_name']);
         $MenuModel->setData('url', $data['url']);
         $MenuModel->setData('is_hidden', $data['is_hidden']);
         $MenuModel->setData('weight', $data['weight']);
@@ -70,6 +77,10 @@ class MenuController extends AdminController
         $MenuModels = MenuModel::all();
         $this->assign('MenuModels', $MenuModels);
 
+        // 所有菜单类型
+        $MenuTypeModels = MenuTypeModel::all();
+        $this->assign('MenuTypeModels',$MenuTypeModels);
+
         // 所有的组件
         $Components = ComponentModel::all();
         $this->assign('Components', $Components);
@@ -93,6 +104,7 @@ class MenuController extends AdminController
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);
         $MenuModel->setData('component_name', $data['component_name']);
+        $MenuModel->setData('menu_type_name', $data['menu_type_name']);
         $MenuModel->setData('url', $data['url']);
         $MenuModel->setData('is_hidden', $data['is_hidden']);
         $MenuModel->setData('weight', $data['weight']);
