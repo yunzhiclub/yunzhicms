@@ -66,4 +66,22 @@ class BlockController extends AdminController
 
         return $this->success('操作成功', url('@admin/block'));
     }
+     /**
+     * 删除区块方法
+     * @param  int $id 区块id
+     * @return viod
+     */
+    public function deleteAction($id)
+    {
+        $BlockModel = BlockModel::get($id);
+        if (false === $BlockModel) {
+            return $this->error('删除失败:区块不存在' . $BlockModel->getError());
+        }
+        $BlockModel->setData('is_delete', 1);
+        if (false === $BlockModel->save()) {
+            return $this->error('删除失败');
+        }
+
+        return $this->success('操作成功', url('@admin/Block'));
+    }
 }
