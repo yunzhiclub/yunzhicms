@@ -118,4 +118,16 @@ class BlockModel extends ModelModel
             return true;
         }
     }
+
+    /**
+     * 生成前台可以直接调用的token
+     * @param    string                   $action 
+     * @return   string                           
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-08T09:47:07+0800
+     */
+    public function makeToken($controller, $action)
+    {
+        return Common::makeTokenByMCA('block', $controller, $action);
+    }
 }
