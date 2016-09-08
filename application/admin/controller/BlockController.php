@@ -90,8 +90,16 @@ class BlockController extends AdminController
 
     public function saveAction()
     {
-        $data = input('post.');
-        var_dump($data);
+        $param = input('post.');
+        // var_dump($data);
+        $BlockModel = new BlockModel;
+        $BlockModel->setData('title', $param['title']);
+        $BlockModel->setData('block_type_name', $param['block_type_name']);
+        $BlockModel->setData('description', $param['description']);
+        $BlockModel->setData('position_name', $param['position_name']);
+        $BlockModel->setData('status', $param['status']);
+        $BlockModel->setData('weight', $param['weight']);
+        var_dump($BlockModel);
         die();
 
 
