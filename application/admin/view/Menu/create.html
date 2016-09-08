@@ -1,29 +1,33 @@
-{layout name="index" /}
+{layout name="index" /} {layout name="index" /}
 <div class="row">
     <div class="span16">
         <div class="box">
             <div class="box-header">
                 <i class="icon-book"></i>
-                <h5>{$MenuModel->title}</h5>
+                <h5>菜单</h5>
             </div>
             <div class="box-content">
-                <form class="form-horizontal" action="{:url('@admin/menu/' . $MenuModel->id)}" method="post">
-                    <input type="hidden" name="_method" value="POST" />
+                <form class="form-horizontal" action="{:url('@admin/menu')}" method="post">
                     <div class="control-group">
                         <label class="control-label" for="_title">标题</label>
                         <div class="controls">
-                            <input type="text" id="_title" name="title" placeholder="请输入标题" value="{$MenuModel->title}" />
+                            <input type="text" id="_title" name="title" placeholder="请输入标题" />
                         </div>
                     </div>
                     <div>
                         <label>pid</label>
-                        <input type="text" name="pid" value="{$MenuModel->pid}" />
+                        <select class="form-control" name="pid">
+                            <option value="0">0</option>
+                            {volist name="MenuModels" id="MenuModel"}
+                            <option value="{$MenuModel->id}">{$MenuModel->id}</option>
+                            {/volist}
+                        </select>
                     </div>
                     <div>
                         <label>对应组件名</label>
                         <select class="form-control" name="component_name">
                             {volist name="Components" id="Component"}
-                            <option value="{$Component->name}" {eq name="Component->name" value="$MenuModel->component_name" }selected="selected" {/eq}>{$Component->name}</option>
+                            <option value="{$Component->name}">{$Component->name}</option>
                             {/volist}
                         </select>
                     </div>
@@ -31,29 +35,35 @@
                         <label>菜单类型</label>
                         <select class="form-control" name="menu_type_name">
                             {volist name="MenuTypeModels" id="MenuTypeModel"}
-                            <option value="{$MenuTypeModel->name}" {eq name="$MenuTypeModel->name" value="$MenuModel->menu_type_name" }selected="selected" {/eq}>{$MenuTypeModel->name}</option>
+                            <option value="{$MenuTypeModel->name}">{$MenuTypeModel->name}</option>
                             {/volist}
                         </select>
                     </div>
                     <div>
                         <label for="">url</label>
-                        <input type="text" name="url" value="{$MenuModel->url}" />
+                        <input type="text" name="url" />
                     </div>
                     <div>
                         <label for="">是否隐藏</label>
-                        <input type="text" name="is_hidden" value="{$MenuModel->is_hidden}" />
+                        <select class="form-control" name="is_hidden">
+                            <option value="1">1</option>
+                            <option value="0">0</option>
+                        </select>
                     </div>
                     <div>
                         <label for="">权重</label>
-                        <input type="text" name="weight" value="{$MenuModel->weight}">
+                        <input type="text" name="weight" />
                     </div>
                     <div>
                         <label for="">描述信息</label>
-                        <input type="text" name="description" value="{$MenuModel->description}" />
+                        <input type="text" name="description" />
                     </div>
                     <div>
                         <label for="">状态</label>
-                        <input type="text" name="status" value="{$MenuModel->status}" />
+                        <select class="form-control" name="status">
+                            <option value="1">1</option>
+                            <option value="0">0</option>
+                        </select>
                     </div>
                     <div>
                         <label for="">配置信息</label>
@@ -81,23 +91,23 @@
                                 <ul>
                                     <li>
                                         <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" {eq name="_UserGroupModel->isIndexAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />浏览</label>
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" />浏览</label>
                                     </li>
                                     <li>
                                         <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" {eq name="_UserGroupModel->isReadAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />查看</label>
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" />查看</label>
                                     </li>
                                     <li>
                                         <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" {eq name="_UserGroupModel->isCreateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />新增</label>
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" />新增</label>
                                     </li>
                                     <li>
                                         <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" {eq name="_UserGroupModel->isUpdateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />编辑</label>
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" />编辑</label>
                                     </li>
                                     <li>
                                         <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" {eq name="_UserGroupModel->isDeleteAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />删除</label>
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" />删除</label>
                                     </li>
                                 </ul>
                             </li>
