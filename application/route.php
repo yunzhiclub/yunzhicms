@@ -10,14 +10,12 @@
 // +----------------------------------------------------------------------
 
 return [
-    'admin'         => 'index',
-    'admin/login'   => 'Login/index',
-
     // 定义资源路由
     '__curd__'=>[
         // 指向index模块的blog控制器
+        'admin'                         => 'Index',
         'admin/menutype'                => 'MenuType',      // 菜单类型管理
-        'admin/menu'                    => 'menu',          // 菜单管理
+        'admin/menu'                    => 'Menu',          // 菜单管理
         'admin/contenttype'             => 'ContentType',   // 文章类型管理
         'admin/filter'                  => 'Filter',        // 过滤器管理
         // 'admin/category.content'        => 'Content',       // 原 文章类型中对文章进行查询,涉及到2级CURD
