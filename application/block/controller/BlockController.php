@@ -11,48 +11,51 @@ use app\model\ThemeModel;                       // 主题
 
 class BlockController extends Controller
 {
+    static private $instance            = null;
+
     protected $config                   = null;         // 配置信息
     protected $filter                   = null;         // 过滤器信息
     protected $BlockModel               = null;         // 区块模型
-    protected $currentMenuModel         = null;         // 当前菜单
     protected $currentThemeModel        = null;         // 当前主题
     protected $requestController        = '';           // 请求控制器信息
+    protected $token                    = null;         // token
 
-    public function __construct(BlockModel $BlockModel, Request $request = null)
+    static public function instance(BlockModel $BlockModel)
     {
-        $this->BlockModel = $BlockModel;
+        // todo: 
+        // new self() 不管是谁继承的我，实例化的时候，只实例化当前类。
+        // new static() 如果现在是其它继承于我的类进行调用，实例化的为继承我的那个类
+        $Object = new static();
+        $Object->BlockModel = $BlockModel;
 
         // 取配置过滤器信息
-        $this->config = $BlockModel->getConfig();;
-        $this->filter = $BlockModel->getFilter();
-
-        // 取当前菜单信息
-        $this->currentMenuModel = MenuModel::getCurrentMenuModel();
-        parent::__construct($request);
+        $Object->config = $BlockModel->getConfig();;
+        $Object->filter = $BlockModel->getFilter();
 
         // 获取当前主题信息
-        $this->currentThemeModel = ThemeModel::getCurrentThemeModel();
+        $Object->currentThemeModel = ThemeModel::getCurrentThemeModel();
 
         // 获取过滤器信息并传入V层
-        $filterModels = $this->BlockModel->getFilterModels();
-        $this->assign('filterModels', $filterModels);
+        $filterModels = $Object->BlockModel->getFilterModels();
+        $Object->assign('filterModels', $filterModels);
 
         // 送配置 过滤器至V层
-        $this->assign('config', $this->config);
-        $this->assign('filter', $this->filter);
-    }
+        $Object->assign('config', $Object->config);
+        $Object->assign('filter', $Object->filter);
 
+        return $Object;
+    }
     /**
      * 初始化，供Cx中position标签调用
-     * @param  string $name 位置名字
+     * @param  string positionName 位置名字
      * @return string       html文本
      * @author panjie
      */ 
-    static public function init($name)
+    static public function init($positionName)
     {
         // 找出所有在当前position下的block
         $BlockModel = new BlockModel;
-        $blockModels = $BlockModel->getActiveListsByPositionName($name);
+        $blockModels = $BlockModel->getActiveListsByPositionName($positionName);
 
         $resultHtml = '';
         
@@ -63,8 +66,8 @@ class BlockController extends Controller
             try 
             {
                 // 实例化类 并调用
-                $class = new $className($blockModel);
-                $result = call_user_func([$class, 'fetchHtml']); 
+                $Object = call_user_func_array([$className, 'instance'], [$blockModel]); 
+                $result = $Object->fetchHtml(); 
                 if ($result)
                 {
                     $resultHtml .= $result;
