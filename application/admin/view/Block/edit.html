@@ -22,7 +22,7 @@
                                     <label for="">区块类型</label>
                                     <select class="form-control">
                                         {volist name="BlockTypeModels" id="BlockTypeModel"}
-                                        <option>{$BlockTypeModel->name}</option>
+                                        <option {eq name="$BlockTypeModel->name" value="$BlockModel->block_type_name"} selected="selected" {/eq}>{$BlockTypeModel->name}</option>
                                         {/volist}
                                     </select>
                                 </div>
@@ -70,7 +70,7 @@
                                               {
                                                   echo '|--';
                                               }
-                                            ?>
+                                          ?>
                                                 {$_MenuModel->title}
                                         </li>
                                         {/foreach}
