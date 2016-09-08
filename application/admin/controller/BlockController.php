@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 use app\model\BlockModel;                               // 区块
 use app\model\MenuModel;                                // 菜单
+use app\model\BlockTypeModel;                           // 区块类型
 use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
 
 class BlockController extends AdminController
@@ -17,12 +18,17 @@ class BlockController extends AdminController
 
     public function editAction($id)
     {
+        $BlockTypeModels = BlockTypeModel::all();
+        $this->assign('BlockTypeModels', $BlockTypeModels);
+
         $BlockModel = BlockModel::get($id);
         $this->assign('BlockModel', $BlockModel);
 
         $MenuModels = MenuModel::getTreeList(0, 2);
         $this->assign('MenuModels', $MenuModels);
+
         return $this->fetch();
+
     }
 
     public function updateAction($id)
