@@ -20,9 +20,8 @@ class MenuController extends BlockController
 
         // 生成token并送入V层，用于编辑该区块
         $token = $this->BlockModel->makeToken('Menu', 'edit');
-        var_dump($token);
         $this->assign('token', $token);
-        Cache::set($token, 'kong hello');
+        Cache::set($token, 'hello');
 
         // 取当前菜单类型下可见的菜单列表
         $menuModels = MenuModel::getAvailableSonMenuModelsByPidMenuTypeName($pid, $menuTypeName);
