@@ -1,70 +1,90 @@
 {layout name="index" /}
-<form action="{:url('@admin/block/' . $BlockModel->id)}" method="post">
-    <input type="hidden" name="_method" value="PUT" />
-    <div>
-        <label for="">名称</label>
-        <input type="text" name="title" value="{$BlockModel->title}" />
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5>
+                {:$BlockModel->title}编辑
+                </h5>
+            </div>
+            <div class="box-content">
+                <div class="form-horizontal">
+                    <div class="control-group">
+                        <div class="controls">
+                            <form action="{:url('@admin/block/' . $BlockModel->id)}" method="post">
+                                <input type="hidden" name="_method" value="PUT" />
+                                <div>
+                                    <label for="">名称</label>
+                                    <input type="text" name="title" value="{$BlockModel->title}" />
+                                </div>
+                                <div>
+                                    <label for="">区块类型</label>
+                                    <select class="form-control">
+                                        {volist name="BlockTypeModels" id="BlockTypeModel"}
+                                        <option>{$BlockTypeModel->name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="">描述</label>
+                                    <input type="text" name="description" value="{$BlockModel->description}" />
+                                </div>
+                                <div>
+                                    <label for="">所处位置</label>
+                                    <input type="text" name="position_name" value="{$BlockModel->position_name}" />
+                                </div>
+                                <div>
+                                    <label for="">状态</label>
+                                    <input type="text" name="status" value="{$BlockModel->status}" />
+                                </div>
+                                <div>
+                                    <label for="">权重</label>
+                                    <input type="text" name="weight" value="{$BlockModel->weight}" />
+                                </div>
+                                <div>
+                                    <label for="">配置信息</label>
+                                    <ol>
+                                        {foreach name="$BlockModel->getConfig()" key="key" id="_config"}
+                                        <li>
+                                            <label>{$_config['title']}</label>
+                                            <input type="text" name="config[{$key}]" value="{$_config['value']}">
+                                        </li>
+                                        {/foreach}
+                                    </ol>
+                                </div>
+                                <div>
+                                    <label for="">过滤器信息</label>
+                                    <ol>
+                                        {foreach name="$BlockModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
+                                    </ol>
+                                </div>
+                                <div>
+                                    <label for="">对哪些菜单显示</label>
+                                    <ul>
+                                        {foreach name="MenuModels" id="_MenuModel"}
+                                        <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="BlockModel->checkIsShow($_MenuModel)" value="true" }checked="" {/eq} />
+                                        <li>
+                                            <?php
+                                               for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
+                                              {
+                                                  echo '|--';
+                                              }
+                                            ?>
+                                                {$_MenuModel->title}
+                                        </li>
+                                        {/foreach}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <label for="">对哪些用户组可见</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="">区块类型</label>
-        <select class="form-control">
-            {volist name="BlockTypeModels" id="BlockTypeModel"}
-            <option>{$BlockTypeModel->name}</option>
-            {/volist}
-        </select>
-    </div>
-    <div>
-        <label for="">描述</label>
-        <input type="text" name="description" value="{$BlockModel->description}" />
-    </div>
-    <div>
-        <label for="">所处位置</label>
-        <input type="text" name="position_name" value="{$BlockModel->position_name}" />
-    </div>
-    <div>
-        <label for="">状态</label>
-        <input type="text" name="status" value="{$BlockModel->status}" />
-    </div>
-    <div>
-        <label for="">权重</label>
-        <input type="text" name="weight" value="{$BlockModel->weight}" />
-    </div>
-    <div>
-        <label for="">配置信息</label>
-        <ol>
-            {foreach name="$BlockModel->getConfig()" key="key" id="_config"}
-            <li>
-                <label>{$_config['title']}</label>
-                <input type="text" name="config[{$key}]" value="{$_config['value']}">
-            </li>
-            {/foreach}
-        </ol>
-    </div>
-    <div>
-        <label for="">过滤器信息</label>
-        <ol>
-            {foreach name="$BlockModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
-        </ol>
-    </div>
-    <div>
-        <label for="">对哪些菜单显示</label>
-        <ul>
-            {foreach name="MenuModels" id="_MenuModel"}
-            <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="BlockModel->checkIsShow($_MenuModel)" value="true" }checked="" {/eq} />
-            <li>
-                <?php
-                for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
-                {
-                    echo '|--';
-                }
-                ?>
-                    {$_MenuModel->title}
-            </li>
-            {/foreach}
-        </ul>
-    </div>
-    <div>
-        <label for="">对哪些用户组可见</label>
-    </div>
-    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
-</form>
+    </divS>
