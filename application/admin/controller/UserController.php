@@ -19,4 +19,22 @@ class UserController extends AdminController
         
         return $this->fetch();
     }
+
+    public function saveAction()
+    {
+        $data = input('param.');
+
+        $UserModel = new UserModel;
+        $UserModel->setData('name', $data['name']);
+        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('password', $data['password']);
+
+        return $this->success('操作成功', url('@admin/user/'));
+    }
+
+    public function addAction()
+    {
+
+        return $this->success('操作成功', url('@admin/user/'));
+    }
 }
