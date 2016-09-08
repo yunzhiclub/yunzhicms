@@ -9,12 +9,12 @@ use app\model\ComponentModel;           // 组件
 
 class MenuController extends AdminController
 {
-    public function indexAction()
-    {
-        $MenuTypeModels = MenuTypeModel::paginate();
-        $this->assign('MenuTypeModels', $MenuTypeModels);
-        return $this->fetch();
-    }
+    // public function indexAction()
+    // {
+    //     $MenuTypeModels = MenuTypeModel::paginate();
+    //     $this->assign('MenuTypeModels', $MenuTypeModels);
+    //     return $this->fetch();
+    // }
 
     public function editAction($id)
     {
