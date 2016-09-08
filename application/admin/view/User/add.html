@@ -1,5 +1,4 @@
 {layout name="index" /}
-
 <div class="row">
     <div class="span16">
         <div class="box pattern pattern-sandstone">
@@ -11,16 +10,26 @@
             </div>
             <div>状态：</div>
             <br>
-           <form action="{:url('@admin/user/')}" method="post">
- 				<ul>
-
- 					<li>Email <input type="text" id="_email" name="email" placeholder="请输入邮箱" /></li>
- 					<li>姓名 <input type="text" id="_name" name="name" placeholder="请输入姓名" /></li>
- 					<li>密码 <input type="text" id="_password" name="password" placeholder="请输入密码" /></li>
- 					<li>所属用户组：</li>
-				</ul>
-				<button type="submit">提交</button>
-           </form>
+            <form action="{:url('@admin/user/')}" method="post">
+                <ul>
+                    <li>Email
+                        <input type="text" id="_email" name="email" placeholder="请输入邮箱" />
+                    </li>
+                    <li>姓名
+                        <input type="text" id="_name" name="name" placeholder="请输入姓名" />
+                    </li>
+                    <li>密码
+                        <input type="password" value="{$UserModel->password}" id="_password" name="password" placeholder="请输入密码" />
+                    </li>
+                    <li>qq
+                        <input type="text" value="{$UserModel->password}" id="_qq" name="qq" placeholder="请输入qq" />
+                    </li>
+                    <li>用户组
+                        <input type="select" name="user_group_name" id="user_group_name">
+                    </li>
+                </ul>
+                <button type="submit">提交</button>
+            </form>
         </div>
     </div>
 </div>

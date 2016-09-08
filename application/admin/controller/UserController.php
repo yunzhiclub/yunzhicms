@@ -28,11 +28,14 @@ class UserController extends AdminController
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
         $UserModel->setData('password', $data['password']);
+        $UserModel->setData('qq', $data['qq']);
+        $UserModel->setData('user_group_name', $data['user_group_name']);
+        dump($data);
 
         return $this->success('操作成功', url('@admin/user/'));
     }
 
-    public function addAction()
+    public function createAction()
     {
 
         return $this->success('操作成功', url('@admin/user/'));
