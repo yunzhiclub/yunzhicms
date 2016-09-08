@@ -1,5 +1,6 @@
 <?php
 namespace app\model;
+use think\Exception;
 /**
  * 用户组 - 菜单 权限
  */
