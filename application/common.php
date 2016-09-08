@@ -16,6 +16,9 @@ use think\Session;
 use app\model\MenuModel;
 use app\model\UserModel;
 
+// 定义变量过滤。在获取变量值时，禁用input()助手函数
+Request::instance()->filter('htmlspecialchars');
+
 // 初始化
 Common::init();
 
@@ -405,7 +408,7 @@ class Common{
     static public function getUpdateUrl()
     {
         $requestUri = $_SERVER['REQUEST_URI'];
-        return str_replace('.html', '/update.html', $requestUri);
+        return str_replace('/edit', '', $requestUri);
     }
 
     /**
@@ -553,25 +556,20 @@ class Common{
 
     static public function makeTokenByMCA($module, $controller, $action)
     {
-        // 获取当前访问action
-        $currentAction = Request::instance()->action();
-
-        // 获取当前菜单
-        $currentMenuModel = MenuModel::getCurrentMenuModel();
-
         $tokens = Session::get('tokens');
+        $key = $module . '_' . $controller . '_' . $action;
 
         // 如果不存在，则生成. todo:对session是否过期的判断
-        if (null === $tokens || !isset($tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $currentAction]))
+        if (null === $tokens || !isset($tokens[$key]))
         {
             // 生成token
-            $token = sha1($module . $controller . $action . $currentMenuModel->getData('id') . $action . microtime() . config('token_suffix'));
-            $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $currentAction] = $token;
+            $token = sha1($key . microtime() . rand(1,10000) . config('token_suffix'));
+            $tokens[$key] = $token;
             Session::set('tokens', $tokens);
         }
         
         // 返回生成并且注册的token
-        return $tokens[$module . '_' . $controller . '_' . $action . '_' . $currentMenuModel->getData('id') . '_' . $currentAction];
+        return $tokens[$key];
     }
 
     static public function getKeyByToken(&$token)

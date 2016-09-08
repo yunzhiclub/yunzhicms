@@ -44,4 +44,9 @@ class SystemServer
         $url = $ContentModel->ContentTypeModel()->MenuModel()->getData('url');
         return url('@' . $url . '/' . $ContentModel->getData('id'));
     }
+
+    static public function htmlspecialchars_decode($html, $param = [])
+    {
+        return htmlspecialchars_decode($html);
+    }
 }

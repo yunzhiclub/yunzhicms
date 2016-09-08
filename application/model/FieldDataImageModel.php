@@ -133,5 +133,35 @@ class FieldDataImageModel extends FieldDataModel
         return $data;
     }
 
+    /**
+     * 更新扩展字段
+     * @param    int                   $fieldId 字段id
+     * @param    int                   $keyId   关键字id
+     * @param    |||                   $id   关键字
+     * @return    更新的id值                          
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-07T15:21:43+0800
+     */
+    static public function updateList($fieldId, $keyId, $id)
+    {
+        $Object = self::get(['id' => $id]);
+        if ( '' !== $Object->getData('id')) {
+            // 如果存在历史信息，先删除历史信息
+            $oldObject = self::get(['field_id' => $fieldId, 'key_id' => $keyId]);
+            if ('' !== $oldObject && ($oldObject->getData('id') !== $Object->getData('id'))) {
+                $oldObject->delete();
+            }
+
+            // 更新当前数据
+            $Object->setData('field_id', $fieldId);
+            $Object->setData('key_id', $keyId);
+            return $Object->save();
+        }
+    }
+
+    public function filter()
+    {
+        
+    }
 }
 

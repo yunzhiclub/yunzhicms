@@ -50,4 +50,12 @@ return [
         'var_page'  => 'page',
         'list_rows' => 20,
     ],
+
+    // 缓存设置
+    'cache'  => [
+        'type'   => 'File',
+        'path'   => CACHE_PATH,
+        'prefix' => 'yunzhicms',
+        'expire' => 1800,
+    ],
 ];

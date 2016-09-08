@@ -24,9 +24,15 @@ class ApiController
         }
 
         // 根据token 调用对应的方法
-        $tokenKeys = explode('_', $tokenKey);
-        $className = '\app\\' . $tokenKeys[0] . '\controller\\' . $tokenKeys[1] . 'Controller';
-        $param = ['menuId' => $className[3], 'action' => $className[4]];
-        return call_user_func_array([$className, $tokenKeys[2]], $param);
+        $tokenKeys  = explode('_', $tokenKey);
+        $moudle     = $tokenKeys[0];
+        $controller = $tokenKeys[1];
+        $action     = $tokenKeys[2];
+
+        // 接接要调用的类名
+        $className  = '\app\\' . $moudle . '\controller\\' . $controller . 'Controller';
+
+        // 生成当token时的用户触发的menuId及action
+        return call_user_func([$className, $action]);
     }
 }

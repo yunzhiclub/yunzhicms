@@ -56,19 +56,11 @@ class FieldModel extends ModelModel
         return $this->config;
     }
 
-    /**
-     * 获取合并后可以供前台使用的过滤器信息
-     * @return array 
-     */
     public function getFilter()
     {
-        if (null === $this->filter)
-        {
-            $this->filter = Common::configMerge($this->BlockTypeModel()->getFilter(), $this->getFilterAttr());
-        }
-
-        return $this->filter;
+        return json_decode($this->getData('filter'), true);
     }
+
 
     /**
      * 通过 关键字值 获取数据对象信息
@@ -91,6 +83,13 @@ class FieldModel extends ModelModel
             $FiledDataModel = new $table;
 
             $this->getDataByKeyId = $FiledDataModel->get($map);
+
+            // 如果返回默认值，则将field_id, key_id传入。防止关联调用时数据不存在抛出的异常
+            if ('' === $this->getDataByKeyId->getData('field_id'))
+            {
+                $this->getDataByKeyId->setData('field_id', $this->getData('id'));
+                $this->getDataByKeyId->setData('key_id', $keyId);
+            }
         }
 
         return $this->getDataByKeyId;
@@ -152,5 +151,34 @@ class FieldModel extends ModelModel
         }
 
         return $this->token;
+    }
+
+
+    static public function updateLists(&$lists, $keyId)
+    {
+        foreach ($lists as $fieldId => $value) {
+            try {
+                $FieldModel = self::get(['id' => $fieldId]);
+                $dataName = ucfirst($FieldModel->getData('field_type_name'));
+                $className = 'app\model\FieldData' . $dataName . 'Model';
+                call_user_func_array([$className, 'updateList'], [$fieldId, $keyId, $value]);
+            } catch (\Exception $e){
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * 更新扩展字段
+     * @param    int                   $fieldId 字段id
+     * @param    int                   $keyId   关键字id
+     * @param    |||                   $value   值
+     * @return    更新的id值                          
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-07T15:21:43+0800
+     */
+    static public function updateList($fieldId, $keyId, $value)
+    {
+        var_dump('请重写该函数用于数据字段的更新');
     }
 }

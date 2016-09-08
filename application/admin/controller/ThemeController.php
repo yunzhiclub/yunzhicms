@@ -18,15 +18,15 @@ class ThemeController extends AdminController
     /**
      * 启用主题
      * @param  string $id 数据表中name字段
-     * @return boolean     
+     * @return boolean
      */
     public function readAction($id)
     {
     	$ThemeModel = new ThemeModel;
     	//调用 启用当前模板  方法
     	$ThemeModel->enable($id);
-    	
-    	return $this->success('启用成功', url('@admin/Theme/'));
+
+    	return $this->success('启用成功', url('@admin/theme'));
 
     }
 
