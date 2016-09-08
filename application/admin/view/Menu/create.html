@@ -82,7 +82,7 @@
                             {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
                         </ol>
                     </div>
-                   <div>
+                    <div>
                         <label for="">用户组权限：</label>
                         <ul>
                             {volist name="userGroupModels" id="_UserGroupModel"}
@@ -90,16 +90,24 @@
                                 {$_UserGroupModel->title}
                                 <ul>
                                     <li>
-                                        <label for=""><input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" />查看</label>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" />浏览</label>
                                     </li>
                                     <li>
-                                        <label for=""><input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]"  />新增</label>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" />查看</label>
                                     </li>
                                     <li>
-                                        <label for=""><input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" />编辑</label>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" />新增</label>
                                     </li>
                                     <li>
-                                        <label for=""><input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" />删除</label>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" />编辑</label>
+                                    </li>
+                                    <li>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" />删除</label>
                                     </li>
                                 </ul>
                             </li>

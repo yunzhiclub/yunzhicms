@@ -19,7 +19,7 @@ class MenutypeController extends AdminController
         $this->assign('MenuModelType', $MenuModelType);
 
         $MenuModel = new MenuModel;
-        $MenuModels = $MenuModel->getListsByMenuTypeNamePid($name, 0);
+        $MenuModels = $MenuModel->getListsByMenuTypeNamePid($name, 0, 0);
         $this->assign('MenuModels', $MenuModels);
         return $this->fetch();
     }

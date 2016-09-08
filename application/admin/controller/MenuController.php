@@ -64,6 +64,9 @@ class MenuController extends AdminController
        
         $MenuModel->save();
 
+        //若未返回数值，则置为空数组
+        $data['access'] = isset($data['access'])?$data['access']:array();
+
         // 更新 菜单 用户组 权限
         AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
 
@@ -122,6 +125,7 @@ class MenuController extends AdminController
         }
 
         $id = $MenuModel->save();
+        $data['access'] = isset($data['access'])?$data['access']:array();
 
         // 更新 菜单 用户组 权限
         AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
@@ -129,5 +133,28 @@ class MenuController extends AdminController
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('操作成功', url('@admin/menuType/' . $menuType));
 
+    }
+
+    public function deleteAction($id)
+    {
+        $id = (int)$id;
+        $MenuModel = MenuModel::get($id);
+
+        //判断是否含有二级菜单
+        $sonMenuModels = $MenuModel->sonMenuModels();
+        $MenuModel->setData('is_delete', 1);
+
+        if (false === empty($sonMenuModels)) {
+            
+            return $this->error('不能删除因为含有子菜单');
+        }
+
+        if (false === $MenuModel->save()) {
+            
+            return $this->error('删除失败');
+        }
+
+        $menuType = $MenuModel->getData('menu_type_name');
+        return $this->success('删除成功', url('@admin/menuType/' . $menuType));
     }
 }
