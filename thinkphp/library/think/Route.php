@@ -569,7 +569,7 @@ class Route
                 if (is_array($val)) {
                     list($val, $option, $pattern) = array_pad($val, 3, []);
                 }
-                self::resource($key, $val, $option, $pattern);
+                self::curd($key, $val, $option, $pattern);
             }
         } else {
             if (strpos($rule, '.')) {
