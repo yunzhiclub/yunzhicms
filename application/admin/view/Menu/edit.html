@@ -23,81 +23,90 @@
                         <label>对应组件名</label>
                         <select class="form-control" name="component_name">
                             {volist name="Components" id="Component"}
-                            <option value="{$MenuModel->component_name}">{$Component->name}</option>
+                            <option value="{$Component->name}" {eq name="Component->name" value="$MenuModel->component_name" }selected="selected" {/eq}>{$Component->name}</option>
                             {/volist}
                         </select>
                     </div>
-                    <label for="">url</label>
-                    <input type="text" name="url" value="{$MenuModel->url}" />
-            </div>
-            <div>
-                <label for="">是否隐藏</label>
-                <input type="text" name="is_hidden" value="{$MenuModel->is_hidden}" />
-            </div>
-            <div>
-                <label for="">权重</label>
-                <input type="text" name="weight" value="{$MenuModel->weight}">
-            </div>
-            <div>
-                <label for="">描述信息</label>
-                <input type="text" name="description" value="{$MenuModel->description}" />
-            </div>
-            <div>
-                <label for="">状态</label>
-                <input type="text" name="status" value="{$MenuModel->status}" />
-            </div>
-            <div>
-                <label for="">配置信息</label>
-                <ol>
-                    {foreach name="MenuModel->getConfig()" key="key" id="_config"}
-                    <li>
-                        <label>{$_config['title']}</label>
-                        <input type="text" name="config[{$key}]" value="{$_config['value']}">
-                    </li>
-                    {/foreach}
-                </ol>
-            </div>
-            <div>
-                <label for="">过滤器信息</label>
-                <ol>
-                    {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
-                </ol>
-            </div>
-            <div>
-                <label for="">用户组权限：</label>
-                <ul>
-                    {volist name="userGroupModels" id="_UserGroupModel"}
-                    <li>
-                        {$_UserGroupModel->title}
+                    <div>
+                        <label>菜单类型</label>
+                        <select class="form-control" name="menu_type_name">
+                            {volist name="MenuTypeModels" id="MenuTypeModel"}
+                            <option value="{$MenuTypeModel->name}" {eq name="$MenuTypeModel->name" value="$MenuModel->menu_type_name" }selected="selected" {/eq}>{$MenuTypeModel->name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="">url</label>
+                        <input type="text" name="url" value="{$MenuModel->url}" />
+                    </div>
+                    <div>
+                        <label for="">是否隐藏</label>
+                        <input type="text" name="is_hidden" value="{$MenuModel->is_hidden}" />
+                    </div>
+                    <div>
+                        <label for="">权重</label>
+                        <input type="text" name="weight" value="{$MenuModel->weight}">
+                    </div>
+                    <div>
+                        <label for="">描述信息</label>
+                        <input type="text" name="description" value="{$MenuModel->description}" />
+                    </div>
+                    <div>
+                        <label for="">状态</label>
+                        <input type="text" name="status" value="{$MenuModel->status}" />
+                    </div>
+                    <div>
+                        <label for="">配置信息</label>
+                        <ol>
+                            {foreach name="MenuModel->getConfig()" key="key" id="_config"}
+                            <li>
+                                <label>{$_config['title']}</label>
+                                <input type="text" name="config[{$key}]" value="{$_config['value']}">
+                            </li>
+                            {/foreach}
+                        </ol>
+                    </div>
+                    <div>
+                        <label for="">过滤器信息</label>
+                        <ol>
+                            {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
+                        </ol>
+                    </div>
+                    <div>
+                        <label for="">用户组权限：</label>
                         <ul>
+                            {volist name="userGroupModels" id="_UserGroupModel"}
                             <li>
-                                <label for="">
-                                    <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" {eq name="_UserGroupModel->isIndexAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />查看</label>
+                                {$_UserGroupModel->title}
+                                <ul>
+                                    <li>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" {eq name="_UserGroupModel->isIndexAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />查看</label>
+                                    </li>
+                                    <li>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" {eq name="_UserGroupModel->isReadAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />查看</label>
+                                    </li>
+                                    <li>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" {eq name="_UserGroupModel->isCreateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />新增</label>
+                                    </li>
+                                    <li>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" {eq name="_UserGroupModel->isUpdateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />编辑</label>
+                                    </li>
+                                    <li>
+                                        <label for="">
+                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" {eq name="_UserGroupModel->isDeleteAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />删除</label>
+                                    </li>
+                                </ul>
                             </li>
-                            <li>
-                                <label for="">
-                                    <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" {eq name="_UserGroupModel->isReadAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />查看</label>
-                            </li>
-                            <li>
-                                <label for="">
-                                    <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" {eq name="_UserGroupModel->isCreateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />新增</label>
-                            </li>
-                            <li>
-                                <label for="">
-                                    <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" {eq name="_UserGroupModel->isUpdateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />编辑</label>
-                            </li>
-                            <li>
-                                <label for="">
-                                    <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" {eq name="_UserGroupModel->isDeleteAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />删除</label>
-                            </li>
+                            {/volist}
                         </ul>
-                    </li>
-                    {/volist}
-                </ul>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
-            </form>
         </div>
     </div>
-</div>
 </div>
