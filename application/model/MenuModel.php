@@ -256,7 +256,7 @@ class MenuModel extends ModelModel
         $MenuModel = $this;
         do {
             array_push($tree, $MenuModel);
-            $MenuModel = $MenuModel->fatherMenuModel;
+            $MenuModel = $MenuModel->fatherMenuModel();
         } while ('' !== $MenuModel->getData('id'));
         return array_reverse($tree);
     }

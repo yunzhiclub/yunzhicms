@@ -30,7 +30,6 @@ class FieldController extends Controller
 
     public function init(&$FieldModel, &$FieldDataXXXModel = null)
     {
-        $this->FieldModel           = $FieldModel;
         $this->FieldDataXXXModel    = $FieldDataXXXModel;
 
         // 送入依赖css, 用于在footer中进行统一引用。
@@ -45,7 +44,6 @@ class FieldController extends Controller
 
         // 传值
         $this->assign('token', $this->FieldDataXXXModel->makeToken());        // 传入token，用于进行二次调用
-        $this->assign('FieldModel', $FieldModel);
         $this->assign('FieldDataXXXModel', $FieldDataXXXModel);
 
     }
