@@ -87,6 +87,13 @@ class BlockController extends AdminController
             return $this->error('删除失败');
         }
 
-        return $this->success('删除成功', url('@admin/block'));
+
+    public function saveAction()
+    {
+        $data = input('post.');
+        var_dump($data);
+        die();
+
+
     }
 }
