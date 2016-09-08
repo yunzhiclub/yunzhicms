@@ -95,6 +95,9 @@ class BlockController extends AdminController
 
     public function saveAction()
     {
-        #
+        $data = input('post.');
+        var_dump($data);
+        die();
+
     }
 }
