@@ -7,7 +7,8 @@ class MenutypeController extends AdminController
 {
     public function indexAction()
     {
-        $MenuTypeModels = MenuTypeModel::paginate();
+        $MenuTypeModel = new MenuTypeModel;
+        $MenuTypeModels = $MenuTypeModel->where('is_delete', '=', 0)->paginate();
         $this->assign('MenuTypeModels', $MenuTypeModels);
         return $this->fetch();
     }
@@ -22,5 +23,34 @@ class MenutypeController extends AdminController
         $MenuModels = $MenuModel->getListsByMenuTypeNamePid($name, 0, 0);
         $this->assign('MenuModels', $MenuModels);
         return $this->fetch();
+    }
+
+    public function deleteAction($id)
+    {
+        $name = $id;
+        if (null === $name) {
+            
+            return $this->error('未找到相关记录');
+        }
+
+        //判断里面是不是有菜单
+        $MenuModel = new MenuModel;
+        $MenuModels = $MenuModel->getListsByMenuTypeNamePid($name, 0, 0);
+        
+        if (false === empty($MenuModels)) {
+            
+            return $this->error('含有下一级菜单不能删除');
+        }
+
+        $map = array('name' => $name);
+        $MenuTypeModel = MenuTypeModel::get($map);
+        $MenuTypeModel->setData('is_delete', 1);
+
+        if (false === $MenuTypeModel->save()) {
+            
+            return $this->error('删除失败');
+        }
+
+        return $this->success('删除成功', url('@admin/menutype'));
     }
 }
