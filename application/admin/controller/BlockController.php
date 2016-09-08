@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\controller;
-
+use app\model\UserGroupModel;
 use app\model\BlockModel;                               // 区块
 use app\model\MenuModel;                                // 菜单
 use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
@@ -9,7 +9,8 @@ class BlockController extends AdminController
 {
     public function indexAction()
     {
-        $BlockModels = BlockModel::paginate();
+        $BlockModel = new BlockModel;
+        $BlockModels = $BlockModel->where('is_delete', '=', '0')->paginate();
         $this->assign('BlockModels', $BlockModels);
 
         return $this->fetch();
@@ -19,6 +20,10 @@ class BlockController extends AdminController
     {
         $BlockModel = BlockModel::get($id);
         $this->assign('BlockModel', $BlockModel);
+
+        $UserGroupModel = new UserGroupModel;
+        $UserGroupModel = $UserGroupModel::all();
+        $this->assign('UserGroupModel', $UserGroupModel);
 
         $MenuModels = MenuModel::getTreeList(0, 2);
         $this->assign('MenuModels', $MenuModels);
@@ -66,11 +71,11 @@ class BlockController extends AdminController
 
         return $this->success('操作成功', url('@admin/block'));
     }
-     /**
-     * 删除区块方法
-     * @param  int $id 区块id
-     * @return viod
-     */
+    /**
+    * 删除区块方法
+    * @param  int $id 区块id
+    * @return viod
+    */
     public function deleteAction($id)
     {
         $BlockModel = BlockModel::get($id);
@@ -82,6 +87,6 @@ class BlockController extends AdminController
             return $this->error('删除失败');
         }
 
-        return $this->success('操作成功', url('@admin/Block'));
+        return $this->success('删除成功', url('@admin/block'));
     }
 }
