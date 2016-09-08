@@ -5,6 +5,7 @@ use app\model\BlockModel;                               // 区块
 use app\model\MenuModel;                                // 菜单
 use app\model\BlockTypeModel;                           // 区块类型
 use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
+use app\model\PositionModel;                            //获取位置信息
 
 class BlockController extends AdminController
 {
@@ -78,7 +79,18 @@ class BlockController extends AdminController
      */
     public function createAction()
     {
-        #
+        $BlockTypeModels = BlockTypeModel::all();
+        $this->assign('BlockTypeModels', $BlockTypeModels);
+
+        $BlockModel = BlockModel::all();
+        $this->assign('BlockModel', $BlockModel);
+
+        $MenuModels = MenuModel::getTreeList(0, 2);
+        $this->assign('MenuModels', $MenuModels);
+
+        $Positions = PositionModel::all();
+        $this->assign('Positions', $Positions);
+        return $this->fetch();
     }
 
     public function saveAction()

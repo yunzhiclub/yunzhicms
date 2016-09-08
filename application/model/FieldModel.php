@@ -83,6 +83,13 @@ class FieldModel extends ModelModel
             $FiledDataModel = new $table;
 
             $this->getDataByKeyId = $FiledDataModel->get($map);
+
+            // 如果返回默认值，则将field_id, key_id传入。防止关联调用时数据不存在抛出的异常
+            if ('' === $this->getDataByKeyId->getData('field_id'))
+            {
+                $this->getDataByKeyId->setData('field_id', $this->getData('id'));
+                $this->getDataByKeyId->setData('key_id', $keyId);
+            }
         }
 
         return $this->getDataByKeyId;

@@ -1,0 +1,58 @@
+{layout name="index" /}
+<form action="{:url('@admin/block/')}" method="post">
+    <input type="hidden" name="_method" value="PUT" />
+    <div>
+        <label for="">名称</label>
+        <input type="text" name="title" value="" />
+    </div>
+    <div>
+        <label for="">区块类型</label>
+        <select class="form-control">
+            {volist name="BlockTypeModels" id="BlockTypeModel"}
+            <option>{$BlockTypeModel->name}</option>
+            {/volist}
+        </select>
+    </div>
+    <div>
+        <label for="">描述</label>
+        <input type="text" name="description" value="" />
+    </div>
+    <div>
+        <label for="">所处位置</label>
+        <select class="form-control">
+            {volist name="Positions" id="Position"}
+                <option value="">{$Position->name}</option>
+            {/volist}
+        </select>
+    </div>
+    <div>
+        <label for="">状态</label>
+        <input type="text" name="status" value="" />
+    </div>
+    <div>
+        <label for="">权重</label>
+        <input type="text" name="weight" value="" />
+    </div>
+
+    <div>
+        <label for="">对哪些菜单显示</label>
+        <ul>
+            {foreach name="MenuModels" id="_MenuModel"}
+            <input type="checkbox" name="menuids[{$_MenuModel->id}]" />
+            <li>
+                <?php
+                for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
+                {
+                    echo '|--';
+                }
+                ?>
+                    {$_MenuModel->title}
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+    <div>
+        <label for="">对哪些用户组可见</label>
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+</form>
