@@ -9,12 +9,12 @@ use app\model\ComponentModel;           // 组件
 
 class MenuController extends AdminController
 {
-    public function indexAction()
-    {
-        $MenuTypeModels = MenuTypeModel::paginate();
-        $this->assign('MenuTypeModels', $MenuTypeModels);
-        return $this->fetch();
-    }
+    // public function indexAction()
+    // {
+    //     $MenuTypeModels = MenuTypeModel::paginate();
+    //     $this->assign('MenuTypeModels', $MenuTypeModels);
+    //     return $this->fetch();
+    // }
 
     public function editAction($id)
     {
@@ -133,5 +133,28 @@ class MenuController extends AdminController
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('操作成功', url('@admin/menuType/' . $menuType));
 
+    }
+
+    public function deleteAction($id)
+    {
+        $id = (int)$id;
+        $MenuModel = MenuModel::get($id);
+
+        //判断是否含有二级菜单
+        $sonMenuModels = $MenuModel->sonMenuModels();
+        $MenuModel->setData('is_delete', 1);
+
+        if (false === empty($sonMenuModels)) {
+            
+            return $this->error('不能删除因为含有子菜单');
+        }
+
+        if (false === $MenuModel->save()) {
+            
+            return $this->error('删除失败');
+        }
+
+        $menuType = $MenuModel->getData('menu_type_name');
+        return $this->success('删除成功', url('@admin/menuType/' . $menuType));
     }
 }
