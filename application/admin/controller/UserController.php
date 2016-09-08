@@ -24,19 +24,31 @@ class UserController extends AdminController
     {
         $data = input('param.');
 
+        
         $UserModel = new UserModel;
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
         $UserModel->setData('password', $data['password']);
-        $UserModel->setData('qq', $data['qq']);
+        $UserModel->setData('qq_open_id', $data['qq_open_id']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-        dump($data);
+        dump($data['name']);
 
+        $UserModel->save();
         return $this->success('操作成功', url('@admin/user/'));
     }
 
     public function createAction()
-    {
+    {   
+        $data = input('param.');
+
+        $UserModel = new UserModel;
+        $UserModel->setData('name', $data['name']);
+        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('password', $data['password']);
+        $UserModel->setData('qq_open_id', $data['qq_open_id']);
+        $UserModel->setData('user_group_name', $data['user_group_name']);
+        dump($data['name']);
+
 
         return $this->success('操作成功', url('@admin/user/'));
     }
