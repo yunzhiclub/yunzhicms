@@ -66,11 +66,11 @@
                                         <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="BlockModel->checkIsShow($_MenuModel)" value="true" }checked="" {/eq} />
                                         <li>
                                             <?php
-                for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
-                {
-                    echo '|--';
-                }
-                ?>
+                                               for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
+                                              {
+                                                  echo '|--';
+                                              }
+                                            ?>
                                                 {$_MenuModel->title}
                                         </li>
                                         {/foreach}
