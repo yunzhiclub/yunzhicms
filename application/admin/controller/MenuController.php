@@ -21,6 +21,10 @@ class MenuController extends AdminController
         $MenuModel = MenuModel::get($id);
         $this->assign('MenuModel', $MenuModel);
 
+        // 所有的组件
+        $Components = ComponentModel::all();
+        $this->assign('Components', $Components);
+
         // 将用户组信息传入
         $userGroupModels = UserGroupModel::all();
         $this->assign('userGroupModels', $userGroupModels);
