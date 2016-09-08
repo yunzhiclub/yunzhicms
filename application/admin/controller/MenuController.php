@@ -64,6 +64,9 @@ class MenuController extends AdminController
        
         $MenuModel->save();
 
+        //若未返回数值，则置为空数组
+        $data['access'] = isset($data['access'])?$data['access']:array();
+
         // 更新 菜单 用户组 权限
         AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
 
@@ -122,6 +125,7 @@ class MenuController extends AdminController
         }
 
         $id = $MenuModel->save();
+        $data['access'] = isset($data['access'])?$data['access']:array();
 
         // 更新 菜单 用户组 权限
         AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
