@@ -1,0 +1,45 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5>
+                主题列表
+                </h5>
+            </div>
+            <div class="box-content box-table">
+                <table id="sample-table" class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>主题名称</th>
+                            <th>描述</th>
+                            <th>是否启用</th>
+                            <th>作者</th>
+                            <th>版本</th>
+                            <th class="td-actions">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="themesModel" id="themeModel"}
+       					<tr>
+       						<td>{$themeModel->title}</td>
+       						<td>{$themeModel->description}</td>
+       						<td>{eq name="themeModel->is_current" value="1"}是{else /}/{/eq}</td>
+       						<td>{$themeModel->author}</td>
+       						<td>{$themeModel->version}</td>		
+       						<td class="td-actions">
+       							{eq name="$themeModel->is_current" value="1"}
+       							<a href="{:url('@admin/Theme/' . $themeModel->name)}" class="btn btn-success"></i>&nbsp;已启用</a>
+       							{else /}
+       							<a href="{:url('@admin/Theme/' . $themeModel->name)}" class="btn btn-info"></i>&nbsp;启用</a>
+       							{/eq}
+       						</td>      				
+       					</tr>
+       				{/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
