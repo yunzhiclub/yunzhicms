@@ -40,6 +40,11 @@
                             </td>
                         </tr>
                         {/volist} {$BlockModels->render()}
+                        <div style="text-align:right;">
+                            <a href="{:url('@admin/Block/create')}" class="btn btn-small btn-primary">
+                                     新增
+                                </a>
+                        </div>
                     </tbody>
                 </table>
             </div>
