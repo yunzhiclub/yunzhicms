@@ -18,8 +18,27 @@ class FieldModel extends ModelModel
     private $getDataByKeyId = null;
     private $getDataByKeyId_KeyId = null;
     private $FieldTypeModel = null;             // 字段类型模型
+    private $FieldModel = null;
 
+    public function FieldModel()
+    {
+        if (null === $this->FieldModel) {
+            $this->FieldModel = FieldModel::get(['id' => $this->getData('field_id')]);
+        }
 
+        return $this->FieldModel;
+    }
+
+    /**
+     * 将驼峰式写法 改完 xx_x_型
+     * @return   string                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-05T10:52:07+0800
+     */
+    public function getParseName()
+    {
+        return Loader::parseName($this->name);
+    }
     /**
      * 获取合并后，可以供CV使用的配置信息   
      * @return array 
@@ -135,25 +154,13 @@ class FieldModel extends ModelModel
     }
 
     /**
-     * 生成认证使用的token
-     * @return   string                   
+     * 更新列表的值
+     * @param    lists                   &$lists 
+     * @param    string                   $keyId  更新的关键字
+     * @return                              
      * @author panjie panjie@mengyunzhi.com
-     * @DateTime 2016-09-05T15:38:43+0800
+     * @DateTime 2016-09-09T10:38:41+0800
      */
-    public function makeToken()
-    {
-        if (null === $this->token) {
-            // 如果你的字段有ajax或其它交互，则必须重写此函数：
-            $module         = 'field';
-            $controller     = 'Field';
-            $action         = 'init';
-            $this->token = Common::makeTokenByMCA($module, $controller, $action);
-        }
-
-        return $this->token;
-    }
-
-
     static public function updateLists(&$lists, $keyId)
     {
         foreach ($lists as $fieldId => $value) {
@@ -179,6 +186,46 @@ class FieldModel extends ModelModel
      */
     static public function updateList($fieldId, $keyId, $value)
     {
-        var_dump('请重写该函数用于数据字段的更新');
+        var_dump('请重写'. get_called_class() . '::updateList. 该函数用于数据字段的更新');
+    }
+
+    /**
+     * 获取关联的字段列表
+     * @param    string                   $relateType  关系类型
+     * @param    strint                   $relateValue  关系类型值
+     * @return   lists FieldModels
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-09T09:07:34+0800
+     */
+    static public function getListsByRelateTypeRelateValue($relateType, $relateValue)
+    {
+        $map = ['relate_type' => $relateType, 'relate_value' => $relateValue];
+        $order = 'weight desc';
+        $Object = new static();
+        return $Object->where($map)->order($order)->select();
+    }
+
+    /**
+     * 字段过滤
+     * @param    string                   $value 输入值
+     * @return   string                          输出值
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-09T09:34:35+0800
+     */
+    public function filter($value = null)
+    {   
+        if (null === $value) {
+            $value = $this->getData('value');
+        }
+
+        // 获取过滤器信息
+        $filter = $this->FieldModel()->getFilter();
+        if (null === $filter) {
+            return $value;
+        }
+
+        // 调用过滤器进行过滤
+        $className = 'app\filter\server\\' . $filter['type'] . 'Server';
+        return call_user_func_array([$className, $filter['function']], [$value, $filter['param']]);
     }
 }

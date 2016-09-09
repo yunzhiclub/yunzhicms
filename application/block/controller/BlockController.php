@@ -22,8 +22,12 @@ class BlockController extends Controller
 
     public function __construct()
     {
+        // 取出当前主题信息，供模板渲染使用
         $this->currentThemeModel = ThemeModel::getCurrentThemeModel();
         parent::__construct();
+
+        // 传入Common，供模板渲染输出区块css,js使用
+        $this->assign('Common', new Common);
     }
 
 
