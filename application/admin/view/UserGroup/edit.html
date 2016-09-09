@@ -4,26 +4,27 @@
         <div class="box">
             <div class="box-header">
                 <i class="icon-book"></i>
-                <h5>主菜单</h5>
+                <h5>用户组编辑</h5>
             </div>
             <div class="box-content">
-                <form class="form-horizontal" action="{:url('@admin/menutype/')}" method="post">
+                <form class="form-horizontal" action="{:url('@admin/usergroup/' . $UserGroupModel->name)}" method="post">
+                 <input type="hidden" name="_method" value="POST" />
                     <div>
                         <label for="_title">标题</label>
                         <div>
-                            <input type="text" id="_title" name="title" placeholder="请输入标题" />
+                            <input type="text" id="_title" name="title" value="{$UserGroupModel->title}" />
                         </div>
                     </div>
                     <div>
                         <label for="_name">name</label>
                         <div>
-                            <input type="text" id="_name" name="name" placeholder="请输入主菜单名字" />
+                            <input type="text" id="_name" name="name" value="{$UserGroupModel->name}" />
                         </div>
                     </div>
                     <div>
                         <label for="_description">描述</label>
                         <div>
-                            <input type="text" id="_description" name="description" placeholder="请输入描述文字"  />
+                            <input type="text" id="_description" name="description" value="{$UserGroupModel->description}"  />
                         </div>
                     </div>
             </div>
