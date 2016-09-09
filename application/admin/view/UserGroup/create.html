@@ -7,23 +7,23 @@
                 <h5>用户组编辑</h5>
             </div>
             <div class="box-content">
-                <form class="form-horizontal" action="{:url('@admin/usergroup/' . $UserGroupModel->name)}" method="post">
+                <form class="form-horizontal" action="{:url('@admin/usergroup')}" method="post">
                     <div>
                         <label for="_title">标题</label>
                         <div>
-                            <input type="text" id="_title" name="title" value="{$UserGroupModel->title}" />
+                            <input type="text" id="_title" name="title" />
                         </div>
                     </div>
                     <div>
                         <label for="_name">name</label>
                         <div>
-                            <input type="text" id="_name" name="name" value="{$UserGroupModel->name}" />
+                            <input type="text" id="_name" name="name" />
                         </div>
                     </div>
                     <div>
                         <label for="_description">描述</label>
                         <div>
-                            <input type="text" id="_description" name="description" value="{$UserGroupModel->description}"  />
+                            <input type="text" id="_description" name="description" />
                         </div>
                     </div>
             </div>
