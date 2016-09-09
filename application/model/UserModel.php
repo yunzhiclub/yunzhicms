@@ -34,4 +34,9 @@ class UserModel extends ModelModel
         }
         return $currentUserModel;
     }
+
+    public function getUsergroups()
+    {
+        return UserGroupModel::all();
+    }
 }

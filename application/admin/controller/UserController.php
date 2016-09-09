@@ -13,7 +13,8 @@ class UserController extends AdminController
 {
     public function indexAction()
     {
-        $userModels = UserModel::paginate();
+        $userModels = new UserModel;
+        $userModels = $userModels->where('is_deleted', '=', 0)->paginate();
         $this->assign('userModels', $userModels);
 
         return $this->fetch();
@@ -55,25 +56,27 @@ class UserController extends AdminController
         $UserModel->setData('password', $data['password']);
         $UserModel->setData('qq_open_id', $data['qq_open_id']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-        dump($data['name']);
 
         $UserModel->save();
         return $this->success('操作成功', url('@admin/user/'));
     }
 
     public function createAction()
-    {   
-        $data = input('param.');
+    {
+        //取出用户组
+        $User = new UserModel;
+        $UserGroup = $User->getUsergroups();
+        $this->assign('UserGroups', $UserGroup); 
+        return $this->fetch();
+    }
 
-        $UserModel = new UserModel;
-        $UserModel->setData('name', $data['name']);
-        $UserModel->setData('email', $data['email']);
-        $UserModel->setData('password', $data['password']);
-        $UserModel->setData('qq_open_id', $data['qq_open_id']);
-        $UserModel->setData('user_group_name', $data['user_group_name']);
-       
-
-
-        return $this->success('操作成功', url('@admin/user/'));
+    public function deleteAction($id)
+    {
+        $UserModel = UserModel::get($id);
+        $UserModel->setData('is_deleted', $id);
+        if (false === $UserModel->save()) {
+            return $this->error('删除失败');
+        }
+        return $this->success('删除成功', url('@admin/user/'));
     }
 }
