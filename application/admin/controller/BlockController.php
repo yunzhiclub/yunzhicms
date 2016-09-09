@@ -1,17 +1,16 @@
 <?php
 namespace app\admin\controller;
-
+use app\model\UserGroupModel;
 use app\model\BlockModel;                               // 区块
 use app\model\MenuModel;                                // 菜单
-use app\model\BlockTypeModel;                           // 区块类型
 use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
-use app\model\PositionModel;                            //获取位置信息
 
 class BlockController extends AdminController
 {
     public function indexAction()
     {
-        $BlockModels = BlockModel::paginate();
+        $BlockModel = new BlockModel;
+        $BlockModels = $BlockModel->where('is_delete', '=', '0')->paginate();
         $this->assign('BlockModels', $BlockModels);
 
         return $this->fetch();
@@ -19,17 +18,16 @@ class BlockController extends AdminController
 
     public function editAction($id)
     {
-        $BlockTypeModels = BlockTypeModel::all();
-        $this->assign('BlockTypeModels', $BlockTypeModels);
-
         $BlockModel = BlockModel::get($id);
         $this->assign('BlockModel', $BlockModel);
 
+        $UserGroupModel = new UserGroupModel;
+        $UserGroupModel = $UserGroupModel::all();
+        $this->assign('UserGroupModel', $UserGroupModel);
+
         $MenuModels = MenuModel::getTreeList(0, 2);
         $this->assign('MenuModels', $MenuModels);
-
         return $this->fetch();
-
     }
 
     public function updateAction($id)
@@ -43,7 +41,7 @@ class BlockController extends AdminController
         $BlockModel->setData('position_name', $param['position_name']);
         $BlockModel->setData('status', $param['status']);
         $BlockModel->setData('weight', $param['weight']);
-
+       
         if (array_key_exists('config', $param))
         {
             $BlockModel->setData('config', json_encode($param['config']));
@@ -54,7 +52,7 @@ class BlockController extends AdminController
             $filter = Common::makeFliterArrayFromPostArray($param['filter']);
             $BlockModel->setData('filter', json_encode($filter));
         }
-
+       
         $BlockModel->save();
 
         // 更新block-menu关联表
@@ -73,28 +71,29 @@ class BlockController extends AdminController
 
         return $this->success('操作成功', url('@admin/block'));
     }
-
     /**
-     * createAction和saveAction
-     */
-    public function createAction()
+    * 删除区块方法
+    * @param  int $id 区块id
+    * @return viod
+    */
+    public function deleteAction($id)
     {
-        $BlockTypeModels = BlockTypeModel::all();
-        $this->assign('BlockTypeModels', $BlockTypeModels);
+        $BlockModel = BlockModel::get($id);
+        if (false === $BlockModel) {
+            return $this->error('删除失败:区块不存在' . $BlockModel->getError());
+        }
+        $BlockModel->setData('is_delete', 1);
+        if (false === $BlockModel->save()) {
+            return $this->error('删除失败');
+        }
 
-        $BlockModel = BlockModel::all();
-        $this->assign('BlockModel', $BlockModel);
-
-        $MenuModels = MenuModel::getTreeList(0, 2);
-        $this->assign('MenuModels', $MenuModels);
-
-        $Positions = PositionModel::all();
-        $this->assign('Positions', $Positions);
-        return $this->fetch();
-    }
 
     public function saveAction()
     {
-        #
+        $data = input('post.');
+        var_dump($data);
+        die();
+
+
     }
 }
