@@ -1,14 +1,12 @@
-{volist name="FieldDataXXXModel->filter()" id="value" key="key"}
-<div>
-{php}$rand1 = rand(0,1000); {/php}
+<div ng-controller="field_data_images_{$rand}">
    <label for="">
-        {$FieldDataXXXModel->FieldModel()->getData('title')}{$key}:
+        {{title}}(点击图片进行上传):
     </label> 
-    <img src="{$value}">
-    <input type="hidden" class="" id="field_id_{$rand1}" name="field_[{:$FieldDataXXXModel->FieldModel()->getData('id')}][]}" value="{$value}" />
-    <input id="file_upload_{$rand1}" class="file_upload_images_{$rand}" name="file_upload" type="file" multiple="true">
+    <div ng-repeat="(key, image) in images" >
+        <input type="hidden" name="field_[{:$FieldDataXXXModel->FieldModel()->getData('id')}][]" value="{{image}}" />
+        <img ng-src="{{image}}" class="field_data_images" ngf-select="upload($file, key)"/> 
+        <button type="button" ngf-select="upload($file, key)">上传</button>
+    </div>
 </div>
-{/volist}
-<div id="queue"></div>
-<a href="{:url('api/api/index?token=' . $token) . '?type=add'}">+1</a>
-<a href="{:url('api/api/index?token=' . $token) . '?type=sub'}">-1</a>
+<a href="{:url('api/api/index?token=' . $addSubToken) . '?type=add'}">+1</a>
+<a href="{:url('api/api/index?token=' . $addSubToken) . '?type=sub'}">-1</a>
