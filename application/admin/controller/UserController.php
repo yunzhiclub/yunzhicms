@@ -20,6 +20,11 @@ class UserController extends AdminController
         return $this->fetch();
     }
 
+    public function updateAction()
+    {
+        return $this->fetch();
+    }
+
     public function saveAction()
     {
         $data = input('param.');

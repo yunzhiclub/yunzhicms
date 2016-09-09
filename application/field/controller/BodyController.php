@@ -36,4 +36,10 @@ class BodyController extends FieldController
         // 返回信息
         return $result;
     }
+
+    public function fetchHtml()
+    {
+        $this->assgin('token', Common::makeTokenByMCAData('field', 'Body', 'upload'));
+        return parent::fetchHtml();
+    }
 }
