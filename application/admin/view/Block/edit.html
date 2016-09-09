@@ -20,9 +20,9 @@
                                 </div>
                                 <div>
                                     <label for="">区块类型</label>
-                                    <select class="form-control">
+                                    <select name="block_type_name" class="form-control">
                                         {volist name="BlockTypeModels" id="BlockTypeModel"}
-                                        <option {eq name="$BlockTypeModel->name" value="$BlockModel->block_type_name"} selected="selected" {/eq}>{$BlockTypeModel->name}</option>
+                                        <option {eq name="$BlockTypeModel->name" value="$BlockModel->block_type_name" } selected="selected" {/eq}>{$BlockTypeModel->name}</option>
                                         {/volist}
                                     </select>
                                 </div>
