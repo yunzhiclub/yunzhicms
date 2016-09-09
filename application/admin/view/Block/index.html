@@ -34,9 +34,17 @@
                                 <a href="{:url('@admin/Block/' . $_blockModel->id . '/edit')}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 编辑
                                 </a>
+                                <a href="{:url('@admin/Block/' . $_blockModel->id . '/delete')}" class="btn btn-small btn-danger">
+                                    <i class="btn-icon-only icon-remove"></i>
+                                </a>
                             </td>
                         </tr>
                         {/volist} {$BlockModels->render()}
+                        <div style="text-align:right;">
+                            <a href="{:url('@admin/Block/create')}" class="btn btn-small btn-primary">
+                                     新增
+                                </a>
+                        </div>
                     </tbody>
                 </table>
             </div>

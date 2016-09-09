@@ -1,16 +1,19 @@
 <?php
 namespace app\admin\controller;
-
+use app\model\UserGroupModel;                           // 用户组
 use app\model\BlockModel;                               // 区块
 use app\model\MenuModel;                                // 菜单
 use app\model\BlockTypeModel;                           // 区块类型
+use app\model\PositionModel;                            // 位置
+use app\model\AccessUserGroupBlockModel;                // 权限：用户组-区块
 use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
 
 class BlockController extends AdminController
 {
     public function indexAction()
     {
-        $BlockModels = BlockModel::paginate();
+        $BlockModel = new BlockModel;
+        $BlockModels = $BlockModel->where('is_delete', '=', '0')->paginate();
         $this->assign('BlockModels', $BlockModels);
 
         return $this->fetch();
@@ -18,17 +21,22 @@ class BlockController extends AdminController
 
     public function editAction($id)
     {
-        $BlockTypeModels = BlockTypeModel::all();
-        $this->assign('BlockTypeModels', $BlockTypeModels);
-
         $BlockModel = BlockModel::get($id);
         $this->assign('BlockModel', $BlockModel);
 
+        $BlockTypeModels = BlockTypeModel::all();
+        $this->assign('BlockTypeModels', $BlockTypeModels);
+        //var_dump($BlockTypeModels);
+        //die();
+
+        //将用户组信息传入
+        $UserGroupModels = UserGroupModel::all();
+        $this->assign('UserGroupModels', $UserGroupModels);
+
+
         $MenuModels = MenuModel::getTreeList(0, 2);
         $this->assign('MenuModels', $MenuModels);
-
         return $this->fetch();
-
     }
 
     public function updateAction($id)
@@ -72,17 +80,59 @@ class BlockController extends AdminController
 
         return $this->success('操作成功', url('@admin/block'));
     }
-
     /**
-     * createAction和saveAction
-     */
+    * 删除区块方法
+    * @param  int $id 区块id
+    * @return viod
+    */
+    public function deleteAction($id)
+    {
+        $BlockModel = BlockModel::get($id);
+        if (false === $BlockModel) {
+            return $this->error('删除失败:区块不存在' . $BlockModel->getError());
+        }
+        $BlockModel->setData('is_delete', 1);
+        if (false === $BlockModel->save()) {
+            return $this->error('删除失败');
+        }
+    }
+
     public function createAction()
     {
-        #
+
+        $BlockTypeModels = BlockTypeModel::all();
+        $this->assign('BlockTypeModels', $BlockTypeModels);
+
+        //将用户组信息传入
+        $UserGroupModels = UserGroupModel::all();
+        $this->assign('UserGroupModels', $UserGroupModels);
+
+        $MenuModels = MenuModel::getTreeList(0, 2);
+        $this->assign('MenuModels', $MenuModels);
+
+        //取type为block的postion传入
+        $PositionModel = new PositionModel;
+        $map = array('type' => 'blcok');
+        $Positions = $PositionModel->where($map)->select();
+        $this->assign('Positions', $Positions);
+
+        return $this->fetch();
     }
 
     public function saveAction()
     {
-        #
+        $param = input('post.');
+        // var_dump($data);
+        $BlockModel = new BlockModel;
+        $BlockModel->setData('title', $param['title']);
+        $BlockModel->setData('block_type_name', $param['block_type_name']);
+        $BlockModel->setData('description', $param['description']);
+        $BlockModel->setData('position_name', $param['position_name']);
+        $BlockModel->setData('status', $param['status']);
+        $BlockModel->setData('weight', $param['weight']);
+        var_dump($BlockModel);
+        die();
+
+
     }
 }

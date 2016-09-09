@@ -8,11 +8,11 @@ use think\Request;
 
 class FieldController extends Controller
 {
-    private $FieldDataXXXModel = null;                  // 某个扩展字段的模型
-    private $FieldModel;                                // 字段模型
-    private $nameTag;                                   // 字段输出时的 name 标签
-    private $token;                                     // token
-    private $config;                                    // 配置信息
+    protected $FieldDataXXXModel = null;                    // 某个扩展字段的模型
+    protected $FieldModel;                                  // 字段模型
+    private $nameTag;                                       // 字段输出时的 name 标签
+    private $token;                                         // token
+    protected $config;                                      // 配置信息
 
     /**
      * 字段的交互信息，全部传入此action，再经由此action进行权限判断及安全处理后调用相关的action
@@ -30,7 +30,6 @@ class FieldController extends Controller
 
     public function init(&$FieldModel, &$FieldDataXXXModel = null)
     {
-        $this->FieldModel           = $FieldModel;
         $this->FieldDataXXXModel    = $FieldDataXXXModel;
 
         // 送入依赖css, 用于在footer中进行统一引用。
@@ -43,11 +42,7 @@ class FieldController extends Controller
             Common::addJs($FieldDataXXXModel->getConfig()['js']['value']);
         }
 
-        // 传值
-        $this->assign('token', $this->FieldDataXXXModel->makeToken());        // 传入token，用于进行二次调用
-        $this->assign('FieldModel', $FieldModel);
         $this->assign('FieldDataXXXModel', $FieldDataXXXModel);
-
     }
 
     /**
@@ -60,15 +55,16 @@ class FieldController extends Controller
      */
     static public function renderFieldDataModel(&$FieldModel, &$FieldDataXXXModel)
     {
-        $typeName = $FieldModel->FieldTypeModel()->getData('name');
+        $typeName = $FieldModel->getData('field_type_name');
         $className = 'app\field\controller\\' . ucfirst($typeName) . 'Controller';
         if (class_exists($className))
         {
+            // 实例化字段,然后调用init()进行实始化 ，调用fetchHtml()进行渲染
             $FieldXXXController = new $className();
             $FieldXXXController->init($FieldModel, $FieldDataXXXModel);
             return $FieldXXXController->fetchHtml();
         } else {
-            return 'field type is ' . $typeName . '. But ' . $className . ' not found in Label module!';
+            return 'field type is ' . $typeName . '. But ' . $className . '::' . 'fetchHtml not found!';
         }
     }
 
