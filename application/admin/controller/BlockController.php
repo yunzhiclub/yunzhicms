@@ -49,7 +49,7 @@ class BlockController extends AdminController
         $BlockModel->setData('position_name', $param['position_name']);
         $BlockModel->setData('status', $param['status']);
         $BlockModel->setData('weight', $param['weight']);
-       
+
         if (array_key_exists('config', $param))
         {
             $BlockModel->setData('config', json_encode($param['config']));
@@ -60,7 +60,7 @@ class BlockController extends AdminController
             $filter = Common::makeFliterArrayFromPostArray($param['filter']);
             $BlockModel->setData('filter', json_encode($filter));
         }
-       
+
         $BlockModel->save();
 
         // 更新block-menu关联表
@@ -98,7 +98,7 @@ class BlockController extends AdminController
 
     public function createAction()
     {
-        
+
         $BlockTypeModels = BlockTypeModel::all();
         $this->assign('BlockTypeModels', $BlockTypeModels);
 
