@@ -2,6 +2,7 @@
 namespace app\api\controller;
 use app\Common;
 use think\Request;
+
 /**
  * api 统一处理外部请求
  */

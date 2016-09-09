@@ -30,6 +30,24 @@ class Common{
      */
     static public function init()
     {
+        // 定义全局路径变量
+        self::definePath();
+
+        // 定义变量过滤。在获取变量值时，禁用input()助手函数
+        Request::instance()->filter('htmlspecialchars');
+
+        // 注册路由信息
+        self::registerRouter();
+    }
+
+    /**
+     * 定义路径
+     * @return                      
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-09T12:28:14+0800
+     */
+    static public function definePath()
+    {
         // 定义常量__ROOT__
         $root = dirname($_SERVER['SCRIPT_NAME']);
         if ($root === DS)
@@ -41,12 +59,6 @@ class Common{
         // 定义常量PUBLIC_PATH
         $publicPath = realpath(ROOT_PATH) . DS . 'public';
         define('PUBLIC_PATH' , $publicPath);
-
-        // 定义变量过滤。在获取变量值时，禁用input()助手函数
-        Request::instance()->filter('htmlspecialchars');
-
-        // 注册路由信息
-        Common::registerRouter();
     }
 
     /**

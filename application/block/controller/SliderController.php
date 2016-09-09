@@ -23,16 +23,16 @@ class SliderController extends BlockController
     
     static public function save($data = [])
     {
+        $Request = Request::instance();
+        $param = $Request->param();
 
-        $param = Request::instance()->param();
-        $fromToken = $param['fromtoken'];
         // 更新扩展数据字段
         if (isset($param['field_'])) {
             FieldModel::updateLists($param['field_'], $data['id']);
         }
 
         $Object = new self();
-        $Object->success('操作成功', url('api/api/index?token=' . $fromToken));
+        $Object->success('操作成功', $Request->server('HTTP_REFERER'));
     }
 
 

@@ -1,3 +1,4 @@
+{layout name="edit" /}
 <!DOCTYPE html>
 <html lang="zh-hans">
 
@@ -7,7 +8,7 @@
 </head>
 
 <body>
-    <form action="{:url('api/api/index?token=' . $token) . '?fromtoken=' . input('param.token')}" method="post">
+    <form action="{:url('api/api/index?token=' . $token)}" method="post">
         <label for="">区块名称：{$BlockModel->getData('title')}</label>
         <div>
             {foreach name="$BlockModel->FieldModels()" id="_FieldModel"}
