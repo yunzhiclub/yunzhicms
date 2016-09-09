@@ -14,7 +14,7 @@ class UserController extends AdminController
 
     public function editAction($id)
     {
-        $id = session('id');
+        $id = input('id');
         $UserModel = UserModel::get($id);
         $this->assign('UserModel', $UserModel);
         
@@ -23,7 +23,9 @@ class UserController extends AdminController
 
     public function updateAction()
     {
-        return $this->fetch();
+        $this->saveAction();
+
+        return $this->success('操作成功', url('@admin/user/'));
     }
 
     public function saveAction()
