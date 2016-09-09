@@ -1,0 +1,27 @@
+<script type="text/javascript">
+var ngApp{$rand} = angular.module('body', ['ngFileUpload']);    
+ngApp{$rand}.controller('field_data_images_{$rand}', ['$scope', 'Upload', function($scope, Upload){
+    $scope.title = "{$FieldDataXXXModel->FieldModel()->getData('title')}";
+    $scope.images = {:json_encode($FieldDataXXXModel->filter())};
+    $scope.changeImage = function(){
+        alert('hello');
+    };
+
+    // upload on file select or drop
+    $scope.upload = function (file, key) {
+        Upload.upload({
+            url: '{:url("api/api/index?token=" . $token)}',
+            data: {Filedata: file}
+        }).then(function (resp) {
+            var imageInfo = resp.data.data;
+            console.log(imageInfo);
+            $scope.images[key] = imageInfo.url;
+        }, function (resp) {
+            console.log('Error status: ' + resp.status);
+        }, function (evt) {
+            // var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
+}]);
+</script>
