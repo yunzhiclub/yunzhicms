@@ -36,25 +36,17 @@ class UserController extends AdminController
         $UserModel->setData('password', $data['password']);
         $UserModel->setData('qq_open_id', $data['qq_open_id']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-        dump($data['name']);
 
         $UserModel->save();
         return $this->success('操作成功', url('@admin/user/'));
     }
 
     public function createAction()
-    {   
-        $data = input('param.');
-
-        $UserModel = new UserModel;
-        $UserModel->setData('name', $data['name']);
-        $UserModel->setData('email', $data['email']);
-        $UserModel->setData('password', $data['password']);
-        $UserModel->setData('qq_open_id', $data['qq_open_id']);
-        $UserModel->setData('user_group_name', $data['user_group_name']);
-       
-
-
-        return $this->success('操作成功', url('@admin/user/'));
+    {
+        //取出用户组
+        $User = new UserModel;
+        $UserGroup = $User->getUsergroups();
+        $this->assign('UserGroups', $UserGroup); 
+        return $this->fetch();
     }
 }
