@@ -32,7 +32,11 @@
                                 </div>
                                 <div>
                                     <label for="">所处位置</label>
-                                    <input type="text" name="position_name" value="{$BlockModel->position_name}" />
+                                    <select name="position_name" class="form-control">
+                                        {volist name="PositionModels" id="PositionModel"}
+                                        <option {eq name="$PositionModel->name" value="$BlockModel->position_name" } selected="selected" {/eq}>{$PositionModel->name}</option>
+                                        {/volist}
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="">状态</label>
