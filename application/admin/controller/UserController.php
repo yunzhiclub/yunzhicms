@@ -47,7 +47,7 @@ class UserController extends AdminController
         $UserModel->setData('password', $data['password']);
         $UserModel->setData('qq_open_id', $data['qq_open_id']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-        dump($data['name']);
+       
 
 
         return $this->success('操作成功', url('@admin/user/'));
