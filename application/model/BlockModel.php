@@ -2,15 +2,18 @@
 namespace app\model;
 use app\Common;
 
+use app\model\FieldModel;                       // 字段
+
 /**
  * 区块
  */
 class BlockModel extends ModelModel
 {
     private $BlockTypeModel = null;     // 区块类型
-
+    private $FieldModels;               // 字段模型信息
     protected $config = null;           // 配置信息
     protected $filter = null;           // 过滤器信息
+
 
     /**
      * 默认的一些非 空字符串 的设置
@@ -61,6 +64,37 @@ class BlockModel extends ModelModel
         }
 
         return $this->filter;
+    }
+
+    public function FieldModels()
+    {
+        if (null === $this->FieldModels) {
+            $this->FieldModels = FieldModel::getListsByRelateTypeRelateValue('Block', $this->getData('block_type_name'));
+        }
+
+        return $this->FieldModels;
+    }
+    /**
+     * 通过字段名 获取扩展字段模型
+     * @param    string                   $name 
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-09T08:48:24+0800
+     */
+    public function FieldModel($name)
+    {
+        if (empty($name)) {
+            throw new \Exception("the param can't  empty", 1);
+        }
+        
+        // 遍历当前 内容类型 的扩展字段信息.
+        foreach ($this->FieldModels() as $FieldModel) {
+            // 找到当字段，则返回当前字段对应的扩展字段对象
+            if ($FieldModel->getData('name') === $name) {
+                return $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id'));
+            }
+        }
+
+        // throw new \Exception('not found fieldName:' . $name . ' of ContentModel:' . $this->getData('id'), 1);
     }
 
     /**
@@ -128,6 +162,7 @@ class BlockModel extends ModelModel
      */
     public function makeToken($controller, $action)
     {
-        return Common::makeTokenByMCA('block', $controller, $action);
+        $data = ['id' => $this->getData('id')];
+        return Common::makeTokenByMCAData('block', $controller, $action, $data);
     }
 }

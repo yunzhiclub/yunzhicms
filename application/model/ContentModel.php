@@ -44,9 +44,9 @@ class ContentModel extends ModelModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-02T14:13:25+0800
      */
-    public function getFieldDataModelByFieldName($fieldName)
+    public function FieldModel($name)
     {
-        if (empty($fieldName)) {
+        if (empty($name)) {
             throw new \Exception("the param can't  empty", 1);
         }
 
@@ -56,12 +56,12 @@ class ContentModel extends ModelModel
         // 遍历当前 内容类型 的扩展字段信息.
         foreach ($FieldModels as $FieldModel) {
             // 找到当字段，则返回当前字段对应的扩展字段对象
-            if ($FieldModel->getData('field_type_name') === $fieldName) {
+            if ($FieldModel->getData('name') === $name) {
                 return $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id'));
             }
         }
 
-        throw new \Exception('not found fieldName:' . $fieldName . ' of ContentModel:' . $this->getData('id'), 1);
+        throw new \Exception('not found fieldName:' . $name . ' of ContentModel:' . $this->getData('id'), 1);
     }
 
     /**
