@@ -6,3 +6,5 @@
     <input type="text" name="field_[{:$FieldDataXXXModel->FieldModel()->getData('id')}][]}" value="{$value}" />
 </div>
 {/volist}
+<a href="{:url('api/api/index?token=' . $token) . '?type=add'}">+1</a>
+<a href="{:url('api/api/index?token=' . $token) . '?type=sub'}">-1</a>

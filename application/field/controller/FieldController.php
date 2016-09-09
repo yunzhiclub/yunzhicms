@@ -8,11 +8,11 @@ use think\Request;
 
 class FieldController extends Controller
 {
-    private $FieldDataXXXModel = null;                  // 某个扩展字段的模型
-    private $FieldModel;                                // 字段模型
-    private $nameTag;                                   // 字段输出时的 name 标签
-    private $token;                                     // token
-    private $config;                                    // 配置信息
+    protected $FieldDataXXXModel = null;                    // 某个扩展字段的模型
+    protected $FieldModel;                                  // 字段模型
+    private $nameTag;                                       // 字段输出时的 name 标签
+    private $token;                                         // token
+    protected $config;                                      // 配置信息
 
     /**
      * 字段的交互信息，全部传入此action，再经由此action进行权限判断及安全处理后调用相关的action
