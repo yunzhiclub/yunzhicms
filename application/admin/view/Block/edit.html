@@ -78,6 +78,14 @@
                                 </div>
                                 <div>
                                     <label for="">对哪些用户组可见</label>
+                                    <ul>
+                                        {foreach name="UserGroupModels" id="_UserGroupModel"}
+                                        <input type="checkbox" name="menuids[{$_UserGroupModel->id}]" {eq name="BlockModel->checkIsHave($_UserGroupModel)" value="true" }checked="" {/eq} />
+                                        <li>
+                                            {$_UserGroupModel->title}
+                                        </li>
+                                        {/foreach}
+                                    </ul>
                                 </div>
                                 <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
                             </form>
