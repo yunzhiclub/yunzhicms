@@ -14,6 +14,7 @@ class UserController extends AdminController
 
     public function editAction($id)
     {
+        $id = session('id');
         $UserModel = UserModel::get($id);
         $this->assign('UserModel', $UserModel);
         
