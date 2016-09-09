@@ -6,7 +6,8 @@ class UserController extends AdminController
 {
     public function indexAction()
     {
-        $userModels = UserModel::paginate();
+        $userModels = new UserModel;
+        $userModels = $userModels->where('is_deleted', '=', 0)->paginate();
         $this->assign('userModels', $userModels);
 
         return $this->fetch();
@@ -48,5 +49,15 @@ class UserController extends AdminController
         $UserGroup = $User->getUsergroups();
         $this->assign('UserGroups', $UserGroup); 
         return $this->fetch();
+    }
+
+    public function deleteAction($id)
+    {
+        $UserModel = UserModel::get($id);
+        $UserModel->setData('is_deleted', $id);
+        if (false === $UserModel->save()) {
+            return $this->error('删除失败');
+        }
+        return $this->success('删除成功', url('@admin/user/'));
     }
 }
