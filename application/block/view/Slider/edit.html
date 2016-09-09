@@ -1,0 +1,41 @@
+{layout name="edit" /}
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <title>幻灯片区块设置</title>
+</head>
+
+<body>
+    <form action="{:url('api/api/index?token=' . $token)}" method="post">
+        <label for="">区块名称：{$BlockModel->getData('title')}</label>
+        <div>
+            {foreach name="$BlockModel->FieldModels()" id="_FieldModel"}
+                <div>
+                {:$_FieldModel->render($BlockModel)}
+                </div>
+                <hr />
+            {/foreach}
+        </div>
+
+        <div>
+            <label for="">配置信息:</label>
+            <ol>
+                {foreach name="BlockModel->getConfig()" key="key" id="_config"}
+                <li>
+                    <label>{$_config['title']}</label>
+                    <input type="text" name="config[{$key}]" value="{$_config['value']}">
+                </li>
+                {/foreach}
+            </ol>
+        </div>
+        <div>
+            <label for="">过滤器信息:</label>
+        </div>
+        {foreach name="BlockModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../../../admin/view/editFilter" /} {/foreach} 
+        <button type="submit">submit</button>
+    </form>
+</body>
+
+</html>
