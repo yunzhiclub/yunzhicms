@@ -25,7 +25,8 @@ class UserController extends AdminController
         $id = input('id');
         $UserModel = UserModel::get($id);
         $this->assign('UserModel', $UserModel);
-        
+        $UserGroup = $UserModel->getUsergroups();
+        $this->assign('UserGroups', $UserGroup);
         return $this->fetch();
     }
 
