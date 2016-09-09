@@ -13,7 +13,7 @@
                     <div class="control-group">
                         <div class="controls">
                             <form action="{:url('@admin/block/' . $BlockModel->id)}" method="post">
-                                <input type="hidden" name="_method" value="PUT" />
+                                <input type="hidden" name="_method" value="POST" />
                                 <div>
                                     <label for="">名称</label>
                                     <input type="text" name="title" value="{$BlockModel->title}" />
