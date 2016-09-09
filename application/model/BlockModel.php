@@ -153,6 +153,19 @@ class BlockModel extends ModelModel
         }
     }
 
+    public function checkIsHave(UserGroupModel &$UserGroupModel)
+    {
+        $map = [];
+        $map['block_id']    = $this->data['id'];
+        $map['user_group_name']     = $UserGroupModel->getData('name');
+        if (null === AccessUserGroupBlockModel::get($map))
+        {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /**
      * 生成前台可以直接调用的token
      * @param    string                   $action 

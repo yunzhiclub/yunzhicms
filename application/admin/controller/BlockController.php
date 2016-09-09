@@ -5,6 +5,7 @@ use app\model\BlockModel;                               // 区块
 use app\model\MenuModel;                                // 菜单
 use app\model\BlockTypeModel;                           // 区块类型
 use app\model\PositionModel;                            // 位置
+use app\model\AccessUserGroupBlockModel;                // 权限：用户组-区块
 use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
 
 class BlockController extends AdminController
