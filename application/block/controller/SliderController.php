@@ -23,9 +23,13 @@ class SliderController extends BlockController
     
     static public function save($data = [])
     {
+        // 得到请求信息
         $Request = Request::instance();
         $param = $Request->param();
 
+        // todo:判断传入的各个字段的个数是否相同，如果不同，报错提示各个字段个数必须相同!
+        
+        
         // 更新扩展数据字段
         if (isset($param['field_'])) {
             FieldModel::updateLists($param['field_'], $data['id']);
