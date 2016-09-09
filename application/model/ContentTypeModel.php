@@ -31,13 +31,7 @@ class ContentTypeModel extends ModelModel
     public function FieldModels()
     {
         if (null === $this->FieldModels) {
-            $map = [];
-            $map['relate_type'] = 'Content';
-            $map['relate_value'] = $this->getData('name');
-            $order = 'weight desc';
-            $FieldModel = new FieldModel;
-            $this->FieldModels = $FieldModel->where($map)->order($order)->select();
-            unset($FieldModel);
+            $this->FieldModels = FieldModel::getListsByRelateTypeRelateValue('Content', $this->getData('name'));
         }
 
         return $this->FieldModels;
