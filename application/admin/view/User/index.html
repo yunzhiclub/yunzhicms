@@ -19,7 +19,7 @@
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
-                    {volist name="userModels" key="key" id="_UserModel"} {/volist}
+                    {volist name="userModels" key="key" id="_UserModel"} 
                     <tr>
                         <td>{$key}</td>
                         <td>{$_UserModel->getData('email')}</td>
@@ -30,6 +30,7 @@
                         <a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/delete')}" class="btn btn-small btn-danger">删除</a>
                         </td>
                     </tr>
+                    {/volist}
                     {$userModels->render()}
                 </table>
             </div>
