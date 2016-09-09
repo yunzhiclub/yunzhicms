@@ -122,7 +122,8 @@ class BlockController extends AdminController
     public function saveAction()
     {
         $param = input('post.');
-        // var_dump($data);
+        
+        //将Block的信息，保存到数据表
         $BlockModel = new BlockModel;
         $BlockModel->setData('title', $param['title']);
         $BlockModel->setData('block_type_name', $param['block_type_name']);
@@ -130,8 +131,25 @@ class BlockController extends AdminController
         $BlockModel->setData('position_name', $param['position_name']);
         $BlockModel->setData('status', $param['status']);
         $BlockModel->setData('weight', $param['weight']);
-        var_dump($BlockModel);
-        die();
+
+        $BlockModel->save();
+
+        //从BlockModel的数据表中将保存的id取出
+        $id = $BlockModel->id;
+        
+        $AccessMenuBlockModel = new AccessMenuBlockModel;
+        $map = ['block_id' => $id];
+        $AccessMenuBlockModel->where($map)->delete();
+
+        //拼接menu_id block_id 存入其中间表
+        $datas = array(); 
+        foreach ($param['menuids'] as $key => $value) {
+                array_push($datas, ['block_id' => $id, 'menu_id' => $key]);
+            }
+            
+        $AccessMenuBlockModel->saveAll($datas);
+        
+        return $this->success('添加成功', url('@admin/block'));
 
 
     }
