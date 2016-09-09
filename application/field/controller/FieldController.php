@@ -42,10 +42,7 @@ class FieldController extends Controller
             Common::addJs($FieldDataXXXModel->getConfig()['js']['value']);
         }
 
-        // 传值
-        $this->assign('token', $this->FieldDataXXXModel->makeToken());        // 传入token，用于进行二次调用
         $this->assign('FieldDataXXXModel', $FieldDataXXXModel);
-
     }
 
     /**
@@ -58,15 +55,16 @@ class FieldController extends Controller
      */
     static public function renderFieldDataModel(&$FieldModel, &$FieldDataXXXModel)
     {
-        $typeName = $FieldModel->FieldTypeModel()->getData('name');
+        $typeName = $FieldModel->getData('field_type_name');
         $className = 'app\field\controller\\' . ucfirst($typeName) . 'Controller';
         if (class_exists($className))
         {
+            // 实例化字段,然后调用init()进行实始化 ，调用fetchHtml()进行渲染
             $FieldXXXController = new $className();
             $FieldXXXController->init($FieldModel, $FieldDataXXXModel);
             return $FieldXXXController->fetchHtml();
         } else {
-            return 'field type is ' . $typeName . '. But ' . $className . ' not found in Label module!';
+            return 'field type is ' . $typeName . '. But ' . $className . '::' . 'fetchHtml not found!';
         }
     }
 

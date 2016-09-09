@@ -7,8 +7,17 @@
 </head>
 
 <body>
-    <form action="">
+    <form action="{:url('api/api/index?token=' . $token) . '?fromtoken=' . input('param.token')}" method="post">
         <label for="">区块名称：{$BlockModel->getData('title')}</label>
+        <div>
+            {foreach name="$BlockModel->FieldModels()" id="_FieldModel"}
+                <div>
+                {:$_FieldModel->render($BlockModel)}
+                </div>
+                <hr />
+            {/foreach}
+        </div>
+
         <div>
             <label for="">配置信息:</label>
             <ol>
@@ -23,7 +32,8 @@
         <div>
             <label for="">过滤器信息:</label>
         </div>
-        {foreach name="BlockModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../../../admin/view/editFilter" /} {/foreach} {:var_dump($BlockModel)}
+        {foreach name="BlockModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../../../admin/view/editFilter" /} {/foreach} 
+        <button type="submit">submit</button>
     </form>
 </body>
 

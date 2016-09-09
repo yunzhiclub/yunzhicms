@@ -1,0 +1,8 @@
+{volist name="FieldDataXXXModel->filter()" id="value" key="key"}
+<div>
+   <label for="">
+        {$FieldDataXXXModel->FieldModel()->getData('title')}{$key}:
+    </label> 
+    <input type="text" name="field_[{:$FieldDataXXXModel->FieldModel()->getData('id')}][]}" value="{$value}" />
+</div>
+{/volist}

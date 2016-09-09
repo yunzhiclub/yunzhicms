@@ -5,20 +5,11 @@ use think\File;
 /**
  * image字段
  */
-class FieldDataImageModel extends FieldDataModel 
+class FieldDataImageModel extends FieldModel 
 {   
     private $uploadPath   = null;               // 上传路径
     private $url          = null;               // URL
     protected $token      = null;               // token 
-
-    public function makeToken()
-    {
-        if (null === $this->token) {
-            $this->token = Common::makeTokenByMCAData('field', 'Image', 'upload');
-        }
-        return $this->token;
-    }
-
     /**
      * 上传文件
      * @param    think\File                     $file 文件对象，继承SplFileObject类
@@ -164,9 +155,6 @@ class FieldDataImageModel extends FieldDataModel
         }
     }
 
-    public function filter()
-    {
-        
-    }
+    
 }
 
