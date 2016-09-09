@@ -23,8 +23,10 @@ class BlockController extends AdminController
         $BlockModel = BlockModel::get($id);
         $this->assign('BlockModel', $BlockModel);
 
-        $BlockTypeModels = BlockTypeModel::get($id);
+        $BlockTypeModels = BlockTypeModel::all();
         $this->assign('BlockTypeModels', $BlockTypeModels);
+        //var_dump($BlockTypeModels);
+        //die();
 
         //将用户组信息传入
         $UserGroupModels = UserGroupModel::all();
