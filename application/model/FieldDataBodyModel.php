@@ -9,7 +9,7 @@ class FieldDataBodyModel extends FieldDataModel
     public function makeToken()
     {
         if (null === $this->token) {
-            $this->token = Common::makeTokenByMCA('field', 'Body', 'upload');
+            $this->token = Common::makeTokenByMCAData('field', 'Body', 'upload');
         }
 
         return $this->token;

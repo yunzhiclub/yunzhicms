@@ -7,11 +7,16 @@ use think\File;
  */
 class FieldDataImageModel extends FieldDataModel 
 {   
-    private $uploadPath   = null;             // 上传路径
-    private $url          = null;             // URL
+    private $uploadPath   = null;               // 上传路径
+    private $url          = null;               // URL
+    protected $token      = null;               // token 
+
     public function makeToken()
     {
-        return Common::makeTokenByMCA('field', 'Image', 'upload');
+        if (null === $this->token) {
+            $this->token = Common::makeTokenByMCAData('field', 'Image', 'upload');
+        }
+        return $this->token;
     }
 
     /**

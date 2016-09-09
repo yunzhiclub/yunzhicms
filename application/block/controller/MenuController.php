@@ -3,6 +3,8 @@ namespace app\block\controller;
 use app\model\MenuModel;                    // 菜单
 use think\Cache;                            // 缓存
 use think\Request;                          // 请求
+
+use app\model\BlockModel;                   // 区块
 /**
  * 菜单
  */
@@ -21,7 +23,6 @@ class MenuController extends BlockController
         // 生成token并送入V层，用于编辑该区块
         $token = $this->BlockModel->makeToken('Menu', 'edit');
         $this->assign('token', $token);
-        Cache::set($token, 'hello');
 
         // 取当前菜单类型下可见的菜单列表
         $menuModels = MenuModel::getAvailableSonMenuModelsByPidMenuTypeName($pid, $menuTypeName);
@@ -36,11 +37,21 @@ class MenuController extends BlockController
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-08T18:41:54+0800
      */
-    static public function edit()
+    static public function edit($data = [])
     {
+        // 检测KEY键是否传入
+        if (!array_key_exists('id', $data)) {
+            throw new \Exception("传入的参数有误", 1);
+        }
+
+        // 获取当前区块模型
+        $BlockModel = BlockModel::get(['id' => $data['id']]);
+        if ('' === $BlockModel->getData('id')) {
+            throw new \Exception("未找到对应的区块模型", 1);
+        }
+
         $Object = new self();
-        $token = Request::instance()->param('token');
-        var_dump(Cache::get($token));
-        return $Object->fetch('block@menu/edit');
+        $Object->assign('BlockModel', $BlockModel);
+        return $Object->fetch();
     }
 }

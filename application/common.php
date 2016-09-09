@@ -16,20 +16,38 @@ use think\Session;
 use app\model\MenuModel;
 use app\model\UserModel;
 
-// 定义变量过滤。在获取变量值时，禁用input()助手函数
-Request::instance()->filter('htmlspecialchars');
-
 // 初始化
 Common::init();
-
-// 注册路由信息
-Common::registerRouter();
 
 class Common{
     static protected $token = [];       // token 用于安全验证
     static protected $css   = [];       // css 用于模板链接css文件
     static protected $js    = [];       // js 用于模板链接js文件
 
+    /**
+     * 系统初始化
+     * @return  
+     */
+    static public function init()
+    {
+        // 定义常量__ROOT__
+        $root = dirname($_SERVER['SCRIPT_NAME']);
+        if ($root === DS)
+        {
+            $root = '';
+        }
+        define('__ROOT__', $root);
+
+        // 定义常量PUBLIC_PATH
+        $publicPath = realpath(ROOT_PATH) . DS . 'public';
+        define('PUBLIC_PATH' , $publicPath);
+
+        // 定义变量过滤。在获取变量值时，禁用input()助手函数
+        Request::instance()->filter('htmlspecialchars');
+
+        // 注册路由信息
+        Common::registerRouter();
+    }
 
     /**
      * 注册路由信息
@@ -186,25 +204,6 @@ class Common{
         }
         $list = $arrRes;
         return $arrRes;
-    }
-
-    /**
-     * 系统初始化
-     * @return  
-     */
-    static public function init()
-    {
-        // 定义常量__ROOT__
-        $root = dirname($_SERVER['SCRIPT_NAME']);
-        if ($root === DS)
-        {
-            $root = '';
-        }
-        define('__ROOT__', $root);
-
-        // 定义常量PUBLIC_PATH
-        $publicPath = realpath(ROOT_PATH) . DS . 'public';
-        define('PUBLIC_PATH' , $publicPath);
     }
     
     /**
@@ -554,33 +553,38 @@ class Common{
         return $access;
     }
 
-    static public function makeTokenByMCA($module, $controller, $action)
+    static public function makeTokenByMCAData($module, $controller, $action, $data = [])
     {
         $tokens = Session::get('tokens');
-        $key = $module . '_' . $controller . '_' . $action;
+        
+        // 生成token
+        $token = sha1($module . $controller . $action . microtime() . rand(1,10000) . config('token_suffix'));
 
-        // 如果不存在，则生成. todo:对session是否过期的判断
-        if (null === $tokens || !isset($tokens[$key]))
-        {
-            // 生成token
-            $token = sha1($key . microtime() . rand(1,10000) . config('token_suffix'));
-            $tokens[$key] = $token;
-            Session::set('tokens', $tokens);
-        }
+        $tokens[$token] = ['module' => $module, 'controller' => $controller, 'action' => $action, 'data' => $data];
+
+        // 存token
+        Session::set('tokens', $tokens);
         
         // 返回生成并且注册的token
-        return $tokens[$key];
+        return $token;
     }
 
-    static public function getKeyByToken(&$token)
+    /**
+     * 通过token值，获取token中保存的信息
+     * @param    string                   &$token 
+     * @return   array                           
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-09T08:04:01+0800
+     */
+    static public function getInfoByToken(&$token)
     {
         $tokens = Session::get('tokens');
-        if (null === $tokens) {
-            return false;
-        } 
 
-        $key = array_search($token, $tokens);
-        return $key;
+        if (null !== $tokens && array_key_exists($token, $tokens)) {
+            return $tokens[$token];
+        } else {
+            return null;
+        }
     }
 
 

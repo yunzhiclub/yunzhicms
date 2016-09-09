@@ -128,6 +128,7 @@ class BlockModel extends ModelModel
      */
     public function makeToken($controller, $action)
     {
-        return Common::makeTokenByMCA('block', $controller, $action);
+        $data = ['id' => $this->getData('id')];
+        return Common::makeTokenByMCAData('block', $controller, $action, $data);
     }
 }
