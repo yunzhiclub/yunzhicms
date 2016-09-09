@@ -1,8 +1,10 @@
 <?php
 namespace app\admin\controller;
-use app\model\UserGroupModel;
+use app\model\UserGroupModel;                           // 用户组
 use app\model\BlockModel;                               // 区块
 use app\model\MenuModel;                                // 菜单
+use app\model\BlockTypeModel;                           // 区块类型
+use app\model\PositionModel;                            // 位置
 use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
 
 class BlockController extends AdminController
@@ -21,9 +23,13 @@ class BlockController extends AdminController
         $BlockModel = BlockModel::get($id);
         $this->assign('BlockModel', $BlockModel);
 
-        $UserGroupModel = new UserGroupModel;
-        $UserGroupModel = $UserGroupModel::all();
-        $this->assign('UserGroupModel', $UserGroupModel);
+        $BlockTypeModels = BlockTypeModel::get($id);
+        $this->assign('BlockTypeModels', $BlockTypeModels);
+
+        //将用户组信息传入
+        $UserGroupModels = UserGroupModel::all();
+        $this->assign('UserGroupModels', $UserGroupModels);
+
 
         $MenuModels = MenuModel::getTreeList(0, 2);
         $this->assign('MenuModels', $MenuModels);
@@ -86,7 +92,29 @@ class BlockController extends AdminController
         if (false === $BlockModel->save()) {
             return $this->error('删除失败');
         }
+    }
 
+    public function createAction()
+    {
+        
+        $BlockTypeModels = BlockTypeModel::all();
+        $this->assign('BlockTypeModels', $BlockTypeModels);
+
+        //将用户组信息传入
+        $UserGroupModels = UserGroupModel::all();
+        $this->assign('UserGroupModels', $UserGroupModels);
+
+        $MenuModels = MenuModel::getTreeList(0, 2);
+        $this->assign('MenuModels', $MenuModels);
+
+        //取type为block的postion传入
+        $PositionModel = new PositionModel;
+        $map = array('type' => 'blcok');
+        $Positions = $PositionModel->where($map)->select();
+        $this->assign('Positions', $Positions);
+
+        return $this->fetch();
+    }
 
     public function saveAction()
     {
