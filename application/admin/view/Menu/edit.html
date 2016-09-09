@@ -21,11 +21,7 @@
                     </div>
                     <div>
                         <label>对应组件名</label>
-                        <select class="form-control" name="component_name">
-                            {volist name="Components" id="Component"}
-                            <option value="{$Component->name}" {eq name="Component->name" value="$MenuModel->component_name" }selected="selected" {/eq}>{$Component->name}</option>
-                            {/volist}
-                        </select>
+                        <input type="text" name="component_name" value="{$MenuModel->component_name}" />
                     </div>
                     <div>
                         <label>菜单类型</label>
