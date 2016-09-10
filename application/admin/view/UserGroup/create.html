@@ -1,0 +1,35 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box">
+            <div class="box-header">
+                <i class="icon-book"></i>
+                <h5>用户组新增</h5>
+            </div>
+            <div class="box-content">
+                <form class="form-horizontal" action="{:url('@admin/usergroup')}" method="post">
+                    <div>
+                        <label for="_title">标题</label>
+                        <div>
+                            <input type="text" id="_title" name="title" />
+                        </div>
+                    </div>
+                    <div>
+                        <label for="_name">name</label>
+                        <div>
+                            <input type="text" id="_name" name="name" />
+                        </div>
+                    </div>
+                    <div>
+                        <label for="_description">描述</label>
+                        <div>
+                            <input type="text" id="_description" name="description" />
+                        </div>
+                    </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
