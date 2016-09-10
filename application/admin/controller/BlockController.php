@@ -82,6 +82,19 @@ class BlockController extends AdminController
             $AccessMenuBlockModel->saveAll($datas);
         }
 
+        //更新user_group_block表
+        $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
+        $map = ['block_id' => $id];
+        $AccessUserGroupBlockModel->where($map)->delete();
+
+        $AccessUserGroupBlockDatas = array();
+        if (array_key_exists('usergroupname', $param))
+        {
+            foreach ($param['usergroupname'] as $key => $value) {
+                array_push($AccessUserGroupBlockDatas, ['block_id' => $id, 'user_group_name' => $key]);
+            }
+            $AccessUserGroupBlockModel->saveAll($AccessUserGroupBlockDatas);
+        }
         return $this->success('操作成功', url('@admin/block'));
     }
     /**

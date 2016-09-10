@@ -159,7 +159,8 @@ class BlockModel extends ModelModel
         $map = [];
         $map['block_id']    = $this->data['id'];
         $map['user_group_name']     = $UserGroupModel->getData('name');
-        if (null === AccessUserGroupBlockModel::get($map))
+        $judge = AccessUserGroupBlockModel::get($map)->getData();
+        if (empty($judge))
         {
             return false;
         } else {
