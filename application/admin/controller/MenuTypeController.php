@@ -53,4 +53,22 @@ class MenutypeController extends AdminController
 
         return $this->success('删除成功', url('@admin/menutype'));
     }
+
+    public function createAction()
+    {
+        return $this->fetch();
+    }
+
+    public function saveAction()
+    {
+        $data = input('post.');
+        $MenuTypeModel = new MenuTypeModel;
+        $MenuTypeModel->setData('title', $data['title']);
+        $MenuTypeModel->setData('name', $data['name']);
+        $MenuTypeModel->setData('description', $data['description']);
+
+        $MenuTypeModel->save();
+
+        return $this->success('保存成功', url('@admin/menutype'));
+    }
 }

@@ -1,4 +1,4 @@
-{layout name="index" /} {layout name="index" /}
+{layout name="index" /}
 <div class="row">
     <div class="span16">
         <div class="box">
@@ -65,23 +65,7 @@
                             <option value="0">0</option>
                         </select>
                     </div>
-                    <div>
-                        <label for="">配置信息</label>
-                        <ol>
-                            {foreach name="MenuModel->getConfig()" key="key" id="_config"}
-                            <li>
-                                <label>{$_config['title']}</label>
-                                <input type="text" name="config[{$key}]" value="{$_config['value']}">
-                            </li>
-                            {/foreach}
-                        </ol>
-                    </div>
-                    <div>
-                        <label for="">过滤器信息</label>
-                        <ol>
-                            {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
-                        </ol>
-                    </div>
+
                     <div>
                         <label for="">用户组权限：</label>
                         <ul>
