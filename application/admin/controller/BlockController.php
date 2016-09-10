@@ -91,6 +91,12 @@ class BlockController extends AdminController
     public function deleteAction($id)
     {
         $BlockModel = BlockModel::get($id);
+
+        // 删除block-menu关联表中已经删除的区块信息
+        $AccessMenuBlockModel = new AccessMenuBlockModel;
+        $map = ['block_id' => $id];
+        $AccessMenuBlockModel->where($map)->delete();
+
         if (false === $BlockModel) {
             return $this->error('删除失败:区块不存在' . $BlockModel->getError());
         }
@@ -98,6 +104,7 @@ class BlockController extends AdminController
         if (false === $BlockModel->save()) {
             return $this->error('删除失败');
         }
+        return $this->success('删除成功', url('@admin/block'));
     }
 
     public function createAction()
@@ -125,7 +132,7 @@ class BlockController extends AdminController
     public function saveAction()
     {
         $param = input('post.');
-        
+
         //将Block的信息，保存到数据表
         $BlockModel = new BlockModel;
         $BlockModel->setData('title', $param['title']);
@@ -137,21 +144,21 @@ class BlockController extends AdminController
 
         $BlockModel->save();
 
-        //从BlockModel的数据表中将保存的id取出
+        //直接将menu数据存入表
         $id = $BlockModel->id;
-        
+
         $AccessMenuBlockModel = new AccessMenuBlockModel;
-        $map = ['block_id' => $id];
-        $AccessMenuBlockModel->where($map)->delete();
+        // $map = ['block_id' => $id];
+        // $AccessMenuBlockModel->where($map)->delete();
 
         //拼接menu_id block_id 存入其中间表
-        $datas = array(); 
+        $datas = array();
         foreach ($param['menuids'] as $key => $value) {
                 array_push($datas, ['block_id' => $id, 'menu_id' => $key]);
             }
-            
+
         $AccessMenuBlockModel->saveAll($datas);
-        
+
         return $this->success('添加成功', url('@admin/block'));
 
 
