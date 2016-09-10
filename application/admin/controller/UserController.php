@@ -74,7 +74,7 @@ class UserController extends AdminController
     public function deleteAction($id)
     {
         $UserModel = UserModel::get($id);
-        $UserModel->setData('is_deleted', $id);
+        $UserModel->setData('is_deleted', 1);
         if (false === $UserModel->save()) {
             return $this->error('删除失败');
         }
