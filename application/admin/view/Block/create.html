@@ -34,13 +34,13 @@
                                     <label for="">所处位置</label>
                                     <select class="form-control" name="position_name">
                                         {volist name="Positions" id="Position"}
-                                            <option value="{$Position->name}">{$Position->name}</option>
+                                        <option value="{$Position->name}">{$Position->name}</option>
                                         {/volist}
                                     </select>
                                 </div>
                                 <div>
                                     <label for="">状态</label>
-                                    <select name="status" >
+                                    <select name="status">
                                         <option value="0">0</option>
                                         <option value="1">1</option>
                                     </select>
@@ -49,7 +49,6 @@
                                     <label for="">权重</label>
                                     <input type="text" name="weight" />
                                 </div>
-
                                 <div>
                                     <label for="">对哪些菜单显示</label>
                                     <ul>
@@ -69,6 +68,14 @@
                                 </div>
                                 <div>
                                     <label for="">对哪些用户组可见</label>
+                                    <ul>
+                                        {foreach name="UserGroupModels" id="_UserGroupModel"}
+                                        <input type="checkbox" name="menuids[{$_UserGroupModel->id}]" />
+                                        <li>
+                                            {$_UserGroupModel->title}
+                                        </li>
+                                        {/foreach}
+                                    </ul>
                                 </div>
                                 <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
                             </form>
