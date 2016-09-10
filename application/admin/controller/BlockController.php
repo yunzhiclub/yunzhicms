@@ -34,7 +34,8 @@ class BlockController extends AdminController
         $this->assign('UserGroupModels', $UserGroupModels);
 
         //将位置信息传入
-        $PositionModels = PositionModel::all();
+        $map['type'] = "block";
+        $PositionModels = PositionModel::get($map)->select();
         $this->assign('PositionModels', $PositionModels);
 
         $MenuModels = MenuModel::getTreeList(0, 2);

@@ -67,7 +67,7 @@
                                     <label for="">对哪些菜单显示</label>
                                     <ul>
                                         {foreach name="MenuModels" id="_MenuModel"}
-                                        <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="BlockModel->checkIsShow($_MenuModel)" value="true" }checked="" {/eq} />
+                                        <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="BlockModel->checkIsShow($_MenuModel)" value="true" } checked="checked" {/eq} />
                                         <li>
                                             <?php
                                                for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
