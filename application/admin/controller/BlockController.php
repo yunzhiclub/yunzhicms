@@ -176,12 +176,12 @@ class BlockController extends AdminController
         $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
         
         //拼接user_group_name block_id 存入其中间表
-        $datas = array();
-        foreach ($param['menuids'] as $key => $value) {
-                array_push($datas, ['user_group_name' => $id, 'menu_id' => $key]);
+        $datass = array();
+        foreach ($param['usergroupname'] as $key => $value) {
+                array_push($datass, ['user_group_name' => $id, 'menu_id' => $key]);
             }
 
-        $AccessUserGroupBlockModel->saveAll($datas);
+        $AccessUserGroupBlockModel->saveAll($datass);
 
         return $this->success('添加成功', url('@admin/block'));
 
