@@ -7,7 +7,8 @@ class UserGroupController extends AdminController
 {
     public function indexAction()
     {
-    	$UserGroupModels = UserGroupModel::all();
+        $UserGroupModel = new UserGroupModel;
+    	$UserGroupModels = $UserGroupModel->where('is_deleted', '=', 0)->select();
     	$this->assign('UserGroupModels', $UserGroupModels);
         return $this->fetch();
     }
@@ -53,8 +54,26 @@ class UserGroupController extends AdminController
     public function deleteAction($id)
     {
         $UserGroupModel = UserGroupModel::get($id);
-        $UserGroupModel->delete();
-        return $this->success('操作成功', url('@admin/usergroup/')); 
+        //判断是否还有用户
+        $UserModels = $UserGroupModel->getAllUserMedel($id);
+        if (!empty($UserModels)) {
+            
+            return $this->error('不能删除含有子人员');
+        }
+
+        $UserGroupModel->setData('is_deleted', 1);
+        //删除中间表信息
+        $map = array('user_group_name' => $id);
+        if (false === $UserGroupModel->AccessUserGroupBlock()->where($map)->delete()) {
+
+            return $this->error('删除失败');
+        }
+        if (false === $UserGroupModel->save()) {
+            
+            return $this->error('删除失败');
+        }
+
+        return $this->success('删除成功', url('@admin/usergroup/')); 
     }
 
 }
