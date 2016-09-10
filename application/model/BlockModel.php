@@ -145,7 +145,8 @@ class BlockModel extends ModelModel
         $map = [];
         $map['block_id']    = $this->data['id'];
         $map['menu_id']     = $MenuModel->getData('id');
-        if (null === AccessMenuBlockModel::get($map))
+        $judge = AccessMenuBlockModel::get($map)->getData();
+        if (empty($judge))
         {
             return false;
         } else {
