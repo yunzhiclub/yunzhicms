@@ -37,46 +37,45 @@
                                 <a href="{:url('@admin/Menu/' . $MenuModel->id . '/delete')}" class="btn btn-small btn-danger">
                                     <i class="btn-icon-only icon-remove"></i> 删除
                                 </a>
-                                <a href="">过滤器设置</a>
                             </td>
                         </tr>
-                        {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
-                        <tr>
-                            <td>|----{$MenuModel->title}</td>
-                            <td>{$MenuModel->url}</td>
-                            <td>{$MenuModel->weight}</td>
-                            <td>{$MenuModel->is_hidden}</td>
-                            <td>{$MenuModel->is_home}</td>
-                            <td>{$MenuModel->description}</td>
-                            <td class="td-actions">
-                                <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit')}" class="btn btn-small btn-info">
+                            {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
+                            <tr>
+                                <td>|----{$MenuModel->title}</td>
+                                <td>{$MenuModel->url}</td>
+                                <td>{$MenuModel->weight}</td>
+                                <td>{$MenuModel->is_hidden}</td>
+                                <td>{$MenuModel->is_home}</td>
+                                <td>{$MenuModel->description}</td>
+                                <td class="td-actions">
+                                    <a href="{:url('@admin/Menu/' . $MenuModel->id . '/    edit')}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 编辑
-                                </a>
-                                <a href="{:url('@admin/Menu/' . $MenuModel->id . '/delete')}" class="btn btn-small btn-danger">
-                                    <i class="btn-icon-only icon-remove"></i> 删除
-                                </a>
-                                <a href="">过滤器设置</a>
-                            </td>
-                        </tr>
-                        {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
-                        <tr>
-                            <td>|----|----{$MenuModel->title}</td>
-                            <td>{$MenuModel->url}</td>
-                            <td>{$MenuModel->weight}</td>
-                            <td>{$MenuModel->is_hidden}</td>
-                            <td>{$MenuModel->is_home}</td>
-                            <td>{$MenuModel->description}</td>
-                            <td class="td-actions">
-                                <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit' . '/' . $MenuModelType->title)}" class="btn btn-small btn-info">
-                                    <i class="btn-icon-only icon-edit"></i> 编辑
-                                </a>
-                                <a href="{:url('@admin/Menu/' . $MenuModel->id . '/delete')}" class="btn btn-small btn-danger">
-                                    <i class="btn-icon-only icon-remove"></i> 删除
-                                </a>
-                                <a href="">过滤器设置</a>
-                            </td>
-                        </tr>
-                        {/volist} {/volist} {/volist}
+                                     </a>
+                                    <a href="{:url('@admin/Menu/' . $MenuModel->id . '/delete')}" class="btn btn-small btn-danger">
+                                        <i class="btn-icon-only icon-remove"></i> 删除
+                                    </a>
+                                </td>
+                            </tr>
+                                {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
+                                <tr>
+                                <td>|----|----{$MenuModel->title}</td>
+                                <td>{$MenuModel->url}</td>
+                                <td>{$MenuModel->weight}</td>
+                                <td>{$MenuModel->is_hidden}</td>
+                                <td>{$MenuModel->is_home}</td>
+                                <td>{$MenuModel->description}</td>
+                                    <td class="td-actions">
+                                        <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit' . '/' . $MenuModelType->title)}" class="btn btn-small btn-info">
+                                            <i class="btn-icon-only icon-edit"></i> 编辑
+                                    </a>
+                                        <a href="{:url('@admin/Menu/' . $MenuModel->id . '/delete')}" class="btn btn-small btn-danger">
+                                        <i class="btn-icon-only icon-remove"></i> 删除
+                                        </a>
+                                    </td>
+                                </tr>
+                                {/volist}
+                            {/volist}
+                        {/volist}
                         <div style="text-align:right;">
     <a href="{:url('@admin/Menu/create')}" class="btn btn-small btn-info">
         <i class="btn-icon-only icon-edit"></i> 新增
