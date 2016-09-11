@@ -70,7 +70,7 @@
                                     <label for="">对哪些用户组可见</label>
                                     <ul>
                                         {foreach name="UserGroupModels" id="_UserGroupModel"}
-                                        <input type="checkbox" name="usergroupname[{$_UserGroupModel->id}]" />
+                                        <input type="checkbox" name="usergroupname[{$_UserGroupModel->name}]" />
                                         <li>
                                             {$_UserGroupModel->title}
                                         </li>

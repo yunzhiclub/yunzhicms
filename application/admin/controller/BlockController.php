@@ -178,7 +178,7 @@ class BlockController extends AdminController
         //拼接user_group_name block_id 存入其中间表
         $datass = array();
         foreach ($param['usergroupname'] as $key => $value) {
-                array_push($datass, ['user_group_name' => $id, 'menu_id' => $key]);
+                array_push($datass, ['user_group_name' => $key, 'block_id' => $id]);
             }
 
         $AccessUserGroupBlockModel->saveAll($datass);
