@@ -1055,8 +1055,12 @@ h4 small {
 }
 ul,
 ol {
-  padding: 0;
-  margin: 0 0 10px 25px;
+  list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
 }
 ul ul,
 ul ol,
