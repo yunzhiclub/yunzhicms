@@ -27,8 +27,27 @@
                             <td>{$MenuModel->title}</td>
                             <td>{$MenuModel->url}</td>
                             <td>{$MenuModel->weight}</td>
-                            <td>{$MenuModel->is_hidden}</td>
-                            <td>{$MenuModel->is_home}</td>
+                            <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
+                                <span class="badge span_backgroud_color">
+                                {$MenuModel->is_hidden}
+                                </span>
+                                {else /}
+                                <span class="badge">
+                                {$MenuModel->is_hidden}
+                                </span>
+                                {/eq}
+                            </td>
+                            <td>
+                                {eq value="1" name="$MenuModel->getData('is_home')"}
+                                <span class="badge span_backgroud_color">
+                                {$MenuModel->is_home}
+                                </span>
+                                {else /}
+                                <span class="badge">
+                                {$MenuModel->is_home}
+                                </span>
+                                {/eq}
+                            </td>
                             <td>{$MenuModel->description}</td>
                             <td class="td-actions">
                                 <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit')}" class="btn btn-small btn-info">
@@ -44,8 +63,28 @@
                                 <td>|----{$MenuModel->title}</td>
                                 <td>{$MenuModel->url}</td>
                                 <td>{$MenuModel->weight}</td>
-                                <td>{$MenuModel->is_hidden}</td>
-                                <td>{$MenuModel->is_home}</td>
+                                <td>
+                                    {eq value="0" name="$MenuModel->getData('is_hidden')"}
+                                    <span class="badge span_backgroud_color">
+                                    {$MenuModel->is_hidden}
+                                    </span>
+                                    {else /}
+                                    <span class="badge">
+                                    {$MenuModel->is_hidden}
+                                    </span>
+                                    {/eq}
+                                </td>
+                                <td>
+                                    {eq value="1" name="$MenuModel->getData('is_home')"}
+                                    <span class="badge span_backgroud_color">
+                                    {$MenuModel->is_home}
+                                    </span>
+                                    {else /}
+                                    <span class="badge">
+                                    {$MenuModel->is_home}
+                                    </span>
+                                    {/eq}
+                                </td>
                                 <td>{$MenuModel->description}</td>
                                 <td class="td-actions">
                                     <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit')}" class="btn btn-small btn-info">
@@ -61,8 +100,28 @@
                                     <td>|----|----{$MenuModel->title}</td>
                                     <td>{$MenuModel->url}</td>
                                     <td>{$MenuModel->weight}</td>
-                                    <td>{$MenuModel->is_hidden}</td>
-                                    <td>{$MenuModel->is_home}</td>
+                                    <td>
+                                        {eq value="0" name="$MenuModel->getData('is_hidden')"}
+                                        <span class="badge span_backgroud_color">
+                                        {$MenuModel->is_hidden}
+                                        </span>
+                                        {else /}
+                                        <span class="badge">
+                                        {$MenuModel->is_hidden}
+                                        </span>
+                                        {/eq}
+                                    </td>
+                                    <td>
+                                        {eq value="1" name="$MenuModel->getData('is_home')"}
+                                        <span class="badge span_backgroud_color">
+                                        {$MenuModel->is_home}
+                                        </span>
+                                        {else /}
+                                        <span class="badge">
+                                        {$MenuModel->is_home}
+                                        </span>
+                                        {/eq}
+                                    </td>
                                     <td>{$MenuModel->description}</td>
                                     <td class="td-actions">
                                         <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit' . '/' . $MenuModelType->title)}" class="btn btn-small btn-info">
