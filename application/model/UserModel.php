@@ -14,7 +14,7 @@ class UserModel extends ModelModel
     {
         if (null === $this->UserGroupModel)
         {
-            $userGroupName = $this->getData('group_name');
+            $userGroupName = $this->getData('user_group_name');
             $this->UserGroupModel = UserGroupModel::get($userGroupName);
         }
         return $this->UserGroupModel;
@@ -33,5 +33,10 @@ class UserModel extends ModelModel
             $currentUserModel->setData('group_name', 'public');
         }
         return $currentUserModel;
+    }
+
+    public function getUsergroups()
+    {
+        return UserGroupModel::all();
     }
 }

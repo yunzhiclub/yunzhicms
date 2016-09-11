@@ -110,19 +110,6 @@ class MenuController extends AdminController
         $MenuModel->setData('status', $data['status']);
         $MenuModel->setData('description', $data['description']);
 
-        // 配置信息
-        if (array_key_exists('config', $data))
-        {
-            $MenuModel->setData('config', json_encode($data['config']));
-        }
-
-        // 过滤器信息
-        if (array_key_exists('filter', $data))
-        {
-            $filter = Common::makeFliterArrayFromPostArray($data['filter']);
-            $MenuModel->setData('filter', json_encode($filter));
-        }
-
         $id = $MenuModel->save();
 
         $data['access'] = isset($data['access'])?$data['access']:array();
