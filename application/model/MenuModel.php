@@ -337,4 +337,25 @@ class MenuModel extends ModelModel
         return $availableSonMenuModels;
     }
 
+    /**
+     * 区块中间表的对象
+     * @return  object
+     */
+    public function MenuBlock()
+    {
+        $MenuBlock = new AccessMenuBlockModel;
+        $this->data['AccessMenuBlockModel'] = $MenuBlock;
+        return $MenuBlock;
+    }
+
+    /**
+     * 组件中间表的对象
+     * @return  object
+     */
+    public function MenuPlugin()
+    {
+        $MenuPlugin = new AccessMenuPluginModel;
+        $this->data['AccessMenuPluginModel'] = $MenuPlugin;
+        return $MenuPlugin;
+    }
 }

@@ -88,10 +88,6 @@ class MenuController extends AdminController
         $Components = ComponentModel::all();
         $this->assign('Components', $Components);
 
-        // 传入v层一个空menu对象
-        $MenuModel = new MenuModel;
-        $this->assign('$MenuModel', $MenuModel);
-
         // 将用户组信息传入
         $userGroupModels = UserGroupModel::all();
         $this->assign('userGroupModels', $userGroupModels);
@@ -114,8 +110,11 @@ class MenuController extends AdminController
         $MenuModel->setData('status', $data['status']);
         $MenuModel->setData('description', $data['description']);
 
-        //配置信息
-         $MenuModel->setData('config', json_encode($data['config']));
+        // 配置信息
+        if (array_key_exists('config', $data))
+        {
+            $MenuModel->setData('config', json_encode($data['config']));
+        }
 
         // 过滤器信息
         if (array_key_exists('filter', $data))
@@ -125,6 +124,7 @@ class MenuController extends AdminController
         }
 
         $id = $MenuModel->save();
+
         $data['access'] = isset($data['access'])?$data['access']:array();
 
         // 更新 菜单 用户组 权限
@@ -143,6 +143,15 @@ class MenuController extends AdminController
         //判断是否含有二级菜单
         $sonMenuModels = $MenuModel->sonMenuModels();
         $MenuModel->setData('is_delete', 1);
+        $map = array('menu_id' => $id);
+        if (false === $MenuModel->MenuBlock()->where($map)->delete()) {
+            
+            return $this->error('删除失败');
+        }
+        if (false === $MenuModel->MenuPlugin()->where($map)->delete()) {
+            
+            return $this->error('删除失败');
+        }
 
         if (false === empty($sonMenuModels)) {
             
