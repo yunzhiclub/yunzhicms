@@ -358,4 +358,37 @@ class MenuModel extends ModelModel
         $this->data['AccessMenuPluginModel'] = $MenuPlugin;
         return $MenuPlugin;
     }
+
+    /**
+     * 显示是否隐藏
+     * @return string 
+     */
+    public function getIsHiddenAttr($value)
+    {
+        $status = array('0' => '一', 
+            '1' => '是',
+            );
+        if ($value === 0 || $value === 1) {
+
+            return $status[$value];
+        }
+
+        return $status['0'];
+    }
+
+    /**
+     * 是否显示首页
+     */
+    public function getIsHomeAttr($value)
+    {
+        $status = array('0' => '一',
+            '1' => '是',
+            );
+        if ($value === 0 || $value === 1) {
+            
+            return $status[$value];
+        }
+
+        return $status['0'];
+    }
 }
