@@ -7,14 +7,16 @@ class MenutypeController extends AdminController
 {
     public function indexAction()
     {
+        $pageSize = 5;
         $MenuTypeModel = new MenuTypeModel;
-        $MenuTypeModels = $MenuTypeModel->where('is_delete', '=', 0)->paginate();
+        $MenuTypeModels = $MenuTypeModel->where('is_delete', '=', 0)->paginate($pageSize);
         $this->assign('MenuTypeModels', $MenuTypeModels);
         return $this->fetch();
     }
 
     public function readAction($id)
     {
+        
         $name = $id;
         $MenuModelType = MenuTypeModel::get($name);
         $this->assign('MenuModelType', $MenuModelType);
