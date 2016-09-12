@@ -12,7 +12,7 @@ class UserModel extends ModelModel
     private $UserGroupModel = null;         // 用户组
     
 
-    public function getUserGroupModel()
+    public function UserGroupModel()
     {
         if (null === $this->UserGroupModel)
         {

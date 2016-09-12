@@ -14,7 +14,7 @@ class UserGroupModel extends ModelModel
      * @param  MenuModel &$MenuModel [description]
      * @return [type]                [description]
      */
-    public function getAccessValueByMenuModel(MenuModel &$MenuModel)
+    public function isAllowedByMenuModelAction(MenuModel &$MenuModel, $action)
     {
         // 使用成员变量，减小请求次数
         if (null === $this->MenuModelOfAccessValueByMenuModel || ($this->MenuModelOfAccessValueByMenuModel->getData('id') !== $MenuModel->getData('id')))
