@@ -143,6 +143,15 @@ class MenuController extends AdminController
         //判断是否含有二级菜单
         $sonMenuModels = $MenuModel->sonMenuModels();
         $MenuModel->setData('is_delete', 1);
+        $map = array('menu_id' => $id);
+        if (false === $MenuModel->MenuBlock()->where($map)->delete()) {
+            
+            return $this->error('删除失败');
+        }
+        if (false === $MenuModel->MenuPlugin()->where($map)->delete()) {
+            
+            return $this->error('删除失败');
+        }
 
         if (false === empty($sonMenuModels)) {
             

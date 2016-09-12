@@ -337,4 +337,58 @@ class MenuModel extends ModelModel
         return $availableSonMenuModels;
     }
 
+    /**
+     * 区块中间表的对象
+     * @return  object
+     */
+    public function MenuBlock()
+    {
+        $MenuBlock = new AccessMenuBlockModel;
+        $this->data['AccessMenuBlockModel'] = $MenuBlock;
+        return $MenuBlock;
+    }
+
+    /**
+     * 组件中间表的对象
+     * @return  object
+     */
+    public function MenuPlugin()
+    {
+        $MenuPlugin = new AccessMenuPluginModel;
+        $this->data['AccessMenuPluginModel'] = $MenuPlugin;
+        return $MenuPlugin;
+    }
+
+    /**
+     * 显示是否隐藏
+     * @return string 
+     */
+    public function getIsHiddenAttr($value)
+    {
+        $status = array('0' => '一', 
+            '1' => '是',
+            );
+        if ($value === 0 || $value === 1) {
+
+            return $status[$value];
+        }
+
+        return $status['0'];
+    }
+
+    /**
+     * 是否显示首页
+     */
+    public function getIsHomeAttr($value)
+    {
+        $status = array('0' => '一',
+            '1' => '是',
+            );
+        if ($value === 0 || $value === 1) {
+            
+            return $status[$value];
+        }
+
+        return $status['0'];
+    }
 }

@@ -13,8 +13,9 @@ class UserController extends AdminController
 {
     public function indexAction()
     {
+        $Pagesize   = 5;
         $userModels = new UserModel;
-        $userModels = $userModels->where('is_deleted', '=', 0)->paginate();
+        $userModels = $userModels->where('is_deleted', '=', 0)->paginate($Pagesize);
         $this->assign('userModels', $userModels);
 
         return $this->fetch();
@@ -41,9 +42,7 @@ class UserController extends AdminController
         $UserModel->setData('qq_open_id', $data['qq_open_id']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
 
-        if (false !== $UserModel->save()) {  
-            return $this->success('更新成功',url('@admin/user'));
-        }
+        $UserModel->save(); 
         return $this->success('更新成功', url('@admin/user'));
     }
 
