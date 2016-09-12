@@ -149,7 +149,7 @@ class BlockController extends AdminController
 
     public function saveAction()
     {
-        $param = input('post.');
+        $param = input('param.');
 
         //将Block的信息，保存到数据表
         $BlockModel = new BlockModel;
@@ -170,25 +170,25 @@ class BlockController extends AdminController
         // $AccessMenuBlockModel->where($map)->delete();
 
         //拼接menu_id block_id 存入其中间表
-        $datas = array();
-        foreach ($param['menuids'] as $key => $value) {
+        if (array_key_exists('menuids', $param)) {
+            $datas = array();
+            foreach ($param['menuids'] as $key => $value) {
                 array_push($datas, ['block_id' => $id, 'menu_id' => $key]);
             }
-
-        $AccessMenuBlockModel->saveAll($datas);
+            $AccessMenuBlockModel->saveAll($datas);
+        }
 
         $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
         
         //拼接user_group_name block_id 存入其中间表
-        $datass = array();
-        foreach ($param['usergroupname'] as $key => $value) {
-                array_push($datass, ['user_group_name' => $key, 'block_id' => $id]);
+        if (array_key_exists('usergroupname', $param)) {
+            $datas = array();
+            foreach ($param['usergroupname'] as $key => $value) {
+                array_push($datas, ['user_group_name' => $key, 'block_id' => $id]);
             }
-
-        $AccessUserGroupBlockModel->saveAll($datass);
-
+            $AccessUserGroupBlockModel->saveAll($datas);
+        }
+        
         return $this->success('添加成功', url('@admin/block'));
-
-
     }
 }
