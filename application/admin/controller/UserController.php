@@ -1,16 +1,16 @@
 <?php
 namespace app\admin\controller;
-use app\model\UserModel;            // 用户
 
-/**
- * 实现用户管理的增删改查
- * @param  
- * @return template
- * @author liuyanzhao
- */
+use app\model\UserModel;            // 用户管理
 
 class UserController extends AdminController
 {
+    /**
+     * 显示用户管理的界面
+     * @param  
+     * @return template
+     * @author liuyanzhao
+     */
     public function indexAction()
     {
         $Pagesize   = 5;
@@ -21,6 +21,12 @@ class UserController extends AdminController
         return $this->fetch();
     }
 
+    /**
+     * 跳转到用户的编辑界面
+     * @param  
+     * @return template
+     * @author liuyanzhao
+     */
     public function editAction($id)
     {
         $id = input('id');
@@ -31,6 +37,12 @@ class UserController extends AdminController
         return $this->fetch();
     }
 
+    /**
+     * 更新用户信息
+     * @param  id
+     * @return template
+     * @author liuyanzhao
+     */
     public function updateAction()
     {
         $data = input('param.');
@@ -46,6 +58,12 @@ class UserController extends AdminController
         return $this->success('更新成功', url('@admin/user'));
     }
 
+    /**
+     * 存用户个人信息
+     * @param  
+     * @return boolean
+     * @author liuyanzhao
+     */
     public function saveAction()
     {
         $data = input('param.');
@@ -70,6 +88,12 @@ class UserController extends AdminController
         return $this->fetch();
     }
 
+    /**
+     * 删除用户
+     * @param  [string] $id 
+     * @return template
+     * @author gaoliming
+     */
     public function deleteAction($id)
     {
         $UserModel = UserModel::get($id);

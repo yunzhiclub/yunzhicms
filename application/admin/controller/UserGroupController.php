@@ -5,6 +5,11 @@ use app\model\UserGroupModel;
 
 class UserGroupController extends AdminController
 {
+    /**
+     * 显示用户组信息
+     * @author liuyanzhao
+     * @return template
+     */
     public function indexAction()
     {
         $UserGroupModel = new UserGroupModel;
@@ -51,6 +56,12 @@ class UserGroupController extends AdminController
         return $this->success('操作成功', url('@admin/usergroup/')); 
     }
 
+    /**
+     * 删除用户组
+     * @param  [string] $id
+     * @author  gaoliming 
+     * @return template
+     */
     public function deleteAction($id)
     {
         $UserGroupModel = UserGroupModel::get($id);
