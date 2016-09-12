@@ -110,9 +110,6 @@ class BlockController extends AdminController
         $AccessMenuBlockModel = new AccessMenuBlockModel;
         $map = ['block_id' => $id];
         $AccessMenuBlockModel->where($map)->delete();
-        //删除usergroup-menu关联表中已经删除的区块信息
-        $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
-        $AccessUserGroupBlockModel->where($map)->delete();
 
         if (false === $BlockModel) {
             return $this->error('删除失败:区块不存在' . $BlockModel->getError());
