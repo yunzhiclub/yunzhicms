@@ -73,4 +73,29 @@ class MenutypeController extends AdminController
 
         return $this->success('保存成功', url('@admin/menutype'));
     }
+
+    public function weightAction()
+    {
+        $errors = array();
+        $weight = isset($_POST['weight'])?$_POST['weight']:array();
+        if($weight) {
+            try {
+                foreach ($weight as $menuId=>$value) {
+                    //执行更新
+                    $MenuModel = new MenuModel;
+                    $id = $MenuModel->updateMenuWeightById($menuId, $value);
+                    if (false === $id) {
+                        $errors[] = $menuId;
+                    }
+                }
+            }catch(\Exception $e) {
+                return $this->error('执行错误:' . $e->getMessage());
+            }
+            if ($errors) {
+                return $this->error( '排序失败-' . implode(',', $errors), url('@admin/menutype'));
+            }
+            return $this->error('排序成功', url('@admin/menutype'));
+        }
+        return $this->error('排序数据失败', url('@admin/menutype'));
+    }
 }

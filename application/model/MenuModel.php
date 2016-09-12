@@ -391,4 +391,18 @@ class MenuModel extends ModelModel
 
         return $status['0'];
     }
+
+    /**
+     * 更新菜单权重
+     */
+    public function updateMenuWeightById($id,$weight)
+    {
+        if (!$id || !is_numeric($id)) {
+            throw new Exception("ID不合法");
+        }
+        $data = array(
+            'weight' => intval($weight),
+            );
+        return $this->where('id','=',$id)->find()->save($data);
+    }
 }
