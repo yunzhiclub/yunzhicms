@@ -12,11 +12,17 @@ use app\model\FieldModel;                   // 字段模型
  */
 class SliderController extends BlockController
 {
-    public function fetchHtml()
+    public function index()
     {
         // 生成token并送入V层，用于编辑该区块
         $token = $this->BlockModel->makeToken('Slider', 'edit');
 
+        // 获取扩展字段列表, 并传入V层
+        $this->assign('titles',         $this->BlockModel->FieldModel('titles')->filter());
+        $this->assign('urls',           $this->BlockModel->FieldModel('urls')->filter());
+        $this->assign('images',         $this->BlockModel->FieldModel('images')->filter());
+        $this->assign('headers',        $this->BlockModel->FieldModel('headers')->filter());
+        $this->assign('descriptions',   $this->BlockModel->FieldModel('descriptions')->filter());
         $this->assign('token', $token);
         return $this->fetch();
     }

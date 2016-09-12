@@ -34,4 +34,10 @@ class UserModel extends ModelModel
         }
         return $currentUserModel;
     }
+
+    static public function logout()
+    {
+        // 销毁tokens
+        Session::set('tokens', null);
+    }
 }
