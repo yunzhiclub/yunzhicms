@@ -67,7 +67,7 @@ class Common{
      * @return void        
      */
     static public function registerRouter()
-    {
+    {   
         // 查询菜单表
         $menus = self::reMakeLinkPath(Db::name('menu')->select());
 
@@ -75,23 +75,54 @@ class Common{
         $components = Db::name('component')->select();
         $components = self::changeListIndex($components, 'name');
 
-        // 注册CURD路由信息 
-        foreach ($menus as $menu)
-        {   
+        foreach ($menus as $menu) {
             // 注册路由
             $componentName = $menu['component_name'];
             if (array_key_exists($componentName, $components))
             {
-                $router = 'Component/' . $components[$componentName]['name'];
+                // 本看是否存在其它路由参数，有的话，依次进行注册
+                $routeFilePath = realpath(APP_PATH . 
+                    'component' . DS . 
+                    'route' . DS . 
+                    $componentName . 'Route.php');
 
-                // 如果是首页，则注册为普通路由
-                if ((int)$menu['is_home'] === 1)
-                {
-                    $router .= '/index';
-                    Route::rule('/', $router);
-                } else {
-                    // 非首页注册curd路由
-                    Route::curd($menu['url'], $router);
+                // 按路由配置文件注册路由：http://www.kancloud.cn/manual/thinkphp5/118030
+                if (false !== $routeFilePath) {
+                    $routes = include $routeFilePath;
+                    foreach ($routes as $action => &$_route) {
+                        $value      = $_route['value'];
+                        $route      = '';
+                        $type       = '*';
+                        $option     = []; 
+                        $pattern    = [];
+
+                        if (isset($value[0])) {
+                            $rule = $menu['url'] . $value[0];
+                        } else {
+                            continue;
+                        }
+
+                        $route = 'component/' . $componentName . '/' . $action;
+
+                        if (isset($value[1])) {
+                            $type = $value[1];
+                        }
+
+                        if (isset($value[2])) {
+                            if (is_array($value[2])) {
+                                $option = $value[2]; 
+                            }
+                        }
+
+                        if (isset($value[3])) {
+                            if (is_array($value[3])) {
+                                $pattern = $value[3]; 
+                            }
+                        }
+
+                        // 调用路由注册
+                        Route::rule($rule, $route, $type, $option, $pattern);
+                    }
                 }
             }
         }
@@ -542,6 +573,7 @@ class Common{
 
             case 'create':
             case 'save':
+            case 'check':
                 $access = 8;
                 break;
 

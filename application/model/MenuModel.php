@@ -29,6 +29,15 @@ class MenuModel extends ModelModel
         $this->depth = $depth;
     }
 
+    public function getRoute()
+    {
+        if (null === $this->route) {
+            
+        }
+
+        return $this->route;
+    }
+
     public function getDepth()
     {
         return $this->depth;
