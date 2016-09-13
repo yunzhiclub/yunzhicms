@@ -18,6 +18,9 @@ class UserController extends AdminController
         $userModels = $userModels->where('is_deleted', '=', 0)->paginate($Pagesize);
         $this->assign('userModels', $userModels);
 
+        // $UserModel = UserModel::get(2);
+        // var_dump($UserModel->create_time);
+        // die();
         return $this->fetch();
     }
 
