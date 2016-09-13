@@ -6,6 +6,8 @@ use app\model\MenuTypeModel;            // 菜单类型
 use app\model\UserGroupModel;           // 用户组
 use app\model\AccessUserGroupMenuModel; // 用户组 菜单 权限
 use app\model\ComponentModel;           // 组件
+use app\model\AccessMenuBlockModel;     // 菜单 区块
+use app\model\AccessMenuPluginModel;    // 菜单 组件
 
 class MenuController extends AdminController
 {
@@ -20,6 +22,10 @@ class MenuController extends AdminController
     {
         $MenuModel = MenuModel::get($id);
         $this->assign('MenuModel', $MenuModel);
+
+        //所有菜单对象
+        $MenuModels = MenuModel::all();
+        $this->assign('MenuModels', $MenuModels);
 
         // 所有菜单类型
         $MenuTypeModels = MenuTypeModel::all();
@@ -51,7 +57,7 @@ class MenuController extends AdminController
         $MenuModel->setData('description', $data['description']);
         $MenuModel->setData('status', $data['status']);
         $MenuModel->setData('description', $data['description']);
-
+       
         // 配置信息
         $MenuModel->setData('config', json_encode($data['config']));
 
@@ -61,7 +67,6 @@ class MenuController extends AdminController
             $filter = Common::makeFliterArrayFromPostArray($data['filter']);
             $MenuModel->setData('filter', json_encode($filter));
         }
-       
         $MenuModel->save();
 
         //若未返回数值，则置为空数组
@@ -110,19 +115,6 @@ class MenuController extends AdminController
         $MenuModel->setData('status', $data['status']);
         $MenuModel->setData('description', $data['description']);
 
-        // 配置信息
-        if (array_key_exists('config', $data))
-        {
-            $MenuModel->setData('config', json_encode($data['config']));
-        }
-
-        // 过滤器信息
-        if (array_key_exists('filter', $data))
-        {
-            $filter = Common::makeFliterArrayFromPostArray($data['filter']);
-            $MenuModel->setData('filter', json_encode($filter));
-        }
-
         $id = $MenuModel->save();
 
         $data['access'] = isset($data['access'])?$data['access']:array();
@@ -142,26 +134,30 @@ class MenuController extends AdminController
 
         //判断是否含有二级菜单
         $sonMenuModels = $MenuModel->sonMenuModels();
-        $MenuModel->setData('is_delete', 1);
-        $map = array('menu_id' => $id);
-        if (false === $MenuModel->MenuBlock()->where($map)->delete()) {
-            
-            return $this->error('删除失败');
-        }
-        if (false === $MenuModel->MenuPlugin()->where($map)->delete()) {
-            
-            return $this->error('删除失败');
-        }
-
-        if (false === empty($sonMenuModels)) {
+        if (!empty($sonMenuModels)) {
             
             return $this->error('不能删除因为含有子菜单');
         }
 
-        if (false === $MenuModel->save()) {
+        //删除中间表
+        $map = array('menu_id' => $id);
+        $AccessMenuPluginModel    = new AccessMenuPluginModel;
+        $AccessMenuBlockModel     = new AccessMenuBlockModel;
+        $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
+        if (false === $MenuModel->$AccessMenuPluginModel->where($map)->delete()) {
+            return $this->error('删除失败');
+        }
+        if (false === $MenuModel->$AccessMenuBlockModel->where($map)->delete()) {
             
             return $this->error('删除失败');
         }
+        if (false === $MenuModel->$AccessUserGroupMenuModel->where($map)->delete()) {
+            
+            return $this->error('删除失败');
+        }
+
+        //删除菜单
+        $MenuModel->setData('is_delete', 1)->save();
 
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('删除成功', url('@admin/menuType/' . $menuType));

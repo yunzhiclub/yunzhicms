@@ -125,9 +125,9 @@ class MenuModel extends ModelModel
      * @return lists               
      * 
      */
-    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $delete)
+    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_deleted)
     {
-        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_delete' => $delete];
+        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_deleted' => $is_deleted];
         $MenuModels = $this->where($map)->order('weight desc')->select();
         return $MenuModels;
     }
@@ -241,7 +241,7 @@ class MenuModel extends ModelModel
      */
     public function sonMenuModels()
     {
-        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_delete' => 0];
+        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_deleted' => 0];
         $menuModels = $this->where($map)->select();
         return $menuModels;
     }
