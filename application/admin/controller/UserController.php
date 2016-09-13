@@ -13,14 +13,12 @@ class UserController extends AdminController
      */
     public function indexAction()
     {
-        $Pagesize   = 5;
+        $pagesize   = 5;
         $userModels = new UserModel;
-        $userModels = $userModels->where('is_deleted', '=', 0)->paginate($Pagesize);
+        $userModels = $userModels->where('is_deleted', '=', 0)->paginate($pagesize);
         $this->assign('userModels', $userModels);
 
-        // $UserModel = UserModel::get(2);
-        // var_dump($UserModel->create_time);
-        // die();
+        //返回V层
         return $this->fetch();
     }
 
@@ -72,8 +70,6 @@ class UserController extends AdminController
         $UserModel = new UserModel;
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
-        $UserModel->setData('password', $data['password']);
-        $UserModel->setData('qq_open_id', $data['qq_open_id']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
 
         $UserModel->save();
