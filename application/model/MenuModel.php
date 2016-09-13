@@ -366,8 +366,8 @@ class MenuModel extends ModelModel
     public function getIsHiddenAttr($value)
     {
         $status = array(
-            '0' => '一', 
-            '1' => '是',
+            '0' => '是', 
+            '1' => '一',
             );
         if ($value === 0 || $value === 1) {
 
