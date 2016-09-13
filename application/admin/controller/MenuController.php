@@ -21,6 +21,10 @@ class MenuController extends AdminController
         $MenuModel = MenuModel::get($id);
         $this->assign('MenuModel', $MenuModel);
 
+        //所有菜单对象
+        $MenuModels = MenuModel::all();
+        $this->assign('MenuModels', $MenuModels);
+
         // 所有菜单类型
         $MenuTypeModels = MenuTypeModel::all();
         $this->assign('MenuTypeModels',$MenuTypeModels);
