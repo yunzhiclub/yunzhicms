@@ -26,7 +26,17 @@
                         <td>{$_UserModel->getData('email')}</td>
                         <td>{$_UserModel->getData('name')}</td>
                         <td>{$_UserModel->UserGroupModel()->getData('title')}</td>
-                        <td>{$_UserModel->getData('status')}</td>
+                        <td>
+                                {eq value="1" name="$_UserModel->getData('status')"}
+                                <span class="badge">
+                                    已删除
+                                </span>
+                                {else /}
+                                <span class="badge span_backgroud_color">
+                                    激活
+                                </span>
+                                {/eq}
+                            </td>
                         <td>{$_UserModel->create_time}</td>
                         <td><a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/edit')}" class="btn btn-small btn-info">编辑</a>
                         <a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/delete')}" class="btn btn-small btn-danger">删除</a>
