@@ -32,7 +32,7 @@ class UserController extends AdminController
         $id = input('id');
         $UserModel = UserModel::get($id);
         $this->assign('UserModel', $UserModel);
-        $UserGroup = $UserModel->getUsergroups();
+        $UserGroup = $UserModel->Usergroups();
         $this->assign('UserGroups', $UserGroup);
         return $this->fetch();
     }
@@ -81,7 +81,7 @@ class UserController extends AdminController
     {
         //取出用户组
         $User = new UserModel;
-        $UserGroup = $User->getUsergroups();
+        $UserGroup = $User->Usergroups();
         $this->assign('UserGroups', $UserGroup); 
         return $this->fetch();
     }
