@@ -45,7 +45,7 @@ class ImageController extends FieldController
 
     public function index()
     {
-        $this->assgin('token', Common::makeTokenByMCAData('field', 'Image', 'upload'));
+        $this->assign('token', Common::makeTokenByMCAData('field', 'Image', 'upload'));
         return parent::index();
     }
 }

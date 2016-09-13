@@ -36,10 +36,7 @@ class ComponentController extends Controller
         // 根据action，计算访问权限值index->list
         $action = $this->Request->action();
 
-        // 根据action,查找当前菜单的路由表
         // 根据路由表中的action值，查找权限表,做出权限判断
-
-        // 权限判断
         if (!$this->currentFrontUserModel->UserGroupModel()->isAllowedByMenuModelAction($this->currentMenuModel, $action))
         {
             return $this->error('您无权限访问该页面或您访问的页面不存在. TODO:404页面', url('@/'));

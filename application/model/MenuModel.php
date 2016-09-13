@@ -96,28 +96,21 @@ class MenuModel extends ModelModel
             // 定义路由关键字
             $routeKeys = ['edit', ':id', 'delete', 'create', 'save'];
             $routeInfo = Request::instance()->routeInfo();
-            if (empty($routeInfo))
-            {
-                $map = ['is_home' => 1];
-            } else {
-                $rules = $routeInfo['rule'];
-                $url = '';
-                // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
-                foreach ($rules as $key => $rule)
-                {
-
-                    // 检测是否为路由关键字, 检测到，则直接跳到下一个循环
-                    if (in_array($rule, $routeKeys))
-                    {
-                        unset($rules[$key]);
-                    }
-                }
-                $url = implode("/", $rules);
-                $map = ['url' => $url];
+            $rule = $routeInfo['rule'];
+            
+            // 如果是空信息，则说明执行的为首页。手动添加首页路由规则
+            if (!is_array($rule)) {
+                $rule = [""];
             }
-            self::$currentMenuModel = self::get($map);
+            
+            // 对路由信息进行接拼后，依次次查询菜单表，如果菜单url与当前拼接的URL相同，则认为找到了菜单项
+            $map = [];
+            do {
+                $map['url'] = implode('/', $rule);
+                self::$currentMenuModel = MenuModel::get($map);
+            } while ('' === self::$currentMenuModel->getData('id') && array_pop($rule));
 
-            // 示找到菜单项，则默认返回首页
+            // 未找到菜单项，则默认返回首页
             if ('' === self::$currentMenuModel->getData('id')) {
                 $map = ['is_home' => 1];
                 self::$currentMenuModel = self::get($map);
@@ -228,7 +221,7 @@ class MenuModel extends ModelModel
         {
             // 找到当前用户组(每个用户只能有一个用户组)
             $currentFrontUserModel = UserModel::getCurrentFrontUserModel();
-            $currentFrontUserGroupModel = $currentFrontUserModel->getUserGroupModel();
+            $currentFrontUserGroupModel = $currentFrontUserModel->UserGroupModel();
 
             $map = ['pid' => $this->getData('id'), 'status' => 0, 'is_hidden' => '0'];
             $this->availableSonMenuModels = $this->where($map)->select();
@@ -328,11 +321,19 @@ class MenuModel extends ModelModel
     }
 
 
+    /**
+     * 获取可用的子菜单模型
+     * @param    int                   $pid          父级ID
+     * @param    string                   $menuTypeName 菜单类型
+     * @return   lists                                 
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-13T08:55:26+0800
+     */
     static public function getAvailableSonMenuModelsByPidMenuTypeName($pid, $menuTypeName)
     {
         // 找到当前用户组(每个用户只能有一个用户组)
         $currentFrontUserModel = UserModel::getCurrentFrontUserModel();
-        $currentFrontUserGroupModel = $currentFrontUserModel->getUserGroupModel();
+        $currentFrontUserGroupModel = $currentFrontUserModel->UserGroupModel();
 
         $map = ['pid' => $pid, 'status' => 0, 'is_hidden' => '0', 'menu_type_name' => $menuTypeName];
         $MenuModel = new MenuModel;

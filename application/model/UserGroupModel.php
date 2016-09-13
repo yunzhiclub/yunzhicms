@@ -6,8 +6,6 @@ namespace app\model;
 class UserGroupModel extends ModelModel
 {
     protected $pk = 'name';
-    protected $accessOfAccessValueByMenuModel = 0;
-    private $MenuModelOfAccessValueByMenuModel = null;
 
     /**
      * 获取 菜单 对本用户组的权限
@@ -16,23 +14,19 @@ class UserGroupModel extends ModelModel
      */
     public function isAllowedByMenuModelAction(MenuModel &$MenuModel, $action)
     {
-        // 使用成员变量，减小请求次数
-        if (null === $this->MenuModelOfAccessValueByMenuModel || ($this->MenuModelOfAccessValueByMenuModel->getData('id') !== $MenuModel->getData('id')))
-        { 
-            $this->MenuModelOfAccessValueByMenuModel = $MenuModel;
-            $map = [];
-            $map['menu_id'] = $MenuModel->getData('id');
-            $map['user_group_name'] = $this->getData('name');
-            $AccessUserGroupMenuModel = AccessUserGroupMenuModel::get($map);
-            if (null !== $AccessUserGroupMenuModel)
-            {
-                $this->accessOfAccessValueByMenuModel = (int)$AccessUserGroupMenuModel->getData('access');
-            } else {
-                $this->accessOfAccessValueByMenuModel = 0;
-            }
-            unset($AccessUserGroupMenuModel);
+        // 查找是否存在当前权限值
+        $map = [];
+        $map['menu_id']         = $MenuModel->getData('id');
+        $map['user_group_name'] = $this->getData('name');
+        $map['action']          = $action;
+        $AccessUserGroupMenuModel = AccessUserGroupMenuModel::get($map);
+        if ('' !== $AccessUserGroupMenuModel->getData('menu_id'))
+        {
+            // 返回非默认值，有权限
+            return true;
+        } else {
+            return false;
         }
-        return $this->accessOfAccessValueByMenuModel;
     }
 
     /**
@@ -42,7 +36,7 @@ class UserGroupModel extends ModelModel
      */
     public function isIndexAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByLCURDValue($MenuModel, 16);
+        return $this->isAllowedByMenuModelAction($MenuModel, 'index');
     }
 
 
@@ -53,7 +47,7 @@ class UserGroupModel extends ModelModel
      */
     public function isCreateAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByLCURDValue($MenuModel, 8);
+        return $this->isAllowedByMenuModelAction($MenuModel, 'create');
     }
 
     /**
@@ -63,7 +57,7 @@ class UserGroupModel extends ModelModel
      */
     public function isUpdateAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByLCURDValue($MenuModel, 4);
+        return $this->isAllowedByMenuModelAction($MenuModel, 'update');
     }
 
     /**
@@ -73,7 +67,7 @@ class UserGroupModel extends ModelModel
      */
     public function isReadAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByLCURDValue($MenuModel, 2);
+        return $this->isAllowedByMenuModelAction($MenuModel, 'read');
     }
 
     /**
@@ -83,22 +77,6 @@ class UserGroupModel extends ModelModel
      */
     public function isDeleteAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->getAccessByLCURDValue($MenuModel, 1);
-    }
-
-    /**
-     * 通过传入的CURD具体值，判断当前用户组对菜单是否拥有权限
-     * @param  int $CURDValue CURD(1111) 按拉对应
-     * @return boolean            
-     */
-    public function getAccessByLCURDValue(&$MenuModel, $CURDValue)
-    {
-        $access = $this->getAccessValueByMenuModel($MenuModel);
-        if ($access & $CURDValue)
-        {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->isAllowedByMenuModelAction($MenuModel, 'delete');
     }
 }
