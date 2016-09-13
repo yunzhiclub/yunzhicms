@@ -30,10 +30,15 @@ class UserController extends AdminController
      */
     public function editAction($id)
     {
+        //根据id取数据
         $id = input('id');
         $UserModel = UserModel::get($id);
+
+        //把取到的数据传进V层
         $this->assign('UserModel', $UserModel);
-        $UserGroup = $UserModel->Usergroups();
+
+        //把用户管理界面的用户组取出来并传进V层
+        $UserGroup = $UserModel->userGroup();
         $this->assign('UserGroups', $UserGroup);
         return $this->fetch();
     }

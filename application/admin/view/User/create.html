@@ -10,49 +10,49 @@
             </div>
             <br>
             <form action="{:url('@admin/user/')}" method="post" class="form-horizontal">
-                    <div class="control-group">
-                        <label class="control-label" for="_title">邮箱</label>
-                        <div class="controls">
-                            <input type="email" id="_title" name="email" placeholder="请输入邮箱" />
-                        </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">邮箱</label>
+                    <div class="controls">
+                        <input type="email" id="_title" name="email" placeholder="请输入邮箱" />
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="_title">姓名</label>
-                        <div class="controls">
-                            <input type="text" id="_title" name="name" placeholder="姓名" />
-                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">姓名</label>
+                    <div class="controls">
+                        <input type="text" id="_title" name="name" placeholder="姓名" />
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="_title">密码</label>
-                        <div class="controls">
-                            <input type="password" id="_title" name="password" placeholder="密码" />
-                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">密码</label>
+                    <div class="controls">
+                        <input type="password" id="_title" name="password" placeholder="密码" />
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="_title">QQ</label>
-                        <div class="controls">
-                            <input type="text" id="_title" name="qq_open_id" placeholder="qq" />
-                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">QQ</label>
+                    <div class="controls">
+                        <input type="text" id="_title" name="qq_open_id" placeholder="qq" />
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="_title">用户组</label>
-                        <div class="controls">
-                            <select name="user_group_name" class="form-control">
-                                {volist name="UserGroups" id="UserGroup"}
-                                <option value="{$UserGroup->name}">
-                                    {$UserGroup->name}
-                                </option>
-                                {/volist} 
-                            </select>
-                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">用户组</label>
+                    <div class="controls">
+                        <select name="user_group_name" class="form-control">
+                            {volist name="UserGroups" id="UserGroup"}
+                            <option value="{$UserGroup->name}">
+                                {$UserGroup->name}
+                            </option>
+                            {/volist}
+                        </select>
                     </div>
-                    <div class="control-group">
+                </div>
+                <div class="control-group">
                     <label class="control-label">
                         <button type="submit" class="btn btn-primary">
-                        <i class="icon-ok"></i>
-                         提交</button>
-                     </label>
-                     </div>
+                            <i class="icon-ok"></i> 提交
+                        </button>
+                    </label>
+                </div>
             </form>
         </div>
     </div>
