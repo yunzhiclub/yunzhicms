@@ -4,7 +4,7 @@
         <div class="box">
             <div class="box-header">
                 <i class="icon-book"></i>
-                <h5>菜单</h5>
+                <h5>菜单新增</h5>
             </div>
             <div class="box-content">
                 <form class="form-horizontal" action="{:url('@admin/menu')}" method="post">
@@ -17,9 +17,9 @@
                     <div>
                         <label>pid</label>
                         <select class="form-control" name="pid">
-                            <option value="0">0</option>
+                            <option value="0">根菜单</option>
                             {volist name="MenuModels" id="MenuModel"}
-                            <option value="{$MenuModel->id}">{$MenuModel->id}</option>
+                            <option value="{$MenuModel->id}">{$MenuModel->title}</option>
                             {/volist}
                         </select>
                     </div>
