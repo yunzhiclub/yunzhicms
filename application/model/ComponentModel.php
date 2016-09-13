@@ -3,9 +3,11 @@ namespace app\model;
 
 class ComponentModel extends ModelModel
 {
-    protected $pk       = 'name';
-    private $config     = null;
-    private $filter     = null;     
+    protected $pk           = 'name';
+    private $config         = null;         // 配置
+    private $filter         = null;         // 过滤器
+    private $route          = null;         // 路由
+    private $sampleRoute    = null;         // 简单路由
 
     static public function getCurrentComponent($component)
     {
@@ -14,6 +16,43 @@ class ComponentModel extends ModelModel
         $componentName = substr($componentName, 0, -strlen('Controller'));
         $map = ['name'=>$componentName];
         return ComponentModel::get($map);
+    }
+
+    public function getRoute() 
+    {
+        if (null === $this->route) {
+            $this->route = [];
+
+            // 本看是否存在其它路由参数，有的话，依次进行注册
+            $routeFilePath = realpath(APP_PATH . 
+                'component' . DS . 
+                'route' . DS . 
+                $componentName . 'Route.php');
+            if (false !== $routeFilePath) {
+                $this->route = include $routeFilePath;
+            }
+        }
+
+        return $this->route;
+    }
+
+    /**
+     * 获取简单路由
+     * @return   [type]                   [description]
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-12T16:41:22+0800
+     */
+    public function getSampleRoute()
+    {
+        if (null === $this->sampleRoute) {
+            $this->sampleRoute = [];
+            $routes = $this->getRoute();
+            foreach ($routes as $key => $route) {
+                $this->sampleRoute[$key] = $route['value'];
+            }
+        }
+
+        return $this->sampleRoute;
     }
 
     /**
