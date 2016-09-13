@@ -21,22 +21,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {volist name="themesModel" id="themeModel"}
-       					<tr>
-       						<td>{$themeModel->title}</td>
-       						<td>{$themeModel->description}</td>
-       						<td>{eq name="themeModel->is_current" value="1"}<p class="badge" style="width: 14px;" >是</p>{else /}/{/eq}</td>
-       						<td>{$themeModel->author}</td>
-       						<td>{$themeModel->version}</td>		
-       						<td class="td-actions">
-       							{eq name="$themeModel->is_current" value="1"}
-       							<p>已启用</p>
-       							{else /}
-       							<a href="{:url('@admin/Theme/' . $themeModel->name)}" class="btn btn-info"></i>&nbsp;启用</a>
-       							{/eq}
-       						</td>      				
-       					</tr>
-       				{/volist}
+                        {volist name="ThemeModels" id="ThemeModel"}
+                        <tr>
+                            <td>{$ThemeModel->title}</td>
+                            <td>{$ThemeModel->description}</td>
+                            <td>{eq name="ThemeModel->is_current" value="1"}
+                                <p class="badge span_backgroud_color">是</p>{else /}<span class="badge">—</span>{/eq}</td>
+                            <td>{$ThemeModel->author}</td>
+                            <td>{$ThemeModel->version}</td>
+                            <td class="td-actions">
+                                {eq name="$ThemeModel->is_current" value="1"}
+                                <p>已启用</p>
+                                {else /}
+                                <a href="{:url('@admin/Theme/' . $ThemeModel->name)}" class="btn btn-info"></i>&nbsp;启用</a>
+                                {/eq}
+                            </td>
+                        </tr>
+                        {/volist}
                     </tbody>
                 </table>
             </div>
