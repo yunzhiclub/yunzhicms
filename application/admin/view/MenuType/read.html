@@ -64,13 +64,13 @@
                                 <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                 <td>|----{$MenuModel->title}</td>
                                 <td>{$MenuModel->url}</td>
-                                <td>{eq value="0" name="$MenuModel->getData('is_show')"}
+                                <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                     <span class="badge span_backgroud_color">
-                                        {$MenuModel->is_show}
+                                        {$MenuModel->is_hidden}
                                     </span>
                                     {else /}
                                     <span class="badge">
-                                        {$MenuModel->is_show}
+                                        {$MenuModel->is_hidden}
                                     </span>
                                     {/eq}
                                 </td>
@@ -100,13 +100,13 @@
                                     <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                     <td>|----|----{$MenuModel->title}</td>
                                     <td>{$MenuModel->url}</td>
-                                    <td>{eq value="0" name="$MenuModel->getData('is_show')"}
+                                    <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                         <span class="badge span_backgroud_color">
-                                            {$MenuModel->is_show}
+                                            {$MenuModel->is_hidden}
                                         </span>
                                         {else /}
                                         <span class="badge">
-                                            {$MenuModel->is_show}
+                                            {$MenuModel->is_hidden}
                                         </span>
                                         {/eq}
                                     </td>
