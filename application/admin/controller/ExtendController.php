@@ -9,6 +9,7 @@ use app\model\AccessUserGroupBlockModel;                // 权限：用户组-�
 use app\model\AccessMenuBlockModel;                     // 权限：菜单-区块
 use app\Common;                                         // 通用函数库
 use app\model\ComponentModel;                           // 组件
+use app\model\ThemeModel;                               // 主题
 
 class ExtendController extends AdminController
 {
@@ -21,6 +22,10 @@ class ExtendController extends AdminController
         // 将组件信息传入V层
         $Components = ComponentModel::paginate();
         $this->assign('Components', $Components);
+
+        // 将主题信息传入V层
+        $ThemeModels = ThemeModel::all();
+        $this->assign('ThemeModels', $ThemeModels);
 
         return $this->fetch();
     }
