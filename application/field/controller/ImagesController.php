@@ -9,12 +9,12 @@ use app\model\FieldDataImageModel;                      // 单图片上传
 
 class ImagesController extends FieldController
 {
-    public function fetchHtml()
+    public function index()
     {   
         $this->assign('token', Common::makeTokenByMCAData('field', 'Images', 'upload'));
         $this->assign('addSubToken', Common::makeTokenByMCAData('field', 'Images', 'addSubCount', ['id' => $this->FieldDataXXXModel->getData('id')]));
         $this->assign('rand', rand(0,1000));
-        return parent::fetchHtml();
+        return parent::index();
     }
 
     /**

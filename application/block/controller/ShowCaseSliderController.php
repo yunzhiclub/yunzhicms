@@ -5,7 +5,7 @@ namespace app\block\controller;
  */
 class ShowCaseSliderController extends BlockController
 {
-    public function fetchHtml()
+    public function index()
     {
         return $this->fetch('block@ShowCaseSlider/fetchHtml');
     }
