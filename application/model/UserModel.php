@@ -8,8 +8,11 @@ use think\Session;                      // session
 class UserModel extends ModelModel
 {
     protected $pk = 'id';
-
-    private $UserGroupModel = null;         // 用户组
+    private   $UserGroupModel = null;         
+    protected $type       = [
+        // 设置create_time为时间戳类型（整型）
+        'create_time' => 'datetime:Y/m/d',
+    ];
     
 
     public function UserGroupModel()
@@ -72,6 +75,17 @@ class UserModel extends ModelModel
         } else {
             return false;
         }
+    }
+
+    /**
+     * 
+     * @param  
+     * @return 
+     * @author 
+     */
+    public function getCreateTimeAttr($createtime)
+    {
+        return date('Y/m/d',$createtime);
     }
 
 }

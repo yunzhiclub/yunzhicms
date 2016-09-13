@@ -25,9 +25,9 @@
                         <td>{$key}</td>
                         <td>{$_UserModel->getData('email')}</td>
                         <td>{$_UserModel->getData('name')}</td>
-                        <td>{$_UserModel->getUserGroupModel()->getData('title')}</td>
+                        <td>{$_UserModel->UserGroupModel()->getData('title')}</td>
                         <td>{$_UserModel->getData('status')}</td>
-                        <td>{$_UserModel->getData('create_time')}</td>
+                        <td>{$_UserModel->create_time}</td>
                         <td><a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/edit')}" class="btn btn-small btn-info">编辑</a>
                         <a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/delete')}" class="btn btn-small btn-danger">删除</a>
                         </td>
