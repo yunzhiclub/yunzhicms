@@ -105,6 +105,7 @@ class UserGroupModel extends ModelModel
     /**
      * 取出用户组对应的所有用户
      * @return  array
+     * @author gaoliming
      */
     public function getAllUserMedel($username)
     {
@@ -117,6 +118,7 @@ class UserGroupModel extends ModelModel
     /**
      * 返回关联对象
      * @return object
+     * @author  gaoliming 
      */
     public function AccessUserGroupBlock()
     {
