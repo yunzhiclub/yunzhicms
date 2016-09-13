@@ -20,15 +20,14 @@
                             <select class="form-control" name="pid" id="_pid">
                                 <option value="0">根菜单</option>
                                 {volist name="MenuModels" id="MenuModel"}
-                                <option value="{$MenuModel->id}">
-                                    {$MenuModel->title}</option>
-                                {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
-                                <option value="{$MenuModel->id}">
-                                    |----{$MenuModel->title}</option>
-                                {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
-                                <option value="{$MenuModel->id}">
-                                    |----|----{$MenuModel->title}</option>
-                                {/volist} {/volist} {/volist}
+                                    <option value="{$MenuModel->id}">{$MenuModel->title}</option>
+                                    {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
+                                        <option value="{$MenuModel->id}">|----{$MenuModel->title}</option>
+                                        {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
+                                            <option value="{$MenuModel->id}">|----|----{$MenuModel->title}</option>
+                                        {/volist}
+                                    {/volist}
+                                {/volist}
                             </select>
                         </div>
                     </div>
@@ -37,7 +36,7 @@
                         <div class="controls">
                             <select class="form-control" name="component_name" id="_component_name">
                                 {volist name="Components" id="Component"}
-                                <option value="{$Component->name}">{$Component->name}</option>
+                                    <option value="{$Component->name}">{$Component->name}</option>
                                 {/volist}
                             </select>
                         </div>
@@ -47,7 +46,7 @@
                         <div class="controls">
                             <select class="form-control" name="menu_type_name" id="_menu_type_name">
                                 {volist name="MenuTypeModels" id="MenuTypeModel"}
-                                <option value="{$MenuTypeModel->name}">{$MenuTypeModel->name}</option>
+                                    <option value="{$MenuTypeModel->name}">{$MenuTypeModel->name}</option>
                                 {/volist}
                             </select>
                         </div>
@@ -124,7 +123,7 @@
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+                            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> 保存</button>
                         </div>
                     </div>
                 </form>
