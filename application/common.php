@@ -478,6 +478,20 @@ class Common{
     }
 
     /**
+     * 生成基于当前菜单URL的正确的，可直接显示在前台，被用户点击触发的URL
+     * @param    string                   $route 传入的路由地址信息
+     * @return   string                          
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-13T11:08:05+0800
+     */
+    static public function url($route = '')
+    {
+        $url = MenuModel::getCurrentMenuModel()->getData('url');
+        return url('@' . $url . $route);
+    }
+
+
+    /**
      * 通过token获取对应的menuModel
      * @param    string                   $token 
      * @return   MenuModel                

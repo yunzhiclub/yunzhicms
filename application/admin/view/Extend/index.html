@@ -1,8 +1,101 @@
 {layout name="index" /}
-<ul>
-<li>1. 组件列表</li>
-<li>2. 插件类型列表</li>
-<li>3. 区块类型列表</li>
-<li>4. 字段类型列表</li>
-<li>5. 过滤器类型列表 </li>
+<ul class="nav nav-tabs" id="myTab">
+    <li class="active"><a href="#component" data-toggle="tab">组件</a></li>
+    <li><a href="#plugin" data-toggle="tab">插件</a></li>
+    <li><a href="#block" data-toggle="tab">区块类型</a></li>
+    <li><a href="#field" data-toggle="tab">字段</a></li>
+    <li><a href="#filter" data-toggle="tab">过滤器</a></li>
+    <li><a href="#theme" data-toggle="tab">主题</a></li>
 </ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="component">
+        {include file="../Component/index"}
+    </div>
+    <div class="tab-pane" id="plugin">
+        插件
+    </div>
+    <div class="tab-pane" id="block">
+        <div class="row">
+            <div class="span16">
+                <div class="box pattern pattern-sandstone">
+                    <div class="box-header">
+                        <i class="icon-table"></i>
+                        <h5>区块类型列表</h5>
+                    </div>
+                    <div class="box-content box-table">
+                        <table id="sample-table" class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>标题</th>
+                                    <th>机读名称</th>
+                                    <th>描述信息</th>
+                                    <th>作者</th>
+                                    <th>版本</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="BlockTypeModels" id="BlockTypeModel"}
+                                <tr>
+                                    <td>{$BlockTypeModel->title}</td>
+                                    <td>{$BlockTypeModel->name}</td>
+                                    <td>{$BlockTypeModel->description}</td>
+                                    <td>{$BlockTypeModel->author}</td>
+                                    <td>{$BlockTypeModel->version}</td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane" id="field">
+        字段
+    </div>
+    <div class="tab-pane" id="filter">
+        过滤器
+    </div>
+    <div class="tab-pane" id="theme">
+        <div class="row">
+            <div class="span16">
+                <div class="box pattern pattern-sandstone">
+                    <div class="box-header">
+                        <i class="icon-table"></i>
+                        <h5>主题列表</h5>
+                    </div>
+                    <div class="box-content box-table">
+                        <table id="sample-table" class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>主题名称</th>
+                                    <th>描述</th>
+                                    <th>是否启用</th>
+                                    <th>作者</th>
+                                    <th>版本</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="ThemeModels" id="themeModel"}
+                                <tr>
+                                    <td>{$themeModel->title}</td>
+                                    <td>{$themeModel->description}</td>
+                                    <td>{eq name="themeModel->is_current" value="1"}
+                                        <span class="badge span_backgroud_color">是</span>{else /}<span class="badge">—</span>{/eq}</td>
+                                    <td>{$themeModel->author}</td>
+                                    <td>{$themeModel->version}</td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .span_backgroud_color{
+        background-color: green;
+    }
+</style>
