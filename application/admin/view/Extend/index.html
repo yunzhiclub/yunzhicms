@@ -1,8 +1,25 @@
 {layout name="index" /}
-<ul>
-<li>1. 组件列表</li>
-<li>2. 插件类型列表</li>
-<li>3. 区块类型列表</li>
-<li>4. 字段类型列表</li>
-<li>5. 过滤器类型列表 </li>
+<ul class="nav nav-tabs" id="myTab">
+  <li class="active"><a href="#component" data-toggle="tab">组件列表</a></li>
+  <li><a href="#plugin" data-toggle="tab">插件类型列表</a></li>
+  <li><a href="#block" data-toggle="tab">区块类型列表</a></li>
+  <li><a href="#field" data-toggle="tab">字段类型列表</a></li>
+  <li><a href="#filter" data-toggle="tab">过滤器类型列表</a></li>
 </ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="component">
+      {include file="../Component/index"}
+  </div>
+  <div class="tab-pane" id="plugin">
+      123
+  </div>
+  <div class="tab-pane" id="block">
+      {include file="../Block/index"}
+  </div>
+  <div class="tab-pane" id="field">
+      123
+  </div>
+  <div class="tab-pane" id="filter">
+      123
+  </div>
+</div>

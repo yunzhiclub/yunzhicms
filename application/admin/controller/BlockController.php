@@ -95,7 +95,7 @@ class BlockController extends AdminController
             }
             $AccessUserGroupBlockModel->saveAll($AccessUserGroupBlockDatas);
         }
-        return $this->success('操作成功', url('@admin/block'));
+        return $this->success('操作成功', url('@admin/extend'));
     }
     /**
     * 删除区块方法
@@ -122,7 +122,7 @@ class BlockController extends AdminController
         if (false === $BlockModel->save()) {
             return $this->error('删除失败');
         }
-        return $this->success('删除成功', url('@admin/block'));
+        return $this->success('删除成功', url('@admin/extend'));
     }
 
     public function createAction()
@@ -189,6 +189,6 @@ class BlockController extends AdminController
             $AccessUserGroupBlockModel->saveAll($datas);
         }
         
-        return $this->success('添加成功', url('@admin/block'));
+        return $this->success('添加成功', url('@admin/extend'));
     }
 }
