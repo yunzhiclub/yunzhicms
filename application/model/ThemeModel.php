@@ -12,21 +12,23 @@ class ThemeModel extends ModelModel
     }
     /**
      * 启用当前模板
-     * @param  string $id 数据表中name字段
+     * @param  string $name 数据表中name字段
+     * @author huangshuaibin
      * @return bool
      */
-    public function enable($id)
+    static public function enable($name)
     {
-    	$ThemeModel = new ThemeModel;
-    	$ThemeModels = $ThemeModel::All();
-    	foreach ($ThemeModels as $ThemeModel => $value) {
-    		$value->is_current = 0;
-    		$value->save();
-    	}
-
-    	$name = $id;
+        //取出 is_current值为 1 对象数组
+    	$map = array('is_current' => 1);        
+        $currentModel = ThemeModel::where($map)->select(); 
+        
+        //将 is_current 的字段赋值 0 保存
+        $currentModel['0']['is_current'] = 0;
+        $currentModel1 = $currentModel['0'];
+        $currentModel1->save();
+        
+        //取出当前主题对象  将is_current字段赋值为 1
     	$ThemeModel = ThemeModel::get($name);
-    	
     	$ThemeModel->is_current = 1;
     	$ThemeModel->save();
     }
