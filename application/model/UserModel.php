@@ -78,10 +78,10 @@ class UserModel extends ModelModel
     }
 
     /**
-     * 
-     * @param  
-     * @return 
-     * @author 
+     * 增加时间戳的获取器
+     * @param  $createtime
+     * @return date
+     * @author liuyanzhao
      */
     public function getCreateTimeAttr($createtime)
     {
