@@ -27,7 +27,7 @@
                         <tr>
                             <td>{$MenuModel->title}</td>
                             <td>{$MenuModel->url}</td>
-                            <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
+                            <td><input style="width:100px" size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                             <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                 <span class="badge span_backgroud_color">
                                     {$MenuModel->is_hidden}
@@ -63,7 +63,7 @@
                             <tr>
                                 <td>|----{$MenuModel->title}</td>
                                 <td>{$MenuModel->url}</td>
-                                <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
+                                <td><input style="width:100px" size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                 <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                     <span class="badge span_backgroud_color">
                                         {$MenuModel->is_hidden}
@@ -99,7 +99,7 @@
                                 <tr>
                                     <td>|----|----{$MenuModel->title}</td>
                                     <td>{$MenuModel->url}</td>
-                                    <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
+                                    <td><input style="width:100px" size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                     <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                         <span class="badge span_backgroud_color">
                                             {$MenuModel->is_hidden}
@@ -142,6 +142,7 @@
                         </div>
                     </tbody>
                 </table>
+                {$MenuModels->render()}
                 </form>
                 <div>
                     <button id="button-weight" type="button" class="btn btn-primary">更新权重</button>
