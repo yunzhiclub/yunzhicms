@@ -107,7 +107,7 @@ class UserGroupController extends AdminController
         $UserGroupModel->setData('is_deleted', 1)->save();
 
         //返回首页
-        return $this->success('删除成功', url('@admin/usergroup/')); 
+        return $this->success('删除成功', url('@admin/usergroup')); 
     }
 
 }
