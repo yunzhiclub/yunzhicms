@@ -7,9 +7,13 @@ class MenutypeController extends AdminController
 {
     public function indexAction()
     {
-        $pageSize = 5;
         $MenuTypeModel = new MenuTypeModel;
-        $MenuTypeModels = $MenuTypeModel->where('is_delete', '=', 0)->paginate($pageSize);
+        $map = array(
+            'is_delete' => 0
+            );
+
+        //设置分页
+        $MenuTypeModels = $MenuTypeModel->where($map)->paginate(config('paginate.var_page'));
         $this->assign('MenuTypeModels', $MenuTypeModels);
         return $this->fetch();
     }
