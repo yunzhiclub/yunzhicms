@@ -14,11 +14,13 @@ class FieldModel extends ModelModel
     protected $config       = null;             // 配置信息
     protected $filter       = null;             // 过滤器信息
     protected $token        = null;             // token
+    protected $simpleConfig = null;             // 简单配置信息
 
     private $getDataByKeyId = null;
     private $getDataByKeyId_KeyId = null;
     private $FieldTypeModel = null;             // 字段类型模型
     private $FieldModel = null;
+
 
     public function FieldModel()
     {
@@ -39,8 +41,21 @@ class FieldModel extends ModelModel
     {
         return Loader::parseName($this->name);
     }
+
+    /**
+     * 获取字段配置信息 
+     * @return   array
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-12T09:45:37+0800
+     */
+    public function getConfigAttr()
+    {
+        return json_decode($this->getData('config'), true);
+    }
+
     /**
      * 获取合并后，可以供CV使用的配置信息   
+     * 供继承本类的XXXModel扩展字段使用
      * @return array 
      */
     public function getConfig()
@@ -69,10 +84,28 @@ class FieldModel extends ModelModel
             }
 
             // todo:合并配置信息
-            // $this->config = Common::configMerge($this->BlockTypeModel()->getConfig(), $this->getConfigAttr());
+            $this->config = Common::configMerge($this->config, $this->FieldModel()->getConfigAttr());
         }
 
         return $this->config;
+    }
+
+    /**
+     * 获取 简单配置信息
+     * @return   array                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-12T09:51:36+0800
+     */
+    public function getSimpleConfig()
+    {
+        if (null === $this->simpleConfig) {
+            $this->simpleConfig = [];
+            foreach ($this->getconfig() as $key => $config) {
+                $this->simpleConfig[$key] = $config['value'];
+            }
+        }
+
+        return $this->simpleConfig;
     }
 
     public function getFilter()
