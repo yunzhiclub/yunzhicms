@@ -4,7 +4,7 @@
         <div class="box">
             <div class="box-header">
                 <i class="icon-book"></i>
-                <h5>菜单</h5>
+                <h5>菜单新增</h5>
             </div>
             <div class="box-content">
                 <form class="form-horizontal" action="{:url('@admin/menu')}" method="post">
@@ -14,91 +14,118 @@
                             <input type="text" id="_title" name="title" placeholder="请输入标题" />
                         </div>
                     </div>
-                    <div>
-                        <label>pid</label>
-                        <select class="form-control" name="pid">
-                            <option value="0">0</option>
-                            {volist name="MenuModels" id="MenuModel"}
-                            <option value="{$MenuModel->id}">{$MenuModel->id}</option>
-                            {/volist}
-                        </select>
+                    <div class="control-group">
+                        <label class="control-label" for="_pid">pid</label>
+                        <div class="controls">
+                            <select class="form-control" name="pid" id="_pid">
+                                <option value="0">根菜单</option>
+                                {volist name="MenuModels" id="MenuModel"}
+                                    <option value="{$MenuModel->id}">{$MenuModel->title}</option>
+                                    {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
+                                        <option value="{$MenuModel->id}">|----{$MenuModel->title}</option>
+                                        {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
+                                            <option value="{$MenuModel->id}">|----|----{$MenuModel->title}</option>
+                                        {/volist}
+                                    {/volist}
+                                {/volist}
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label>对应组件名</label>
-                        <select class="form-control" name="component_name">
-                            {volist name="Components" id="Component"}
-                            <option value="{$Component->name}">{$Component->name}</option>
-                            {/volist}
-                        </select>
+                    <div class="control-group">
+                        <label class="control-label" for="_component_name">对应组件名</label>
+                        <div class="controls">
+                            <select class="form-control" name="component_name" id="_component_name">
+                                {volist name="Components" id="Component"}
+                                    <option value="{$Component->name}">{$Component->name}</option>
+                                {/volist}
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label>菜单类型</label>
-                        <select class="form-control" name="menu_type_name">
-                            {volist name="MenuTypeModels" id="MenuTypeModel"}
-                            <option value="{$MenuTypeModel->name}">{$MenuTypeModel->name}</option>
-                            {/volist}
-                        </select>
+                    <div class="control-group">
+                        <label class="control-label" for="_menu_type_name">菜单类型</label>
+                        <div class="controls">
+                            <select class="form-control" name="menu_type_name" id="_menu_type_name">
+                                {volist name="MenuTypeModels" id="MenuTypeModel"}
+                                    <option value="{$MenuTypeModel->name}">{$MenuTypeModel->name}</option>
+                                {/volist}
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">url</label>
-                        <input type="text" name="url" />
+                    <div class="control-group">
+                        <label class="control-label" for="_url">url</label>
+                        <div class="controls">
+                            <input type="text" name="url" id="_url" />
+                        </div>
                     </div>
-                    <div>
-                        <label for="">是否隐藏</label>
-                        <select class="form-control" name="is_hidden">
-                            <option value="1">1</option>
-                            <option value="0">0</option>
-                        </select>
+                    <div class="control-group">
+                        <label class="control-label" for="_is_hidden">是否显示</label>
+                        <div class="controls">
+                            <select class="form-control" name="is_hidden" id="_is_hidden">
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">权重</label>
-                        <input type="text" name="weight" />
+                    <div class="control-group">
+                        <label class="control-label" for="_weight">权重</label>
+                        <div class="controls">
+                            <input type="text" name="weight" id="_weight" />
+                        </div>
                     </div>
-                    <div>
-                        <label for="">描述信息</label>
-                        <input type="text" name="description" />
+                    <div class="control-group">
+                        <label class="control-label" for="_description">描述信息</label>
+                        <div class="controls">
+                            <input type="text" name="description" id="_description" />
+                        </div>
                     </div>
-                    <div>
-                        <label for="">状态</label>
-                        <select class="form-control" name="status">
-                            <option value="1">1</option>
-                            <option value="0">0</option>
-                        </select>
+                    <div class="control-group">
+                        <label class="control-label" for="_status">状态</label>
+                        <div class="controls">
+                            <select class="form-control" name="status" id="_status">
+                                <option value="1">禁用</option>
+                                <option value="0">启用</option>
+                            </select>
+                        </div>
                     </div>
-
-                    <div>
-                        <label for="">用户组权限：</label>
-                        <ul>
-                            {volist name="userGroupModels" id="_UserGroupModel"}
-                            <li>
-                                {$_UserGroupModel->title}
-                                <ul>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" />浏览</label>
-                                    </li>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" />查看</label>
-                                    </li>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" />新增</label>
-                                    </li>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" />编辑</label>
-                                    </li>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" />删除</label>
-                                    </li>
-                                </ul>
-                            </li>
-                            {/volist}
-                        </ul>
+                    <div class="control-group">
+                        <label class="control-label">用户组权限：</label>
+                        <div class="controls">
+                            <ul>
+                                {volist name="userGroupModels" id="_UserGroupModel"}
+                                <li>
+                                    {$_UserGroupModel->title}
+                                    <ul>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" />浏览</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" />查看</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" />新增</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" />编辑</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" />删除</label>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> 保存</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
