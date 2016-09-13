@@ -123,7 +123,7 @@ class BlockModel extends ModelModel
         $map = [];
         $map['block_id']    = $this->data['id'];
         $map['menu_id']     = $MenuModel->getData('id');
-        if (null === AccessMenuBlockModel::get($map))
+        if (empty(AccessMenuBlockModel::get($map)->getData()))
         {
             return false;
         } else {
@@ -167,5 +167,18 @@ class BlockModel extends ModelModel
         }
 
         throw new \Exception('not found fieldName:' . $name . ' of ContentModel:' . $this->getData('id'), 1);
+    }
+
+    public function checkIsHave(UserGroupModel &$UserGroupModel)
+    {
+        $map = [];
+        $map['block_id']    = $this->data['id'];
+        $map['user_group_name']     = $UserGroupModel->getData('name');
+        if (empty(AccessUserGroupBlockModel::get($map)->getData()))
+        {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
