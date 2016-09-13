@@ -6,28 +6,29 @@ use app\model\ThemeModel;
  */
 class ThemeController extends AdminController
 {
+    /**
+     * 主题管理index
+     * @author huangshuaibin
+     * @return bool 
+     */
     public function indexAction()
     {
-    	$ThemeModel = new ThemeModel;
-    	$themesModel = $ThemeModel::All();
-    	$this->assign('themesModel', $themesModel);
+    	$themeModels = ThemeModel::All();
+    	$this->assign('themeModels', $themeModels);
     	return $this->fetch();
-
-        var_dump(get_called_class());
     }
     /**
      * 启用主题
      * @param  string $id 数据表中name字段
+     * @author huangshuaibin
      * @return boolean
      */
     public function readAction($id)
     {
-    	$ThemeModel = new ThemeModel;
-    	//调用 启用当前模板  方法
-    	$ThemeModel->enable($id);
+    	//调用 启用当前模板  静态方法
+    	ThemeModel::enable($id);
 
-    	return $this->success('启用成功', url('@admin/theme'));
-
+    	return $this->success('启用成功', url('@admin/theme')); 
     }
 
 }
