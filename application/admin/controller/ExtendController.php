@@ -1,10 +1,10 @@
 <?php
 namespace app\admin\controller;
 
-class FilterController extends AdminController
+class ExtendController extends AdminController
 {
     public function indexAction()
     {
-        var_dump(get_called_class());
+        return $this->fetch();
     }
 }
