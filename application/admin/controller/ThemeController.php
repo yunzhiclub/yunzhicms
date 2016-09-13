@@ -13,8 +13,8 @@ class ThemeController extends AdminController
      */
     public function indexAction()
     {
-    	$themeModels = ThemeModel::All();
-    	$this->assign('themeModels', $themeModels);
+    	$ThemeModels = ThemeModel::All();
+    	$this->assign('ThemeModels', $ThemeModels);
     	return $this->fetch();
     }
     /**
@@ -26,7 +26,7 @@ class ThemeController extends AdminController
     public function readAction($id)
     {
     	//调用 启用当前模板  静态方法
-    	ThemeModel::enable($id);
+    	ThemeModel::setDefaultTheme($id);
 
     	return $this->success('启用成功', url('@admin/theme')); 
     }
