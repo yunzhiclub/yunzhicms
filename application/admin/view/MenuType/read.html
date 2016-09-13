@@ -9,12 +9,13 @@
                 </h5>
             </div>
             <div class="box-content box-table">
+            <form id="yunzhicms-weight">
                 <table id="sample-table" class="table table-hover table-bordered">
                     <thead>
                         <tr>
+                            <th width="14px">权重</th>
                             <th>标题</th>
                             <th>url</th>
-                            <th>权重</th>
                             <th>是否隐藏</th>
                             <th>是否首页</th>
                             <th>描述</th>
@@ -24,30 +25,11 @@
                     <tbody>
                         {volist name="MenuModels" id="MenuModel"}
                         <tr>
+                            <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                             <td>{$MenuModel->title}</td>
                             <td>{$MenuModel->url}</td>
-                            <td>{$MenuModel->weight}</td>
-                            <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
-                                <span class="badge span_backgroud_color">
-                                {$MenuModel->is_hidden}
-                                </span>
-                                {else /}
-                                <span class="badge">
-                                {$MenuModel->is_hidden}
-                                </span>
-                                {/eq}
-                            </td>
-                            <td>
-                                {eq value="1" name="$MenuModel->getData('is_home')"}
-                                <span class="badge span_backgroud_color">
-                                {$MenuModel->is_home}
-                                </span>
-                                {else /}
-                                <span class="badge">
-                                {$MenuModel->is_home}
-                                </span>
-                                {/eq}
-                            </td>
+                            <td>{$MenuModel->is_hidden}</td>
+                            <td>{$MenuModel->is_home}</td>
                             <td>{$MenuModel->description}</td>
                             <td class="td-actions">
                                 <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit')}" class="btn btn-small btn-info">
@@ -60,31 +42,11 @@
                         </tr>
                             {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
                             <tr>
+                                <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                 <td>|----{$MenuModel->title}</td>
                                 <td>{$MenuModel->url}</td>
-                                <td>{$MenuModel->weight}</td>
-                                <td>
-                                    {eq value="0" name="$MenuModel->getData('is_hidden')"}
-                                    <span class="badge span_backgroud_color">
-                                    {$MenuModel->is_hidden}
-                                    </span>
-                                    {else /}
-                                    <span class="badge">
-                                    {$MenuModel->is_hidden}
-                                    </span>
-                                    {/eq}
-                                </td>
-                                <td>
-                                    {eq value="1" name="$MenuModel->getData('is_home')"}
-                                    <span class="badge span_backgroud_color">
-                                    {$MenuModel->is_home}
-                                    </span>
-                                    {else /}
-                                    <span class="badge">
-                                    {$MenuModel->is_home}
-                                    </span>
-                                    {/eq}
-                                </td>
+                                <td>{$MenuModel->is_hidden}</td>
+                                <td>{$MenuModel->is_home}</td>
                                 <td>{$MenuModel->description}</td>
                                 <td class="td-actions">
                                     <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit')}" class="btn btn-small btn-info">
@@ -97,31 +59,11 @@
                             </tr>
                                 {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
                                 <tr>
+                                    <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                     <td>|----|----{$MenuModel->title}</td>
                                     <td>{$MenuModel->url}</td>
-                                    <td>{$MenuModel->weight}</td>
-                                    <td>
-                                        {eq value="0" name="$MenuModel->getData('is_hidden')"}
-                                        <span class="badge span_backgroud_color">
-                                        {$MenuModel->is_hidden}
-                                        </span>
-                                        {else /}
-                                        <span class="badge">
-                                        {$MenuModel->is_hidden}
-                                        </span>
-                                        {/eq}
-                                    </td>
-                                    <td>
-                                        {eq value="1" name="$MenuModel->getData('is_home')"}
-                                        <span class="badge span_backgroud_color">
-                                        {$MenuModel->is_home}
-                                        </span>
-                                        {else /}
-                                        <span class="badge">
-                                        {$MenuModel->is_home}
-                                        </span>
-                                        {/eq}
-                                    </td>
+                                    <td>{$MenuModel->is_hidden}</td>
+                                    <td>{$MenuModel->is_home}</td>
                                     <td>{$MenuModel->description}</td>
                                     <td class="td-actions">
                                         <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit' . '/' . $MenuModelType->title)}" class="btn btn-small btn-info">
@@ -143,7 +85,17 @@
                         </div>
                     </tbody>
                 </table>
+                </form>
+                <div>
+                    <button id="button-weight" type="button" class="btn btn-primary">更新权重</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var SCOPE = {
+        'weight_url' : "{:url('MenuType/weight')}",
+    }
+</script>
+<script src="{:__ROOT__}/admin/common.js" type="text/javascript"></script>
