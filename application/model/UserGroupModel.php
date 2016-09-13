@@ -81,27 +81,17 @@ class UserGroupModel extends ModelModel
     }
 
     /**
-     * 取出用户组对应的所有用户
-     * @return  array
-     * @author gaoliming
+     * 获取当前用户组的所有用户
+     * @param  string  $name 用户组name键值
+     * @author  gaoliming
      */
-    public function getAllUserMedel($username)
+    public function getAllUserModel($name)
     {
-        $UserModel = new UserModel;
-        $map = array('user_group_name' => $username);
-        return $UserModel->where($map)->select();
-    }
-    
+        //制定索引
+        $map = array('user_group_name' => $name);
 
-    /**
-     * 返回关联对象
-     * @return object
-     * @author  gaoliming 
-     */
-    public function AccessUserGroupBlock()
-    {
-        $UserGroupBlock = new AccessUserGroupBlockModel;
-        $this->data['AccessUserGroupBlock'] = $UserGroupBlock;
-        return $UserGroupBlock;
+        //取出所有用户
+        $UserModel = new UserModel;
+        return $UserModel->where($map)->select();
     }
 }
