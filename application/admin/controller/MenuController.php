@@ -135,7 +135,6 @@ class MenuController extends AdminController
         //判断是否含有二级菜单
         $sonMenuModels = $MenuModel->sonMenuModels();
         if (!empty($sonMenuModels)) {
-            
             return $this->error('不能删除因为含有子菜单');
         }
 
@@ -144,20 +143,18 @@ class MenuController extends AdminController
         $AccessMenuPluginModel    = new AccessMenuPluginModel;
         $AccessMenuBlockModel     = new AccessMenuBlockModel;
         $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
-        if (false === $MenuModel->$AccessMenuPluginModel->where($map)->delete()) {
+        if (false === $AccessMenuPluginModel->where($map)->delete()) {
             return $this->error('删除失败');
         }
-        if (false === $MenuModel->$AccessMenuBlockModel->where($map)->delete()) {
-            
+        if (false === $AccessMenuBlockModel->where($map)->delete()) {
             return $this->error('删除失败');
         }
-        if (false === $MenuModel->$AccessUserGroupMenuModel->where($map)->delete()) {
-            
+        if (false === $AccessUserGroupMenuModel->where($map)->delete()) {
             return $this->error('删除失败');
         }
 
         //删除菜单
-        $MenuModel->setData('is_delete', 1)->save();
+        $MenuModel->setData('is_deleted', 1)->save();
 
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('删除成功', url('@admin/menuType/' . $menuType));

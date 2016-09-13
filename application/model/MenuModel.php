@@ -121,11 +121,12 @@ class MenuModel extends ModelModel
     /**
      * 获取某个菜单类型的所有的列表
      * 先转化为树状，先转化为列表，这样顺序输出后，就有了上下级的结构
-     * @param  string $menuTypeName 菜单类型名
+     * @param  string $menuTypeName 菜单类型名 int $is_deleted 删除
+     * int $pid 父菜单ID
      * @return lists               
      * 
      */
-    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_deleted)
+    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_deleted = null)
     {
         $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_deleted' => $is_deleted];
         $MenuModels = $this->where($map)->order('weight desc')->select();
