@@ -9,13 +9,14 @@
                 </h5>
             </div>
             <div class="box-content box-table">
+            <form id="yunzhicms-weight">
                 <table id="sample-table" class="table table-hover table-bordered">
                     <thead>
                         <tr>
                             <th>标题</th>
                             <th>url</th>
-                            <th>权重</th>
-                            <th>是否隐藏</th>
+                            <th width="14px">权重</th>
+                            <th>是否显示</th>
                             <th>是否首页</th>
                             <th>描述</th>
                             <th class="td-actions">操作</th>
@@ -26,25 +27,25 @@
                         <tr>
                             <td>{$MenuModel->title}</td>
                             <td>{$MenuModel->url}</td>
-                            <td>{$MenuModel->weight}</td>
+                            <td><input style="width:100px" size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                             <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                 <span class="badge span_backgroud_color">
-                                {$MenuModel->is_hidden}
+                                    {$MenuModel->is_hidden}
                                 </span>
                                 {else /}
                                 <span class="badge">
-                                {$MenuModel->is_hidden}
+                                    {$MenuModel->is_hidden}
                                 </span>
                                 {/eq}
                             </td>
                             <td>
                                 {eq value="1" name="$MenuModel->getData('is_home')"}
                                 <span class="badge span_backgroud_color">
-                                {$MenuModel->is_home}
+                                    {$MenuModel->is_home}
                                 </span>
                                 {else /}
                                 <span class="badge">
-                                {$MenuModel->is_home}
+                                    {$MenuModel->is_home}
                                 </span>
                                 {/eq}
                             </td>
@@ -62,26 +63,25 @@
                             <tr>
                                 <td>|----{$MenuModel->title}</td>
                                 <td>{$MenuModel->url}</td>
-                                <td>{$MenuModel->weight}</td>
-                                <td>
-                                    {eq value="0" name="$MenuModel->getData('is_hidden')"}
+                                <td><input style="width:100px" size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
+                                <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                     <span class="badge span_backgroud_color">
-                                    {$MenuModel->is_hidden}
+                                        {$MenuModel->is_hidden}
                                     </span>
                                     {else /}
                                     <span class="badge">
-                                    {$MenuModel->is_hidden}
+                                        {$MenuModel->is_hidden}
                                     </span>
                                     {/eq}
                                 </td>
                                 <td>
                                     {eq value="1" name="$MenuModel->getData('is_home')"}
                                     <span class="badge span_backgroud_color">
-                                    {$MenuModel->is_home}
+                                        {$MenuModel->is_home}
                                     </span>
                                     {else /}
                                     <span class="badge">
-                                    {$MenuModel->is_home}
+                                        {$MenuModel->is_home}
                                     </span>
                                     {/eq}
                                 </td>
@@ -99,19 +99,18 @@
                                 <tr>
                                     <td>|----|----{$MenuModel->title}</td>
                                     <td>{$MenuModel->url}</td>
-                                    <td>{$MenuModel->weight}</td>
-                                    <td>
-                                        {eq value="0" name="$MenuModel->getData('is_hidden')"}
+                                    <td><input style="width:100px" size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
+                                    <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                         <span class="badge span_backgroud_color">
-                                        {$MenuModel->is_hidden}
+                                            {$MenuModel->is_hidden}
                                         </span>
                                         {else /}
                                         <span class="badge">
-                                        {$MenuModel->is_hidden}
+                                            {$MenuModel->is_hidden}
                                         </span>
                                         {/eq}
                                     </td>
-                                    <td>
+                                        <td>
                                         {eq value="1" name="$MenuModel->getData('is_home')"}
                                         <span class="badge span_backgroud_color">
                                         {$MenuModel->is_home}
@@ -135,6 +134,7 @@
                                 {/volist}
                             {/volist}
                         {/volist}
+                        
                         <div style="text-align:right;">
                             <a href="{:url('@admin/Menu/create')}" class="btn btn-small btn-info">
                                 <i class="btn-icon-only icon-edit"></i> 新增
@@ -142,7 +142,16 @@
                         </div>
                     </tbody>
                 </table>
+                </form>
+                <div>
+                    <button id="button-weight" type="button" class="btn btn-primary">更新权重</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var SCOPE = {
+        'weight_url' : "{:url('MenuType/weight')}",
+    }
+</script>

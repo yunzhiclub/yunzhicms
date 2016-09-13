@@ -8,13 +8,19 @@ class MenutypeController extends AdminController
     public function indexAction()
     {
         $MenuTypeModel = new MenuTypeModel;
-        $MenuTypeModels = $MenuTypeModel->where('is_delete', '=', 0)->paginate();
+        $map = array(
+            'is_delete' => 0
+            );
+
+        //设置分页
+        $MenuTypeModels = $MenuTypeModel->where($map)->paginate(config('paginate.var_page'));
         $this->assign('MenuTypeModels', $MenuTypeModels);
         return $this->fetch();
     }
 
     public function readAction($id)
     {
+        
         $name = $id;
         $MenuModelType = MenuTypeModel::get($name);
         $this->assign('MenuModelType', $MenuModelType);
@@ -70,5 +76,40 @@ class MenutypeController extends AdminController
         $MenuTypeModel->save();
 
         return $this->success('保存成功', url('@admin/menutype'));
+    }
+
+    /**
+     *return
+     *权重排序
+     *author liuxi
+     */
+    public function weightAction()
+    {
+        $data['status'] = "ERROR";
+        $data['message'] = "";
+
+        //判断传过来的值是否为空
+        $weight = isset($_POST['weight'])?$_POST['weight']:array();
+
+        //判断是否为空数组
+        if (!empty($weight)) {
+            foreach ($weight as $menuId=>$value) {
+                //执行更新
+                $MenuModel = new MenuModel;
+                $id = $MenuModel->updateMenuWeightById($menuId, $value);
+                if (false === $id) {
+                    $data['message'][] = $menuId;
+                }
+            }
+        }
+
+        //更新成功，返回
+        if ("" === $data['message']) {
+            $data['status'] = "SUCCESS";
+            return $data;
+        }
+        //更新失败，返回
+        $data['message'] = '排序失败-' . implode(',', $data['message']);
+        return $data;
     }
 }

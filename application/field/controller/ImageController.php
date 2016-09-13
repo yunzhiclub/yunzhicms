@@ -43,9 +43,9 @@ class ImageController extends FieldController
         return json_encode($result);
     }
 
-    public function fetchHtml()
+    public function index()
     {
-        $this->assgin('token', Common::makeTokenByMCAData('field', 'Image', 'upload'));
-        return parent::fetchHtml();
+        $this->assign('token', Common::makeTokenByMCAData('field', 'Image', 'upload'));
+        return parent::index();
     }
 }
