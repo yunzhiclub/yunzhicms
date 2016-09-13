@@ -16,7 +16,7 @@ class UserModel extends ModelModel
     {
         if (null === $this->UserGroupModel)
         {
-            $userGroupName = $this->getData('user_group_name');
+            $userGroupName = $this->getData('group_name');
             $this->UserGroupModel = UserGroupModel::get($userGroupName);
         }
         return $this->UserGroupModel;
