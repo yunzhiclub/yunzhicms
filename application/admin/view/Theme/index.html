@@ -25,12 +25,12 @@
        					<tr>
        						<td>{$themeModel->title}</td>
        						<td>{$themeModel->description}</td>
-       						<td>{eq name="themeModel->is_current" value="1"}是{else /}/{/eq}</td>
+       						<td>{eq name="themeModel->is_current" value="1"}<p class="badge" style="width: 14px;" >是</p>{else /}/{/eq}</td>
        						<td>{$themeModel->author}</td>
        						<td>{$themeModel->version}</td>		
        						<td class="td-actions">
        							{eq name="$themeModel->is_current" value="1"}
-       							<a href="{:url('@admin/Theme/' . $themeModel->name)}" class="btn btn-success"></i>&nbsp;已启用</a>
+       							<p>已启用</p>
        							{else /}
        							<a href="{:url('@admin/Theme/' . $themeModel->name)}" class="btn btn-info"></i>&nbsp;启用</a>
        							{/eq}
