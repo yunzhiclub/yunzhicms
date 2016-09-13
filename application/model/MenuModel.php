@@ -393,7 +393,9 @@ class MenuModel extends ModelModel
     }
 
     /**
+     * return
      * 更新菜单权重
+     * author liuxi
      */
     public function updateMenuWeightById($id,$weight)
     {
