@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 09/12/2016 16:47:45 PM
+ Date: 09/13/2016 09:39:57 AM
 */
 
 SET NAMES utf8;
@@ -58,7 +58,7 @@ DROP TABLE IF EXISTS `yunzhi_access_user_group_menu`;
 CREATE TABLE `yunzhi_access_user_group_menu` (
   `user_group_name` varchar(40) NOT NULL COMMENT 'fk user_group 用户组外键',
   `menu_id` int(11) unsigned NOT NULL COMMENT 'fk menu 菜单外键',
-  `action` tinyint(1) NOT NULL DEFAULT '0',
+  `action` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`user_group_name`,`menu_id`,`action`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组-菜单 权限表。权限设置(LCURD)';
 
@@ -66,7 +66,7 @@ CREATE TABLE `yunzhi_access_user_group_menu` (
 --  Records of `yunzhi_access_user_group_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_access_user_group_menu` VALUES ('admin', '2', '0'), ('editor', '2', '0'), ('public', '1', '0'), ('public', '2', '0'), ('public', '3', '0'), ('public', '4', '0'), ('public', '5', '0'), ('public', '6', '0'), ('register', '2', '0');
+INSERT INTO `yunzhi_access_user_group_menu` VALUES ('admin', '2', 'index'), ('editor', '2', 'index'), ('public', '1', 'index'), ('public', '2', 'edit'), ('public', '2', 'index'), ('public', '2', 'read'), ('public', '3', 'index'), ('public', '4', 'index'), ('public', '5', 'index'), ('public', '6', 'index'), ('public', '6', 'login'), ('register', '2', 'index');
 COMMIT;
 
 -- ----------------------------
@@ -156,13 +156,13 @@ CREATE TABLE `yunzhi_content` (
   KEY `category_name` (`content_type_name`) USING BTREE,
   KEY `is_freezed` (`is_freezed`) USING BTREE,
   KEY `is_deleted` (`is_deleted`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='文章表';
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='文章表';
 
 -- ----------------------------
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '414', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '142', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '43', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '425', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '142', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '43', '0'), ('4', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('5', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('6', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('7', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('8', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('9', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('10', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('11', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('12', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('13', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('14', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('15', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('16', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('17', '', '', '', '0', '0', '0', '0', '0', '1', '0');
 COMMIT;
 
 -- ----------------------------
@@ -459,7 +459,7 @@ CREATE TABLE `yunzhi_menu` (
 --  Records of `yunzhi_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"contentType\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('6', 'main', 'Login', '登录注销', '0', 'login', '1', '0', '用于用户登陆与注销', '[]', '[]', '0', '0', '0', '0');
+INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"contentType\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('6', 'main', 'Login', '登录注销', '0', 'login/test', '1', '0', '用于用户登陆与注销', '[]', '[]', '0', '0', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -602,95 +602,5 @@ CREATE TABLE `yunzhi_user_group` (
 BEGIN;
 INSERT INTO `yunzhi_user_group` VALUES ('admin', '超级管理员', '拥有开发权限', '0', '0', '0'), ('editor', '站点编辑人员', '对站点进行管理', '0', '0', '0'), ('register', '注册用户', '注册用户，拥有对权限新闻的查看权限', '0', '0', '0'), ('public', '公共用户', '浏览网站的用户', '0', '0', '0');
 COMMIT;
-
--- ----------------------------
---  View structure for `english_card_student_card_batch_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_card_student_card_batch_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_card_student_card_batch_view` AS select `yunzhicms`.`english_card_batch`.`deadline` AS `deadline`,`yunzhicms`.`english_student`.`id` AS `student__id` from ((`english_card` left join `english_student` on((`yunzhicms`.`english_card`.`student_id` = `yunzhicms`.`english_student`.`id`))) left join `english_card_batch` on((`yunzhicms`.`english_card`.`card_batch_id` = `yunzhicms`.`english_card_batch`.`id`)));
-
--- ----------------------------
---  View structure for `english_department_post_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_department_post_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_department_post_view` AS select `yunzhicms`.`english_department_post`.`id` AS `id`,`yunzhicms`.`english_department`.`title` AS `department__title`,`yunzhicms`.`english_department`.`is_son` AS `department__is_son`,`yunzhicms`.`english_post`.`name` AS `post__name`,`yunzhicms`.`english_post`.`is_son` AS `post__is_son`,`yunzhicms`.`english_post`.`is_admin` AS `post__is_admin`,`yunzhicms`.`english_department_post`.`department_id` AS `department_id`,`yunzhicms`.`english_department_post`.`post_id` AS `post_id` from ((`english_department_post` join `english_department` on((`yunzhicms`.`english_department_post`.`department_id` = `yunzhicms`.`english_department`.`id`))) join `english_post` on((`yunzhicms`.`english_department_post`.`post_id` = `yunzhicms`.`english_post`.`id`)));
-
--- ----------------------------
---  View structure for `english_klass_course_student_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_klass_course_student_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_klass_course_student_view` AS select `yunzhicms`.`english_klass_course`.`id` AS `id`,`yunzhicms`.`english_klass_course`.`klass_id` AS `klass_id`,`yunzhicms`.`english_klass_course`.`course_id` AS `course_id`,`yunzhicms`.`english_course`.`title` AS `title`,`yunzhicms`.`english_klass`.`name` AS `name`,`yunzhicms`.`english_student`.`id` AS `student__id` from (((`english_klass_course` left join `english_klass` on((`yunzhicms`.`english_klass_course`.`klass_id` = `yunzhicms`.`english_klass`.`id`))) left join `english_course` on((`yunzhicms`.`english_klass_course`.`course_id` = `yunzhicms`.`english_course`.`id`))) left join `english_student` on((`yunzhicms`.`english_student`.`klass_id` = `yunzhicms`.`english_klass`.`id`)));
-
--- ----------------------------
---  View structure for `english_klass_course_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_klass_course_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_klass_course_view` AS select `yunzhicms`.`english_course`.`title` AS `title`,`yunzhicms`.`english_klass_course`.`id` AS `id`,`yunzhicms`.`english_klass_course`.`klass_id` AS `klass_id`,`yunzhicms`.`english_klass_course`.`course_id` AS `course_id`,`yunzhicms`.`english_klass`.`name` AS `name` from ((`english_klass_course` join `english_klass` on((`yunzhicms`.`english_klass_course`.`klass_id` = `yunzhicms`.`english_klass`.`id`))) join `english_course` on((`yunzhicms`.`english_klass_course`.`course_id` = `yunzhicms`.`english_course`.`id`)));
-
--- ----------------------------
---  View structure for `english_klass_user_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_klass_user_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_klass_user_view` AS select `yunzhicms`.`english_klass`.`id` AS `id`,`yunzhicms`.`english_klass`.`name` AS `name`,`yunzhicms`.`english_user`.`name` AS `user__name`,`yunzhicms`.`english_klass`.`create_time` AS `create_time`,`yunzhicms`.`english_klass`.`user_id` AS `user_id`,`yunzhicms`.`english_department_post`.`department_id` AS `department_id`,`yunzhicms`.`english_department_post`.`post_id` AS `post_id`,`yunzhicms`.`english_department`.`title` AS `department__title`,`yunzhicms`.`english_post`.`name` AS `post__name`,`yunzhicms`.`english_department`.`is_son` AS `department__is_son`,`yunzhicms`.`english_post`.`is_son` AS `post__is_son`,`yunzhicms`.`english_post`.`is_admin` AS `post__is_admin` from ((((`english_klass` left join `english_user` on((`yunzhicms`.`english_klass`.`user_id` = `yunzhicms`.`english_user`.`id`))) left join `english_department_post` on((`yunzhicms`.`english_department_post`.`id` = `yunzhicms`.`english_user`.`department_post_id`))) left join `english_department` on((`yunzhicms`.`english_department`.`id` = `yunzhicms`.`english_department_post`.`department_id`))) left join `english_post` on((`yunzhicms`.`english_department_post`.`post_id` = `yunzhicms`.`english_post`.`id`)));
-
--- ----------------------------
---  View structure for `english_menu_post_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_menu_post_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_menu_post_view` AS select `yunzhicms`.`english_menu_post`.`id` AS `id`,`yunzhicms`.`english_menu_post`.`menu_id` AS `menu_id`,`yunzhicms`.`english_menu_post`.`post_id` AS `post_id`,`yunzhicms`.`english_post`.`name` AS `post__name`,`yunzhicms`.`english_post`.`id` AS `post__id`,`yunzhicms`.`english_menu_post`.`is_permission` AS `is_permission` from (`english_menu_post` left join `english_post` on((`yunzhicms`.`english_menu_post`.`post_id` = `yunzhicms`.`english_post`.`id`)));
-
--- ----------------------------
---  View structure for `english_new_word_word_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_new_word_word_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_new_word_word_view` AS select `yunzhicms`.`english_word`.`title` AS `word__title`,`yunzhicms`.`english_new_word`.`time` AS `time`,`yunzhicms`.`english_new_word`.`student_id` AS `student_id`,`yunzhicms`.`english_new_word`.`word_id` AS `word_id`,`yunzhicms`.`english_new_word`.`id` AS `id` from (`english_new_word` join `english_word` on((`yunzhicms`.`english_new_word`.`word_id` = `yunzhicms`.`english_word`.`id`)));
-
--- ----------------------------
---  View structure for `english_repeat_times_word_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_repeat_times_word_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_repeat_times_word_view` AS select `yunzhicms`.`english_repeat_times`.`id` AS `id`,`yunzhicms`.`english_repeat_times`.`times` AS `times`,`yunzhicms`.`english_repeat_times`.`word_id` AS `word_id`,`yunzhicms`.`english_repeat_times`.`student_id` AS `student_id`,`yunzhicms`.`english_word`.`id` AS `word__id`,`yunzhicms`.`english_word`.`course_id` AS `word__course_id` from (`english_repeat_times` join `english_word` on((`yunzhicms`.`english_word`.`id` = `yunzhicms`.`english_repeat_times`.`word_id`)));
-
--- ----------------------------
---  View structure for `english_test_student_test_percent_course_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_test_student_test_percent_course_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_test_student_test_percent_course_view` AS select `yunzhicms`.`english_course`.`id` AS `course__id`,`yunzhicms`.`english_student`.`id` AS `student__id`,`yunzhicms`.`english_test`.`id` AS `id`,`yunzhicms`.`english_test`.`grade` AS `grade`,`yunzhicms`.`english_test_percent`.`percent` AS `percent`,`yunzhicms`.`english_test_percent`.`type` AS `type`,`yunzhicms`.`english_test`.`time` AS `time`,`yunzhicms`.`english_course`.`title` AS `course__title` from (((`english_test` left join `english_student` on((`yunzhicms`.`english_test`.`student_id` = `yunzhicms`.`english_student`.`id`))) left join `english_test_percent` on((`yunzhicms`.`english_test`.`test_percent_id` = `yunzhicms`.`english_test_percent`.`id`))) left join `english_course` on((`yunzhicms`.`english_test_percent`.`course_id` = `yunzhicms`.`english_course`.`id`)));
-
--- ----------------------------
---  View structure for `english_test_test_percent_course_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_test_test_percent_course_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_test_test_percent_course_view` AS select `yunzhicms`.`english_test`.`id` AS `id`,`yunzhicms`.`english_test`.`time` AS `time`,`yunzhicms`.`english_test`.`grade` AS `grade`,`yunzhicms`.`english_test`.`student_id` AS `student_id`,`yunzhicms`.`english_test`.`test_percent_id` AS `test_percent_id`,`yunzhicms`.`english_test_percent`.`type` AS `type`,`yunzhicms`.`english_test_percent`.`percent` AS `percent`,`yunzhicms`.`english_test_percent`.`course_id` AS `course_id`,`yunzhicms`.`english_course`.`title` AS `course__title` from ((`english_test` left join `english_test_percent` on((`yunzhicms`.`english_test`.`test_percent_id` = `yunzhicms`.`english_test_percent`.`id`))) left join `english_course` on((`yunzhicms`.`english_test_percent`.`course_id` = `yunzhicms`.`english_course`.`id`)));
-
--- ----------------------------
---  View structure for `english_user_department_post_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_user_department_post_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_user_department_post_view` AS select `yunzhicms`.`english_department`.`title` AS `department__title`,`yunzhicms`.`english_department`.`is_son` AS `department__is_son`,`yunzhicms`.`english_post`.`name` AS `post__title`,`yunzhicms`.`english_post`.`is_son` AS `post__is_son`,`yunzhicms`.`english_user`.`id` AS `id`,`yunzhicms`.`english_user`.`username` AS `username`,`yunzhicms`.`english_user`.`name` AS `name`,`yunzhicms`.`english_user`.`phonenumber` AS `phonenumber`,`yunzhicms`.`english_user`.`email` AS `email`,`yunzhicms`.`english_department_post`.`department_id` AS `department_id`,`yunzhicms`.`english_department_post`.`post_id` AS `post_id`,`yunzhicms`.`english_post`.`is_admin` AS `post__is_admin` from (((`english_user` left join `english_department_post` on((`yunzhicms`.`english_user`.`department_post_id` = `yunzhicms`.`english_department_post`.`id`))) left join `english_department` on((`yunzhicms`.`english_department_post`.`department_id` = `yunzhicms`.`english_department`.`id`))) left join `english_post` on((`yunzhicms`.`english_department_post`.`post_id` = `yunzhicms`.`english_post`.`id`)));
-
--- ----------------------------
---  View structure for `english_user_klass_student_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_user_klass_student_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_user_klass_student_view` AS select `yunzhicms`.`english_student`.`id` AS `id`,`yunzhicms`.`english_student`.`name` AS `name`,`yunzhicms`.`english_klass`.`id` AS `klass__id`,`yunzhicms`.`english_klass`.`name` AS `klass__name`,`yunzhicms`.`english_user`.`id` AS `user__id`,`yunzhicms`.`english_user`.`name` AS `user__name`,`yunzhicms`.`english_department`.`id` AS `department__id`,`yunzhicms`.`english_department`.`is_son` AS `department__is_son`,`yunzhicms`.`english_post`.`id` AS `post__id`,`yunzhicms`.`english_post`.`is_admin` AS `post__is_admin`,`yunzhicms`.`english_student`.`status` AS `status`,`yunzhicms`.`english_student`.`username` AS `username`,`yunzhicms`.`english_student`.`creation_date` AS `creation_date`,`yunzhicms`.`english_student`.`user_id` AS `user_id` from (((((`english_student` left join `english_klass` on((`yunzhicms`.`english_klass`.`id` = `yunzhicms`.`english_student`.`klass_id`))) left join `english_user` on((`yunzhicms`.`english_user`.`id` = `yunzhicms`.`english_klass`.`user_id`))) left join `english_department_post` on((`yunzhicms`.`english_department_post`.`id` = `yunzhicms`.`english_user`.`department_post_id`))) left join `english_department` on((`yunzhicms`.`english_department`.`id` = `yunzhicms`.`english_department_post`.`department_id`))) left join `english_post` on((`yunzhicms`.`english_post`.`id` = `yunzhicms`.`english_department_post`.`post_id`)));
-
--- ----------------------------
---  View structure for `english_user_menu_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_user_menu_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_user_menu_view` AS select `yunzhicms`.`english_user`.`id` AS `id`,`yunzhicms`.`english_user`.`name` AS `name`,`yunzhicms`.`english_department_post`.`post_id` AS `post_id`,`yunzhicms`.`english_menu_post`.`menu_id` AS `menu_id` from ((`english_user` left join `english_department_post` on((`yunzhicms`.`english_user`.`department_post_id` = `yunzhicms`.`english_department_post`.`id`))) left join `english_menu_post` on((`yunzhicms`.`english_department_post`.`post_id` = `yunzhicms`.`english_menu_post`.`post_id`)));
-
--- ----------------------------
---  View structure for `english_word_progress_login_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_word_progress_login_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_word_progress_login_view` AS select `yunzhicms`.`english_word_progress`.`id` AS `id`,`yunzhicms`.`english_word_progress`.`time` AS `time`,`yunzhicms`.`english_word_progress`.`is_new` AS `is_new`,`yunzhicms`.`english_word_progress`.`word_id` AS `word_id`,`yunzhicms`.`english_word_progress`.`login_id` AS `login_id`,`yunzhicms`.`english_login`.`time` AS `login__time`,`yunzhicms`.`english_login`.`student_id` AS `student_id`,`yunzhicms`.`english_student`.`name` AS `student__name` from ((`english_word_progress` left join `english_login` on((`yunzhicms`.`english_word_progress`.`login_id` = `yunzhicms`.`english_login`.`id`))) left join `english_student` on((`yunzhicms`.`english_student`.`id` = `yunzhicms`.`english_login`.`student_id`)));
-
--- ----------------------------
---  View structure for `english_word_progress_login_word_course_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_word_progress_login_word_course_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_word_progress_login_word_course_view` AS select `yunzhicms`.`english_word_progress`.`id` AS `id`,`yunzhicms`.`english_word_progress`.`word_id` AS `word_id`,`yunzhicms`.`english_word`.`title` AS `word__title`,`yunzhicms`.`english_word_progress`.`login_id` AS `login_id`,`yunzhicms`.`english_word`.`course_id` AS `word__course_id`,`yunzhicms`.`english_login`.`time` AS `login__time`,`yunzhicms`.`english_login`.`student_id` AS `login__student_id`,`yunzhicms`.`english_course`.`title` AS `course__title`,`yunzhicms`.`english_word_progress`.`is_new` AS `is_new`,`yunzhicms`.`english_word_progress`.`time` AS `time` from (((`english_word_progress` left join `english_word` on((`yunzhicms`.`english_word_progress`.`word_id` = `yunzhicms`.`english_word`.`id`))) left join `english_login` on((`yunzhicms`.`english_word_progress`.`login_id` = `yunzhicms`.`english_login`.`id`))) left join `english_course` on((`yunzhicms`.`english_word`.`course_id` = `yunzhicms`.`english_course`.`id`)));
 
 SET FOREIGN_KEY_CHECKS = 1;
