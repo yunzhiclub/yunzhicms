@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-lg-12 co-md-12 text-right">
+        <a target="_blank" href="{:url('api/api/index?token=' . $token)}">编辑</a>
+    </div>
+</div>    
+<!-- Start Slider -->
+<section id="mu-slider">
+    {foreach name="titles" id="_title" key="key"}
+        <!-- Start single slider item -->
+        <div class="mu-slider-single">
+            <div class="mu-slider-img">
+                <figure>
+                    <img src="{$images[$key]}">
+                </figure>
+            </div>
+            <div class="mu-slider-content">
+                <h4>{$_title}</h4>
+                <span></span>
+                <h2>{$headers[$key]}</h2>
+                <p>{$descriptions[$key]}</p>
+                <a href="{$urls[$key]}" class="mu-read-more-btn">Read More</a>
+            </div>
+        </div>
+        <!-- Start single slider item -->
+    {/foreach}
+</section>
+<!-- End Slider -->

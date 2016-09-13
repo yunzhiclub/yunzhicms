@@ -8,7 +8,7 @@ use app\model\MenuModel;                        // 菜单模型
 class BreadCrumbController extends BlockController
 {
     protected $currentMenuModel         = null;         // 当前菜单
-    public function fetchHtml()
+    public function index()
     {
         // 取当前菜单信息
         $this->currentMenuModel = MenuModel::getCurrentMenuModel();

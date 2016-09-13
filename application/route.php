@@ -17,7 +17,7 @@ return [
         'admin/menutype'                => 'MenuType',      // 菜单类型管理
         'admin/menu'                    => 'Menu',          // 菜单管理
         'admin/contenttype'             => 'ContentType',   // 文章类型管理
-        'admin/filter'                  => 'Filter',        // 过滤器管理
+        'admin/extend'                  => 'Extend',        // 扩展管理
         // 'admin/category.content'        => 'Content',       // 原 文章类型中对文章进行查询,涉及到2级CURD
         'admin/system'                  => 'System',        // 系统管理
         'admin/component'               => 'Component',     // 组件管理
