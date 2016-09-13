@@ -13,9 +13,9 @@
                 <table id="sample-table" class="table table-hover table-bordered">
                     <thead>
                         <tr>
-                            <th width="14px">权重</th>
                             <th>标题</th>
                             <th>url</th>
+                            <th width="14px">权重</th>
                             <th>是否隐藏</th>
                             <th>是否首页</th>
                             <th>描述</th>
@@ -25,9 +25,9 @@
                     <tbody>
                         {volist name="MenuModels" id="MenuModel"}
                         <tr>
-                            <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                             <td>{$MenuModel->title}</td>
                             <td>{$MenuModel->url}</td>
+                            <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                             <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                 <span class="badge span_backgroud_color">
                                     {$MenuModel->is_hidden}
@@ -61,9 +61,9 @@
                         </tr>
                             {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
                             <tr>
-                                <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                 <td>|----{$MenuModel->title}</td>
                                 <td>{$MenuModel->url}</td>
+                                <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                 <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                     <span class="badge span_backgroud_color">
                                         {$MenuModel->is_hidden}
@@ -97,9 +97,9 @@
                             </tr>
                                 {volist name="MenuModel->sonMenuModels()" id="MenuModel"}
                                 <tr>
-                                    <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                     <td>|----|----{$MenuModel->title}</td>
                                     <td>{$MenuModel->url}</td>
+                                    <td><input size="4" type="text" name="weight[{$MenuModel->id}]" value="{$MenuModel->weight}" /></td>
                                     <td>{eq value="0" name="$MenuModel->getData('is_hidden')"}
                                         <span class="badge span_backgroud_color">
                                             {$MenuModel->is_hidden}
