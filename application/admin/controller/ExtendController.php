@@ -14,10 +14,9 @@ class ExtendController extends AdminController
 {
     public function indexAction()
     {
-        // 将区块信息传入V层
-        $BlockModel = new BlockModel;
-        $BlockModels = $BlockModel->where('is_delete', '=', '0')->paginate();
-        $this->assign('BlockModels', $BlockModels);
+        // 将区块类型信息传入V层
+        $BlockTypeModels = BlockTypeModel::all();
+        $this->assign('BlockTypeModels', $BlockTypeModels);
 
         // 将组件信息传入V层
         $Components = ComponentModel::paginate();
