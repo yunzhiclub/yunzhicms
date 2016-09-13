@@ -12,7 +12,7 @@ use app\model\BlockModel;                   // 区块
 class MenuController extends BlockController
 {
     protected $token;
-	public function fetchHtml()
+	public function index()
 	{
         // 取当前菜单信息
         $this->currentMenuModel = MenuModel::getCurrentMenuModel();
