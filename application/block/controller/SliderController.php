@@ -12,30 +12,44 @@ use app\model\FieldModel;                   // 字段模型
  */
 class SliderController extends BlockController
 {
-    public function fetchHtml()
+    public function index()
     {
         // 生成token并送入V层，用于编辑该区块
         $token = $this->BlockModel->makeToken('Slider', 'edit');
 
+        // 获取扩展字段列表, 并传入V层
+        $this->assign('titles',         $this->BlockModel->FieldModel('titles')->filter());
+        $this->assign('urls',           $this->BlockModel->FieldModel('urls')->filter());
+        $this->assign('images',         $this->BlockModel->FieldModel('images')->filter());
+        $this->assign('headers',        $this->BlockModel->FieldModel('headers')->filter());
+        $this->assign('descriptions',   $this->BlockModel->FieldModel('descriptions')->filter());
         $this->assign('token', $token);
         return $this->fetch();
     }
     
     static public function save($data = [])
     {
+        // 实例化
+        $Object = new self();
+
         // 得到请求信息
         $Request = Request::instance();
         $param = $Request->param();
-
-        // todo:判断传入的各个字段的个数是否相同，如果不同，报错提示各个字段个数必须相同!
         
+        // 判断传入的各个字段的个数是否相同，如果不同，报错提示各个字段个数必须相同!
+        $fields = $param['field_'];
+        $count = count(array_pop($fields));
+        foreach ($fields as $value) {
+            if ($count !== count($value)) {
+                return $Object->error('各字段设置的参数个数不统一，请检查');
+            }
+        }
         
         // 更新扩展数据字段
         if (isset($param['field_'])) {
             FieldModel::updateLists($param['field_'], $data['id']);
         }
 
-        $Object = new self();
         $Object->success('操作成功', $Request->server('HTTP_REFERER'));
     }
 

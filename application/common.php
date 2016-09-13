@@ -18,7 +18,7 @@ use app\model\UserModel;
 
 // 初始化
 Common::init();
-
+Route::rule('news/:id', 'component/ContentList/read', 'GET');
 class Common{
     static protected $token = [];       // token 用于安全验证
     static protected $css   = [];       // css 用于模板链接css文件
@@ -67,7 +67,7 @@ class Common{
      * @return void        
      */
     static public function registerRouter()
-    {
+    {   
         // 查询菜单表
         $menus = self::reMakeLinkPath(Db::name('menu')->select());
 
@@ -75,23 +75,54 @@ class Common{
         $components = Db::name('component')->select();
         $components = self::changeListIndex($components, 'name');
 
-        // 注册CURD路由信息 
-        foreach ($menus as $menu)
-        {   
+        foreach ($menus as $menu) {
             // 注册路由
             $componentName = $menu['component_name'];
             if (array_key_exists($componentName, $components))
             {
-                $router = 'Component/' . $components[$componentName]['name'];
+                // 本看是否存在其它路由参数，有的话，依次进行注册
+                $routeFilePath = realpath(APP_PATH . 
+                    'component' . DS . 
+                    'route' . DS . 
+                    $componentName . 'Route.php');
 
-                // 如果是首页，则注册为普通路由
-                if ((int)$menu['is_home'] === 1)
-                {
-                    $router .= '/index';
-                    Route::rule('/', $router);
-                } else {
-                    // 非首页注册curd路由
-                    Route::curd($menu['url'], $router);
+                // 按路由配置文件注册路由：http://www.kancloud.cn/manual/thinkphp5/118030
+                if (false !== $routeFilePath) {
+                    $routes = include $routeFilePath;
+                    foreach ($routes as $action => &$_route) {
+                        $value      = $_route['value'];
+                        $route      = '';
+                        $type       = '*';
+                        $option     = []; 
+                        $pattern    = [];
+
+                        if (isset($value[0])) {
+                            $rule = $menu['url'] . $value[0];
+                        } else {
+                            continue;
+                        }
+
+                        $route = 'component/' . $componentName . '/' . $action;
+
+                        if (isset($value[1])) {
+                            $type = $value[1];
+                        }
+
+                        if (isset($value[2])) {
+                            if (is_array($value[2])) {
+                                $option = $value[2]; 
+                            }
+                        }
+
+                        if (isset($value[3])) {
+                            if (is_array($value[3])) {
+                                $pattern = $value[3]; 
+                            }
+                        }
+
+                        // 调用路由注册
+                        Route::rule($rule, $route, $type, $option, $pattern);
+                    }
                 }
             }
         }
@@ -399,6 +430,19 @@ class Common{
     }
 
     /**
+     * 生成子地址，用于同一组件下，生成下一级路由
+     * @param    string                   $subAction 
+     * @return   String
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-13T08:04:12+0800
+     */
+    static public function makeSubUrl($subAction = '')
+    {
+        $requestUri = $_SERVER['REQUEST_URI'];
+        return str_replace('.html', '/' . $subAction . '.html', $requestUri);
+    }
+
+    /**
      * 生成 保存 URL地址
      * @return string 
      * @author panjie
@@ -432,6 +476,20 @@ class Common{
     {
         
     }
+
+    /**
+     * 生成基于当前菜单URL的正确的，可直接显示在前台，被用户点击触发的URL
+     * @param    string                   $route 传入的路由地址信息
+     * @return   string                          
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-13T11:08:05+0800
+     */
+    static public function url($route = '')
+    {
+        $url = MenuModel::getCurrentMenuModel()->getData('url');
+        return url('@' . $url . $route);
+    }
+
 
     /**
      * 通过token获取对应的menuModel
@@ -526,52 +584,25 @@ class Common{
     }
 
     /**
-     * 根据action 获取相应的二进制形式的access值
-     * @param    string                   $action 
-     * @return   int                           00000 五位二进制 分别代码LCURD
+     * 生成token值，供区块、插件、字段编辑时调用。解决在区块、插件、字段编辑时无法进行权限判断而引发的安全问题
+     * @param    string                   $module     模块名
+     * @param    string                   $controller 控制器名
+     * @param    string                   $action     触发器名
+     * @param    array                    $data       当前token缓存的数据
+     * @return   string                               经过sha1后的序列
      * @author panjie panjie@mengyunzhi.com
-     * @DateTime 2016-09-05T13:37:27+0800
+     * @DateTime 2016-09-13T08:00:35+0800
      */
-    static public function getAccessByAction($action)
-    {
-        $access = 0;
-        switch ($action) {
-            case 'index':
-                $access = 16;
-                break;
-
-            case 'create':
-            case 'save':
-                $access = 8;
-                break;
-
-            case 'edit':
-            case 'update':
-                $access = 2;
-                break;
-
-            case 'read':
-                $access = 2;
-                break;
-
-
-            case 'delete':
-                $access = 1;
-                break;
-            default:
-                $access = 0;
-                break;
-        }
-        return $access;
-    }
-
     static public function makeTokenByMCAData($module, $controller, $action, $data = [])
     {
+        // 取出当前token
         $tokens = Session::get('tokens');
+        if (null === $tokens) {
+            $tokens = [];
+        }
         
-        // 生成token
+        // 生成token并缓存数据
         $token = sha1($module . $controller . $action . microtime() . rand(1,10000) . config('token_suffix'));
-
         $tokens[$token] = ['module' => $module, 'controller' => $controller, 'action' => $action, 'data' => $data];
 
         // 存token

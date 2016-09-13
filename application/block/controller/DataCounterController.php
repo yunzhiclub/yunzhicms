@@ -5,7 +5,7 @@ namespace app\block\controller;
  */
 class DataCounterController extends BlockController
 {
-	public function fetchHtml()
+	public function index()
 	{
 		return $this->fetch('block@DataCounter/fetchHtml');
 	}
