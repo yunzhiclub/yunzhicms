@@ -17,13 +17,24 @@ class UserGroupController extends AdminController
     public function indexAction()
     {
         $UserGroupModel = new UserGroupModel;
-    	$UserGroupModels = $UserGroupModel->where('is_deleted', '=', 0)->select();
+
+        //获取config.php中的分页配置信息
+        $pageSize = config('paginate.var_page');
+    	$UserGroupModels = $UserGroupModel->where('is_deleted', '=', 0)->paginate($pageSize);
     	$this->assign('UserGroupModels', $UserGroupModels);
         return $this->fetch();
     }
 
     public function editAction($id)
     {
+        //获取对象
+        $UserGroupModel = UserGroupModel::get($id);
+
+        //获取用户组是否实是系统自己设置的
+        if (1 === $UserGroupModel->is_system) {
+            return $this->error('此用户组是系统默认设置不能编辑');
+        }
+        
     	$UserGroupModel = UserGroupModel::get($id);
     	$this->assign('UserGroupModel', $UserGroupModel);
     	return $this->fetch();
@@ -35,7 +46,6 @@ class UserGroupController extends AdminController
 
     	$UserGroupModel = UserGroupModel::get($id);
     	$UserGroupModel->setData('title', $data['title']);
-    	$UserGroupModel->setData('name', $data['name']);
     	$UserGroupModel->setData('description', $data['description']);
 
     	$UserGroupModel->save();
@@ -68,7 +78,7 @@ class UserGroupController extends AdminController
      */
     public function deleteAction($id)
     {
-        //获取键值
+        //获取对象
         $UserGroupModel = UserGroupModel::get($id);
 
         //获取用户组是否实是系统自己设置的
@@ -77,7 +87,7 @@ class UserGroupController extends AdminController
         }
 
         //判断是否还有用户
-        $UserModels = $UserGroupModel->getAllUserMedel($id);
+        $UserModels = $UserGroupModel->getAllUserModel($id);
         if (!empty($UserModels)) {
             return $this->error('不能删除含有子人员');
         }
