@@ -242,7 +242,7 @@ class MenuModel extends ModelModel
     public function sonMenuModels()
     {
         $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_delete' => 0];
-        $menuModels = $this->where($map)->select();
+        $menuModels = $this->where($map)->order('weight desc')->select();
         return $menuModels;
     }
 
