@@ -130,7 +130,8 @@ class MenuModel extends ModelModel
     public function getListsByMenuTypeNamePid($menuTypeName, $pid, $delete)
     {
         $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_delete' => $delete];
-        $MenuModels = $this->where($map)->order('weight desc')->select();
+        //设置分页
+        $MenuModels = $this->where($map)->order('weight desc')->paginate(config('paginate.var_page'));
         return $MenuModels;
     }
 
@@ -244,7 +245,7 @@ class MenuModel extends ModelModel
     public function sonMenuModels()
     {
         $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_delete' => 0];
-        $menuModels = $this->where($map)->select();
+        $menuModels = $this->where($map)->order('weight desc')->select();
         return $menuModels;
     }
 
@@ -375,8 +376,9 @@ class MenuModel extends ModelModel
      */
     public function getIsHiddenAttr($value)
     {
-        $status = array('0' => '一', 
-            '1' => '是',
+        $status = array(
+            '0' => '是', 
+            '1' => '一',
             );
         if ($value === 0 || $value === 1) {
 
@@ -391,7 +393,8 @@ class MenuModel extends ModelModel
      */
     public function getIsHomeAttr($value)
     {
-        $status = array('0' => '一',
+        $status = array(
+            '0' => '一',
             '1' => '是',
             );
         if ($value === 0 || $value === 1) {
@@ -400,5 +403,21 @@ class MenuModel extends ModelModel
         }
 
         return $status['0'];
+    }
+
+    /**
+     * return
+     * 更新菜单权重
+     * author liuxi
+     */
+    public function updateMenuWeightById($id,$weight)
+    {
+        if (!$id || !is_numeric($id)) {
+            throw new Exception("ID不合法");
+        }
+        $data = array(
+            'weight' => intval($weight),
+            );
+        return $this->where('id','=',$id)->find()->save($data);
     }
 }

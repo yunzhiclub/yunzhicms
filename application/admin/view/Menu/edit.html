@@ -15,92 +15,139 @@
                             <input type="text" id="_title" name="title" placeholder="请输入标题" value="{$MenuModel->title}" />
                         </div>
                     </div>
-                    <div>
-                        <label>pid</label>
-                        <input type="text" name="pid" value="{$MenuModel->pid}" />
+                    <div class="control-group">
+                        <label class="control-label" for="_pid">pid</label>
+                        <div class="controls">
+                            <select class="form-control" name="pid" id="_pid">
+                                <option {eq value="0" name="$MenuModel->pid" }selected="selected" {/eq}value="0">根菜单</option>
+                                {volist name="MenuModels" id="_MenuModel"}
+                                    <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">{$_MenuModel->title}</option>
+                                    {volist name="_MenuModel->sonMenuModels()" id="_MenuModel"}
+                                        <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">|----{$_MenuModel->title}</option>
+                                        {volist name="_MenuModel->sonMenuModels()" id="_MenuModel"}
+                                            <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">|----|----{$_MenuModel->title}</option>
+                                        {/volist}
+                                    {/volist}
+                                {/volist}
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label>对应组件名</label>
-                        <input type="text" name="component_name" value="{$MenuModel->component_name}" />
+                    <div class="control-group">
+                        <label class="control-label">对应组件名</label>
+                        <div class="controls">
+                            <select class="form-control" name="component_name">
+                                {volist name="Components" id="Component"}
+                                    <option value="{$Component->name}" {eq name="Component->name" value="$MenuModel->component_name" }selected="selected" {/eq}>{$Component->name}</option>
+                                {/volist}
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label>菜单类型</label>
-                        <select class="form-control" name="menu_type_name">
-                            {volist name="MenuTypeModels" id="MenuTypeModel"}
-                            <option value="{$MenuTypeModel->name}" {eq name="$MenuTypeModel->name" value="$MenuModel->menu_type_name" }selected="selected" {/eq}>{$MenuTypeModel->name}</option>
-                            {/volist}
-                        </select>
+                    <div class="control-group">
+                        <label class="control-label" for="_menu_type_name">菜单类型</label>
+                        <div class="controls">
+                            <select class="form-control" name="menu_type_name" id="_menu_type_name">
+                                {volist name="MenuTypeModels" id="MenuTypeModel"}
+                                    <option value="{$MenuTypeModel->name}" {eq name="$MenuTypeModel->name" value="$MenuModel->menu_type_name" }selected="selected" {/eq}>{$MenuTypeModel->name}</option>
+                                {/volist}
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">url</label>
-                        <input type="text" name="url" value="{$MenuModel->url}" />
+                    <div class="control-group">
+                        <label class="control-label" for="_url">url</label>
+                        <div class="controls">
+                            <input type="text" name="url" value="{$MenuModel->url}" id="_url"/>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">是否隐藏</label>
-                        <input type="text" name="is_hidden" value="{$MenuModel->is_hidden}" />
+                    <div class="control-group">
+                        <label class="control-label" for="_is_hidden">是否显示</label>
+                        <div class="controls">
+                            <select class="form-control" name="is_hidden" id="_is_hidden">
+                                <option value="1">是</option>
+                                <option value="0" {eq name="$MenuModel->getData('is_hidden')" value="0"}selected="selected"{/eq}>否</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">权重</label>
-                        <input type="text" name="weight" value="{$MenuModel->weight}">
+                    <div class="control-group">
+                        <label class="control-label" for="_weight">权重</label>
+                        <div class="controls">
+                            <input type="text" name="weight" value="{$MenuModel->weight}" id="_weight" />
+                        </div>
                     </div>
-                    <div>
-                        <label for="">描述信息</label>
-                        <input type="text" name="description" value="{$MenuModel->description}" />
+                    <div class="control-group">
+                        <label class="control-label" for="_description">描述信息</label>
+                        <div class="controls">
+                            <input type="text" name="description" value="{$MenuModel->description}" id="_description" />
+                        </div>
                     </div>
-                    <div>
-                        <label for="">状态</label>
-                        <input type="text" name="status" value="{$MenuModel->status}" />
+                    <div class="control-group">
+                        <label class="control-label" for="_status">状态</label>
+                        <div class="controls">
+                            <select class="form-control" name="status" id="_status">
+                                <option value="1">禁用</option>
+                                <option value="0" {eq name="$MenuModel->getData('status')" value="0"}selected="selected"{/eq}>启用</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">配置信息</label>
-                        <ol>
-                            {foreach name="MenuModel->getConfig()" key="key" id="_config"}
-                            <li>
-                                <label>{$_config['title']}</label>
-                                <input type="text" name="config[{$key}]" value="{$_config['value']}">
-                            </li>
-                            {/foreach}
-                        </ol>
+                    <div class="control-group">
+                        <label class="control-label" for="_getConfig">配置信息</label>
+                        <div class="controls">
+                            <ol id="_getConfig">
+                                {foreach name="MenuModel->getConfig()" key="key" id="_config"}
+                                <li>
+                                    <label>{$_config['title']}</label>
+                                    <input type="text" name="config[{$key}]" value="{$_config['value']}">
+                                </li>
+                                {/foreach}
+                            </ol>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">过滤器信息</label>
-                        <ol>
-                            {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
-                        </ol>
+                    <div class="control-group">
+                        <label class="control-label" for="_Filter">过滤器信息</label>
+                        <div class="controls">
+                            <ol id="_Filter">
+                                {foreach name="MenuModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
+                            </ol>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">用户组权限：</label>
-                        <ul>
-                            {volist name="userGroupModels" id="_UserGroupModel"}
-                            <li>
-                                {$_UserGroupModel->title}
-                                <ul>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" {eq name="_UserGroupModel->isIndexAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />浏览</label>
-                                    </li>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" {eq name="_UserGroupModel->isReadAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />查看</label>
-                                    </li>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" {eq name="_UserGroupModel->isCreateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />新增</label>
-                                    </li>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" {eq name="_UserGroupModel->isUpdateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />编辑</label>
-                                    </li>
-                                    <li>
-                                        <label for="">
-                                            <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" {eq name="_UserGroupModel->isDeleteAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />删除</label>
-                                    </li>
-                                </ul>
-                            </li>
-                            {/volist}
-                        </ul>
+                    <div class="control-group">
+                        <label class="control-label" for="_access">用户组权限：</label>
+                        <div class="controls">
+                            <ul id="_access">
+                                {volist name="userGroupModels" id="_UserGroupModel"}
+                                <li>
+                                    {$_UserGroupModel->title}
+                                    <ul>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" {eq name="_UserGroupModel->isIndexAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />浏览</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" {eq name="_UserGroupModel->isReadAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />查看</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" {eq name="_UserGroupModel->isCreateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />新增</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" {eq name="_UserGroupModel->isUpdateAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />编辑</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" {eq name="_UserGroupModel->isDeleteAllowedByMenuModel($MenuModel)" value="true" }checked="checked" {/eq} />删除</label>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> 保存</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
