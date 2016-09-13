@@ -13,8 +13,9 @@ class UserController extends AdminController
      */
     public function indexAction()
     {
+        $Pagesize   = 5;
         $userModels = new UserModel;
-        $userModels = $userModels->where('is_deleted', '=', 0)->paginate();
+        $userModels = $userModels->where('is_deleted', '=', 0)->paginate($Pagesize);
         $this->assign('userModels', $userModels);
 
         return $this->fetch();
@@ -44,18 +45,16 @@ class UserController extends AdminController
      */
     public function updateAction()
     {
-        $id = input('input.id');
+        $data = input('param.');
 
-        $UserModel        = UserModel::get($id);
-        $UserModel->name  = input('post.name');
-        $UserModel->password = input('post.password');
-        $UserModel->email = input('post.email');
-        
+        $UserModel        = UserModel::get($data['id']);
+        $UserModel->setData('name', $data['name']);
+        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('password', $data['password']);
+        $UserModel->setData('qq_open_id', $data['qq_open_id']);
+        $UserModel->setData('user_group_name', $data['user_group_name']);
 
-        if (false !== $UserModel->save()) {  
-
-            return $this->success('更新成功',url('@admin/user'));
-        }
+        $UserModel->save(); 
         return $this->success('更新成功', url('@admin/user'));
     }
 

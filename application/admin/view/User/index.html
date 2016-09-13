@@ -14,6 +14,7 @@
                     <tr>
                         <th>序号</th>
                         <th>email</th>
+                        <th>姓名</th>
                         <th>用户组</th>
                         <th>状态</th>
                         <th>创建时间</th>
@@ -23,6 +24,7 @@
                     <tr>
                         <td>{$key}</td>
                         <td>{$_UserModel->getData('email')}</td>
+                        <td>{$_UserModel->getData('name')}</td>
                         <td>{$_UserModel->getUserGroupModel()->getData('title')}</td>
                         <td>{$_UserModel->getData('status')}</td>
                         <td>{$_UserModel->getData('create_time')}</td>
@@ -31,8 +33,8 @@
                         </td>
                     </tr>
                     {/volist}
+                    </table>
                     {$userModels->render()}
-                </table>
             </div>
         </div>
     </div>
