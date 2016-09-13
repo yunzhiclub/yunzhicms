@@ -89,7 +89,7 @@ class UserGroupController extends AdminController
         //判断是否还有用户
         $UserModels = $UserGroupModel->getAllUserModel($id);
         if (!empty($UserModels)) {
-            return $this->error('不能删除含有子人员');
+            return $this->error('含有子用户,不能删除');
         }
 
         //删除中间表信息

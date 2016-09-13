@@ -8,26 +8,30 @@
             </div>
             <div class="box-content">
                 <form class="form-horizontal" action="{:url('@admin/usergroup')}" method="post">
-                    <div>
-                        <label for="_title">标题</label>
-                        <div>
-                            <input type="text" id="_title" name="title" />
+                    <div class="control-group">
+                        <label class="control-label" for="_title">标题</label>
+                        <div class="controls">
+                            <input type="text" name="title" id="_title"/>
                         </div>
                     </div>
-                    <div>
-                        <label for="_name">机读字段(禁用中文)</label>
-                        <div>
+                    <div class="control-group">
+                        <label class="control-label" for="_name">机读字段(禁用中文)</label>
+                        <div class="controls">
                             <input type="text" id="_name" name="name" />
                         </div>
                     </div>
-                    <div>
-                        <label for="_description">描述</label>
-                        <div>
-                            <input type="text" id="_description" name="description" />
+                    <div class="control-group">
+                        <label class="control-label" for="_description">描述</label>
+                        <div class="controls">
+                            <input type="text" id="_description" name="description" />                        
                         </div>
                     </div>
+                    <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> 保存</button>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
             </form>
         </div>
     </div>
