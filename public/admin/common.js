@@ -8,7 +8,6 @@ $('#button-weight').click(function(){
     });
     var url = SCOPE.weight_url;
     $.post(url,postData,function(result){
-        console.log(result);
         if(result.status === "SUCCESS"){
             //成功
              window.location.reload();
