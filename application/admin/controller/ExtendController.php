@@ -7,4 +7,9 @@ class ExtendController extends AdminController
     {
         return $this->fetch();
     }
+
+    public function createAction()
+    {
+        return 'hello';
+    }
 }

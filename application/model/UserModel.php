@@ -41,6 +41,7 @@ class UserModel extends ModelModel
     {
         // 销毁tokens
         Session::clear();
+        return true;
     }
 
     /**
