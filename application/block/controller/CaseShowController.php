@@ -5,7 +5,7 @@ namespace app\block\controller;
  */
 class CaseshowController extends BlockController
 {
-	public function fetchHtml()
+	public function index()
 	{
 		return $this->fetch('block@Caseshow/fetchHtml');
 	}

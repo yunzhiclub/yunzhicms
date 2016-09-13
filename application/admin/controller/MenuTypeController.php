@@ -74,28 +74,38 @@ class MenutypeController extends AdminController
         return $this->success('保存成功', url('@admin/menutype'));
     }
 
+    /**
+     *return
+     *权重排序
+     *author liuxi
+     */
     public function weightAction()
     {
-        $errors = array();
+        $data['status'] = "ERROR";
+        $data['message'] = "";
+
+        //判断传过来的值是否为空
         $weight = isset($_POST['weight'])?$_POST['weight']:array();
-        if($weight) {
-            try {
-                foreach ($weight as $menuId=>$value) {
-                    //执行更新
-                    $MenuModel = new MenuModel;
-                    $id = $MenuModel->updateMenuWeightById($menuId, $value);
-                    if (false === $id) {
-                        $errors[] = $menuId;
-                    }
+
+        //判断是否为空数组
+        if (!empty($weight)) {
+            foreach ($weight as $menuId=>$value) {
+                //执行更新
+                $MenuModel = new MenuModel;
+                $id = $MenuModel->updateMenuWeightById($menuId, $value);
+                if (false === $id) {
+                    $data['message'][] = $menuId;
                 }
-            }catch(\Exception $e) {
-                return $this->error('执行错误:' . $e->getMessage());
             }
-            if ($errors) {
-                return $this->error( '排序失败-' . implode(',', $errors), url('@admin/menutype'));
-            }
-            return $this->error('排序成功', url('@admin/menutype'));
         }
-        return $this->error('排序数据失败', url('@admin/menutype'));
+
+        //更新成功，返回
+        if ("" === $data['message']) {
+            $data['status'] = "SUCCESS";
+            return $data;
+        }
+        //更新失败，返回
+        $data['message'] = '排序失败-' . implode(',', $data['message']);
+        return $data;
     }
 }

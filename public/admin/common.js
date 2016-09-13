@@ -1,4 +1,5 @@
 $('#button-weight').click(function(){
+
     //获取weight内容
     var data = $("#yunzhicms-weight").serializeArray();
     postData = {};
@@ -7,12 +8,13 @@ $('#button-weight').click(function(){
     });
     var url = SCOPE.weight_url;
     $.post(url,postData,function(result){
-        if(result.status == 1){
+        if(result.status === "SUCCESS"){
             //成功
-            return dialog.success(result.message,result['data']['jump_url']);
-        }else if(result.status == 0){
+             window.location.reload();
+        }else if(result.status === "ERROR"){
             //失败
-            return dialog.error(result.message,result['data']['jump_url']);
+            alert('更新权重失败');
         }
     },"JSON");
+
 })

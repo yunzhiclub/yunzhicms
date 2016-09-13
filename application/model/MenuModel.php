@@ -365,8 +365,9 @@ class MenuModel extends ModelModel
      */
     public function getIsHiddenAttr($value)
     {
-        $status = array('0' => '一', 
-            '1' => '是',
+        $status = array(
+            '0' => '是', 
+            '1' => '一',
             );
         if ($value === 0 || $value === 1) {
 
@@ -381,7 +382,8 @@ class MenuModel extends ModelModel
      */
     public function getIsHomeAttr($value)
     {
-        $status = array('0' => '一',
+        $status = array(
+            '0' => '一',
             '1' => '是',
             );
         if ($value === 0 || $value === 1) {
@@ -393,7 +395,9 @@ class MenuModel extends ModelModel
     }
 
     /**
+     * return
      * 更新菜单权重
+     * author liuxi
      */
     public function updateMenuWeightById($id,$weight)
     {
