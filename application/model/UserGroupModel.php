@@ -101,29 +101,4 @@ class UserGroupModel extends ModelModel
             return false;
         }
     }
-
-    /**
-     * 取出用户组对应的所有用户
-     * @return  array
-     * @author gaoliming
-     */
-    public function getAllUserMedel($username)
-    {
-        $UserModel = new UserModel;
-        $map = array('user_group_name' => $username);
-        return $UserModel->where($map)->select();
-    }
-    
-
-    /**
-     * 返回关联对象
-     * @return object
-     * @author  gaoliming 
-     */
-    public function AccessUserGroupBlock()
-    {
-        $UserGroupBlock = new AccessUserGroupBlockModel;
-        $this->data['AccessUserGroupBlock'] = $UserGroupBlock;
-        return $UserGroupBlock;
-    }
 }

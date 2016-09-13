@@ -3,6 +3,10 @@ namespace app\admin\controller;
 
 use app\model\UserGroupModel;
 
+use app\model\AccessUserGroupBlockModel;   //AccessUserGroupBlockModel
+
+use app\model\AccessUserGroupMenuModel;    //AccessUserGroupMenuModel
+
 class UserGroupController extends AdminController
 {
     /**
@@ -64,26 +68,35 @@ class UserGroupController extends AdminController
      */
     public function deleteAction($id)
     {
+        //获取键值
         $UserGroupModel = UserGroupModel::get($id);
+
+        //获取用户组是否实是系统自己设置的
+        if (1 === $UserGroupModel->is_system) {
+            return $this->error('此用户组是系统默认设置不能删除');
+        }
+
         //判断是否还有用户
         $UserModels = $UserGroupModel->getAllUserMedel($id);
         if (!empty($UserModels)) {
-            
             return $this->error('不能删除含有子人员');
         }
 
-        $UserGroupModel->setData('is_deleted', 1);
         //删除中间表信息
         $map = array('user_group_name' => $id);
-        if (false === $UserGroupModel->AccessUserGroupBlock()->where($map)->delete()) {
-
+        $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
+        $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
+        if (false === $AccessUserGroupBlockModel->where($map)->delete()) {
             return $this->error('删除失败');
         }
-        if (false === $UserGroupModel->save()) {
-            
+        if (false === $AccessUserGroupMenuModel->where($map)->delete()) {
             return $this->error('删除失败');
         }
 
+        //将用户组删除
+        $UserGroupModel->setData('is_deleted', 1)->save();
+
+        //返回首页
         return $this->success('删除成功', url('@admin/usergroup/')); 
     }
 
