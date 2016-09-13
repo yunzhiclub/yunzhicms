@@ -50,8 +50,6 @@ class UserController extends AdminController
         $UserModel        = UserModel::get($data['id']);
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
-        $UserModel->setData('password', $data['password']);
-        $UserModel->setData('qq_open_id', $data['qq_open_id']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
 
         $UserModel->save(); 
