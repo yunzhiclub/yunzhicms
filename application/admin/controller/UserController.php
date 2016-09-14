@@ -13,9 +13,17 @@ class UserController extends AdminController
      */
     public function indexAction()
     {
-        $pagesize   = 5;
+        //取分页配置信息
+        $pageSize = config('paginate.var_page');
         $userModels = new UserModel;
-        $userModels = $userModels->where('is_deleted', '=', 0)->paginate($pagesize);
+
+        //设置条件
+        $map = array(
+            'is_deleted' => 0
+            );
+
+        //取出数据并传进V层
+        $userModels = $userModels->where($map)->paginate($pagesize);
         $this->assign('userModels', $userModels);
 
         //返回V层
@@ -56,7 +64,7 @@ class UserController extends AdminController
         //存进各项数据
         $UserModel        = UserModel::get($data['id']);
         $UserModel->setData('name', $data['name']);
-        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
         $UserModel->save(); 
         return $this->success('更新成功', url('@admin/user'));
@@ -74,15 +82,22 @@ class UserController extends AdminController
 
         $UserModel = new UserModel;
         $UserModel->setData('name', $data['name']);
-        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-        $UserModel->save();
-        return $this->success('操作成功', url('@admin/user/'));
+
+        //用try catch 解决邮箱重复的问题
+        try{
+            $UserModel->save();
+            return $this->success('操作成功', url('@admin/user/'));
+           } catch (\Exception $e) {
+            return $this->success('邮箱重复', url('@admin/user/create'));
+        }
+        
     }
 
     public function createAction()
     {
-        //取出用户组
+        //取出用户组,并传进V层
         $User = new UserModel;
         $UserGroup = $User->userGroup();
         $this->assign('UserGroups', $UserGroup); 

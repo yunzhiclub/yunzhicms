@@ -27,7 +27,8 @@ class Validate
     ];
 
     // 当前验证的规则
-    protected $rule = [];
+    protected $rule = [
+    ];
 
     // 验证提示信息
     protected $message = [];
