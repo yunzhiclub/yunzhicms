@@ -56,7 +56,7 @@ class UserController extends AdminController
         //存进各项数据
         $UserModel        = UserModel::get($data['id']);
         $UserModel->setData('name', $data['name']);
-        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
         $UserModel->save(); 
         return $this->success('更新成功', url('@admin/user'));
@@ -74,7 +74,7 @@ class UserController extends AdminController
 
         $UserModel = new UserModel;
         $UserModel->setData('name', $data['name']);
-        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
 
         //用try catch 解决邮箱重复的问题
