@@ -17,6 +17,7 @@ class SliderController extends BlockController
     {
         // 生成token并送入V层，用于编辑该区块.首先进行权限的判断
         if (AccessUserGroupBlockModel::checkCurrentUserIsAllowedByBlockIdAndAction($this->BlockModel->getData('id'), 'edit')) {
+
             $token = $this->BlockModel->makeToken('Slider', 'edit');
         } else {
             $token = '';
