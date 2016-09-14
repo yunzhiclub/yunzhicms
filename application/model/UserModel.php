@@ -96,7 +96,12 @@ class UserModel extends ModelModel
      */
     public function userGroup()
     {
-        return UserGroupModel::all();
+        //索引
+        $map = array(
+            'is_admin' => 0
+            );
+        $UserGroupModel = new UserGroupModel;
+        return $UserGroupModel->where($map)->select();
     }
 
 }

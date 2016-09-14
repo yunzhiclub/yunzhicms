@@ -20,7 +20,8 @@ class UserGroupController extends AdminController
 
         //获取config.php中的分页配置信息
         $pageSize = config('paginate.var_page');
-    	$UserGroupModels = $UserGroupModel->where('is_deleted', '=', 0)->paginate($pageSize);
+        $map = array('is_deleted' => 0);
+    	$UserGroupModels = $UserGroupModel->where($map)->paginate($pageSize);
     	$this->assign('UserGroupModels', $UserGroupModels);
         return $this->fetch();
     }
@@ -107,7 +108,7 @@ class UserGroupController extends AdminController
         $UserGroupModel->setData('is_deleted', 1)->save();
 
         //返回首页
-        return $this->success('删除成功', url('@admin/usergroup/')); 
+        return $this->success('删除成功', url('@admin/usergroup')); 
     }
 
 }

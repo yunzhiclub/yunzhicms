@@ -56,7 +56,7 @@ class UserController extends AdminController
         //存进各项数据
         $UserModel        = UserModel::get($data['id']);
         $UserModel->setData('name', $data['name']);
-        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
         $UserModel->save(); 
         return $this->success('更新成功', url('@admin/user'));
@@ -74,7 +74,7 @@ class UserController extends AdminController
 
         $UserModel = new UserModel;
         $UserModel->setData('name', $data['name']);
-        $UserModel->setData('email', $data['email']);
+        $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
         $UserModel->save();
         return $this->success('操作成功', url('@admin/user/'));
@@ -98,10 +98,10 @@ class UserController extends AdminController
     public function deleteAction($id)
     {
         $UserModel = UserModel::get($id);
-        $UserModel->setData('is_deleted', 1);
-        if (false === $UserModel->save()) {
-            return $this->error('删除失败');
+        if (1 === $UserModel->is_admin) {
+            return $this->error('此用户为超级管理员不能删除');
         }
+        $UserModel->setData('is_deleted', 1)->save();
         return $this->success('删除成功', url('@admin/user/'));
     }
 }
