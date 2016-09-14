@@ -6,6 +6,8 @@ use app\model\MenuTypeModel;            // 菜单类型
 use app\model\UserGroupModel;           // 用户组
 use app\model\AccessUserGroupMenuModel; // 用户组 菜单 权限
 use app\model\ComponentModel;           // 组件
+use app\model\AccessMenuBlockModel;     // 菜单 区块
+use app\model\AccessMenuPluginModel;
 
 class MenuController extends AdminController
 {
@@ -132,26 +134,23 @@ class MenuController extends AdminController
 
         //判断是否含有二级菜单
         $sonMenuModels = $MenuModel->sonMenuModels();
-        $MenuModel->setData('is_delete', 1);
-        $map = array('menu_id' => $id);
-        if (false === $MenuModel->MenuBlock()->where($map)->delete()) {
-            
-            return $this->error('删除失败');
-        }
-        if (false === $MenuModel->MenuPlugin()->where($map)->delete()) {
-            
-            return $this->error('删除失败');
-        }
-
-        if (false === empty($sonMenuModels)) {
+        if (!empty($sonMenuModels)) {
             
             return $this->error('不能删除因为含有子菜单');
         }
 
-        if (false === $MenuModel->save()) {
+        //删除中间表
+        $map = array('menu_id' => $id);
+        if (false === $MenuModel->->where($map)->delete()) {
+            return $this->error('删除失败');
+        }
+        if (false === $MenuModel->->where($map)->delete()) {
             
             return $this->error('删除失败');
         }
+
+        //删除菜单
+        $MenuModel->setData('is_delete', 1)->save();
 
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('删除成功', url('@admin/menuType/' . $menuType));
