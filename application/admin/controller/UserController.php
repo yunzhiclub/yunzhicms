@@ -13,9 +13,8 @@ class UserController extends AdminController
      */
     public function indexAction()
     {
-        $pagesize   = 5;
         $userModels = new UserModel;
-        $userModels = $userModels->where('is_deleted', '=', 0)->paginate($pagesize);
+        $userModels = $userModels->where('is_deleted', '=', 0)->paginate(config('paginate.var_page'));
         $this->assign('userModels', $userModels);
 
         //返回V层
@@ -76,15 +75,7 @@ class UserController extends AdminController
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-
-        //用try catch 解决邮箱重复的问题
-        try{
-            $UserModel->save();
-            return $this->success('操作成功', url('@admin/user/'));
-           } catch (\Exception $e) {
-            return $this->success('邮箱重复', url('@admin/user/create'));
-        }
-        
+        return $this->success('操作成功', url('@admin/user/'));  
     }
 
     public function createAction()
