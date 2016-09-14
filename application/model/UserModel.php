@@ -99,4 +99,27 @@ class UserModel extends ModelModel
         return UserGroupModel::all();
     }
 
+    /**
+     * 验证数据库中是否存在输入的email
+     * @param  string  $email  c层传来的数据
+     * @return boolean  
+     * @author liuyanzhao
+     */
+    public function isSameEmail($email)            
+    {
+        $map = array(
+            'is_deleted' => 0,
+            'username'  => $email
+            );
+        $UserModel = new UserModel;
+        $User = $UserModel->where($map)->find();
+
+        //判断数据表里面有没有相同的email
+        if ('' === $User->getData('username')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }
