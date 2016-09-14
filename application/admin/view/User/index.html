@@ -24,7 +24,7 @@
                         <td>{$key}</td>
                         <td>{$_UserModel->getData('email')}</td>
                         <td>{$_UserModel->getData('name')}</td>
-                        <td>{$_UserModel->getData('user_group_name')}</td>
+                        <td>{$_UserModel->UserGroupModel()->title}</td>
                         <td>
                             {eq value="1" name="$_UserModel->getData('status')"}
                             <span class="badge">
