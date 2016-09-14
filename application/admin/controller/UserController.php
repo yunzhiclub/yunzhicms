@@ -85,7 +85,7 @@ class UserController extends AdminController
     {
         //取出用户组
         $User = new UserModel;
-        $UserGroup = $User->Usergroups();
+        $UserGroup = $User->userGroup();
         $this->assign('UserGroups', $UserGroup); 
         return $this->fetch();
     }

@@ -88,6 +88,12 @@ class UserModel extends ModelModel
         return date('Y/m/d',$createtime);
     }
 
+    /**
+     * 取UserGroup信息
+     * @param  
+     * @return object
+     * @author liuyanzhao
+     */
     public function userGroup()
     {
         return UserGroupModel::all();
