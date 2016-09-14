@@ -29,15 +29,6 @@ class MenuModel extends ModelModel
         $this->depth = $depth;
     }
 
-    public function getRoute()
-    {
-        if (null === $this->route) {
-            
-        }
-
-        return $this->route;
-    }
-
     public function getDepth()
     {
         return $this->depth;
@@ -96,21 +87,28 @@ class MenuModel extends ModelModel
             // 定义路由关键字
             $routeKeys = ['edit', ':id', 'delete', 'create', 'save'];
             $routeInfo = Request::instance()->routeInfo();
-            $rule = $routeInfo['rule'];
-            
-            // 如果是空信息，则说明执行的为首页。手动添加首页路由规则
-            if (!is_array($rule)) {
-                $rule = [""];
-            }
-            
-            // 对路由信息进行接拼后，依次次查询菜单表，如果菜单url与当前拼接的URL相同，则认为找到了菜单项
-            $map = [];
-            do {
-                $map['url'] = implode('/', $rule);
-                self::$currentMenuModel = MenuModel::get($map);
-            } while ('' === self::$currentMenuModel->getData('id') && array_pop($rule));
+            if (empty($routeInfo))
+            {
+                $map = ['is_home' => 1];
+            } else {
+                $rules = $routeInfo['rule'];
+                $url = '';
+                // 菜单列表为树状，需要先找出第一层结点，然后再找出下层结点
+                foreach ($rules as $key => $rule)
+                {
 
-            // 未找到菜单项，则默认返回首页
+                    // 检测是否为路由关键字, 检测到，则直接跳到下一个循环
+                    if (in_array($rule, $routeKeys))
+                    {
+                        unset($rules[$key]);
+                    }
+                }
+                $url = implode("/", $rules);
+                $map = ['url' => $url];
+            }
+            self::$currentMenuModel = self::get($map);
+
+            // 示找到菜单项，则默认返回首页
             if ('' === self::$currentMenuModel->getData('id')) {
                 $map = ['is_home' => 1];
                 self::$currentMenuModel = self::get($map);
@@ -123,13 +121,14 @@ class MenuModel extends ModelModel
     /**
      * 获取某个菜单类型的所有的列表
      * 先转化为树状，先转化为列表，这样顺序输出后，就有了上下级的结构
-     * @param  string $menuTypeName 菜单类型名
+     * @param  string $menuTypeName 菜单类型名 int $is_deleted 删除
+     * int $pid 父菜单ID
      * @return lists               
      * 
      */
-    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $delete)
+    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_deleted = null)
     {
-        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_delete' => $delete];
+        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_deleted' => $is_deleted];
         $MenuModels = $this->where($map)->order('weight desc')->select();
         return $MenuModels;
     }
@@ -221,7 +220,7 @@ class MenuModel extends ModelModel
         {
             // 找到当前用户组(每个用户只能有一个用户组)
             $currentFrontUserModel = UserModel::getCurrentFrontUserModel();
-            $currentFrontUserGroupModel = $currentFrontUserModel->UserGroupModel();
+            $currentFrontUserGroupModel = $currentFrontUserModel->getUserGroupModel();
 
             $map = ['pid' => $this->getData('id'), 'status' => 0, 'is_hidden' => '0'];
             $this->availableSonMenuModels = $this->where($map)->select();
@@ -243,7 +242,7 @@ class MenuModel extends ModelModel
      */
     public function sonMenuModels()
     {
-        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_delete' => 0];
+        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_deleted' => 0];
         $menuModels = $this->where($map)->order('weight desc')->select();
         return $menuModels;
     }
@@ -321,19 +320,11 @@ class MenuModel extends ModelModel
     }
 
 
-    /**
-     * 获取可用的子菜单模型
-     * @param    int                   $pid          父级ID
-     * @param    string                   $menuTypeName 菜单类型
-     * @return   lists                                 
-     * @author panjie panjie@mengyunzhi.com
-     * @DateTime 2016-09-13T08:55:26+0800
-     */
     static public function getAvailableSonMenuModelsByPidMenuTypeName($pid, $menuTypeName)
     {
         // 找到当前用户组(每个用户只能有一个用户组)
         $currentFrontUserModel = UserModel::getCurrentFrontUserModel();
-        $currentFrontUserGroupModel = $currentFrontUserModel->UserGroupModel();
+        $currentFrontUserGroupModel = $currentFrontUserModel->getUserGroupModel();
 
         $map = ['pid' => $pid, 'status' => 0, 'is_hidden' => '0', 'menu_type_name' => $menuTypeName];
         $MenuModel = new MenuModel;
@@ -375,9 +366,8 @@ class MenuModel extends ModelModel
      */
     public function getIsHiddenAttr($value)
     {
-        $status = array(
-            '0' => '是', 
-            '1' => '一',
+        $status = array('0' => '一', 
+            '1' => '是',
             );
         if ($value === 0 || $value === 1) {
 
@@ -392,8 +382,7 @@ class MenuModel extends ModelModel
      */
     public function getIsHomeAttr($value)
     {
-        $status = array(
-            '0' => '一',
+        $status = array('0' => '一',
             '1' => '是',
             );
         if ($value === 0 || $value === 1) {
@@ -402,21 +391,5 @@ class MenuModel extends ModelModel
         }
 
         return $status['0'];
-    }
-
-    /**
-     * return
-     * 更新菜单权重
-     * author liuxi
-     */
-    public function updateMenuWeightById($id,$weight)
-    {
-        if (!$id || !is_numeric($id)) {
-            throw new Exception("ID不合法");
-        }
-        $data = array(
-            'weight' => intval($weight),
-            );
-        return $this->where('id','=',$id)->find()->save($data);
     }
 }
