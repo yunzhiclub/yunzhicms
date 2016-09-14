@@ -13,9 +13,17 @@ class UserController extends AdminController
      */
     public function indexAction()
     {
-        $pagesize   = 5;
+        //取分页配置信息
+        $pageSize = config('paginate.var_page');
         $userModels = new UserModel;
-        $userModels = $userModels->where('is_deleted', '=', 0)->paginate($pagesize);
+
+        //设置条件
+        $map = array(
+            'is_deleted' => 0
+            );
+
+        //取出数据并传进V层
+        $userModels = $userModels->where($map)->paginate($pagesize);
         $this->assign('userModels', $userModels);
 
         //返回V层
