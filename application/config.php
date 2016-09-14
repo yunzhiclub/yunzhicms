@@ -58,4 +58,7 @@ return [
         'prefix' => 'yunzhicms',
         'expire' => 1800,
     ],
+
+    //默认重置密码
+    'resetPassword' => 111111,
 ];

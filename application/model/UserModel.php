@@ -104,4 +104,23 @@ class UserModel extends ModelModel
         return $UserGroupModel->where($map)->select();
     }
 
+    /**
+     * 重置密码
+     * @param  int $id
+     * @return   string
+     * @author gaoliming   
+     */
+    public function resetPassword($id)
+    {
+        if ((int)$id === 0) {
+            return false;
+        } else {
+            //创建并保存密码
+            $this->password = config('resetPassword');
+            $this->save();
+            return true;
+        }
+        return true;
+    }
+
 }
