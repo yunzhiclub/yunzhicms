@@ -16,7 +16,7 @@ class Yz extends Taglib
     protected $tags = [
         // 标签定义： attr 属性列表 close 是否闭合（0 或者1 默认1） alias 标签别名 level 嵌套层次
         'block'      => ['attr' => 'position', 'close' => 0],
-        'plugin'     => ['attr' => 'position', 'close' => 0],
+        'plugin'     => ['attr' => 'position,object', 'close' => 0],
     ];
 
     /**

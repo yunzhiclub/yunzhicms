@@ -613,6 +613,17 @@ class Common{
     }
 
     /**
+     * 清空tokens
+     * @return   null                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-14T17:02:32+0800
+     */
+    static public function clearTokens()
+    {
+        Session::set('tokens', null);
+    }
+
+    /**
      * 通过token值，获取token中保存的信息
      * @param    string                   &$token 
      * @return   array                           
