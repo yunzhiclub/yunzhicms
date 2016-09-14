@@ -30,10 +30,15 @@ class UserController extends AdminController
      */
     public function editAction($id)
     {
+        //根据id取数据
         $id = input('id');
         $UserModel = UserModel::get($id);
+
+        //把取到的数据传进V层
         $this->assign('UserModel', $UserModel);
-        $UserGroup = $UserModel->Usergroups();
+
+        //把用户管理界面的用户组取出来并传进V层
+        $UserGroup = $UserModel->userGroup();
         $this->assign('UserGroups', $UserGroup);
         return $this->fetch();
     }
@@ -48,11 +53,11 @@ class UserController extends AdminController
     {
         $data = input('param.');
 
+        //存进各项数据
         $UserModel        = UserModel::get($data['id']);
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-
         $UserModel->save(); 
         return $this->success('更新成功', url('@admin/user'));
     }
@@ -71,7 +76,6 @@ class UserController extends AdminController
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-
         $UserModel->save();
         return $this->success('操作成功', url('@admin/user/'));
     }
@@ -80,7 +84,7 @@ class UserController extends AdminController
     {
         //取出用户组
         $User = new UserModel;
-        $UserGroup = $User->Usergroups();
+        $UserGroup = $User->userGroup();
         $this->assign('UserGroups', $UserGroup); 
         return $this->fetch();
     }
