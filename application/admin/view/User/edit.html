@@ -5,43 +5,43 @@
             <div class="box-header">
                 <i class="icon-table"></i>
                 <h5>
-             	修改用户信息
+                修改用户信息
                 </h5>
             </div>
             <div>状态：</div>
             <br>
             <form action="{:url('@admin/user/' . $UserModel->id)}" method="post" class="form-horizontal">
-                    <div class="control-group">
-                        <label class="control-label" for="_title">邮箱</label>
-                        <div class="controls">
-                            <input type="email" id="_title" value="{$UserModel->email}" name="email" placeholder="请输入邮箱" />
-                        </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">用户名</label>
+                    <div class="controls">
+                        <input type="email" id="_title" value="{$UserModel->email}" name="username" placeholder="请输入邮箱" />
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="_title">姓名</label>
-                        <div class="controls">
-                            <input type="text" id="_title" value="{$UserModel->name}" name="name" placeholder="姓名" />
-                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">姓名</label>
+                    <div class="controls">
+                        <input type="text" id="_title" value="{$UserModel->name}" name="name" placeholder="姓名" />
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="_title">用户组</label>
-                        <div class="controls">
-                            <select name="user_group_name" class="form-control">
-                                {volist name="UserGroups" id="UserGroup"}
-                                <option value="{$UserGroup->name}">
-                                    {$UserGroup->name}
-                                </option>
-                                {/volist} 
-                            </select>
-                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">用户组</label>
+                    <div class="controls">
+                        <select name="user_group_name" class="form-control">
+                            {volist name="UserGroups" id="UserGroup"}
+                            <option value="{$UserGroup->name}" selected="selected">
+                                {$UserGroup->name}
+                            </option>
+                            {/volist}
+                        </select>
                     </div>
-                    <div class="control-group">
+                </div>
+                <div class="control-group"  style="margin-left:95px">
                     <label class="control-label">
                         <button type="submit" class="btn btn-primary">
-                        <i class="icon-ok"></i>
-                         提交</button>
-                     </label>
-                     </div>
+                            <i class="icon-ok"></i>提交
+                        </button>
+                    </label>
+                </div>
             </form>
         </div>
     </div>

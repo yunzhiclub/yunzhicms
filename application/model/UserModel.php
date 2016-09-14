@@ -19,7 +19,7 @@ class UserModel extends ModelModel
     {
         if (null === $this->UserGroupModel)
         {
-            $userGroupName = $this->getData('group_name');
+            $userGroupName = $this->getData('user_group_name');
             $this->UserGroupModel = UserGroupModel::get($userGroupName);
         }
         return $this->UserGroupModel;
@@ -82,14 +82,30 @@ class UserModel extends ModelModel
     }
 
     /**
-     * 
-     * @param  
-     * @return 
-     * @author 
+     * 增加时间戳的获取器
+     * @param  $createtime
+     * @return date
+     * @author liuyanzhao
      */
     public function getCreateTimeAttr($createtime)
     {
         return date('Y/m/d',$createtime);
+    }
+
+    /**
+     * 取UserGroup信息
+     * @param  
+     * @return object
+     * @author liuyanzhao
+     */
+    public function userGroup()
+    {
+        //索引
+        $map = array(
+            'is_admin' => 0
+            );
+        $UserGroupModel = new UserGroupModel;
+        return $UserGroupModel->where($map)->select();
     }
 
 }
