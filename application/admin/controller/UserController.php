@@ -76,13 +76,20 @@ class UserController extends AdminController
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-        $UserModel->save();
-        return $this->success('操作成功', url('@admin/user/'));
+
+        //用try catch 解决邮箱重复的问题
+        try{
+            $UserModel->save();
+            return $this->success('操作成功', url('@admin/user/'));
+           } catch (\Exception $e) {
+            return $this->success('邮箱重复', url('@admin/user/create'));
+        }
+        
     }
 
     public function createAction()
     {
-        //取出用户组
+        //取出用户组,并传进V层
         $User = new UserModel;
         $UserGroup = $User->userGroup();
         $this->assign('UserGroups', $UserGroup); 
