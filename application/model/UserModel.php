@@ -40,6 +40,10 @@ class UserModel extends ModelModel
         return $currentUserModel;
     }
 
+    static public function getCurrentUserModel()
+    {
+        return self::getCurrentFrontUserModel();
+    }
     static public function logout()
     {
         // 销毁tokens
@@ -96,7 +100,12 @@ class UserModel extends ModelModel
      */
     public function userGroup()
     {
-        return UserGroupModel::all();
+        //索引
+        $map = array(
+            'is_admin' => 0
+            );
+        $UserGroupModel = new UserGroupModel;
+        return $UserGroupModel->where($map)->select();
     }
 
     /**

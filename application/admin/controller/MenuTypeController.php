@@ -9,7 +9,7 @@ class MenutypeController extends AdminController
     {
         $MenuTypeModel = new MenuTypeModel;
         $map = array(
-            'is_delete' => 0
+            'is_deleted' => 0
             );
 
         //设置分页
@@ -39,23 +39,20 @@ class MenutypeController extends AdminController
             return $this->error('未找到相关记录');
         }
 
+        //取出菜单类型
+        $map = array('name' => $name);
+        $MenuTypeModel = MenuTypeModel::get($map);
+
         //判断里面是不是有菜单
         $MenuModel = new MenuModel;
         $MenuModels = $MenuModel->getListsByMenuTypeNamePid($name, 0, 0);
         
-        if (false === empty($MenuModels)) {
+        if (!empty($MenuModels)) {
             
             return $this->error('含有下一级菜单不能删除');
         }
 
-        $map = array('name' => $name);
-        $MenuTypeModel = MenuTypeModel::get($map);
-        $MenuTypeModel->setData('is_delete', 1);
-
-        if (false === $MenuTypeModel->save()) {
-            
-            return $this->error('删除失败');
-        }
+        $MenuTypeModel->setData('is_deleted', 1)->save();
 
         return $this->success('删除成功', url('@admin/menutype'));
     }
