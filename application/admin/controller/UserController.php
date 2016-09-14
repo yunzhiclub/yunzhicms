@@ -114,13 +114,14 @@ class UserController extends AdminController
     public function resetPasswordAction($id)
     {
         $UserModel = UserModel::get($id);
+
+        //将面重置
         $status = $UserModel->resetPassword($id);
         if ($status !== false) {
            return $this ->success('您的密码已重置，新密码为:' . config('resetPassword'), url('@admin/user'));
         } else {
             return $this->error('重置密码失败');
         }
-
     }
 
 }
