@@ -88,4 +88,9 @@ class UserModel extends ModelModel
         return date('Y/m/d',$createtime);
     }
 
+    public function userGroup()
+    {
+        return UserGroupModel::all();
+    }
+
 }
