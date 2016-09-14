@@ -8,11 +8,9 @@
                 修改用户信息
                 </h5>
             </div>
-            <div>状态：</div>
-            <br>
             <form action="{:url('@admin/user/' . $UserModel->id)}" method="post" class="form-horizontal">
                 <div class="control-group">
-                    <label class="control-label" for="_title">用户名</label>
+                    <label class="control-label" for="_title">邮箱</label>
                     <div class="controls">
                         <input type="email" id="_title" value="{$UserModel->email}" name="username" placeholder="请输入邮箱" />
                     </div>
