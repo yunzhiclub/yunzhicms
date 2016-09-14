@@ -6,8 +6,6 @@ use app\model\MenuTypeModel;            // 菜单类型
 use app\model\UserGroupModel;           // 用户组
 use app\model\AccessUserGroupMenuModel; // 用户组 菜单 权限
 use app\model\ComponentModel;           // 组件
-use app\model\AccessMenuBlockModel;     // 菜单 区块
-use app\model\AccessMenuPluginModel;    // 菜单 组件
 
 class MenuController extends AdminController
 {
@@ -134,27 +132,26 @@ class MenuController extends AdminController
 
         //判断是否含有二级菜单
         $sonMenuModels = $MenuModel->sonMenuModels();
-        if (!empty($sonMenuModels)) {
+        $MenuModel->setData('is_delete', 1);
+        $map = array('menu_id' => $id);
+        if (false === $MenuModel->MenuBlock()->where($map)->delete()) {
+            
+            return $this->error('删除失败');
+        }
+        if (false === $MenuModel->MenuPlugin()->where($map)->delete()) {
+            
+            return $this->error('删除失败');
+        }
+
+        if (false === empty($sonMenuModels)) {
+            
             return $this->error('不能删除因为含有子菜单');
         }
 
-        //删除中间表
-        $map = array('menu_id' => $id);
-        $AccessMenuPluginModel    = new AccessMenuPluginModel;
-        $AccessMenuBlockModel     = new AccessMenuBlockModel;
-        $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
-        if (false === $AccessMenuPluginModel->where($map)->delete()) {
+        if (false === $MenuModel->save()) {
+            
             return $this->error('删除失败');
         }
-        if (false === $AccessMenuBlockModel->where($map)->delete()) {
-            return $this->error('删除失败');
-        }
-        if (false === $AccessUserGroupMenuModel->where($map)->delete()) {
-            return $this->error('删除失败');
-        }
-
-        //删除菜单
-        $MenuModel->setData('is_deleted', 1)->save();
 
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('删除成功', url('@admin/menuType/' . $menuType));
