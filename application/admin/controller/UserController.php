@@ -53,11 +53,11 @@ class UserController extends AdminController
     {
         $data = input('param.');
 
+        //存进各项数据
         $UserModel        = UserModel::get($data['id']);
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-
         $UserModel->save(); 
         return $this->success('更新成功', url('@admin/user'));
     }
@@ -76,7 +76,6 @@ class UserController extends AdminController
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('email', $data['email']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-
         $UserModel->save();
         return $this->success('操作成功', url('@admin/user/'));
     }
