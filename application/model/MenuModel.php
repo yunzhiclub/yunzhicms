@@ -123,15 +123,14 @@ class MenuModel extends ModelModel
     /**
      * 获取某个菜单类型的所有的列表
      * 先转化为树状，先转化为列表，这样顺序输出后，就有了上下级的结构
-     * @param  string $menuTypeName 菜单类型名
+     * @param  string $menuTypeName 菜单类型名 int pid $pid 父级菜单的id int $is_deleted 是否删除标记
      * @return lists               
      * 
      */
-    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $delete)
+    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_deleted = null )
     {
-        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_delete' => $delete];
-        //设置分页
-        $MenuModels = $this->where($map)->order('weight desc')->paginate(config('paginate.var_page'));
+        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_deleted' => $is_deleted];
+        $MenuModels = $this->where($map)->order('weight desc')->select();
         return $MenuModels;
     }
 
@@ -244,7 +243,7 @@ class MenuModel extends ModelModel
      */
     public function sonMenuModels()
     {
-        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_delete' => 0];
+        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_deleted' => 0];
         $menuModels = $this->where($map)->order('weight desc')->select();
         return $menuModels;
     }
@@ -349,30 +348,10 @@ class MenuModel extends ModelModel
     }
 
     /**
-     * 区块中间表的对象
-     * @return  object
-     */
-    public function MenuBlock()
-    {
-        $MenuBlock = new AccessMenuBlockModel;
-        $this->data['AccessMenuBlockModel'] = $MenuBlock;
-        return $MenuBlock;
-    }
-
-    /**
-     * 组件中间表的对象
-     * @return  object
-     */
-    public function MenuPlugin()
-    {
-        $MenuPlugin = new AccessMenuPluginModel;
-        $this->data['AccessMenuPluginModel'] = $MenuPlugin;
-        return $MenuPlugin;
-    }
-
-    /**
      * 显示是否隐藏
+     * @param int  $value
      * @return string 
+     * @author  gaoliming
      */
     public function getIsHiddenAttr($value)
     {
@@ -380,16 +359,18 @@ class MenuModel extends ModelModel
             '0' => '是', 
             '1' => '一',
             );
-        if ($value === 0 || $value === 1) {
-
-            return $status[$value];
+        if ($value === 0) {
+            return $status[0];
+        } else {
+            return $status[1];
         }
-
-        return $status['0'];
     }
 
     /**
      * 是否显示首页
+     * @param int  $value
+     * @return  string 
+     * @author  gaoliming
      */
     public function getIsHomeAttr($value)
     {
@@ -397,12 +378,11 @@ class MenuModel extends ModelModel
             '0' => '一',
             '1' => '是',
             );
-        if ($value === 0 || $value === 1) {
-            
-            return $status[$value];
+        if ($value === 0) {
+            return $status[0];
+        } else {
+            return $status[1];
         }
-
-        return $status['0'];
     }
 
     /**
