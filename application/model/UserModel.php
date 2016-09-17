@@ -150,19 +150,28 @@ class UserModel extends ModelModel
 
     /**
      * 设置默认的密码
-     * @param int $id
+     * @param 
      * @return string
      * @author liuyanzhao   
      */
-    public function defaultPassword($id)
+    public function defaultPassword()
     {
-        if ((int)$id === 0) {
-            return false;
-        } else {
-
-            //初始密码请看config.php文件
-            $this->password = config('defaultPassword');
-            $this->save();
-        }
+        //初始密码请看config.php文件
+        $password = config('defaultPassword');
+        return $password;
     }
+    
+    /**
+     * 关联用户组
+     * @author  gaoliming 
+     */
+    public function get_Usergroup($user_group_name)
+    {
+        //索引
+        $map = array('name' => $user_group_name);
+
+        $UserGroup = new UserGroupModel;
+        return $UserGroup->where($map)->find();
+    }
+
 }

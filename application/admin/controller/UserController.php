@@ -43,9 +43,10 @@ class UserController extends AdminController
         $UserModel = UserModel::get($id);
 
         //判断是不是超级管理员
-        if (1 === $UserModel->is_admin) {
-            return $this->error('您不能对超级管理员进行编辑');
+        if (1 === $UserModel->get_Usergroup($UserModel->user_group_name)->is_admin) {
+            return $this->error('此用户为超级管理员不能编辑');
         }
+
         
         //把取到的数据传进V层
         $this->assign('UserModel', $UserModel);
@@ -70,17 +71,13 @@ class UserController extends AdminController
         //先判断邮箱或者用户名是否为空
         if ('' === $data['name'] || '' === $data['username']){
             return $this->error('姓名或者邮箱不能为空');
-
-            //再判断邮箱是否重复
-            if ($UserModel->getData('username') !== $data['username']) {
-                if ($UserModel->isSameEmail($data['username'])) {
-                    return $this->error('邮箱重复');
-                }
-            }
         }
 
-        if ($UserModel->isSameEmail($data['username'])) {
-            return $this->error('邮箱重复');
+        //再判断邮箱是否重复
+        if ($UserModel->getData('username') !== $data['username']) {
+            if ($UserModel->isSameEmail($data['username'])) {
+                return $this->error('邮箱重复');
+            }
         }
 
         //存进各项数据
@@ -114,9 +111,11 @@ class UserController extends AdminController
         {
             return $this->error('姓名或者邮箱不能为空');
         }
+
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
+        $UserModel->setData('password', $UserModel->defaultPassword());
 
         $UserModel->save();
         return $this->success('操作成功', url('@admin/user/'));  
@@ -141,10 +140,10 @@ class UserController extends AdminController
     public function deleteAction($id)
     {
         $UserModel = UserModel::get($id);
-        if (1 === $UserModel->is_admin) {
+        if (1 === $UserModel->get_Usergroup($UserModel->user_group_name)->is_admin) {
             return $this->error('此用户为超级管理员不能删除');
         }
         $UserModel->setData('is_deleted', 1)->save();
-        return $this->success('删除成功', url('@admin/user/'));
+        return $this->success('删除成功', url('@admin/user'));
     }
 }
