@@ -40,6 +40,10 @@ class UserModel extends ModelModel
         return $currentUserModel;
     }
 
+    static public function getCurrentUserModel()
+    {
+        return self::getCurrentFrontUserModel();
+    }
     static public function logout()
     {
         // 销毁tokens
