@@ -124,6 +124,7 @@ class UserModel extends ModelModel
             $this->save();
         }
     }
+
     /**
      * 验证数据库中是否存在输入的email
      * @param  string  $email  c层传来的数据
@@ -147,4 +148,21 @@ class UserModel extends ModelModel
         }
     }
 
+    /**
+     * 设置默认的密码
+     * @param int $id
+     * @return string
+     * @author liuyanzhao   
+     */
+    public function defaultPassword($id)
+    {
+        if ((int)$id === 0) {
+            return false;
+        } else {
+
+            //初始密码请看config.php文件
+            $this->password = config('defaultPassword');
+            $this->save();
+        }
+    }
 }
