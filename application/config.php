@@ -61,4 +61,7 @@ return [
 
     //默认重置密码
     'resetPassword' => 111111,
+
+    //设置默认密码
+    'defaultPassword' => 111111,
 ];
