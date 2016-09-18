@@ -2,19 +2,14 @@
 namespace app\model;
 
 use think\Session;                      // session
+
 /**
  * 用户
  */
 class UserModel extends ModelModel
 {
-    protected $type       = [
-        // 设置create_time为时间戳类型（整型）
-        'create_time' => 'datetime:Y/m/d',
-    ];
-    
-   
     static private $currentUserModel = null;  // 前台当前登陆用户
-    private $UserGroupModel = null;         // 用户组
+    private $UserGroupModel = null;           // 用户组
 
     protected $pk = 'id';
     protected $data = ['user_group_name' => 'public'];
