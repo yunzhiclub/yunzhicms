@@ -14,20 +14,6 @@ class FieldController extends Controller
     private $token;                                         // token
     protected $config;                                      // 配置信息
 
-    /**
-     * 字段的交互信息，全部传入此action，再经由此action进行权限判断及安全处理后调用相关的action
-     * @return                      
-     * @author panjie panjie@mengyunzhi.com
-     * @DateTime 2016-09-05T16:33:41+0800
-     */
-    public function ajaxAction()
-    {
-        // 检测传入的token是否有效
-        // 根据传入的token，调用相同的action
-        // 取出token对应的action
-        // 送入相关类对应的action方法（注意：在此的action对应当前组件action）
-    }
-
     public function init(&$FieldModel, &$FieldDataXXXModel = null)
     {
         $this->FieldDataXXXModel    = $FieldDataXXXModel;
