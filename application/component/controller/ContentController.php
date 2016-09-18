@@ -27,7 +27,7 @@ class ContentController extends ComponentController
         $this->ContentModel = ContentModel::get($id);
     }
 
-    public function createAction()
+    public function editAction()
     {
         $this->assign('ContentModel', $this->ContentModel);
         return $this->fetch();

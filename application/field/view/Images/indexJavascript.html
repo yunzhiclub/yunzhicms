@@ -3,9 +3,6 @@ var ngApp{$rand} = angular.module('body', ['ngFileUpload']);
 ngApp{$rand}.controller('field_data_images_{$rand}', ['$scope', 'Upload', function($scope, Upload){
     $scope.title = "{$FieldDataXXXModel->FieldModel()->getData('title')}";
     $scope.images = {:json_encode($FieldDataXXXModel->filter())};
-    $scope.changeImage = function(){
-        alert('hello');
-    };
 
     // upload on file select or drop
     $scope.upload = function (file, key) {
