@@ -247,6 +247,11 @@ class FieldModel extends ModelModel
      */
     public function filter($value = null)
     {   
+        // 对权限进行判断, 当前用户无权限，则返回''
+        if (!AccessUserGroupFieldModel::checkCurrentUserIsAllowedByFieldId($this->getData('field_id'))) {
+            return '';
+        }
+
         if (null === $value) {
             $value = $this->getData('value');
         }

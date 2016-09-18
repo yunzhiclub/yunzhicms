@@ -13,7 +13,6 @@ class ContentListController extends ComponentController
 {
     public function indexAction()
     {
-        var_dump('hello');
         $ContentModel = new ContentModel();
         
         $map = [];
