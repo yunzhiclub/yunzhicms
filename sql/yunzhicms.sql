@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 09/13/2016 09:39:57 AM
+ Date: 09/18/2016 16:40:38 PM
 */
 
 SET NAMES utf8;
@@ -31,7 +31,7 @@ CREATE TABLE `yunzhi_access_menu_block` (
 --  Records of `yunzhi_access_menu_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_access_menu_block` VALUES ('1', '1'), ('1', '2'), ('1', '3'), ('2', '1'), ('2', '7'), ('3', '1'), ('3', '7'), ('4', '1'), ('4', '7'), ('5', '1'), ('5', '7');
+INSERT INTO `yunzhi_access_menu_block` VALUES ('1', '1'), ('1', '2'), ('1', '3'), ('2', '1'), ('2', '7'), ('3', '1'), ('3', '7'), ('4', '1'), ('4', '7'), ('5', '1'), ('5', '7'), ('6', '1'), ('6', '7');
 COMMIT;
 
 -- ----------------------------
@@ -52,6 +52,34 @@ INSERT INTO `yunzhi_access_menu_plugin` VALUES ('3', '1');
 COMMIT;
 
 -- ----------------------------
+--  Table structure for `yunzhi_access_user_group_block`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_access_user_group_block`;
+CREATE TABLE `yunzhi_access_user_group_block` (
+  `user_group_name` varchar(40) NOT NULL COMMENT 'fk user_group 用户组外键',
+  `block_id` int(11) unsigned NOT NULL COMMENT 'fk block 区块外键',
+  `action` varchar(40) NOT NULL DEFAULT '',
+  PRIMARY KEY (`user_group_name`,`block_id`,`action`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组-菜单 权限表。权限设置(LCURD)';
+
+-- ----------------------------
+--  Records of `yunzhi_access_user_group_block`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_access_user_group_block` VALUES ('admin', '2', 'index'), ('editor', '2', 'index'), ('public', '1', 'index'), ('public', '2', 'edit'), ('public', '2', 'index'), ('public', '2', 'read'), ('public', '3', 'index'), ('public', '4', 'index'), ('public', '5', 'index'), ('public', '6', 'index'), ('public', '6', 'login'), ('public', '6', 'logout'), ('register', '2', 'index');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `yunzhi_access_user_group_field`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_access_user_group_field`;
+CREATE TABLE `yunzhi_access_user_group_field` (
+  `user_group_name` varchar(40) NOT NULL COMMENT 'fk user_group 用户组外键',
+  `field_id` int(11) unsigned NOT NULL COMMENT 'fk field 字段外键',
+  PRIMARY KEY (`user_group_name`,`field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组 字段 权限设置';
+
+-- ----------------------------
 --  Table structure for `yunzhi_access_user_group_menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_access_user_group_menu`;
@@ -66,7 +94,7 @@ CREATE TABLE `yunzhi_access_user_group_menu` (
 --  Records of `yunzhi_access_user_group_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_access_user_group_menu` VALUES ('admin', '2', 'index'), ('editor', '2', 'index'), ('public', '1', 'index'), ('public', '2', 'edit'), ('public', '2', 'index'), ('public', '2', 'read'), ('public', '3', 'index'), ('public', '4', 'index'), ('public', '5', 'index'), ('public', '6', 'index'), ('public', '6', 'login'), ('register', '2', 'index');
+INSERT INTO `yunzhi_access_user_group_menu` VALUES ('admin', '2', 'index'), ('editor', '2', 'index'), ('public', '1', 'index'), ('public', '2', 'index'), ('public', '2', 'read'), ('public', '3', 'edit'), ('public', '3', 'index'), ('public', '4', 'edit'), ('public', '4', 'index'), ('public', '5', 'edit'), ('public', '5', 'index'), ('public', '6', 'index'), ('public', '6', 'login'), ('public', '6', 'logout'), ('register', '2', 'index');
 COMMIT;
 
 -- ----------------------------
@@ -87,15 +115,16 @@ CREATE TABLE `yunzhi_block` (
   `update_time` smallint(6) unsigned NOT NULL,
   `create_time` smallint(6) unsigned NOT NULL,
   `delete_time` smallint(6) unsigned NOT NULL,
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `delete_time` (`delete_time`) USING BTREE
+  KEY `'is_delete'` (`is_delete`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='区块表';
 
 -- ----------------------------
 --  Records of `yunzhi_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', '0', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0'), ('2', 'Slider', '0', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0'), ('3', 'ContentVideo', '0', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0'), ('4', 'DataCounter', '0', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0'), ('5', 'CaseShow', '0', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('6', 'ShowCaseSlider', '0', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('7', 'BreadCrumb', '0', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0');
+INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', '0', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0', '0'), ('2', 'Slider', '0', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('3', 'ContentVideo', '0', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('4', 'DataCounter', '0', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('5', 'CaseShow', '0', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('6', 'ShowCaseSlider', '0', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('7', 'BreadCrumb', '0', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -133,7 +162,7 @@ CREATE TABLE `yunzhi_component` (
 --  Records of `yunzhi_component`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0'), ('Content', '新闻', '显示一篇新闻', '', ''), ('Login', '登陆注销', '用于用户的登陆与注销', '', '');
+INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0'), ('Content', '新闻', '显示一篇新闻', '', ''), ('Login', '登陆注销', '用于用户的登陆与注销', 'mengyunzhi', '1.0.0');
 COMMIT;
 
 -- ----------------------------
@@ -156,13 +185,13 @@ CREATE TABLE `yunzhi_content` (
   KEY `category_name` (`content_type_name`) USING BTREE,
   KEY `is_freezed` (`is_freezed`) USING BTREE,
   KEY `is_deleted` (`is_deleted`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='文章表';
+) ENGINE=MyISAM AUTO_INCREMENT=271 DEFAULT CHARSET=utf8 COMMENT='文章表';
 
 -- ----------------------------
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '425', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '142', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '43', '0'), ('4', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('5', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('6', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('7', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('8', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('9', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('10', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('11', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('12', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('13', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('14', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('15', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('16', '', '', '', '0', '0', '0', '0', '0', '1', '0'), ('17', '', '', '', '0', '0', '0', '0', '0', '1', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '442', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '142', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '43', '0');
 COMMIT;
 
 -- ----------------------------
@@ -448,18 +477,16 @@ CREATE TABLE `yunzhi_menu` (
   `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
   `update_time` smallint(6) unsigned NOT NULL DEFAULT '0',
   `create_time` smallint(6) NOT NULL DEFAULT '0',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `path_menu` (`url`(128),`title`),
-  KEY `menu_plid_expand_child` (`title`,`pid`),
-  KEY `menu_parents` (`title`),
-  KEY `router_path` (`component_name`)
+  KEY `list` (`weight`,`is_delete`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='菜单表（每一个菜单对应唯一的一个组件）';
 
 -- ----------------------------
 --  Records of `yunzhi_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"contentType\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('6', 'main', 'Login', '登录注销', '0', 'login/test', '1', '0', '用于用户登陆与注销', '[]', '[]', '0', '0', '0', '0');
+INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"contentType\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0', '0'), ('6', 'main', 'Login', '个人中心', '0', 'personalcenter', '1', '0', '用于用户登陆与注销', '[]', '[]', '0', '0', '0', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -470,6 +497,7 @@ CREATE TABLE `yunzhi_menu_type` (
   `name` varchar(40) NOT NULL,
   `title` varchar(32) NOT NULL DEFAULT '' COMMENT '标题',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `is_delete` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单类型表（主要为了可以使用区块进行菜单的调用）';
 
@@ -477,7 +505,7 @@ CREATE TABLE `yunzhi_menu_type` (
 --  Records of `yunzhi_menu_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu_type` VALUES ('main', '主菜单', '主菜单');
+INSERT INTO `yunzhi_menu_type` VALUES ('main', '主菜单', '主菜单', '0');
 COMMIT;
 
 -- ----------------------------
