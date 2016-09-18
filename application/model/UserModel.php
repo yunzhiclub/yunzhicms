@@ -123,8 +123,56 @@ class UserModel extends ModelModel
             //取出密码并保存密码
             $this->password = config('resetPassword');
             $this->save();
+        }
+    }
+
+    /**
+     * 验证数据库中是否存在输入的email
+     * @param  string  $email  c层传来的数据
+     * @return boolean  
+     * @author liuyanzhao
+     */
+    public function isSameEmail($email)            
+    {
+        $map = array(
+            'is_deleted' => 0,
+            'username'  => $email
+            );
+        $UserModel = new UserModel;
+        $User = $UserModel->where($map)->find();
+
+        //判断数据表里面有没有相同的email
+        if ('' === $User->getData('username')) {
+            return false;
+        } else {
             return true;
         }
+    }
+
+    /**
+     * 设置默认的密码
+     * @param 
+     * @return string
+     * @author liuyanzhao   
+     */
+    public function defaultPassword()
+    {
+        //初始密码请看config.php文件
+        $password = config('defaultPassword');
+        return $password;
+    }
+    
+    /**
+     * 关联用户组
+     * @author  gaoliming 
+     */
+    public function get_Usergroup($user_group_name)
+    {
+        //索引
+        $map = array('name' => $user_group_name);
+
+        $UserGroup = new UserGroupModel;
+        return $UserGroup->where($map)->find();
     }
 
 }
