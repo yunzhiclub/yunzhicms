@@ -22,7 +22,7 @@ class MenuController extends BlockController
         $pid = 0;
 
         // 生成token并送入V层，用于编辑该区块
-        $token = $this->BlockModel->makeToken('Menu', 'edit');
+        $token = $this->BlockModel->makeToken('edit');
         $this->assign('token', $token);
 
         // 取当前菜单类型下可见的菜单列表
@@ -38,7 +38,7 @@ class MenuController extends BlockController
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-08T18:41:54+0800
      */
-    static public function edit($data = [])
+    static public function edit($param = [])
     {
 
     }

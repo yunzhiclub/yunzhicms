@@ -94,7 +94,7 @@ class LoginController extends ComponentController
     }
 
     /**
-     * 登陆信息
+     * 登陆界面
      * @return   html                   
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-13T10:39:27+0800
@@ -106,13 +106,14 @@ class LoginController extends ComponentController
     }
 
     /**
-     * 注销信息
+     * 个人信息界面
      * @return   html                   
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-13T10:40:13+0800
      */
     public function userInfo()
     {
+        $this->assign('UserModel', UserModel::getCurrentUserModel());
         return $this->fetch('component@Login/userInfo'); 
     }
 }
