@@ -116,7 +116,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     {
         if (is_object($data)) {
             $this->data = get_object_vars($data);
-        } else {
+        } else if(!empty($data)){
             $this->data = $data;
         }
 

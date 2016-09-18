@@ -7,6 +7,7 @@ class UserGroupModel extends ModelModel
 {
     protected $pk = 'name';
 
+    protected $data = ['name' => 'public'];
     /**
      * 获取 菜单 对本用户组的权限
      * @param  MenuModel &$MenuModel [description]

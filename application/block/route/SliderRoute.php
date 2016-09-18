@@ -9,6 +9,6 @@ return [
 
     'save'  => [
         'title'         => '保存',
-        'description'   => '',
+        'description'   => '保存用于数据的更新',
     ],
 ];

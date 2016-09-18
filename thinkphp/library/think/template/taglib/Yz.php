@@ -15,8 +15,9 @@ class Yz extends Taglib
     // 标签定义
     protected $tags = [
         // 标签定义： attr 属性列表 close 是否闭合（0 或者1 默认1） alias 标签别名 level 嵌套层次
-        'block'      => ['attr' => 'position', 'close' => 0],
-        'plugin'     => ['attr' => 'position,object', 'close' => 0],
+        'block'         => ['attr' => 'position', 'close' => 0],
+        'plugin'        => ['attr' => 'position,object', 'close' => 0],
+        'access'        => ['attr' => 'type,id,action', 'close' => 1],
     ];
 
     /**
@@ -60,5 +61,33 @@ class Yz extends Taglib
         
         $parseStr .= ' ?>';
         return $parseStr; 
+    }
+
+    /**
+     * 权限验证
+     * @param    array                   $tag     
+     * action 触发器
+     * @param    string                   $content 原文本
+     * @return   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-14T20:57:29+0800
+     */
+    public function tagAccess($tag, $content)
+    {
+        $action     = !empty($tag['action']) ? $tag['action'] : null;
+        $parseStr = '<?php';
+
+        if (!$action) {
+            $parseStr = '';
+        } else {
+            $parseStr .= ' if (app\model\AccessUserGroupMenuModel::checkCurrentUserCurrentMenuIsAllowedByAction("';
+            $parseStr .= $action;
+            $parseStr .= '")) : ?>';
+            $parseStr .= $content;
+            $parseStr .= '<?php endif;';     
+        }
+
+        $parseStr .= '?>';
+        return $parseStr;
     }
 }

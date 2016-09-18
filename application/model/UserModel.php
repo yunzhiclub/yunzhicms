@@ -7,13 +7,17 @@ use think\Session;                      // session
  */
 class UserModel extends ModelModel
 {
-    protected $pk = 'id';
-    private   $UserGroupModel = null;         
     protected $type       = [
         // 设置create_time为时间戳类型（整型）
         'create_time' => 'datetime:Y/m/d',
     ];
     
+   
+    static private $currentUserModel = null;  // 前台当前登陆用户
+    private $UserGroupModel = null;         // 用户组
+
+    protected $pk = 'id';
+    protected $data = ['user_group_name' => 'public'];
 
     public function UserGroupModel()
     {
@@ -22,6 +26,7 @@ class UserModel extends ModelModel
             $userGroupName = $this->getData('user_group_name');
             $this->UserGroupModel = UserGroupModel::get($userGroupName);
         }
+        
         return $this->UserGroupModel;
     }
 
@@ -31,19 +36,18 @@ class UserModel extends ModelModel
      */
     static public function getCurrentFrontUserModel()
     {
-        static $currentFrontUserModel = null;  // 前台当前登陆用户
-        if (null === $currentFrontUserModel)
-        {
-            $currentUserModel = new UserModel;
-            $currentUserModel->setData('group_name', 'public');
+        if (null === self::$currentUserModel) {
+            self::$currentUserModel = new UserModel;
         }
-        return $currentUserModel;
+
+        return self::$currentUserModel;
     }
 
     static public function getCurrentUserModel()
     {
         return self::getCurrentFrontUserModel();
     }
+
     static public function logout()
     {
         // 销毁tokens
@@ -102,7 +106,8 @@ class UserModel extends ModelModel
     {
         //索引
         $map = array(
-            'is_admin' => 0
+            'is_admin'   => 0,
+            'is_deleted' => 0,
             );
         $UserGroupModel = new UserGroupModel;
         return $UserGroupModel->where($map)->select();
