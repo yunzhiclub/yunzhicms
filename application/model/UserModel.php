@@ -102,7 +102,8 @@ class UserModel extends ModelModel
     {
         //索引
         $map = array(
-            'is_admin' => 0
+            'is_admin'   => 0,
+            'is_deleted' => 0,
             );
         $UserGroupModel = new UserGroupModel;
         return $UserGroupModel->where($map)->select();
