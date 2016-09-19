@@ -37,9 +37,9 @@ class BodyController extends FieldController
         return $result;
     }
 
-    public function fetchHtml()
+    public function edit()
     {
-        $this->assgin('token', Common::makeTokenByMCAData('field', 'Body', 'upload'));
-        return parent::fetchHtml();
+        $this->assign('token', Common::makeTokenByMCAData('field', 'Body', 'upload'));
+        return parent::renderAction('edit');
     }
 }

@@ -138,10 +138,17 @@ class BlockModel extends ModelModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-08T09:47:07+0800
      */
-    public function makeToken($controller, $action)
+    public function makeToken($action, $data = [])
     {
-        $data = ['id' => $this->getData('id')];
-        return Common::makeTokenByMCAData('block', $controller, $action, $data);
+        // 对权限进行判断，没有权限，则返回空字符串
+        if (AccessUserGroupBlockModel::checkCurrentUserIsAllowedByBlockIdAndAction($this->getData('id'), $action)) {
+            $data = array_merge(['id' => $this->getData('id')], $data);
+            $token = Common::makeTokenByMCAData('block', $this->BlockTypeModel()->getData('name'), $action, $data);
+        } else {
+            $token = '';
+        }
+        
+        return $token;
     }
 
 
