@@ -14,6 +14,7 @@ class ContentListController extends ComponentController
     public function indexAction()
     {
         $ContentModel = new ContentModel();
+        
         $map = [];
         $map['content_type_name'] = $this->config['contentTypeName']['value'];
         $map['is_freezed'] = '0';
@@ -29,6 +30,10 @@ class ContentListController extends ComponentController
     {
         $map = ['id' => $id];
         $ContentModel = ContentModel::get($map);
+        if ('' === $ContentModel->getData('id')) {
+            return $this->error('数据不存在或已删除');
+        }
+
         $this->assign('ContentModel', $ContentModel);
 
         // 增加一个点击量

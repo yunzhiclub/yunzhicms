@@ -7,13 +7,13 @@ use app\Common;
 use app\model\FieldDataJsonModel;                    // json模型
 class JsonController extends FieldController
 {
-    public function index()
+    public function edit()
     {
         // 增加token,用于字段个数的修改
         $token = Common::makeTokenByMCAData('field', 'Json', 'addSubCount', ['id' => $this->FieldDataXXXModel->getData('id')]);
         $this->assign('token', $token);
 
-        return parent::index();
+        return parent::renderAction('edit');
     }
 
     /**
