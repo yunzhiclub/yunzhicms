@@ -7,20 +7,6 @@ class ContentModel extends ModelModel
     protected $preContentModel      = null;             // 上一篇文章
     protected $nextContentModel     = null;             // 下一篇文章
 
-    protected $data = [
-        'id'    => 0,
-        'user_name' => '',
-        'content_type_name' => '',
-        'title'                 => '',
-        'create_time'           => 0,
-        'update_time'           => 0,
-        'delete_time'           => 0,
-        'is_freezed'            => 0,
-        'weight'                => 0,
-        'hit'                   => 0,
-        'is_deleted'            => 0,
-    ];
-
     /**
      * 内容类型 n:1
      * @author panjie panjie@mengyunzhi.com

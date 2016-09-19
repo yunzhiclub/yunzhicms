@@ -6,6 +6,7 @@ use think\Request;                          // 请求
 use app\Common;                             // 通用模型
 use app\model\BlockModel;                   // 区块模型
 use app\model\FieldModel;                   // 字段模型
+use app\model\AccessUserGroupBlockModel;    // 用户组区块权限
 
 /**
  * 幻灯片
@@ -14,8 +15,9 @@ class SliderController extends BlockController
 {
     public function index()
     {
-        // 生成token并送入V层，用于编辑该区块
-        $token = $this->BlockModel->makeToken('Slider', 'edit');
+        // 生成token并送入V层，用于编辑该区块.首先进行权限的判断
+        $token = $this->BlockModel->makeToken('edit');
+        $this->assign('token', $token);
 
         // 获取扩展字段列表, 并传入V层
         $this->assign('titles',         $this->BlockModel->FieldModel('titles')->filter());
@@ -23,7 +25,7 @@ class SliderController extends BlockController
         $this->assign('images',         $this->BlockModel->FieldModel('images')->filter());
         $this->assign('headers',        $this->BlockModel->FieldModel('headers')->filter());
         $this->assign('descriptions',   $this->BlockModel->FieldModel('descriptions')->filter());
-        $this->assign('token', $token);
+        
         return $this->fetch();
     }
     

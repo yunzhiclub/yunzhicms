@@ -5,11 +5,14 @@
             <div class="col-md-12">
                 <!-- start contact content -->
                 <div class="mu-contact-content">
+                {yz:access action="edit"}
                     <div class="row">
                         <div class="col-md-12 text-right">
-                            <a href="{:app\\Common::getCreateUrl()}">编辑</a>
+                            <a href="{:app\\Common::url('/edit')}">编辑</a>
                         </div>
                     </div>
+                {/yz:access}
+                    
                     <div class="row">
                         <div class="col-md-12">
                              {$ContentModel->FieldModel('body')->getData('value') | htmlspecialchars_decode}
