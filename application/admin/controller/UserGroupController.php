@@ -71,11 +71,6 @@ class UserGroupController extends AdminController
     {
         $data = input('param.');
 
-        //判断机读字段是不是纯英文
-        if (!UserGroupModel::utf8_str($data['name']) ) {
-            return $this->error('机读字段请填写纯英文');
-        }
-
         //保存数据
         $UserGroupModel = new UserGroupModel;
         $UserGroupModel->setData('title', $data['title']);
