@@ -11,5 +11,7 @@ class UserGroupValidate extends Validate
 	protected $rule = [
 		'name'	=> 'require|max:100',
 		'title' => 'require|max:100',
+		'name'  => 'alphaDash',
+		'admin'  => 'unique:user_group',
 	];
 }
