@@ -76,11 +76,6 @@ class UserGroupController extends AdminController
             return $this->error('机读字段请填写纯英文');
         }
 
-        //关键字查重
-        if (!UserGroupModel::isSameName($data['name'])) {
-            return $this->error('关键字重复,请重新输入name');
-        }
-
         //保存数据
         $UserGroupModel = new UserGroupModel;
         $UserGroupModel->setData('title', $data['title']);

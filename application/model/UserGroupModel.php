@@ -112,24 +112,4 @@ class UserGroupModel extends ModelModel
             return false;
         }
     }
-
-    /**
-     * 关键字查重
-     * @param string $name 
-     * @return  bool 
-     * @author gaoliming 
-     */
-    static public function  isSameName($name)
-    {
-        //索引
-        $map = array(
-            'name'       => $name,
-            'is_deleted' => 0
-            );
-        if ($name !== UserGroupModel::where($map)->find()->getData('name')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
