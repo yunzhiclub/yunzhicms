@@ -14,7 +14,7 @@
                             </div>
                                 {foreach name="ContentModel->ContentTypeModel()->FieldModels()" id="_FieldModel"}
                                 <div>
-                                {:$_FieldModel->render($ContentModel)}
+                                {:$_FieldModel->renderEdit($ContentModel)}
                                 </div>
                                 {/foreach}
                                 <button>submit</button>

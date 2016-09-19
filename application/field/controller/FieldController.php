@@ -43,7 +43,7 @@ class FieldController extends Controller
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-05T08:32:24+0800
      */
-    static public function renderFieldDataModel(&$FieldModel, &$FieldDataXXXModel)
+    static public function renderFieldDataModel(&$FieldModel, &$FieldDataXXXModel, $action)
     {
         $typeName = $FieldModel->getData('field_type_name');
         $className = 'app\field\controller\\' . ucfirst($typeName) . 'Controller';
@@ -52,7 +52,7 @@ class FieldController extends Controller
             // 实例化字段,然后调用init()进行实始化 ，调用fetchHtml()进行渲染
             $FieldXXXController = new $className();
             $FieldXXXController->init($FieldModel, $FieldDataXXXModel);
-            return $FieldXXXController->index();
+            return $FieldXXXController->$action();
         } else {
             return 'field type is ' . $typeName . '. But ' . $className . '::' . 'index not found!';
         }
@@ -64,7 +64,7 @@ class FieldController extends Controller
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-05T09:51:51+0800
      */
-    public function index()
+    public function renderAction($action)
     {
         // 建立1个1024以内的随机数，防止ID重复
         $this->assign('randId', mt_rand(1, 1024));
@@ -72,17 +72,19 @@ class FieldController extends Controller
         $calledClassName = Common::getControllerName(get_called_class());
         $html = $css = $js = '';
 
-        $html = $this->fetch('field@' . $calledClassName . '/index');
+        $html = $this->fetch('field@' . $calledClassName . '/' . $action);
 
         try {
-            $js = $this->fetch('field@' . $calledClassName . '/indexJavascript');
+            $js = $this->fetch('field@' . $calledClassName . '/' . $action . 'Javascript');
         } catch (\Exception $e) {}
 
         try {
-            $css = $this->fetch('field@' . $calledClassName . '/indexCss');
+            $css = $this->fetch('field@' . $calledClassName . '/' . $action . 'Css');
         } catch (\Exception $e) {}
 
         return $html . $js . $css;
     }
+
+    
 
 }
