@@ -115,7 +115,7 @@ class UserController extends AdminController
         $UserModel->setData('name', $data['name']);
         $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
-        $UserModel->setData('password', $UserModel->defaultPassword());
+        $UserModel->setData('password', $UserModel->encryptPassword($UserModel->defaultPassword()));
 
         $UserModel->save();
         return $this->success('操作成功', url('@admin/user/'));  
