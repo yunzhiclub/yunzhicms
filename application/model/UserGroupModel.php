@@ -95,4 +95,21 @@ class UserGroupModel extends ModelModel
         $UserModel = new UserModel;
         return $UserModel->where($map)->select();
     }
+
+    /**
+     * 判断机读字段是不是纯英文
+     * @param   string 
+     * @author gaoliming
+     * @return bool
+     */
+    static public function utf8_str($str)
+    {
+        $mb = mb_strlen($str, 'utf-8'); //返回uft-8下的字节长度
+        $st = strlen($str);             //返回字符串长度
+        if( $st === $mb) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

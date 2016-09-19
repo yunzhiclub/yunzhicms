@@ -49,7 +49,16 @@ class UserGroupController extends AdminController
     	$UserGroupModel->setData('title', $data['title']);
     	$UserGroupModel->setData('description', $data['description']);
 
-    	$UserGroupModel->save();
+        $datas = array(
+            'title'       => $data['title'],
+            'description' => $data['description'],
+            'name'        => $data['id'],
+         );
+
+        //验证并保存
+        if (false === $UserGroupModel->validate()->save($datas)) {
+            return $this->error($UserGroupModel->getError());
+        }
     	return $this->success('操作成功', url('@admin/usergroup/'));
     }
 
@@ -62,12 +71,22 @@ class UserGroupController extends AdminController
     {
         $data = input('param.');
 
+        //判断机读字段是不是纯英文
+        if (!UserGroupModel::utf8_str($data['name']) ) {
+            return $this->error('机读字段请填写纯英文');
+        }
+
+        //保存数据
         $UserGroupModel = new UserGroupModel;
         $UserGroupModel->setData('title', $data['title']);
         $UserGroupModel->setData('name', $data['name']);
         $UserGroupModel->setData('description', $data['description']);
 
-        $UserGroupModel->save();
+        //验证并保存
+        if (false === $UserGroupModel->validate(true)->save($data)) {
+            return $this->error($UserGroupModel->getError());
+        }
+
         return $this->success('操作成功', url('@admin/usergroup/')); 
     }
 

@@ -25,12 +25,15 @@
                             <td>{$_UserGroupModel->name}</td>
                             <td>{$_UserGroupModel->description}</td>
                             <td class="td-actions">
+                                {eq value="1" name="_UserGroupModel->is_system"}
+                                {else /}
                                 <a href="{:url('@admin/UserGroup/' . $_UserGroupModel->name . '/edit')}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 编辑
                                 </a>
                                 <a href="{:url('@admin/UserGroup/' . $_UserGroupModel->name . '/delete')}" class="btn btn-small btn-danger">
                                     <i class="btn-icon-only icon-remove"></i> 删除
                                 </a>
+                                {/eq}
                             </td>
                         </tr>
                         {/volist}
