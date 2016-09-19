@@ -74,12 +74,16 @@ class Yz extends Taglib
      */
     public function tagAccess($tag, $content)
     {
+        // 获取参数
         $action     = !empty($tag['action']) ? $tag['action'] : null;
         $parseStr = '<?php';
 
+        // 未传入参数 ，则返回空字符串
         if (!$action) {
             $parseStr = '';
         } else {
+
+            // 对当前用户是否拥有权限进行判断
             $parseStr .= ' if (app\model\AccessUserGroupMenuModel::checkCurrentUserCurrentMenuIsAllowedByAction("';
             $parseStr .= $action;
             $parseStr .= '")) : ?>';
