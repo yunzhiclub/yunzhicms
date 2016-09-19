@@ -169,7 +169,7 @@ class FieldModel extends ModelModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-05T09:35:46+0800
      */
-    public function render(&$XXXModel)
+    public function renderEdit(&$XXXModel)
     {
         // 根据关键字得到字段的模型 支持id与name关键字
         if ($XXXModel->getData('id') !== '')
@@ -183,7 +183,7 @@ class FieldModel extends ModelModel
         $FieldDataXXXModel = $this->getFieldDataXXXModelByKeyId($keyId);
 
         // 对扩展字段模型进行标签的渲染
-        return FieldController::renderFieldDataModel($this, $FieldDataXXXModel);
+        return FieldController::renderFieldDataModel($this, $FieldDataXXXModel, 'edit');
     }
 
     /**
@@ -265,5 +265,26 @@ class FieldModel extends ModelModel
         // 调用过滤器进行过滤
         $className = 'app\filter\server\\' . $filter['type'] . 'Server';
         return call_user_func_array([$className, $filter['function']], [$value, $filter['param']]);
+    }
+
+    
+    /**
+     * 生成前台可以直接调用的token
+     * @param    string                   $action 
+     * @return   string                           
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-08T09:47:07+0800
+     */
+    public function makeToken($action, $data = [])
+    {
+        // 对权限进行判断，没有权限，则返回空字符串
+        if (AccessUserGroupBlockModel::checkCurrentUserIsAllowedByBlockIdAndAction($this->getData('id'), $action)) {
+            $data = array_merge(['id' => $this->getData('id')], $data);
+            $token = Common::makeTokenByMCAData('block', $this->BlockTypeModel()->getData('name'), $action, $data);
+        } else {
+            $token = '';
+        }
+        
+        return $token;
     }
 }
