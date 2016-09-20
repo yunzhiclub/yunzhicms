@@ -42,6 +42,9 @@ class ComponentController extends Controller
             return $this->error('您无权限访问该页面或您访问的页面不存在. TODO:404页面', url('@/'));
         }
 
+        // 清空原来的tokens
+        Common::clearTokens();
+
         // 传Common供前台使用
         $this->assign('Common', new Common);
 
@@ -86,52 +89,4 @@ class ComponentController extends Controller
         // 获取当前主题
         return $this->view->fetch($template, $vars, $replace, $config);
     }
-
-    public function indexAction()
-    {
-        var_dump(debug_backtrace()[0]);        
-    }
-    /**
-     * [createAction description]
-     * @Author   Panjie                   panjie@mengyunzhi.com
-     * @DateTime 2016-09-02T09:15:50+0800
-     * @return   [type]                   [description]
-     */
-    public function createAction()
-    {
-        var_dump(debug_backtrace()[0]);
-    }
-
-    /**
-     * [saveAction description]
-     * @return   [type]                   [description]
-     * @author panjie panjie@mengyunzhi.com
-     * @DateTime 2016-09-02T09:19:36+0800
-     */
-    public function saveAction()
-    {
-        var_dump(debug_backtrace()[0]);
-    }
-
-    public function readAction($id)
-    {
-        var_dump(debug_backtrace()[0]);
-    }
-
-    public function editAction($id)
-    {
-        var_dump(debug_backtrace()[0]);
-    }
-
-    public function updateAction($id)
-    {
-        var_dump(debug_backtrace()[0]);
-    }
-
-    public function deleteAction($id)
-    {
-        var_dump(debug_backtrace()[0]);
-    }
-
-
 }

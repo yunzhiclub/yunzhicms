@@ -8,6 +8,12 @@ use app\model\FieldDataImageModel;          // 扩展字段  图片
 class ImageController extends FieldController
 {
 
+    public function index()
+    {
+        return parent::renderAction('index');
+    }
+
+
     /**
      * 文件上传，供api接口进行动态调用
      * @return                      
@@ -43,9 +49,9 @@ class ImageController extends FieldController
         return json_encode($result);
     }
 
-    public function index()
+    public function edit()
     {
         $this->assign('token', Common::makeTokenByMCAData('field', 'Image', 'upload'));
-        return parent::index();
+        return parent::renderAction('edit');
     }
 }

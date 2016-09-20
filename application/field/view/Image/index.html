@@ -1,7 +1,5 @@
-<label for="">
-    {$FieldDataXXXModel->FieldModel()->getData('title')} :
-</label>
-<input type="hidden" id="field_data_image_{$randId}" name="field_[{:$FieldDataXXXModel->FieldModel()->getData('id')}]" value="{$FieldDataXXXModel->getData('id')}"/>
-<img id="field_data_image_show_{$randId}" src="{:$FieldDataXXXModel->getUrl()}" class="field_data_image"/>
-<div id="queue"></div>
-        <input id="file_upload" name="file_upload" type="file" multiple="true">
+<div class="row">
+    <div class="col-md-6 col-md-push-3">
+        <img class="img-rounded img-responsive" src="{$FieldDataXXXModel->getUrl()}">
+    </div>
+</div>

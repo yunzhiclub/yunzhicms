@@ -7,6 +7,12 @@ use think\Request;
 
 class BodyController extends FieldController
 {
+
+    public function index()
+    {
+        return parent::renderAction('index');
+    }
+    
     /**
      * 文件上传，供api接口进行动态调用
      * @return                      
@@ -37,9 +43,9 @@ class BodyController extends FieldController
         return $result;
     }
 
-    public function fetchHtml()
+    public function edit()
     {
-        $this->assgin('token', Common::makeTokenByMCAData('field', 'Body', 'upload'));
-        return parent::fetchHtml();
+        $this->assign('token', Common::makeTokenByMCAData('field', 'Body', 'upload'));
+        return parent::renderAction('edit');
     }
 }

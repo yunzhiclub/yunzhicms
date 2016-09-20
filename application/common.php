@@ -74,7 +74,10 @@ class Common{
         // 查询组件表
         $components = Db::name('component')->select();
         $components = self::changeListIndex($components, 'name');
-
+        
+        // 由于路由需要由长到短进行注册，在这，我们先给一个缓存
+        $cacheRoutes = [];
+        
         foreach ($menus as $menu) {
             // 注册路由
             $componentName = $menu['component_name'];
@@ -89,6 +92,7 @@ class Common{
                 // 按路由配置文件注册路由：http://www.kancloud.cn/manual/thinkphp5/118030
                 if (false !== $routeFilePath) {
                     $routes = include $routeFilePath;
+                    
                     foreach ($routes as $action => &$_route) {
                         $value      = $_route['value'];
                         $route      = '';
@@ -102,6 +106,7 @@ class Common{
                             continue;
                         }
 
+                        // 拼接路由
                         $route = 'component/' . $componentName . '/' . $action;
 
                         if (isset($value[1])) {
@@ -120,13 +125,29 @@ class Common{
                             }
                         }
 
-                        // 调用路由注册
-                        Route::rule($rule, $route, $type, $option, $pattern);
+                        // 按不同的长度，分别进行路由缓存
+                        $length = substr_count($rule, '/');
+                        if (!isset($cacheRoutes[$length])) {
+                            $cacheRoutes[$length] = [];
+                        }
+                        array_push($cacheRoutes[$length], [$rule, $route, $type, $option, $pattern]);
                     }
                 }
             }
         }
+
+        // 对路由缓存进行由长到短的排序
+        ksort($cacheRoutes);
+        $cacheRoutes = array_reverse($cacheRoutes);
+        foreach ($cacheRoutes as $cacheRoute) {
+            foreach ($cacheRoute as $route) {
+                //调用路由注册
+                Route::rule($route[0], $route[1], $route[2], $route[3], $route[4]);
+            }
+        }
     }
+
+
 
     /**
      * 生成linkPath信息（即URL）
@@ -610,6 +631,17 @@ class Common{
         
         // 返回生成并且注册的token
         return $token;
+    }
+
+    /**
+     * 清空tokens
+     * @return   null                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-14T17:02:32+0800
+     */
+    static public function clearTokens()
+    {
+        Session::set('tokens', null);
     }
 
     /**

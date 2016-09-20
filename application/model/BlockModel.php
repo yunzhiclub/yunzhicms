@@ -11,6 +11,7 @@ class BlockModel extends ModelModel
 {
     private $BlockTypeModel = null;     // 区块类型
     private $FieldModels;               // 字段模型信息
+    private $FieldXXXXModels = null;    // 扩展字段
     protected $config = null;           // 配置信息
     protected $filter = null;           // 过滤器信息
 
@@ -76,6 +77,26 @@ class BlockModel extends ModelModel
     }
 
     /**
+     * 内容对应的内段详情信息
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-19T08:40:37+0800
+     */
+    public function FieldXXXXModels()
+    {
+        if (null === $this->FieldXXXXModels) {
+            $this->FieldXXXXModels = [];
+            // 获取对应的全部字段的信息
+            $FieldModels = $this->FieldModels();
+            
+            // 遍历当前 内容类型 的扩展字段信息.
+            foreach ($FieldModels as $FieldModel) {
+                array_push($this->FieldXXXXModels, $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id')));
+            } 
+        }
+        
+        return $this->FieldXXXXModels;
+    }
+    /**
      * 获取某个position下的所有 启用 的区载信息
      * @param  string $name position名称
      * @return lists       BlockModels
@@ -138,10 +159,17 @@ class BlockModel extends ModelModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-08T09:47:07+0800
      */
-    public function makeToken($controller, $action)
+    public function makeToken($action, $data = [])
     {
-        $data = ['id' => $this->getData('id')];
-        return Common::makeTokenByMCAData('block', $controller, $action, $data);
+        // 对权限进行判断，没有权限，则返回空字符串
+        if (AccessUserGroupBlockModel::checkCurrentUserIsAllowedByBlockIdAndAction($this->getData('id'), $action)) {
+            $data = array_merge(['id' => $this->getData('id')], $data);
+            $token = Common::makeTokenByMCAData('block', $this->BlockTypeModel()->getData('name'), $action, $data);
+        } else {
+            $token = '';
+        }
+        
+        return $token;
     }
 
 
