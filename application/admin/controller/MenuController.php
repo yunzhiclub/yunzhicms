@@ -64,11 +64,26 @@ class MenuController extends AdminController
         $MenuModel->setData('config', json_encode($data['config']));
 
         // 过滤器信息
-        if (array_key_exists('filter', $data))
-        {
+        if (array_key_exists('filter', $data)){
             $filter = Common::makeFliterArrayFromPostArray($data['filter']);
             $MenuModel->setData('filter', json_encode($filter));
         }
+
+        // 验证
+        $result = $this->validate(
+            [
+                'title'  => $data['title'],
+            ],
+            [
+                'title'  => 'require',
+            ]
+        );
+
+        if(true !== $result){
+            // 验证失败 输出错误信息
+            return $this->error('title不能为空', url('@admin/menuType/' . $data['menu_type_name']));
+        }
+
         $MenuModel->save();
 
         //若未返回数值，则置为空数组
@@ -119,9 +134,21 @@ class MenuController extends AdminController
         $MenuModel->setData('status', $data['status']);
         $MenuModel->setData('description', $data['description']);
 
+        $result = $this->validate(
+            [
+                'title'  => $data['title'],
+            ],
+            [
+                'title'  => 'require',
+            ]
+        );
+        if(true !== $result){
+            // 验证失败 输出错误信息
+            return $this->error('title不能为空', url('@admin/menuType/' . $data['menu_type_name']));
+        }
         $id = $MenuModel->save();
 
-        //判断是否传入用户组权限信息
+        // 判断是否传入用户组权限信息
         if (isset($data['access'])) {
 
             // 更新菜单用户组关联表
