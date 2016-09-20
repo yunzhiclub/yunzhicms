@@ -35,12 +35,14 @@
                                 </span> {/eq}
                         </td>
                         <td>{$_UserModel->create_time}</td>
-                        <td><a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/edit')}" class="btn btn-small btn-info icon-deit"> 编辑</a>
-                            <a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/delete')}" class="btn btn-small btn-danger icon-remove""> 删除</a>
-                            <a href="{:url('resetPassword?id=' . $_UserModel->getData('id'))}" class="btn btn-small btn-primary">
-                            <i class="btn-icon-only icon-edit"></i>
-                            重置密码
+                        <td>
+                            {eq value="管理员" name="$_UserModel->getData('user_group_name')"}{else /}
+                            <a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/edit')}" class="btn btn-small btn-info icon-deit"> 编辑</a>
+                            <a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/delete')}" class="btn btn-small btn-danger icon-remove" "> 删除</a>
+                            <a href="{:url( 'resetPassword?id=' . $_UserModel->getData('id'))}" class="btn btn-small btn-primary">
+                            <i class="btn-icon-only icon-edit"></i> 重置密码
                             </a>
+                            {/eq}
                         </td>
                     </tr>
                     {/volist}
