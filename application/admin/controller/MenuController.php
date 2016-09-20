@@ -103,7 +103,7 @@ class MenuController extends AdminController
     public function saveAction()
     {
         $data = input('param.');
-       
+
         $MenuModel = new MenuModel;
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);
@@ -117,11 +117,13 @@ class MenuController extends AdminController
 
         $id = $MenuModel->save();
 
-        $data['access'] = isset($data['access'])?$data['access']:array();
+        //判断是否传入用户组权限信息
+        if (isset($data['access'])) {
 
-        // 更新 菜单 用户组 权限
-        AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
-
+            // 更新菜单用户组关联表
+            AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
+        }
+      
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('操作成功', url('@admin/menuType/' . $menuType));
 
