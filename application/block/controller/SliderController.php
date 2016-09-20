@@ -73,7 +73,7 @@ class SliderController extends BlockController
         // 请学习new self()与new static()方法的区别
         $Object = new self();
         $Object->assign('BlockModel', $BlockModel);
-        $Object->assign('token', Common::makeTokenByMCAData('block', 'Slider', 'save', ['id' => $BlockModel->getData('id')]));
+        $Object->assign('token', $BlockModel->makeToken('save'));
 
         return $Object->fetch();
     }

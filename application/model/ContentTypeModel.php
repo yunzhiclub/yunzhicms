@@ -36,4 +36,5 @@ class ContentTypeModel extends ModelModel
 
         return $this->FieldModels;
     }
+
 }

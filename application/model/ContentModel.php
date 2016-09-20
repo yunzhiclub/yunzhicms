@@ -6,7 +6,7 @@ class ContentModel extends ModelModel
     private $ContentTypeModel       = null;             // 文章类型模型
     protected $preContentModel      = null;             // 上一篇文章
     protected $nextContentModel     = null;             // 下一篇文章
-
+    private $FieldXXXXModels        = null;
     /**
      * 内容类型 n:1
      * @author panjie panjie@mengyunzhi.com
@@ -30,7 +30,7 @@ class ContentModel extends ModelModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-02T14:13:25+0800
      */
-    public function FieldModel($name)
+    public function FieldXXXXModel($name)
     {
         if (empty($name)) {
             throw new \Exception("the param can't  empty", 1);
@@ -48,6 +48,27 @@ class ContentModel extends ModelModel
         }
 
         throw new \Exception('not found fieldName:' . $name . ' of ContentModel:' . $this->getData('id'), 1);
+    }
+
+    /**
+     * 内容对应的内段详情信息
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-19T08:40:37+0800
+     */
+    public function FieldXXXXModels()
+    {
+        if (null === $this->FieldXXXXModels) {
+            $this->FieldXXXXModels = [];
+            // 获取对应的全部字段的信息
+            $FieldModels = $this->ContentTypeModel()->FieldModels();
+            
+            // 遍历当前 内容类型 的扩展字段信息.
+            foreach ($FieldModels as $FieldModel) {
+                array_push($this->FieldXXXXModels, $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id')));
+            } 
+        }
+        
+        return $this->FieldXXXXModels;
     }
 
     /**
