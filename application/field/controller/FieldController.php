@@ -6,6 +6,8 @@ use app\Common;
 use think\Loader;
 use think\Request;
 
+use app\model\AccessUserGroupFieldModel;            // 用户组字段权限
+
 class FieldController extends Controller
 {
     protected $FieldDataXXXModel = null;                    // 某个扩展字段的模型
@@ -14,7 +16,7 @@ class FieldController extends Controller
     private $token;                                         // token
     protected $config;                                      // 配置信息
 
-    public function init(&$FieldModel, &$FieldDataXXXModel = null)
+    public function init(&$FieldDataXXXModel = null)
     {
         $this->FieldDataXXXModel    = $FieldDataXXXModel;
 
@@ -43,15 +45,20 @@ class FieldController extends Controller
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-05T08:32:24+0800
      */
-    static public function renderFieldDataModel(&$FieldModel, &$FieldDataXXXModel, $action)
+    static public function renderFieldDataModel(&$FieldDataXXXModel, $action)
     {
-        $typeName = $FieldModel->getData('field_type_name');
+        // 首先对权限进行判断,不存在权限，则直接返回''
+        if (!AccessUserGroupFieldModel::checkCurrentUserIsAllowedByFieldId($FieldDataXXXModel->getData('field_id'))) {
+            return '';
+        }
+
+        $typeName = $FieldDataXXXModel->FieldModel()->getData('field_type_name');
         $className = 'app\field\controller\\' . ucfirst($typeName) . 'Controller';
         if (class_exists($className))
         {
             // 实例化字段,然后调用init()进行实始化 ，调用fetchHtml()进行渲染
             $FieldXXXController = new $className();
-            $FieldXXXController->init($FieldModel, $FieldDataXXXModel);
+            $FieldXXXController->init($FieldDataXXXModel);
             return $FieldXXXController->$action();
         } else {
             return 'field type is ' . $typeName . '. But ' . $className . '::' . 'index not found!';
@@ -85,6 +92,6 @@ class FieldController extends Controller
         return $html . $js . $css;
     }
 
-    
+
 
 }
