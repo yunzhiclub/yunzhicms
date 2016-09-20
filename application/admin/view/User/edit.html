@@ -27,8 +27,8 @@
                     <div class="controls">
                         <select name="user_group_name" class="form-control">
                             {volist name="UserGroups" id="UserGroup"}
-                            <option value="{$UserGroup->name}" selected="selected">
-                                {$UserGroup->name}
+                            <option value="{$UserGroup->title}" selected="selected">
+                                {$UserGroup->title}
                             </option>
                             {/volist}
                         </select>

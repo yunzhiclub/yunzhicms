@@ -174,4 +174,15 @@ class UserModel extends ModelModel
         return $UserGroup->where($map)->find();
     }
 
+    /**
+     * 加密传进的密码
+     * @param  string $password
+     * @return string $encryptedpassword
+     * @author liuyanzhao
+     */
+    public function encryptPassword($password)
+    {
+        $encryptedpassword = sha1(md5($password));
+        return $encryptedpassword;
+    }
 }
