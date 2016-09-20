@@ -15,7 +15,9 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                             {$ContentModel->FieldModel('body')->getData('value') | htmlspecialchars_decode}
+                        {foreach name="ContentModel->FieldXXXXModels()" id="_FieldXXXXModel"}
+                            {$_FieldXXXXModel->render('index')}
+                        {/foreach}
                         </div>
                     </div>
                 </div>
