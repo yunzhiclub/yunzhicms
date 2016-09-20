@@ -22,7 +22,9 @@
                                 {yz:plugin position="beforeContent" object="ContentModel"}
                             </div>
                             <div class="col-md-12">
-                                 {$ContentModel->FieldModel('body')->filter()}
+                                 {foreach name="ContentModel->FieldXXXXModels()" id="_FieldXXXXModel"}
+                                    {$_FieldXXXXModel->render('index')}
+                                {/foreach}
                             </div>
                             <div class="col-md-12">
                                 {yz:plugin position="afterContent"  object="ContentModel"}

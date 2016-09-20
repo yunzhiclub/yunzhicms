@@ -7,6 +7,12 @@ use think\Request;
 
 class BodyController extends FieldController
 {
+
+    public function index()
+    {
+        return parent::renderAction('index');
+    }
+    
     /**
      * 文件上传，供api接口进行动态调用
      * @return                      
