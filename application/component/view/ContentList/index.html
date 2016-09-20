@@ -9,10 +9,69 @@
                             <!-- start course content container -->
                             <div class="mu-course-container mu-blog-archive">
                                 <ul>
-                                {volist name="ContentModels" id="contentModel"}
+                                    {volist name="ContentModels" id="contentModel"}
                                     <li><a href="{$contentModel->id | $filterModels['href']->filter}">{$contentModel->title}</a><span style="float:right">{$contentModel->create_time | $filterModels['date']->filter}</span></li>
-                                {/volist}
-                                </ul>                                
+                                    {/volist}
+                                </ul>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <article class="mu-blog-single-item">
+                                    <figure class="mu-blog-single-img">
+                                        <a href="#"><img src="{:__ROOT__}/theme/varsity/img/newslist/001.jpg" alt="img"></a>
+                                        <figcaption class="mu-blog-caption">
+                                            <h3><a href="#">计算机学院2016级新生夏令营闭营</a></h3>
+                                        </figcaption>
+                                    </figure>
+                                    <div class="mu-blog-meta">
+                                        <a href="#">By 教务处</a>
+                                        <a href="#">2016年9月10日</a>
+                                        <span><i class="fa fa-comments-o"></i>87</span>
+                                    </div>
+                                    <div class="mu-blog-description">
+                                        <p>8月26日，计算机科学与软件学院2016级新生夏令营闭营仪式在学院楼102会议室隆重举行。计算机学院党委书记商植桐、院长顾军华出席了此次活动，16级辅导员张茜茜和全体夏令营成员参加了活动。闭营仪式由学院党委副书记副院长王轩主持...</p>
+                                        <a class="mu-read-more-btn" href="#">查看更多</a>
+                                    </div>
+                                </article>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <article class="mu-blog-single-item">
+                                    <figure class="mu-blog-single-img">
+                                        <a href="#"><img src="{:__ROOT__}/theme/varsity/img/newslist/001.jpg" alt="img"></a>
+                                        <figcaption class="mu-blog-caption">
+                                            <h3><a href="#">计算机学院2016级新生夏令营闭营</a></h3>
+                                        </figcaption>
+                                    </figure>
+                                    <div class="mu-blog-meta">
+                                        <a href="#">By 教务处</a>
+                                        <a href="#">2016年9月10日</a>
+                                        <span><i class="fa fa-comments-o"></i>87</span>
+                                    </div>
+                                    <div class="mu-blog-description">
+                                        <p>8月26日，计算机科学与软件学院2016级新生夏令营闭营仪式在学院楼102会议室隆重举行。计算机学院党委书记商植桐、院长顾军华出席了此次活动，16级辅导员张茜茜和全体夏令营成员参加了活动。闭营仪式由学院党委副书记副院长王轩主持...</p>
+                                        <a class="mu-read-more-btn" href="#">查看更多</a>
+                                    </div>
+                                </article>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <article class="mu-blog-single-item">
+                                    <figure class="mu-blog-single-img">
+                                        <a href="#"><img src="{:__ROOT__}/theme/varsity/img/newslist/001.jpg" alt="img"></a>
+                                        <figcaption class="mu-blog-caption">
+                                            <h3><a href="#">计算机学院2016级新生夏令营闭营</a></h3>
+                                        </figcaption>
+                                    </figure>
+                                    <div class="mu-blog-meta">
+                                        <a href="#">By 教务处</a>
+                                        <a href="#">2016年9月10日</a>
+                                        <span><i class="fa fa-comments-o"></i>87</span>
+                                    </div>
+                                    <div class="mu-blog-description">
+                                        <p>8月26日，计算机科学与软件学院2016级新生夏令营闭营仪式在学院楼102会议室隆重举行。计算机学院党委书记商植桐、院长顾军华出席了此次活动，16级辅导员张茜茜和全体夏令营成员参加了活动。闭营仪式由学院党委副书记副院长王轩主持...</p>
+                                        <a class="mu-read-more-btn" href="#">查看更多</a>
+                                    </div>
+                                </article>
+                                    </div>
+                                </div>
                             </div>
                             <!-- end course content container -->
                             <!-- start course pagination -->
@@ -46,7 +105,7 @@
                                         <div class="media">
                                             <div class="media-left">
                                                 <a href="#">
-                                                    <img class="media-object" src="assets/img/courses/1.jpg" alt="img">
+                                                    <img src="{:__ROOT__}/theme/varsity/img/newslist/002.jpg" alt="img">
                                                 </a>
                                             </div>
                                             <div class="media-body">
@@ -57,7 +116,7 @@
                                         <div class="media">
                                             <div class="media-left">
                                                 <a href="#">
-                                                    <img class="media-object" src="assets/img/courses/2.jpg" alt="img">
+                                                    <img src="{:__ROOT__}/theme/varsity/img/newslist/002.jpg" alt="img">
                                                 </a>
                                             </div>
                                             <div class="media-body">
@@ -68,7 +127,7 @@
                                         <div class="media">
                                             <div class="media-left">
                                                 <a href="#">
-                                                    <img class="media-object" src="assets/img/courses/3.jpg" alt="img">
+                                                    <img src="{:__ROOT__}/theme/varsity/img/newslist/002.jpg" alt="img">
                                                 </a>
                                             </div>
                                             <div class="media-body">
