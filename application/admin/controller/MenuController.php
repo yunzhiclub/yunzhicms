@@ -23,8 +23,10 @@ class MenuController extends AdminController
         $MenuModel = MenuModel::get($id);
         $this->assign('MenuModel', $MenuModel);
 
-        //所有菜单对象
-        $MenuModels = MenuModel::all();
+        // 所有的pid=0的菜单
+        $map = array('pid' => 0, 'is_deleted' => 0);
+        $MenuModel = new MenuModel;
+        $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
 
         // 所有菜单类型
@@ -81,8 +83,10 @@ class MenuController extends AdminController
 
     public function createAction()
     {
-        // 所有的菜单
-        $MenuModels = MenuModel::all();
+        // 所有的pid=0的菜单
+        $map = array('pid' => 0, 'is_deleted' => 0);
+        $MenuModel = new MenuModel;
+        $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
 
         // 所有菜单类型
