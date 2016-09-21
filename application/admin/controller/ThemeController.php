@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 use app\model\ThemeModel;
+use think\Request;                  // 初始化
 /**
  * 主题管理
  */
@@ -23,12 +24,13 @@ class ThemeController extends AdminController
      * @author huangshuaibin
      * @return boolean
      */
-    public function readAction($id)
+    public function readAction()
     {
+        $name = Request::instance()->param('name');
     	//调用 启用当前模板  静态方法
-    	ThemeModel::setDefaultTheme($id);
+    	ThemeModel::setDefaultTheme($name);
 
-    	return $this->success('启用成功', url('@admin/theme')); 
+    	return $this->success('启用成功', url('index'));
     }
 
 }
