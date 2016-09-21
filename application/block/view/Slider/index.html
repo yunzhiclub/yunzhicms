@@ -1,6 +1,6 @@
 <!-- Start Slider -->
 <section id="mu-slider">
-    {foreach name="titles" id="_title" key="key"}
+    <?php for ($key=0; $key < $totalCount; $key++) : ?>
         <!-- Start single slider item -->
         <div class="mu-slider-single">
             <div class="mu-slider-img">
@@ -9,7 +9,7 @@
                 </figure>
             </div>
             <div class="mu-slider-content">
-                <h4>{$_title}</h4>
+                <h4>{$titles[$key]}</h4>
                 <span></span>
                 <h2>{$headers[$key]}</h2>
                 <p>{$descriptions[$key]}</p>
@@ -20,6 +20,6 @@
             </div>
         </div>
         <!-- Start single slider item -->
-    {/foreach}
+    <?php endfor; ?>
 </section>
 <!-- End Slider -->
