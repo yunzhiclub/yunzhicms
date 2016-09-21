@@ -33,7 +33,7 @@
                                 {eq name="$ThemeModel->is_current" value="1"}
                                 <p>已启用</p>
                                 {else /}
-                                <a href="{:url('@admin/Theme/' . $ThemeModel->name)}" class="btn btn-info"></i>&nbsp;启用</a>
+                                <a href="{:url('read?name=' . $ThemeModel->name)}" class="btn btn-info"></i>&nbsp;启用</a>
                                 {/eq}
                             </td>
                         </tr>
