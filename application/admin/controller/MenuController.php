@@ -94,7 +94,7 @@ class MenuController extends AdminController
         AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
 
         $menuType = $MenuModel->getData('menu_type_name');
-        return $this->success('操作成功', url('MenuType/read'));
+        return $this->success('操作成功', url('MenuType/read', ['name' => $menuType]));
     }
 
     public function createAction()
@@ -157,7 +157,7 @@ class MenuController extends AdminController
         }
       
         $menuType = $MenuModel->getData('menu_type_name');
-        return $this->success('操作成功', url('MenuType/read'));
+        return $this->success('保存成功', url('MenuType/read', ['name' => $menuType]));
 
     }
 
@@ -191,6 +191,6 @@ class MenuController extends AdminController
         $MenuModel->setData('is_deleted', 1)->save();
 
         $menuType = $MenuModel->getData('menu_type_name');
-        return $this->success('删除成功', url('MenuType/read'));
+        return $this->success('删除成功', url('MenuType/read', ['name' => $menuType]));
     }
 }
