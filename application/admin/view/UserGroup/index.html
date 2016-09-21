@@ -27,10 +27,10 @@
                             <td class="td-actions">
                                 {eq value="1" name="_UserGroupModel->is_system"}
                                 {else /}
-                                <a href="{:url('@admin/UserGroup/' . $_UserGroupModel->name . '/edit')}" class="btn btn-small btn-info">
+                                <a href="{:url('edit?name=' . $_UserGroupModel->name)}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 编辑
                                 </a>
-                                <a href="{:url('@admin/UserGroup/' . $_UserGroupModel->name . '/delete')}" class="btn btn-small btn-danger">
+                                <a href="{:url('delete?name=' . $_UserGroupModel->name)}" class="btn btn-small btn-danger">
                                     <i class="btn-icon-only icon-remove"></i> 删除
                                 </a>
                                 {/eq}
@@ -38,7 +38,7 @@
                         </tr>
                         {/volist}
                         <div style="text-align:right;">
-                        <a href="{:url('@admin/Usergroup/create')}" class="btn btn-small btn-info">
+                        <a href="{:url('create')}" class="btn btn-small btn-info">
                             <i class="btn-icon-only icon-edit"></i> 新增
                         </a>
                     </div>
