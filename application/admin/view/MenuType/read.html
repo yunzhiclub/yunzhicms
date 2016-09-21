@@ -51,10 +51,10 @@
                             </td>
                             <td>{$MenuModel->description}</td>
                             <td class="td-actions">
-                                <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit')}" class="btn btn-small btn-info">
+                                <a href="{:url('menu/edit?id=' . $MenuModel->id)}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 编辑
                                 </a>
-                                <a href="{:url('@admin/Menu/' . $MenuModel->id . '/delete')}" class="btn btn-small btn-danger">
+                                <a href="{:url('menu/delete?id=' . $MenuModel->id)}" class="btn btn-small btn-danger">
                                     <i class="btn-icon-only icon-remove"></i> 删除
                                 </a>
                             </td>
@@ -87,10 +87,10 @@
                                 </td>
                                 <td>{$MenuModel->description}</td>
                                 <td class="td-actions">
-                                    <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit')}" class="btn btn-small btn-info">
+                                    <a href="{:url('menu/edit?id=' . $MenuModel->id)}" class="btn btn-small btn-info">
                                         <i class="btn-icon-only icon-edit"></i> 编辑
                                     </a>
-                                    <a href="{:url('@admin/Menu/' . $MenuModel->id . '/delete')}" class="btn btn-small btn-danger">
+                                    <a href="{:url('menu/delete?id=' . $MenuModel->id)}" class="btn btn-small btn-danger">
                                         <i class="btn-icon-only icon-remove"></i> 删除
                                     </a>
                                 </td>
@@ -123,10 +123,10 @@
                                     </td>
                                     <td>{$MenuModel->description}</td>
                                     <td class="td-actions">
-                                        <a href="{:url('@admin/Menu/' . $MenuModel->id . '/edit' . '/' . $MenuModelType->title)}" class="btn btn-small btn-info">
+                                        <a href="{:url('menu/edit?id=' . $MenuModel->id)}" class="btn btn-small btn-info">
                                             <i class="btn-icon-only icon-edit"></i> 编辑
                                         </a>
-                                        <a href="{:url('@admin/Menu/' . $MenuModel->id . '/delete')}" class="btn btn-small btn-danger">
+                                        <a href="{:url('menu/delete?id=' . $MenuModel->id)}" class="btn btn-small btn-danger">
                                             <i class="btn-icon-only icon-remove"></i> 删除
                                         </a>
                                     </td>
