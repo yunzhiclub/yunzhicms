@@ -1,5 +1,6 @@
 <?php
 namespace app\model;
+use think\Exception;
 /**
  * 用户组 - 菜单 权限
  */
@@ -19,6 +20,9 @@ class AccessUserGroupMenuModel extends ModelModel
         // 删除全部记录
         self::destroy($map);
 
+
+        // 修改实现权限管理的方法
+        // author tangzhenjie
         foreach ($userGroups as $userGroupName => $userGroupStates)
         {
             
@@ -26,43 +30,58 @@ class AccessUserGroupMenuModel extends ModelModel
             {
                 throw new Exception("传入的userGroups变量格式错误", 1);
             }
-
-            $access = 0;
-            foreach ($userGroupStates as $key => $userGroupStates)
+     
+     
+            // 新增
+            // 存储具体权限
+            foreach ($userGroupStates as $key => $userGroupState)
             {
                 // 按crud 来增加权限
                 switch ($key) {
                     case 'delete':
-                        $access = $access | 1;
+                        $data = new AccessUserGroupMenuModel;
+                        $data->setData('menu_id', (int)$menuId);
+                        $data->setData('user_group_name', $userGroupName);
+                        $data->setData('action', 'delete');
+                        $data->save();
                         break;
 
                     case 'read':
-                        $access = $access | 2;
+                        $data = new AccessUserGroupMenuModel;
+                        $data->setData('menu_id', (int)$menuId);
+                        $data->setData('user_group_name', $userGroupName);
+                        $data->setData('action', 'read');
+                        $data->save();
                         break;
                     
                     case 'update':
-                        $access = $access | 4;
+                        $data = new AccessUserGroupMenuModel;
+                        $data->setData('menu_id', (int)$menuId);
+                        $data->setData('user_group_name', $userGroupName);
+                        $data->setData('action', 'update');
+                        $data->save();
                         break;
 
                     case 'create':
-                        $access = $access | 8;
+                        $data = new AccessUserGroupMenuModel;
+                        $data->setData('menu_id', (int)$menuId);
+                        $data->setData('user_group_name', $userGroupName);
+                        $data->setData('action', 'create');
+                        $data->save();
                         break;
 
                     case 'index':
-                        $access = $access | 16;
+                        $data = new AccessUserGroupMenuModel; 
+                        $data->setData('menu_id', (int)$menuId);
+                        $data->setData('user_group_name', $userGroupName);
+                        $data->setData('action', 'index');
+                        $data->save();
                         break;
 
                     default:
                         break;
                 }
             }
-
-            // 新增
-            $data = new AccessUserGroupMenuModel;
-            $data->setData('menu_id', (int)$menuId);
-            $data->setData('user_group_name', $userGroupName);
-            $data->setData('access', $access);
-            $data->save();
         }
 
         return true;
