@@ -23,8 +23,10 @@ class MenuController extends AdminController
         $MenuModel = MenuModel::get($id);
         $this->assign('MenuModel', $MenuModel);
 
-        //所有菜单对象
-        $MenuModels = MenuModel::all();
+        // 所有的pid=0的菜单
+        $map = array('pid' => 0, 'is_deleted' => 0);
+        $MenuModel = new MenuModel;
+        $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
 
         // 所有菜单类型
@@ -62,11 +64,26 @@ class MenuController extends AdminController
         $MenuModel->setData('config', json_encode($data['config']));
 
         // 过滤器信息
-        if (array_key_exists('filter', $data))
-        {
+        if (array_key_exists('filter', $data)){
             $filter = Common::makeFliterArrayFromPostArray($data['filter']);
             $MenuModel->setData('filter', json_encode($filter));
         }
+
+        // 验证
+        $result = $this->validate(
+            [
+                'title'  => $data['title'],
+            ],
+            [
+                'title'  => 'require',
+            ]
+        );
+
+        if(true !== $result){
+            // 验证失败 输出错误信息
+            return $this->error('title不能为空', url('@admin/menuType/' . $data['menu_type_name']));
+        }
+
         $MenuModel->save();
 
         //若未返回数值，则置为空数组
@@ -81,8 +98,10 @@ class MenuController extends AdminController
 
     public function createAction()
     {
-        // 所有的菜单
-        $MenuModels = MenuModel::all();
+        // 所有的pid=0的菜单
+        $map = array('pid' => 0, 'is_deleted' => 0);
+        $MenuModel = new MenuModel;
+        $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
 
         // 所有菜单类型
@@ -103,7 +122,7 @@ class MenuController extends AdminController
     public function saveAction()
     {
         $data = input('param.');
-       
+
         $MenuModel = new MenuModel;
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);
@@ -115,13 +134,27 @@ class MenuController extends AdminController
         $MenuModel->setData('status', $data['status']);
         $MenuModel->setData('description', $data['description']);
 
+        $result = $this->validate(
+            [
+                'title'  => $data['title'],
+            ],
+            [
+                'title'  => 'require',
+            ]
+        );
+        if(true !== $result){
+            // 验证失败 输出错误信息
+            return $this->error('title不能为空', url('@admin/menuType/' . $data['menu_type_name']));
+        }
         $id = $MenuModel->save();
 
-        $data['access'] = isset($data['access'])?$data['access']:array();
+        // 判断是否传入用户组权限信息
+        if (isset($data['access'])) {
 
-        // 更新 菜单 用户组 权限
-        AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
-
+            // 更新菜单用户组关联表
+            AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
+        }
+      
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('操作成功', url('@admin/menuType/' . $menuType));
 
