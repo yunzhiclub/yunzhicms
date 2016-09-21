@@ -1,23 +1,59 @@
 {layout name="index" /}
-
-<table>
-    <tr>
-        <th>序号</th>
-        <th>email</th>
-        <th>用户组</th>
-        <th>状态</th>
-        <th>创建时间</th>
-        <th>操作</th>
-    </tr>
-    {volist name="userModels" key="key" id="_UserModel"}
-    {/volist}
-    <tr>
-        <td>{$key}</td>
-        <td>{$_UserModel->getData('email')}</td>
-        <td>{$_UserModel->getUserGroupModel()->getData('title')}</td>
-        <td>{$_UserModel->getData('status')}</td>
-        <td>{$_UserModel->getData('create_time')}</td>
-        <td><a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/edit')}">编辑</a></td>
-    </tr>
-    {$userModels->render()}
-</table>
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5 style="display:inline;">
+                用户管理
+                </h5>
+            </div>
+            <div class="box-content box-table">
+                <table id="sample-table" class="table table-hover table-bordered">
+                    <tr>
+                        <th>序号</th>
+                        <th>邮箱</th>
+                        <th>姓名</th>
+                        <th>用户组</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    {volist name="userModels" key="key" id="_UserModel"}
+                    <tr>
+                        <td>{$key}</td>
+                        <td>{$_UserModel->getData('username')}</td>
+                        <td>{$_UserModel->getData('name')}</td>
+                        <td>{$_UserModel->getData('user_group_name')}</td>
+                        <td>
+                            {eq value="1" name="$_UserModel->getData('status')"}
+                            <span class="badge">
+                                    已删除
+                                </span> {else /}
+                            <span class="badge span_backgroud_color">
+                                    激活
+                                </span> {/eq}
+                        </td>
+                        <td>{$_UserModel->create_time}</td>
+                        <td>
+                            {eq value="管理员" name="$_UserModel->getData('user_group_name')"}{else /}
+                            <a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/edit')}" class="btn btn-small btn-info icon-deit"> 编辑</a>
+                            <a href="{:url('@admin/user/' . $_UserModel->getData('id') . '/delete')}" class="btn btn-small btn-danger icon-remove" "> 删除</a>
+                            <a href="{:url( 'resetPassword?id=' . $_UserModel->getData('id'))}" class="btn btn-small btn-primary">
+                            <i class="btn-icon-only icon-edit"></i> 重置密码
+                            </a>
+                            {/eq}
+                        </td>
+                    </tr>
+                    {/volist}
+                    <div style="text-align:right;">
+                        <a href="{:url('@admin/User/create')}" class="btn btn-small btn-info">
+                            <i class="btn-icon-only icon-edit"></i> 新增
+                        </a>
+                    </div>
+                </table>
+                {$userModels->render()}
+            </div>
+        </div>
+    </div>
+</div>

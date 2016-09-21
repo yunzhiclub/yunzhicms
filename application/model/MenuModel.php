@@ -123,13 +123,13 @@ class MenuModel extends ModelModel
     /**
      * 获取某个菜单类型的所有的列表
      * 先转化为树状，先转化为列表，这样顺序输出后，就有了上下级的结构
-     * @param  string $menuTypeName 菜单类型名
+     * @param  string $menuTypeName 菜单类型名 int pid $pid 父级菜单的id int $is_deleted 是否删除标记
      * @return lists               
      * 
      */
-    public function getListsByMenuTypeNamePid($menuTypeName, $pid)
+    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_deleted = null )
     {
-        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid];
+        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_deleted' => $is_deleted];
         $MenuModels = $this->where($map)->order('weight desc')->select();
         return $MenuModels;
     }
@@ -243,8 +243,8 @@ class MenuModel extends ModelModel
      */
     public function sonMenuModels()
     {
-        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0'];
-        $menuModels = $this->where($map)->select();
+        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_deleted' => 0];
+        $menuModels = $this->where($map)->order('weight desc')->select();
         return $menuModels;
     }
 
@@ -347,4 +347,57 @@ class MenuModel extends ModelModel
         return $availableSonMenuModels;
     }
 
+    /**
+     * 显示是否隐藏
+     * @param int  $value
+     * @return string 
+     * @author  gaoliming
+     */
+    public function getIsHiddenAttr($value)
+    {
+        $status = array(
+            '0' => '是', 
+            '1' => '一',
+            );
+        if ($value === 0) {
+            return $status[0];
+        } else {
+            return $status[1];
+        }
+    }
+
+    /**
+     * 是否显示首页
+     * @param int  $value
+     * @return  string 
+     * @author  gaoliming
+     */
+    public function getIsHomeAttr($value)
+    {
+        $status = array(
+            '0' => '一',
+            '1' => '是',
+            );
+        if ($value === 0) {
+            return $status[0];
+        } else {
+            return $status[1];
+        }
+    }
+
+    /**
+     * return
+     * 更新菜单权重
+     * author liuxi
+     */
+    public function updateMenuWeightById($id,$weight)
+    {
+        if (!$id || !is_numeric($id)) {
+            throw new Exception("ID不合法");
+        }
+        $data = array(
+            'weight' => intval($weight),
+            );
+        return $this->where('id','=',$id)->find()->save($data);
+    }
 }
