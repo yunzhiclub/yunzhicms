@@ -12,6 +12,6 @@ class UserGroupValidate extends Validate
 		'name'	=> 'require|max:100',
 		'title' => 'require|max:100',
 		'name'  => 'alphaDash',			//验证机读字段是不是纯英文或者数组
-		'name'  => 'unique:user_group',
+		// 'name'  => 'unique:user_group',
 	];
 }
