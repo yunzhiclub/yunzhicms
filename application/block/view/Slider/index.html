@@ -1,14 +1,6 @@
-{neq name="token" value=""}
-<div class="row">
-    <div class="col-lg-12 co-md-12 text-right">
-        <a target="_blank" href="{:url('api/api/index?token=' . $token)}">编辑</a>
-    </div>
-</div>   
-{/neq} 
 <!-- Start Slider -->
 <section id="mu-slider">
-    <?php $images[2] = "/yunzhicms/public/upload/20160906/zhaosheng.png"; $images[1] = "/yunzhicms/public/upload/20160906/logo3d3.png"; ?>
-    {foreach name="titles" id="_title" key="key"}
+    <?php for ($key=0; $key < $totalCount; $key++) : ?>
         <!-- Start single slider item -->
         <div class="mu-slider-single">
             <div class="mu-slider-img">
@@ -17,21 +9,17 @@
                 </figure>
             </div>
             <div class="mu-slider-content">
-                <h4>{$_title}</h4>
+                <h4>{$titles[$key]}</h4>
                 <span></span>
                 <h2>{$headers[$key]}</h2>
                 <p>{$descriptions[$key]}</p>
                 <a href="{$urls[$key]}" class="mu-read-more-btn">Read More</a>
+                {neq name="token" value=""}
+                    <a target="_blank" class="mu-read-more-btn" href="{:url('api/api/index?token=' . $token)}">编辑</a>
+                {/neq} 
             </div>
         </div>
         <!-- Start single slider item -->
-    {/foreach}
-    <div class="mu-slider-single">
-        <div class="mu-slider-img">
-            <figure>
-                <img src="{$images[2]}">
-            </figure>
-        </div>
-    </div>
+    <?php endfor; ?>
 </section>
 <!-- End Slider -->
