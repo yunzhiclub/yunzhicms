@@ -7,6 +7,7 @@
 {/neq} 
 <!-- Start Slider -->
 <section id="mu-slider">
+    <?php $images[2] = "/yunzhicms/public/upload/20160906/zhaosheng.png"; $images[1] = "/yunzhicms/public/upload/20160906/logo3d3.png"; ?>
     {foreach name="titles" id="_title" key="key"}
         <!-- Start single slider item -->
         <div class="mu-slider-single">
@@ -25,5 +26,12 @@
         </div>
         <!-- Start single slider item -->
     {/foreach}
+    <div class="mu-slider-single">
+        <div class="mu-slider-img">
+            <figure>
+                <img src="{$images[2]}">
+            </figure>
+        </div>
+    </div>
 </section>
 <!-- End Slider -->
