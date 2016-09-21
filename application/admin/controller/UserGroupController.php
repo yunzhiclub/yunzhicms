@@ -20,51 +20,54 @@ class UserGroupController extends AdminController
 
         //获取config.php中的分页配置信息
         $pageSize = config('paginate.var_page');
-        $map = array('is_deleted' => 0);
+        $map      = array('is_deleted' => 0);
     	$UserGroupModels = $UserGroupModel->where($map)->paginate($pageSize);
     	$this->assign('UserGroupModels', $UserGroupModels);
-        return $this->fetch();
+        // return $this->fetch();
+        return $this->fetch('UserGroup/index');
     }
 
-    public function editAction($id)
+    public function editAction($name)
     {
         //获取对象
-        $UserGroupModel = UserGroupModel::get($id);
+        $UserGroupModel = UserGroupModel::get($name);
 
         //获取用户组是否实是系统自己设置的
         if (1 === $UserGroupModel->is_system) {
             return $this->error('此用户组是系统默认设置不能编辑');
         }
         
-    	$UserGroupModel = UserGroupModel::get($id);
+    	$UserGroupModel = UserGroupModel::get($name);
     	$this->assign('UserGroupModel', $UserGroupModel);
-    	return $this->fetch();
+    	return $this->fetch('UserGroup/edit');
     }
 
-    public function updateAction($id)
+    public function updateAction()
     {
+        $name = input('param.name');
     	$data = input('param.');
 
-    	$UserGroupModel = UserGroupModel::get($id);
+    	$UserGroupModel = UserGroupModel::get($name);
     	$UserGroupModel->setData('title', $data['title']);
     	$UserGroupModel->setData('description', $data['description']);
 
         $datas = array(
             'title'       => $data['title'],
             'description' => $data['description'],
-            'name'        => $data['id'],
+            'name'        => $name,
          );
 
         //验证并保存
-        if (false === $UserGroupModel->validate()->save($datas)) {
+        if (false === $UserGroupModel->validate()->isUpdate()->save($datas)) {
             return $this->error($UserGroupModel->getError());
         }
-    	return $this->success('操作成功', url('@admin/usergroup/'));
+
+    	return $this->success('操作成功', url('index'));
     }
 
     public function createAction()
     {
-        return $this->fetch();
+        return $this->fetch('UserGroup/create');
     }
 
     public function saveAction()
@@ -82,7 +85,7 @@ class UserGroupController extends AdminController
             return $this->error($UserGroupModel->getError());
         }
 
-        return $this->success('操作成功', url('@admin/usergroup/')); 
+        return $this->success('操作成功', url('index')); 
     }
 
     /**
@@ -91,10 +94,10 @@ class UserGroupController extends AdminController
      * @author  gaoliming 
      * @return template
      */
-    public function deleteAction($id)
+    public function deleteAction($name)
     {
         //获取对象
-        $UserGroupModel = UserGroupModel::get($id);
+        $UserGroupModel = UserGroupModel::get($name);
 
         //获取用户组是否实是系统自己设置的
         if (1 === $UserGroupModel->is_system) {
@@ -102,13 +105,13 @@ class UserGroupController extends AdminController
         }
 
         //判断是否还有用户
-        $UserModels = $UserGroupModel->getAllUserModel($id);
+        $UserModels = $UserGroupModel->getAllUserModel($name);
         if (!empty($UserModels)) {
             return $this->error('含有子用户,不能删除');
         }
 
         //删除中间表信息
-        $map = array('user_group_name' => $id);
+        $map = array('user_group_name' => $name);
         $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
         $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
         if (false === $AccessUserGroupBlockModel->where($map)->delete()) {
@@ -122,7 +125,7 @@ class UserGroupController extends AdminController
         $UserGroupModel->setData('is_deleted', 1)->save();
 
         //返回首页
-        return $this->success('删除成功', url('@admin/usergroup')); 
+        return $this->success('删除成功', url('index')); 
     }
 
 }

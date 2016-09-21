@@ -7,11 +7,12 @@
                 <h5>用户组编辑</h5>
             </div>
             <div class="box-content">
-                <form class="form-horizontal" action="{:url('@admin/usergroup/' . $UserGroupModel->name)}" method="post">
+                <form class="form-horizontal" action="{:url('update')}" method="post">
                 <input type="hidden" name="_method" value="POST" />
                     <div class="control-group">
                         <label class="control-label" for="_title">标题</label>
                         <div class="controls">
+                            <input type="hidden" name="name" value="{$UserGroupModel->name}">
                             <input type="text" name="title" id="_title" value="{$UserGroupModel->title}"/>
                         </div>
                     </div>
