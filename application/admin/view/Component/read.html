@@ -15,7 +15,7 @@
                             {foreach name="ComponentModel->getConfig()" key="key" id="_config"}
                                 <li>
                                     <label>{$_config['title']}</label>
-                                    <input type="text" name="config[{$key}]" value="{$_config['value']}">
+                                    {$_config['value']}
                                 </li>
                             {/foreach}
                         </div>
