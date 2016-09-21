@@ -80,4 +80,20 @@ class UserGroupModel extends ModelModel
     {
         return $this->isAllowedByMenuModelAction($MenuModel, 'delete');
     }
+
+    /**
+     * 获取当前用户组的所有用户
+     * @param  string  $name 用户组name键值
+     * @author  gaoliming
+     */
+    public function getAllUserModel($name)
+    {
+        //制定索引
+        $map = array('user_group_name' => $name);
+
+        //取出所有用户
+        $UserModel = new UserModel;
+        return $UserModel->where($map)->select();
+    }
+
 }

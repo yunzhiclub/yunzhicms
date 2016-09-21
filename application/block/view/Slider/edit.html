@@ -11,9 +11,9 @@
     <form action="{:url('api/api/index?token=' . $token)}" method="post">
         <label for="">区块名称：{$BlockModel->getData('title')}</label>
         <div>
-            {foreach name="$BlockModel->FieldModels()" id="_FieldModel"}
+            {foreach name="$BlockModel->FieldXXXXModels()" id="_FieldXXXXModel"}
                 <div>
-                {:$_FieldModel->render($BlockModel)}
+                {:$_FieldXXXXModel->render('edit')}
                 </div>
                 <hr />
             {/foreach}
