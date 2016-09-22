@@ -209,4 +209,22 @@ class UserModel extends ModelModel
         $encryptedpassword = sha1(md5($password));
         return $encryptedpassword;
     }
+
+    /**
+     * 判断用户是否拥有后台访问权限
+     * @return bool 
+     * @author chuhang 
+     */
+    public function getAccessPermission()
+    {
+        $map['username'] = session('username');
+        $userGroup = self::get($map)->getData('user_group_name');
+        $admin = "admin";
+        if ($userGroup === $admin)
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
