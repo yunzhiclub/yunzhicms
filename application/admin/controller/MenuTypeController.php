@@ -3,7 +3,7 @@ namespace app\admin\controller;
 use app\model\MenuModel;                // 菜单
 use app\model\MenuTypeModel;            // 菜单类型
 
-class MenutypeController extends AdminController
+class MenuTypeController extends AdminController
 {
     public function indexAction()
     {
@@ -15,25 +15,22 @@ class MenutypeController extends AdminController
         //设置分页
         $MenuTypeModels = $MenuTypeModel->where($map)->paginate(config('paginate.var_page'));
         $this->assign('MenuTypeModels', $MenuTypeModels);
-        return $this->fetch();
+        return $this->fetch('MenuType/index');
     }
 
-    public function readAction($id)
+    public function readAction($name)
     {
-        
-        $name = $id;
         $MenuModelType = MenuTypeModel::get($name);
         $this->assign('MenuModelType', $MenuModelType);
 
         $MenuModel = new MenuModel;
         $MenuModels = $MenuModel->getListsByMenuTypeNamePid($name, 0, 0);
         $this->assign('MenuModels', $MenuModels);
-        return $this->fetch();
+        return $this->fetch('MenuType/read');
     }
 
-    public function deleteAction($id)
+    public function deleteAction($name)
     {
-        $name = $id;
         if (null === $name) {
             
             return $this->error('未找到相关记录');
@@ -54,12 +51,12 @@ class MenutypeController extends AdminController
 
         $MenuTypeModel->setData('is_deleted', 1)->save();
 
-        return $this->success('删除成功', url('@admin/menutype'));
+        return $this->success('删除成功', url('menuType/index'));
     }
 
     public function createAction()
     {
-        return $this->fetch();
+        return $this->fetch('menutype/create');
     }
 
     public function saveAction()
@@ -72,7 +69,7 @@ class MenutypeController extends AdminController
 
         $MenuTypeModel->save();
 
-        return $this->success('保存成功', url('@admin/menutype'));
+        return $this->success('保存成功', url('menuType/index'));
     }
 
     /**

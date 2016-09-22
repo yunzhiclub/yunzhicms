@@ -18,16 +18,14 @@ class UserController extends AdminController
         $userModels = new UserModel;
 
         //设置条件
-        $map = array(
-            'is_deleted' => 0
-            );
+        $map = array( 'is_deleted' => 0 );
 
         //取出数据并传进V层
         $userModels = $userModels->where($map)->paginate($pageSize);
         $this->assign('userModels', $userModels);
 
         //返回V层
-        return $this->fetch();
+        return $this->fetch('User/index');
     }
 
     /**
@@ -36,19 +34,18 @@ class UserController extends AdminController
      * @return template
      * @author liuyanzhao
      */
-    public function editAction($id)
+    public function editAction()
     {
         //根据id取数据
         $id = input('id');
         $UserModel = UserModel::get($id);
-  
         //把取到的数据传进V层
         $this->assign('UserModel', $UserModel);
 
         //把用户管理界面的用户组取出来并传进V层
         $UserGroup = $UserModel->userGroup();
         $this->assign('UserGroups', $UserGroup);
-        return $this->fetch();
+        return $this->fetch('User/edit');
     }
 
     /**
@@ -80,7 +77,7 @@ class UserController extends AdminController
         $UserModel->setData('user_group_name', $data['user_group_name']);
         $UserModel->save(); 
 
-        return $this->success('更新成功', url('@admin/user'));
+        return $this->success('更新成功', url('index'));
     }
 
     /**
@@ -112,7 +109,7 @@ class UserController extends AdminController
         $UserModel->setData('password', $UserModel->encryptPassword($UserModel->defaultPassword()));
 
         $UserModel->save();
-        return $this->success('操作成功', url('@admin/user/'));  
+        return $this->success('操作成功', url('index'));  
     }
 
     public function createAction()
@@ -122,7 +119,7 @@ class UserController extends AdminController
         $UserGroup = $User->userGroup();
         $this->assign('UserGroups', $UserGroup); 
 
-        return $this->fetch();
+        return $this->fetch('User/create');
     }
 
     /**
@@ -135,7 +132,7 @@ class UserController extends AdminController
     {
         $UserModel = UserModel::get($id);
         $UserModel->setData('is_deleted', 1)->save();
-        return $this->success('删除成功', url('@admin/user'));
+        return $this->success('删除成功', url('index'));
     }
 
     /**
@@ -151,7 +148,7 @@ class UserController extends AdminController
         //将面重置
         $status = $UserModel->resetPassword($id);
         if ($status !== false) {
-           return $this ->success('您的密码已重置，新密码为:' . config('resetPassword'), url('@admin/user'));
+           return $this ->success('您的密码已重置，新密码为:' . config('resetPassword'), url('index'));
         } else {
             return $this->error('重置密码失败');
         }

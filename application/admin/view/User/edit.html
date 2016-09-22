@@ -9,10 +9,11 @@
                 </h5>
             </div>
             <br>
-            <form action="{:url('@admin/user/' . $UserModel->id)}" method="post" class="form-horizontal">
+            <form action="{:url('update')}" method="post" class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label" for="_title">邮箱</label>
                     <div class="controls">
+                        <input type="hidden" name="id" value="{$UserModel->id}">
                         <input type="email" id="_title" value="{$UserModel->username}" name="username" placeholder="请输入邮箱" />
                     </div>
                 </div>
@@ -37,7 +38,7 @@
                 <div class="control-group"  style="margin-left:95px">
                     <label class="control-label">
                         <button type="submit" class="btn btn-primary">
-                            <i class="icon-ok"></i>提交
+                            <i class="icon-ok"></i>保存
                         </button>
                     </label>
                 </div>

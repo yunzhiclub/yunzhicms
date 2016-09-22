@@ -41,11 +41,12 @@ class MenuController extends AdminController
         $userGroupModels = UserGroupModel::all();
         $this->assign('userGroupModels', $userGroupModels);
 
-        return $this->fetch();
+        return $this->fetch('menu/edit');
     }
 
-    public function updateAction($id)
+    public function updateAction()
     {
+        $id = input('param.id');
         $data = input('param.');
 
         $MenuModel = MenuModel::get($id);
@@ -81,7 +82,7 @@ class MenuController extends AdminController
 
         if(true !== $result){
             // 验证失败 输出错误信息
-            return $this->error('title不能为空', url('@admin/menuType/' . $data['menu_type_name']));
+            return $this->error('title不能为空', url('MenuType/read'));
         }
 
         $MenuModel->save();
@@ -93,7 +94,7 @@ class MenuController extends AdminController
         AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
 
         $menuType = $MenuModel->getData('menu_type_name');
-        return $this->success('操作成功', url('@admin/menuType/' . $menuType));
+        return $this->success('操作成功', url('MenuType/read', ['name' => $menuType]));
     }
 
     public function createAction()
@@ -116,7 +117,7 @@ class MenuController extends AdminController
         $userGroupModels = UserGroupModel::all();
         $this->assign('userGroupModels', $userGroupModels);
 
-        return $this->fetch();
+        return $this->fetch('menu/create');
     }
 
     public function saveAction()
@@ -144,7 +145,7 @@ class MenuController extends AdminController
         );
         if(true !== $result){
             // 验证失败 输出错误信息
-            return $this->error('title不能为空', url('@admin/menuType/' . $data['menu_type_name']));
+            return $this->error('title不能为空', url('MenuType/read'));
         }
         $id = $MenuModel->save();
 
@@ -156,7 +157,7 @@ class MenuController extends AdminController
         }
       
         $menuType = $MenuModel->getData('menu_type_name');
-        return $this->success('操作成功', url('@admin/menuType/' . $menuType));
+        return $this->success('保存成功', url('MenuType/read', ['name' => $menuType]));
 
     }
 
@@ -190,6 +191,6 @@ class MenuController extends AdminController
         $MenuModel->setData('is_deleted', 1)->save();
 
         $menuType = $MenuModel->getData('menu_type_name');
-        return $this->success('删除成功', url('@admin/menuType/' . $menuType));
+        return $this->success('删除成功', url('MenuType/read', ['name' => $menuType]));
     }
 }
