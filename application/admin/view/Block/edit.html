@@ -12,7 +12,7 @@
                 <div class="form-horizontal">
                     <div class="control-group">
                         <div class="controls">
-                            <form action="{:url('@admin/block/' . $BlockModel->id)}" method="post">
+                            <form action="{:url('update?id=' . $BlockModel->id)}" method="post">
                                 <input type="hidden" name="_method" value="POST" />
                                 <div>
                                     <label for="">名称</label>
