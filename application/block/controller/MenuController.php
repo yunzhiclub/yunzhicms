@@ -18,7 +18,7 @@ class MenuController extends BlockController
         $this->currentMenuModel = MenuModel::getCurrentMenuModel();
 
         // 取当前菜单类型, 用于按类型生成目录tree
-        $menuTypeName = $this->config['menu_type_name']['value'];
+        $menuTypeName = $this->config['menu_type_name'];
         $pid = 0;
 
         // 生成token并送入V层，用于编辑该区块

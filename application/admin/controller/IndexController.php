@@ -5,6 +5,6 @@ class IndexController extends AdminController
 {
     public function indexAction()
     {
-        return $this->fetch();
+        return $this->fetch('Index/index');
     }
 }

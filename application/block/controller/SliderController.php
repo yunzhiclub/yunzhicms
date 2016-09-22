@@ -26,6 +26,14 @@ class SliderController extends BlockController
         $this->assign('headers',        $this->BlockModel->FieldModel('headers')->filter());
         $this->assign('descriptions',   $this->BlockModel->FieldModel('descriptions')->filter());
         
+        $totalCount = count($this->BlockModel->FieldModel('titles')->filter());
+        $totalCount = (count($this->BlockModel->FieldModel('urls')->filter()) < $totalCount) ? count($this->BlockModel->FieldModel('urls')->filter()) : $totalCount;
+        $totalCount = count($this->BlockModel->FieldModel('images')->filter()) < $totalCount ? count($this->BlockModel->FieldModel('images')->filter()) : $totalCount;
+        $totalCount = count($this->BlockModel->FieldModel('headers')->filter()) < $totalCount ? count($this->BlockModel->FieldModel('headers')->filter()) : $totalCount;
+        $totalCount = count($this->BlockModel->FieldModel('descriptions')->filter()) < $totalCount ? count($this->BlockModel->FieldModel('descriptions')->filter()) : $totalCount;
+
+        $this->assign('totalCount', $totalCount);
+
         return $this->fetch();
     }
     
