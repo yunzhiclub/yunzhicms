@@ -14,6 +14,7 @@ class BlockModel extends ModelModel
     private $FieldXXXXModels = null;    // 扩展字段
     protected $config = null;           // 配置信息
     protected $filter = null;           // 过滤器信息
+    protected $sampleConfig = null;     // 简单配置信息
 
 
     /**
@@ -53,6 +54,24 @@ class BlockModel extends ModelModel
         return $this->config;
     }
 
+    /**
+     * 获取简单配置信息
+     * @return   array                   key => value
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-22T09:54:03+0800
+     */
+    public function getSampleConfig()
+    {
+        if (null === $this->sampleConfig) {
+            $configs = $this->getConfig();
+            $this->sampleConfig = [];
+            foreach ($configs as $key => $config) {
+                $this->sampleConfig[$key] = $config['value'];
+            }
+        }
+
+        return $this->sampleConfig;
+    }
     /**
      * 获取合并后可以供前台使用的过滤器信息
      * @return array 
