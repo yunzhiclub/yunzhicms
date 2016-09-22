@@ -14,9 +14,9 @@ class ComponentController extends AdminController
     /**
      * 读取配置信息
      */
-    public function readAction($id)
+    public function readAction($name)
     {
-        $name = $id;
+        // 根据传入name获取信息
         $ComponentModel = ComponentModel::get($name);
         // var_dump($Component);
         $this->assign('ComponentModel', $ComponentModel);

@@ -47,7 +47,7 @@ return [
     //分页配置
     'paginate'               => [
         'type'      => 'bootstrap',
-        'var_page'  => 'page',
+        'var_page'  => '5',
         'list_rows' => 20,
     ],
 
@@ -58,4 +58,10 @@ return [
         'prefix' => 'yunzhicms',
         'expire' => 1800,
     ],
+
+    //默认重置密码
+    'resetPassword' => 111111,
+
+    //设置默认密码
+    'defaultPassword' => 111111,
 ];

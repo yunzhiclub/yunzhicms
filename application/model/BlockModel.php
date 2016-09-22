@@ -14,6 +14,7 @@ class BlockModel extends ModelModel
     private $FieldXXXXModels = null;    // 扩展字段
     protected $config = null;           // 配置信息
     protected $filter = null;           // 过滤器信息
+    protected $sampleConfig = null;     // 简单配置信息
 
 
     /**
@@ -53,6 +54,24 @@ class BlockModel extends ModelModel
         return $this->config;
     }
 
+    /**
+     * 获取简单配置信息
+     * @return   array                   key => value
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-22T09:54:03+0800
+     */
+    public function getSampleConfig()
+    {
+        if (null === $this->sampleConfig) {
+            $configs = $this->getConfig();
+            $this->sampleConfig = [];
+            foreach ($configs as $key => $config) {
+                $this->sampleConfig[$key] = $config['value'];
+            }
+        }
+
+        return $this->sampleConfig;
+    }
     /**
      * 获取合并后可以供前台使用的过滤器信息
      * @return array 
@@ -144,7 +163,7 @@ class BlockModel extends ModelModel
         $map = [];
         $map['block_id']    = $this->data['id'];
         $map['menu_id']     = $MenuModel->getData('id');
-        if (null === AccessMenuBlockModel::get($map))
+        if (empty(AccessMenuBlockModel::get($map)->getData()))
         {
             return false;
         } else {
@@ -195,5 +214,18 @@ class BlockModel extends ModelModel
         }
 
         throw new \Exception('not found fieldName:' . $name . ' of ContentModel:' . $this->getData('id'), 1);
+    }
+
+    public function checkIsHave(UserGroupModel &$UserGroupModel)
+    {
+        $map = [];
+        $map['block_id']    = $this->data['id'];
+        $map['user_group_name']     = $UserGroupModel->getData('name');
+        if (empty(AccessUserGroupBlockModel::get($map)->getData()))
+        {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
