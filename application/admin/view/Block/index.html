@@ -31,17 +31,17 @@
                             <td>{$_blockModel->status}</td>
                             <td>{$_blockModel->position_name}</td>
                             <td>
-                                <a href="{:url('@admin/Block/' . $_blockModel->id . '/edit')}" class="btn btn-small btn-info">
+                                <a href="{:url('edit?id=' . $_blockModel->id)}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 编辑
                                 </a>
-                                <a href="{:url('@admin/Block/' . $_blockModel->id . '/delete')}" class="btn btn-small btn-danger">
+                                <a href="{:url('delete?id=' . $_blockModel->id)}" class="btn btn-small btn-danger">
                                     <i class="btn-icon-only icon-remove"></i>
                                 </a>
                             </td>
                         </tr>
                         {/volist} {$BlockModels->render()}
                         <div style="text-align:right;">
-                            <a href="{:url('@admin/Block/create')}" class="btn btn-small btn-primary">
+                            <a href="{:url('create')}" class="btn btn-small btn-primary">
                                      新增
                                 </a>
                         </div>
