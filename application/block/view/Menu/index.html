@@ -1,61 +1,37 @@
 <!-- Start menu -->
-<section id="mu-menu">
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- LOGO -->
-                <!-- TEXT BASED LOGO -->
-                <a class="navbar-brand" href="index.html"><i class="fa fa-university"></i><span>Varsity</span></a>
-                <!-- IMG BASED LOGO  -->
-                <!-- <a class="navbar-brand" href="index.html"><img src="{:__ROOT__}/theme/varsity/img/logo.png" alt="logo"></a> -->
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-                    {volist name="menuModels" id="menuModel"} {eq name="menuModel->isHaveAvailableSonMenus()" value="1"}
-                    <li class="dropdown {eq name="menuModel->isActive()" value="1"}active"{/eq}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{$menuModel->title} <span class="fa fa-angle-down"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            {volist name="menuModel->getAvailableSonMenuModels()" id="sonMenuModel"}
-                            <li><a href="{:url('@' . $sonMenuModel->url)}" class="{eq name="sonMenuModel->isActive()" value="1"}active{/eq}">{$sonMenuModel->title} </a></li>
-                            {/volist}
-                        </ul>
-                    </li>
-                    {else /}
-                    <li {eq name="menuModel->isActive()" value="1" }class="active" {/eq}><a href="{:url('@' . $menuModel->url)}">{$menuModel->title}</a></li>
-                    {/eq} {/volist}
-                    <li><a href="#" id="mu-search-icon"><i class="fa fa-search"></i></a></li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-    </nav>
-</section>
-<!-- End menu -->
-<!-- Start search box -->
-<div id="mu-search">
-    <div class="mu-search-area">
-        <button class="mu-search-close"><span class="fa fa-close"></span></button>
+<section>
+    <nav class="navbar navbar-default" style="margin-bottom:2px;" role="navigation">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <form class="mu-search-form">
-                        <input type="search" placeholder="Type Your Keyword(s) & Hit Enter">
-                    </form>
+                <div class="col-md-12 col-lg-12">
+                    <div id="{$config['id']}">
+                        <ul>
+                            {volist name="menuModels" id="menuModel"} {eq name="menuModel->isHaveAvailableSonMenus()" value="1"}
+                            <li class="has-sub {eq name="menuModel->isActive()" value="1"}active"{/eq}" >
+                                <a href="{:url('@' . $menuModel->url)}"><span>{$menuModel->title}</span>&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-chevron-down small"></i></a>
+                                <ul>
+                                    {volist name="menuModel->getAvailableSonMenuModels()" id="sonMenuModel"}
+                                    <li class="has-sub" >
+                                        <a href="{:url('@' . $sonMenuModel->url)}"><span>{$sonMenuModel->title}</span> <span class="glyphicon glyphicon-chevron-right" style="float:right;line-height:200%"></span></a>
+                                        {eq name="sonMenuModel->isHaveAvailableSonMenus()" value="1"}
+                                            <ul>
+                                                {volist name="sonMenuModel->getAvailableSonMenuModels()" id="_sonMenuModel"}
+                                                    <li><a href="{:url('@' . $_sonMenuModel->url)}"><span>{$_sonMenuModel->title}</span></a></li>
+                                                {/volist}
+                                            </ul>
+                                        {/eq}
+                                    </li>
+                                    {/volist}
+                                </ul>
+                            </li>
+                            {else /}
+                            <li {eq name="menuModel->isActive()" value="1" }class="active" {/eq}><a href="{:url('@' . $menuModel->url)}"><span>{$menuModel->title}</a></span>
+                            </li>
+                            {/eq} {/volist}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- End search box -->
-<!--START SCROLL TOP BUTTON -->
-<a class="scrollToTop" href="#">
-    <i class="fa fa-angle-up"></i>
-</a>
-<!-- END SCROLL TOP BUTTON -->
+    </nav>
+</section>
