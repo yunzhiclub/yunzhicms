@@ -80,9 +80,10 @@ class MenuController extends AdminController
             ]
         );
 
+        $menuType = $MenuModel->getData('menu_type_name');
         if(true !== $result){
             // 验证失败 输出错误信息
-            return $this->error('title不能为空', url('MenuType/read'));
+            return $this->error('title不能为空', url('MenuType/read', ['name' => $menuType]));
         }
 
         $MenuModel->save();
@@ -93,7 +94,6 @@ class MenuController extends AdminController
         // 更新 菜单 用户组 权限
         AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
 
-        $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('操作成功', url('MenuType/read', ['name' => $menuType]));
     }
 
@@ -143,9 +143,11 @@ class MenuController extends AdminController
                 'title'  => 'require',
             ]
         );
+
+        $menuType = $MenuModel->getData('menu_type_name');
         if(true !== $result){
             // 验证失败 输出错误信息
-            return $this->error('title不能为空', url('MenuType/read'));
+            return $this->error('title不能为空', url('MenuType/read', ['name' => $menuType]));
         }
         $id = $MenuModel->save();
 
@@ -156,7 +158,6 @@ class MenuController extends AdminController
             AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
         }
       
-        $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('保存成功', url('MenuType/read', ['name' => $menuType]));
 
     }
