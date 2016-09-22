@@ -8,7 +8,7 @@ return [
     ],
 
     'id' => [
-        'value' => 'mu-menu',
-        'title' => '',
+        'value' => 'cssmenu',
+        'title' => '菜单ID前缀',
     ],
 ];

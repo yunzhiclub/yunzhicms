@@ -1,10 +1,10 @@
 <!-- Start menu -->
-<section id="mu-menu">
+<section>
     <nav class="navbar navbar-default" role="navigation">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-lg-12">
-                    <div id="cssmenu">
+                    <div id="{$config['id']}">
                         <ul>
                             {volist name="menuModels" id="menuModel"} {eq name="menuModel->isHaveAvailableSonMenus()" value="1"}
                             <li class="has-sub {eq name="menuModel->isActive()" value="1"}active"{/eq}" >
