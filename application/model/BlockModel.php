@@ -11,8 +11,10 @@ class BlockModel extends ModelModel
 {
     private $BlockTypeModel = null;     // 区块类型
     private $FieldModels;               // 字段模型信息
+    private $FieldXXXXModels = null;    // 扩展字段
     protected $config = null;           // 配置信息
     protected $filter = null;           // 过滤器信息
+    protected $sampleConfig = null;     // 简单配置信息
 
 
     /**
@@ -53,6 +55,24 @@ class BlockModel extends ModelModel
     }
 
     /**
+     * 获取简单配置信息
+     * @return   array                   key => value
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-22T09:54:03+0800
+     */
+    public function getSampleConfig()
+    {
+        if (null === $this->sampleConfig) {
+            $configs = $this->getConfig();
+            $this->sampleConfig = [];
+            foreach ($configs as $key => $config) {
+                $this->sampleConfig[$key] = $config['value'];
+            }
+        }
+
+        return $this->sampleConfig;
+    }
+    /**
      * 获取合并后可以供前台使用的过滤器信息
      * @return array 
      */
@@ -74,29 +94,27 @@ class BlockModel extends ModelModel
 
         return $this->FieldModels;
     }
+
     /**
-     * 通过字段名 获取扩展字段模型
-     * @param    string                   $name 
+     * 内容对应的内段详情信息
      * @author panjie panjie@mengyunzhi.com
-     * @DateTime 2016-09-09T08:48:24+0800
+     * @DateTime 2016-09-19T08:40:37+0800
      */
-    public function FieldModel($name)
+    public function FieldXXXXModels()
     {
-        if (empty($name)) {
-            throw new \Exception("the param can't  empty", 1);
+        if (null === $this->FieldXXXXModels) {
+            $this->FieldXXXXModels = [];
+            // 获取对应的全部字段的信息
+            $FieldModels = $this->FieldModels();
+            
+            // 遍历当前 内容类型 的扩展字段信息.
+            foreach ($FieldModels as $FieldModel) {
+                array_push($this->FieldXXXXModels, $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id')));
+            } 
         }
         
-        // 遍历当前 内容类型 的扩展字段信息.
-        foreach ($this->FieldModels() as $FieldModel) {
-            // 找到当字段，则返回当前字段对应的扩展字段对象
-            if ($FieldModel->getData('name') === $name) {
-                return $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id'));
-            }
-        }
-
-        // throw new \Exception('not found fieldName:' . $name . ' of ContentModel:' . $this->getData('id'), 1);
+        return $this->FieldXXXXModels;
     }
-
     /**
      * 获取某个position下的所有 启用 的区载信息
      * @param  string $name position名称
@@ -145,7 +163,7 @@ class BlockModel extends ModelModel
         $map = [];
         $map['block_id']    = $this->data['id'];
         $map['menu_id']     = $MenuModel->getData('id');
-        if (null === AccessMenuBlockModel::get($map))
+        if (empty(AccessMenuBlockModel::get($map)->getData()))
         {
             return false;
         } else {
@@ -160,9 +178,54 @@ class BlockModel extends ModelModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-08T09:47:07+0800
      */
-    public function makeToken($controller, $action)
+    public function makeToken($action, $data = [])
     {
-        $data = ['id' => $this->getData('id')];
-        return Common::makeTokenByMCAData('block', $controller, $action, $data);
+        // 对权限进行判断，没有权限，则返回空字符串
+        if (AccessUserGroupBlockModel::checkCurrentUserIsAllowedByBlockIdAndAction($this->getData('id'), $action)) {
+            $data = array_merge(['id' => $this->getData('id')], $data);
+            $token = Common::makeTokenByMCAData('block', $this->BlockTypeModel()->getData('name'), $action, $data);
+        } else {
+            $token = '';
+        }
+        
+        return $token;
+    }
+
+
+    /**
+     * 通过扩展字段的 字段名 来获取字段内容
+     * @param    string                   $fieldName 字段名
+     * @return   Object                              FieldDataXXXModel 
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-02T14:13:25+0800
+     */
+    public function FieldModel($name)
+    {
+        if (empty($name)) {
+            throw new \Exception("the param can't  empty", 1);
+        }
+
+        // 遍历当前 内容类型 的扩展字段信息.
+        foreach ($this->FieldModels() as $FieldModel) {
+            // 找到当字段，则返回当前字段对应的扩展字段对象
+            if ($FieldModel->getData('name') === $name) {
+                return $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id'));
+            }
+        }
+
+        throw new \Exception('not found fieldName:' . $name . ' of ContentModel:' . $this->getData('id'), 1);
+    }
+
+    public function checkIsHave(UserGroupModel &$UserGroupModel)
+    {
+        $map = [];
+        $map['block_id']    = $this->data['id'];
+        $map['user_group_name']     = $UserGroupModel->getData('name');
+        if (empty(AccessUserGroupBlockModel::get($map)->getData()))
+        {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

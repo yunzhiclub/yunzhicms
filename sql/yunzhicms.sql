@@ -11,7 +11,7 @@
  Target Server Version : 50505
  File Encoding         : utf-8
 
- Date: 09/09/2016 14:10:12 PM
+ Date: 09/18/2016 16:40:38 PM
 */
 
 SET NAMES utf8;
@@ -31,7 +31,7 @@ CREATE TABLE `yunzhi_access_menu_block` (
 --  Records of `yunzhi_access_menu_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_access_menu_block` VALUES ('1', '1'), ('1', '2'), ('1', '3'), ('2', '1'), ('2', '7'), ('3', '1'), ('3', '7'), ('4', '1'), ('4', '7'), ('5', '1'), ('5', '7');
+INSERT INTO `yunzhi_access_menu_block` VALUES ('1', '1'), ('1', '2'), ('1', '3'), ('2', '1'), ('2', '7'), ('3', '1'), ('3', '7'), ('4', '1'), ('4', '7'), ('5', '1'), ('5', '7'), ('6', '1'), ('6', '7');
 COMMIT;
 
 -- ----------------------------
@@ -52,21 +52,49 @@ INSERT INTO `yunzhi_access_menu_plugin` VALUES ('3', '1');
 COMMIT;
 
 -- ----------------------------
+--  Table structure for `yunzhi_access_user_group_block`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_access_user_group_block`;
+CREATE TABLE `yunzhi_access_user_group_block` (
+  `user_group_name` varchar(40) NOT NULL COMMENT 'fk user_group 用户组外键',
+  `block_id` int(11) unsigned NOT NULL COMMENT 'fk block 区块外键',
+  `action` varchar(40) NOT NULL DEFAULT '',
+  PRIMARY KEY (`user_group_name`,`block_id`,`action`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组-菜单 权限表。权限设置(LCURD)';
+
+-- ----------------------------
+--  Records of `yunzhi_access_user_group_block`
+-- ----------------------------
+BEGIN;
+INSERT INTO `yunzhi_access_user_group_block` VALUES ('admin', '2', 'index'), ('editor', '2', 'index'), ('public', '1', 'index'), ('public', '2', 'edit'), ('public', '2', 'index'), ('public', '2', 'read'), ('public', '3', 'index'), ('public', '4', 'index'), ('public', '5', 'index'), ('public', '6', 'index'), ('public', '6', 'login'), ('public', '6', 'logout'), ('register', '2', 'index');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `yunzhi_access_user_group_field`
+-- ----------------------------
+DROP TABLE IF EXISTS `yunzhi_access_user_group_field`;
+CREATE TABLE `yunzhi_access_user_group_field` (
+  `user_group_name` varchar(40) NOT NULL COMMENT 'fk user_group 用户组外键',
+  `field_id` int(11) unsigned NOT NULL COMMENT 'fk field 字段外键',
+  PRIMARY KEY (`user_group_name`,`field_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组 字段 权限设置';
+
+-- ----------------------------
 --  Table structure for `yunzhi_access_user_group_menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_access_user_group_menu`;
 CREATE TABLE `yunzhi_access_user_group_menu` (
   `user_group_name` varchar(40) NOT NULL COMMENT 'fk user_group 用户组外键',
   `menu_id` int(11) unsigned NOT NULL COMMENT 'fk menu 菜单外键',
-  `access` tinyint(2) unsigned NOT NULL COMMENT '权限CURD（增改查删）用位来记录',
-  PRIMARY KEY (`user_group_name`,`menu_id`)
+  `action` varchar(40) NOT NULL DEFAULT '',
+  PRIMARY KEY (`user_group_name`,`menu_id`,`action`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户组-菜单 权限表。权限设置(LCURD)';
 
 -- ----------------------------
 --  Records of `yunzhi_access_user_group_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_access_user_group_menu` VALUES ('public', '4', '26'), ('public', '2', '18'), ('register', '2', '10'), ('editor', '2', '15'), ('public', '1', '18'), ('admin', '2', '15'), ('public', '3', '18'), ('public', '5', '18');
+INSERT INTO `yunzhi_access_user_group_menu` VALUES ('admin', '2', 'index'), ('editor', '2', 'index'), ('public', '1', 'index'), ('public', '2', 'index'), ('public', '2', 'read'), ('public', '3', 'edit'), ('public', '3', 'index'), ('public', '4', 'edit'), ('public', '4', 'index'), ('public', '5', 'edit'), ('public', '5', 'index'), ('public', '6', 'index'), ('public', '6', 'login'), ('public', '6', 'logout'), ('register', '2', 'index');
 COMMIT;
 
 -- ----------------------------
@@ -87,15 +115,16 @@ CREATE TABLE `yunzhi_block` (
   `update_time` smallint(6) unsigned NOT NULL,
   `create_time` smallint(6) unsigned NOT NULL,
   `delete_time` smallint(6) unsigned NOT NULL,
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `delete_time` (`delete_time`) USING BTREE
+  KEY `'is_delete'` (`is_delete`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='区块表';
 
 -- ----------------------------
 --  Records of `yunzhi_block`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', '0', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0'), ('2', 'Slider', '0', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0'), ('3', 'ContentVideo', '0', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0'), ('4', 'DataCounter', '0', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0'), ('5', 'CaseShow', '0', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('6', 'ShowCaseSlider', '0', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0'), ('7', 'BreadCrumb', '0', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0');
+INSERT INTO `yunzhi_block` VALUES ('1', 'Menu', '0', 'menu', '主菜单', '显示在页面上方', '0', '0', '{\"menu_type_name\":\"main\",\"id\":\"mu-menu\"}', '[]', '65535', '0', '0', '0'), ('2', 'Slider', '0', 'slider', '幻灯片', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('3', 'ContentVideo', '0', 'main', '文字视频介绍', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('4', 'DataCounter', '0', 'main', '数据统计', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('5', 'CaseShow', '0', 'main', '案例展示', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('6', 'ShowCaseSlider', '0', 'main', '动态案例展示', '', '0', '0', '[]', '[]', '0', '0', '0', '0'), ('7', 'BreadCrumb', '0', 'breadCrumb', '面包屑', '', '0', '0', '[]', '[]', '65535', '0', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -133,7 +162,7 @@ CREATE TABLE `yunzhi_component` (
 --  Records of `yunzhi_component`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0'), ('Content', '新闻', '显示一篇新闻', '', '');
+INSERT INTO `yunzhi_component` VALUES ('Home', '首页', '用于显示首页', 'panjie', '1.0.0'), ('ContentList', '新闻列表', '新闻列表页，显示新闻列表及展示新闻详情', 'panjie', '1.0.0'), ('Content', '新闻', '显示一篇新闻', '', ''), ('Login', '登陆注销', '用于用户的登陆与注销', 'mengyunzhi', '1.0.0');
 COMMIT;
 
 -- ----------------------------
@@ -156,13 +185,13 @@ CREATE TABLE `yunzhi_content` (
   KEY `category_name` (`content_type_name`) USING BTREE,
   KEY `is_freezed` (`is_freezed`) USING BTREE,
   KEY `is_deleted` (`is_deleted`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='文章表';
+) ENGINE=MyISAM AUTO_INCREMENT=271 DEFAULT CHARSET=utf8 COMMENT='文章表';
 
 -- ----------------------------
 --  Records of `yunzhi_content`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '414', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '142', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '43', '0');
+INSERT INTO `yunzhi_content` VALUES ('1', '', 'news', '这是一条新闻', '1232323111', '1472446015', '0', '0', '0', '442', '0'), ('2', '', 'news', '这是另一条新闻', '1232323111', '1472446019', '0', '0', '0', '142', '0'), ('3', '', 'products', ' 这是一个产品的新闻', '0', '1472446012', '0', '0', '0', '43', '0');
 COMMIT;
 
 -- ----------------------------
@@ -225,13 +254,13 @@ CREATE TABLE `yunzhi_field` (
   KEY `name` (`name`) USING BTREE,
   KEY `relate_type` (`relate_type`) USING BTREE,
   KEY `relate_value` (`relate_value`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='字段表 各个实体与字段的对应关系写在这里';
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='字段表 各个实体与字段的对应关系写在这里';
 
 -- ----------------------------
 --  Records of `yunzhi_field`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field` VALUES ('1', 'body', 'body', 'Content', 'news', '内容', '0', '[]', '{\"type\":\"System\",\"function\":\"htmlspecialchars_decode\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}}'), ('2', 'image', 'image', 'Content', 'news', '新闻图片', '1', '[]', '[]'), ('3', 'body', 'body', 'Content', 'products', '新闻内容', '0', '[]', '[]'), ('4', 'titles', 'json', 'Block', 'Slider', '标题', '0', '[]', '[]'), ('6', 'urls', 'json', 'Block', 'Slider', '链接地址', '0', '[]', '[]'), ('5', 'images', 'images', 'Block', 'Slider', '图片链接', '0', '[]', '[]'), ('7', 'headers', 'json', 'Block', 'Slider', '副标题', '0', '[]', '[]'), ('8', 'descriptions', 'json', 'Block', 'Slider', '描述信息', '0', '[]', '[]');
+INSERT INTO `yunzhi_field` VALUES ('1', 'body', 'body', 'Content', 'news', '内容', '0', '[]', '{\"type\":\"System\",\"function\":\"htmlspecialchars_decode\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}}'), ('2', 'image', 'image', 'Content', 'news', '新闻图片', '1', '[]', '[]'), ('3', 'body', 'body', 'Content', 'products', '新闻内容', '0', '[]', '[]'), ('4', 'titles', 'json', 'Block', 'Slider', '标题', '0', '[]', '[]'), ('6', 'urls', 'json', 'Block', 'Slider', '链接地址', '0', '[]', '[]'), ('5', 'images', 'images', 'Block', 'Slider', '图片链接', '0', '[]', '[]'), ('7', 'headers', 'json', 'Block', 'Slider', '副标题', '0', '[]', '[]'), ('8', 'descriptions', 'json', 'Block', 'Slider', '描述信息', '0', '{\"type\":\"textarea\"}', '[]'), ('9', 'icon', 'text', 'Menu', 'main', '小图标', '0', '[]', '[]');
 COMMIT;
 
 -- ----------------------------
@@ -322,13 +351,13 @@ CREATE TABLE `yunzhi_field_data_image` (
   KEY `key_id` (`key_id`) USING BTREE,
   KEY `sha1` (`sha1`) USING BTREE,
   KEY `md5` (`md5`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='Data storage for field 4 (field_image)';
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8 COMMENT='Data storage for field 4 (field_image)';
 
 -- ----------------------------
 --  Records of `yunzhi_field_data_image`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_data_image` VALUES ('5', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('6', '0', '0', '', '69947EE9-DD40-427D-8F43-390AED15FE92.png', '20160907/10cc6ec3f5c48ec37c28e9a2787a61de.png', 'png', '7cd5cd6c76fa20156c68dfe296b1443bd066a15e', 'aab1f603556216ac2e5a1b3fc971ca73', '174132', 'image/jpeg'), ('7', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('8', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('9', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('10', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('11', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('12', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('13', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('14', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('15', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('16', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('17', '0', '0', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('18', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('19', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('20', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('21', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('22', '0', '0', '', '69947EE9-DD40-427D-8F43-390AED15FE92.png', '20160907/10cc6ec3f5c48ec37c28e9a2787a61de.png', 'png', '7cd5cd6c76fa20156c68dfe296b1443bd066a15e', 'aab1f603556216ac2e5a1b3fc971ca73', '174132', 'image/jpeg'), ('23', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('24', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('25', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('26', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('27', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('28', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('29', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('30', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('31', '0', '0', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('32', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('33', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('34', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('35', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('36', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('37', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('38', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('39', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('40', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('41', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('42', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('43', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('44', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('47', '2', '1', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('48', '0', '0', '', 'IMG_2897.JPG', '20160907/7b29c9c6b5e03d5f00f95ca2a61e9260.JPG', 'jpg', '6c02ab91d7101a3c60edec84c7a320ba8e56ea60', '23305e519817b6e5f01cfc3e92b8621a', '1908619', 'image/jpeg'), ('49', '0', '0', '', '总学习记录下半部分.png', '20160908/d93d0157350f7c4d7f1a63594f9f849e.png', 'png', '8facb43772c0b2df948e7fe05f71e2c1629701f4', '86adb097a89220dee4dbab8d78da32e9', '36666', 'image/png'), ('50', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('51', '0', '0', '', 'IMG_2895.JPG', '20160909/c5e1d27c1c5248ec13756ce57e2bfcd0.JPG', 'jpg', '997e230ce0e90ef29f0d0052f21a58bda3342ae1', '335ad910864e3ea73d66fdcc60c1dda2', '1320121', 'image/jpeg'), ('52', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('53', '0', '0', '', '1width.png', '20160909/9b20c13dcb0810348a1750df841403cc.png', 'png', '8e0ac2f0a8d555ea33803c15d512bbbfd497e841', '70bbcbbea1afa862b0e317e886a215c4', '375', 'image/png'), ('54', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('55', '0', '0', '', '2widtd.png', '20160909/b672ff9123a4e9167347f4ca9fc474b5.png', 'png', '18c08e0f6ae27d10f7d7b713f3dc67f7ebd75e01', '5162364abf3c8a1690706912714137df', '419', 'image/png'), ('56', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('57', '0', '0', '', 'learning.png', '20160909/f7eb789c334bab6a43be3484a4baffd2.png', 'png', 'd2c112c31cded22cbf822c7aac535ea56e5d393e', 'df6ee7fdde85079a49cf8fc24a8e9796', '61370', 'image/png'), ('58', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('59', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('60', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('61', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('62', '0', '0', '', 'tp5.png', '20160909/46ed1f6f05dfbc1210a90c61031daaf9.png', 'png', 'a833c6d35f642086d8b4ea5204440627980e10f9', 'b54e7831eb87550ef817a9fb2eb85a63', '33862', 'image/png'), ('63', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('64', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('65', '0', '0', '', '2widtd.png', '20160909/b672ff9123a4e9167347f4ca9fc474b5.png', 'png', '18c08e0f6ae27d10f7d7b713f3dc67f7ebd75e01', '5162364abf3c8a1690706912714137df', '419', 'image/png'), ('66', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('67', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('68', '0', '0', '', 'learning.png', '20160909/f7eb789c334bab6a43be3484a4baffd2.png', 'png', 'd2c112c31cded22cbf822c7aac535ea56e5d393e', 'df6ee7fdde85079a49cf8fc24a8e9796', '61370', 'image/png'), ('69', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('70', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('71', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('72', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('73', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('74', '0', '0', '', '970width.png', '20160909/a07ac25db4da1af8fed3d3a3905cea07.png', 'png', '4229b0890d79caae845ec73e96b5a809b333d06f', 'da1babe7ae1b59a147a57b71da486fc3', '57951', 'image/png'), ('75', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('76', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('77', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('78', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('79', '0', '0', '', 'learning.png', '20160909/f7eb789c334bab6a43be3484a4baffd2.png', 'png', 'd2c112c31cded22cbf822c7aac535ea56e5d393e', 'df6ee7fdde85079a49cf8fc24a8e9796', '61370', 'image/png');
+INSERT INTO `yunzhi_field_data_image` VALUES ('5', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('6', '0', '0', '', '69947EE9-DD40-427D-8F43-390AED15FE92.png', '20160907/10cc6ec3f5c48ec37c28e9a2787a61de.png', 'png', '7cd5cd6c76fa20156c68dfe296b1443bd066a15e', 'aab1f603556216ac2e5a1b3fc971ca73', '174132', 'image/jpeg'), ('7', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('8', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('9', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('10', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('11', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('12', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('13', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('14', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('15', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('16', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('17', '0', '0', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('18', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('19', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('20', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('21', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('22', '0', '0', '', '69947EE9-DD40-427D-8F43-390AED15FE92.png', '20160907/10cc6ec3f5c48ec37c28e9a2787a61de.png', 'png', '7cd5cd6c76fa20156c68dfe296b1443bd066a15e', 'aab1f603556216ac2e5a1b3fc971ca73', '174132', 'image/jpeg'), ('23', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('24', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('25', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('26', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('27', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('28', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('29', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('30', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('31', '0', '0', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('32', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('33', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('34', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('35', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('36', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('37', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('38', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('39', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('40', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('41', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('42', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('43', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('44', '0', '0', '', '个人真实性核验单 (1).png', '20160907/fecddd331f269a93b55fc16c7c742121.png', 'png', '00155e2f1871ac015ebcd303d7351670fc133e95', '21b7ef3ae5010689b44c482a8d6ba3d3', '187767', 'image/png'), ('47', '2', '1', '', 'Girl fashion beauty.jpg', '20160907/819029973ba3b6d987748accff729b76.jpg', 'jpg', '7a3b581096d4a97e9ea73bbf10e37723dead9284', '3b3cac76b6d7901de8688bded8b9b37d', '450782', 'image/jpeg'), ('48', '0', '0', '', 'IMG_2897.JPG', '20160907/7b29c9c6b5e03d5f00f95ca2a61e9260.JPG', 'jpg', '6c02ab91d7101a3c60edec84c7a320ba8e56ea60', '23305e519817b6e5f01cfc3e92b8621a', '1908619', 'image/jpeg'), ('49', '0', '0', '', '总学习记录下半部分.png', '20160908/d93d0157350f7c4d7f1a63594f9f849e.png', 'png', '8facb43772c0b2df948e7fe05f71e2c1629701f4', '86adb097a89220dee4dbab8d78da32e9', '36666', 'image/png'), ('50', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('51', '0', '0', '', 'IMG_2895.JPG', '20160909/c5e1d27c1c5248ec13756ce57e2bfcd0.JPG', 'jpg', '997e230ce0e90ef29f0d0052f21a58bda3342ae1', '335ad910864e3ea73d66fdcc60c1dda2', '1320121', 'image/jpeg'), ('52', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('53', '0', '0', '', '1width.png', '20160909/9b20c13dcb0810348a1750df841403cc.png', 'png', '8e0ac2f0a8d555ea33803c15d512bbbfd497e841', '70bbcbbea1afa862b0e317e886a215c4', '375', 'image/png'), ('54', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('55', '0', '0', '', '2widtd.png', '20160909/b672ff9123a4e9167347f4ca9fc474b5.png', 'png', '18c08e0f6ae27d10f7d7b713f3dc67f7ebd75e01', '5162364abf3c8a1690706912714137df', '419', 'image/png'), ('56', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('57', '0', '0', '', 'learning.png', '20160909/f7eb789c334bab6a43be3484a4baffd2.png', 'png', 'd2c112c31cded22cbf822c7aac535ea56e5d393e', 'df6ee7fdde85079a49cf8fc24a8e9796', '61370', 'image/png'), ('58', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('59', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('60', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('61', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('62', '0', '0', '', 'tp5.png', '20160909/46ed1f6f05dfbc1210a90c61031daaf9.png', 'png', 'a833c6d35f642086d8b4ea5204440627980e10f9', 'b54e7831eb87550ef817a9fb2eb85a63', '33862', 'image/png'), ('63', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('64', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('65', '0', '0', '', '2widtd.png', '20160909/b672ff9123a4e9167347f4ca9fc474b5.png', 'png', '18c08e0f6ae27d10f7d7b713f3dc67f7ebd75e01', '5162364abf3c8a1690706912714137df', '419', 'image/png'), ('66', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('67', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('68', '0', '0', '', 'learning.png', '20160909/f7eb789c334bab6a43be3484a4baffd2.png', 'png', 'd2c112c31cded22cbf822c7aac535ea56e5d393e', 'df6ee7fdde85079a49cf8fc24a8e9796', '61370', 'image/png'), ('69', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('70', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('71', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('72', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('73', '0', '0', '', '公司logo.jpg', '20160909/2306d21d8e8d62744fe35c221c1359b9.jpg', 'jpg', '2bf82667d21fea68d0090fd8ca7804867d1467d0', '7f9f9f6ed57b0e3bea46bd4b066fd01b', '28097', 'image/jpeg'), ('74', '0', '0', '', '970width.png', '20160909/a07ac25db4da1af8fed3d3a3905cea07.png', 'png', '4229b0890d79caae845ec73e96b5a809b333d06f', 'da1babe7ae1b59a147a57b71da486fc3', '57951', 'image/png'), ('75', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('76', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('77', '0', '0', '', '111.png', '20160908/65923c474c4d104c49e5bed5854eb771.png', 'png', 'e87cad1414a01a15906d91d274d7e24694e26885', '4b980346129bc1c6d4ae9fca1876c04d', '194950', 'image/jpeg'), ('78', '0', '0', '', '1m.jpg', '20160909/23ac694c99fe13b03f362e02530d13ae.jpg', 'jpg', '1a3bc3109efc4e177b065d72b14df6d7082d64ef', 'e1ca9dff471ecd40a9e2829643bc2fd4', '42503', 'image/jpeg'), ('79', '0', '0', '', 'learning.png', '20160909/f7eb789c334bab6a43be3484a4baffd2.png', 'png', 'd2c112c31cded22cbf822c7aac535ea56e5d393e', 'df6ee7fdde85079a49cf8fc24a8e9796', '61370', 'image/png'), ('80', '0', '0', '', '1.jpg', '20160912/4816be8aab31bc3dd96a068babf7b3f1.jpg', 'jpg', 'c4eb60cb8d93c641d7968f06901b3c333f421962', 'de32827c690341063cc912de9045be0e', '30641', 'image/jpeg'), ('81', '0', '0', '', '88-20151030101118.jpg', '20160912/167b5f27e87081f4545c14c29b869964.jpg', 'jpg', 'cca18b443fe9a6be89f9fecbd858e48767863b89', '54fe7a710948136957ae5552fa9d3d45', '75156', 'image/jpeg'), ('82', '0', '0', '', '3.jpg', '20160912/53b68492cfa0c681e9a7d54f74d3fecb.jpg', 'jpg', '37f43a9f43a06c1da330b4f19e67155cdcbb8c5c', '58c61881873640a1f7daca1e6850cc1f', '640535', 'image/jpeg');
 COMMIT;
 
 -- ----------------------------
@@ -348,7 +377,7 @@ CREATE TABLE `yunzhi_field_data_images` (
 --  Records of `yunzhi_field_data_images`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_data_images` VALUES ('2', '5', '2', '', '[\"\\/yunzhicms\\/public\\/upload\\/20160909\\/f7eb789c334bab6a43be3484a4baffd2.png\",\"\\/yunzhicms\\/public\\/upload\\/20160909\\/23ac694c99fe13b03f362e02530d13ae.jpg\"]');
+INSERT INTO `yunzhi_field_data_images` VALUES ('2', '5', '2', '', '[\"\\/yunzhicms\\/public\\/upload\\/20160912\\/53b68492cfa0c681e9a7d54f74d3fecb.jpg\",\"\\/yunzhicms\\/public\\/upload\\/20160912\\/4816be8aab31bc3dd96a068babf7b3f1.jpg\"]');
 COMMIT;
 
 -- ----------------------------
@@ -368,7 +397,7 @@ CREATE TABLE `yunzhi_field_data_json` (
 --  Records of `yunzhi_field_data_json`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_field_data_json` VALUES ('1', '4', '2', '', '[\"\\u6807\\u98981\",\"\\u6807\\u98982\",\"\"]'), ('2', '5', '2', '', '[\"\\u94fe\\u63a51\",\"\\u5730\\u57404\",\"\"]'), ('3', '6', '2', '', '[\"\\u5730\\u57401\",\"\\u5730\\u57402\",\"\"]'), ('4', '7', '2', '', '[\"\\u6807\\u660e1\",\"title1\"]'), ('5', '8', '2', '', '[\"title\",\"title1\"]');
+INSERT INTO `yunzhi_field_data_json` VALUES ('1', '4', '2', '', '[\"\\u8fd9\\u662f\\u4e3b\\u6807\\u9898\",\"\\u8fd9\\u662f\\u4e3b\\u6807\\u9898\"]'), ('2', '5', '2', '', '[\"\\u94fe\\u63a51\",\"\\u5730\\u57404\",\"\"]'), ('3', '6', '2', '', '[\"http:\\/\\/www.mengyunzhi.com\",\"http:\\/\\/www.scse.hebut.edu.cn\"]'), ('4', '7', '2', '', '[\"\\u8fd9\\u662f\\u526f\\u6807\\u98981\",\"\\u8fd9\\u662f\\u526f\\u6807\\u98982\"]'), ('5', '8', '2', '', '[\"\\u8fd9\\u91cc\\u662f\\u63cf\\u8ff0\\u4fe1\\u606f\\uff1a\\u56fe\\u7247\\u4e0a\\u4f20\\u7684\\u89c4\\u683c\\u4e3a1920*500, \\u975e\\u8be5\\u89c4\\u683c\\u4f1a\\u8fdb\\u884c\\u81ea\\u52a8\\u7684\\u62c9\\u4f38\\u3002\\u5982\\u679c\\u56fe\\u7247\\u4e0a\\u4f20\\u540e\\u6709\\u4e9b\\u6697\\uff0c\\u662f\\u6b63\\u5e38\\u73b0\\u8c61\\u3002\\u8bf7\\u589e\\u52a0\\u4eae\\u5ea6\\u540e\\u91cd\\u65b0\\u4e0a\\u4f20\\u3002\",\"\\u7531\\u4e8e\\u5b57\\u4f53\\u4e3a\\u767d\\u8272\\uff0c\\u6240\\u4ee5\\u6211\\u4eec\\u5bf9\\u56fe\\u7247\\u8fdb\\u884c\\u4e86\\u8499\\u677f\\u5904\\u7406\\u3002\\u4e0a\\u4f20\\u56fe\\u7247\\u540e\\uff0c\\u5c06\\u4f1a\\u770b\\u5230\\u56fe\\u7247\\u4e0a\\u65b9\\u6709\\u4e00\\u5c42\\u534a\\u900f\\u660e\\u7684\\u8499\\u677f\\uff0c\\u8fd9\\u662f\\u6b63\\u5e38\\u7684\\u73b0\\u8c61\\u3002\\u5f53\\u7136\\u4e86\\uff0c\\u5373\\u4f7f\\u662f\\u8fd9\\u6837\\uff0c\\u6211\\u4eec\\u4e5f\\u5e76\\u4e0d\\u63a8\\u8350\\u4f7f\\u7528\\u767d\\u8272\\u7684\\u80cc\\u666f\\u56fe\\u7247\\u3002\"]');
 COMMIT;
 
 -- ----------------------------
@@ -448,18 +477,16 @@ CREATE TABLE `yunzhi_menu` (
   `status` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0启用，1禁用',
   `update_time` smallint(6) unsigned NOT NULL DEFAULT '0',
   `create_time` smallint(6) NOT NULL DEFAULT '0',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `path_menu` (`url`(128),`title`),
-  KEY `menu_plid_expand_child` (`title`,`pid`),
-  KEY `menu_parents` (`title`),
-  KEY `router_path` (`component_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='菜单表（每一个菜单对应唯一的一个组件）';
+  KEY `list` (`weight`,`is_delete`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='菜单表（每一个菜单对应唯一的一个组件）';
 
 -- ----------------------------
 --  Records of `yunzhi_menu`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '/', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"contentType\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0');
+INSERT INTO `yunzhi_menu` VALUES ('1', 'main', 'Home', '首页', '0', '', '0', '0', '首页', '{\"count\":\"3\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"6\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeFrontpageContentUrl\",\"param\":[]}}', '1', '0', '65535', '0', '0'), ('2', 'main', 'ContentList', '新闻通知', '0', 'news', '0', '0', '这里是描述信息', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"title\":{\"type\":\"String\",\"function\":\"substr\",\"param\":{\"length\":\"30\",\"ext\":\"...\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]},\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0', '0'), ('3', 'main', 'ContentList', '院级新闻', '2', 'news/school', '0', '0', '', '{\"contentTypeName\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0', '0'), ('4', 'main', 'Content', '关于我们', '0', 'aboutus', '0', '0', '测试', '{\"id\":\"1\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"Y-m-d\"}}}', '0', '0', '65535', '0', '0'), ('5', 'main', 'ContentList', '热点新闻', '0', 'hotnews', '1', '0', '用于显示首页链接过来的新闻', '{\"contentType\":\"news\",\"count\":\"1\",\"order\":\"weight desc, id desc\"}', '{\"date\":{\"type\":\"Date\",\"function\":\"format\",\"param\":{\"dateFormat\":\"m-d\"}},\"href\":{\"type\":\"System\",\"function\":\"makeCurrentMenuReadUrl\",\"param\":[]}}', '0', '0', '65535', '0', '0'), ('6', 'main', 'Login', '个人中心', '0', 'personalcenter', '1', '0', '用于用户登陆与注销', '[]', '[]', '0', '0', '0', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -470,6 +497,7 @@ CREATE TABLE `yunzhi_menu_type` (
   `name` varchar(40) NOT NULL,
   `title` varchar(32) NOT NULL DEFAULT '' COMMENT '标题',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `is_delete` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单类型表（主要为了可以使用区块进行菜单的调用）';
 
@@ -477,7 +505,7 @@ CREATE TABLE `yunzhi_menu_type` (
 --  Records of `yunzhi_menu_type`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_menu_type` VALUES ('main', '主菜单', '主菜单');
+INSERT INTO `yunzhi_menu_type` VALUES ('main', '主菜单', '主菜单', '0');
 COMMIT;
 
 -- ----------------------------
@@ -562,7 +590,7 @@ COMMIT;
 DROP TABLE IF EXISTS `yunzhi_user`;
 CREATE TABLE `yunzhi_user` (
   `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(40) NOT NULL DEFAULT '',
+  `username` varchar(40) NOT NULL DEFAULT '',
   `qq_open_id` varchar(40) NOT NULL DEFAULT '' COMMENT 'qq 认证openid',
   `password` varchar(40) NOT NULL DEFAULT '',
   `name` varchar(40) NOT NULL DEFAULT '' COMMENT '真实姓名',
@@ -572,14 +600,14 @@ CREATE TABLE `yunzhi_user` (
   `update_time` smallint(6) unsigned NOT NULL,
   `is_deleted` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '1已删除',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`) USING BTREE
+  UNIQUE KEY `email` (`username`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 --  Records of `yunzhi_user`
 -- ----------------------------
 BEGIN;
-INSERT INTO `yunzhi_user` VALUES ('1', 'panjie@yunzhiclub.com', '', '', '潘杰', '1', 'admin', '0', '0', '0');
+INSERT INTO `yunzhi_user` VALUES ('1', 'admin@mengyunzhi.com', '', '', '梦云智', '1', 'admin', '0', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -602,95 +630,5 @@ CREATE TABLE `yunzhi_user_group` (
 BEGIN;
 INSERT INTO `yunzhi_user_group` VALUES ('admin', '超级管理员', '拥有开发权限', '0', '0', '0'), ('editor', '站点编辑人员', '对站点进行管理', '0', '0', '0'), ('register', '注册用户', '注册用户，拥有对权限新闻的查看权限', '0', '0', '0'), ('public', '公共用户', '浏览网站的用户', '0', '0', '0');
 COMMIT;
-
--- ----------------------------
---  View structure for `english_card_student_card_batch_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_card_student_card_batch_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_card_student_card_batch_view` AS select `yunzhicms`.`english_card_batch`.`deadline` AS `deadline`,`yunzhicms`.`english_student`.`id` AS `student__id` from ((`english_card` left join `english_student` on((`yunzhicms`.`english_card`.`student_id` = `yunzhicms`.`english_student`.`id`))) left join `english_card_batch` on((`yunzhicms`.`english_card`.`card_batch_id` = `yunzhicms`.`english_card_batch`.`id`)));
-
--- ----------------------------
---  View structure for `english_department_post_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_department_post_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_department_post_view` AS select `yunzhicms`.`english_department_post`.`id` AS `id`,`yunzhicms`.`english_department`.`title` AS `department__title`,`yunzhicms`.`english_department`.`is_son` AS `department__is_son`,`yunzhicms`.`english_post`.`name` AS `post__name`,`yunzhicms`.`english_post`.`is_son` AS `post__is_son`,`yunzhicms`.`english_post`.`is_admin` AS `post__is_admin`,`yunzhicms`.`english_department_post`.`department_id` AS `department_id`,`yunzhicms`.`english_department_post`.`post_id` AS `post_id` from ((`english_department_post` join `english_department` on((`yunzhicms`.`english_department_post`.`department_id` = `yunzhicms`.`english_department`.`id`))) join `english_post` on((`yunzhicms`.`english_department_post`.`post_id` = `yunzhicms`.`english_post`.`id`)));
-
--- ----------------------------
---  View structure for `english_klass_course_student_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_klass_course_student_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_klass_course_student_view` AS select `yunzhicms`.`english_klass_course`.`id` AS `id`,`yunzhicms`.`english_klass_course`.`klass_id` AS `klass_id`,`yunzhicms`.`english_klass_course`.`course_id` AS `course_id`,`yunzhicms`.`english_course`.`title` AS `title`,`yunzhicms`.`english_klass`.`name` AS `name`,`yunzhicms`.`english_student`.`id` AS `student__id` from (((`english_klass_course` left join `english_klass` on((`yunzhicms`.`english_klass_course`.`klass_id` = `yunzhicms`.`english_klass`.`id`))) left join `english_course` on((`yunzhicms`.`english_klass_course`.`course_id` = `yunzhicms`.`english_course`.`id`))) left join `english_student` on((`yunzhicms`.`english_student`.`klass_id` = `yunzhicms`.`english_klass`.`id`)));
-
--- ----------------------------
---  View structure for `english_klass_course_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_klass_course_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_klass_course_view` AS select `yunzhicms`.`english_course`.`title` AS `title`,`yunzhicms`.`english_klass_course`.`id` AS `id`,`yunzhicms`.`english_klass_course`.`klass_id` AS `klass_id`,`yunzhicms`.`english_klass_course`.`course_id` AS `course_id`,`yunzhicms`.`english_klass`.`name` AS `name` from ((`english_klass_course` join `english_klass` on((`yunzhicms`.`english_klass_course`.`klass_id` = `yunzhicms`.`english_klass`.`id`))) join `english_course` on((`yunzhicms`.`english_klass_course`.`course_id` = `yunzhicms`.`english_course`.`id`)));
-
--- ----------------------------
---  View structure for `english_klass_user_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_klass_user_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_klass_user_view` AS select `yunzhicms`.`english_klass`.`id` AS `id`,`yunzhicms`.`english_klass`.`name` AS `name`,`yunzhicms`.`english_user`.`name` AS `user__name`,`yunzhicms`.`english_klass`.`create_time` AS `create_time`,`yunzhicms`.`english_klass`.`user_id` AS `user_id`,`yunzhicms`.`english_department_post`.`department_id` AS `department_id`,`yunzhicms`.`english_department_post`.`post_id` AS `post_id`,`yunzhicms`.`english_department`.`title` AS `department__title`,`yunzhicms`.`english_post`.`name` AS `post__name`,`yunzhicms`.`english_department`.`is_son` AS `department__is_son`,`yunzhicms`.`english_post`.`is_son` AS `post__is_son`,`yunzhicms`.`english_post`.`is_admin` AS `post__is_admin` from ((((`english_klass` left join `english_user` on((`yunzhicms`.`english_klass`.`user_id` = `yunzhicms`.`english_user`.`id`))) left join `english_department_post` on((`yunzhicms`.`english_department_post`.`id` = `yunzhicms`.`english_user`.`department_post_id`))) left join `english_department` on((`yunzhicms`.`english_department`.`id` = `yunzhicms`.`english_department_post`.`department_id`))) left join `english_post` on((`yunzhicms`.`english_department_post`.`post_id` = `yunzhicms`.`english_post`.`id`)));
-
--- ----------------------------
---  View structure for `english_menu_post_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_menu_post_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_menu_post_view` AS select `yunzhicms`.`english_menu_post`.`id` AS `id`,`yunzhicms`.`english_menu_post`.`menu_id` AS `menu_id`,`yunzhicms`.`english_menu_post`.`post_id` AS `post_id`,`yunzhicms`.`english_post`.`name` AS `post__name`,`yunzhicms`.`english_post`.`id` AS `post__id`,`yunzhicms`.`english_menu_post`.`is_permission` AS `is_permission` from (`english_menu_post` left join `english_post` on((`yunzhicms`.`english_menu_post`.`post_id` = `yunzhicms`.`english_post`.`id`)));
-
--- ----------------------------
---  View structure for `english_new_word_word_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_new_word_word_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_new_word_word_view` AS select `yunzhicms`.`english_word`.`title` AS `word__title`,`yunzhicms`.`english_new_word`.`time` AS `time`,`yunzhicms`.`english_new_word`.`student_id` AS `student_id`,`yunzhicms`.`english_new_word`.`word_id` AS `word_id`,`yunzhicms`.`english_new_word`.`id` AS `id` from (`english_new_word` join `english_word` on((`yunzhicms`.`english_new_word`.`word_id` = `yunzhicms`.`english_word`.`id`)));
-
--- ----------------------------
---  View structure for `english_repeat_times_word_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_repeat_times_word_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_repeat_times_word_view` AS select `yunzhicms`.`english_repeat_times`.`id` AS `id`,`yunzhicms`.`english_repeat_times`.`times` AS `times`,`yunzhicms`.`english_repeat_times`.`word_id` AS `word_id`,`yunzhicms`.`english_repeat_times`.`student_id` AS `student_id`,`yunzhicms`.`english_word`.`id` AS `word__id`,`yunzhicms`.`english_word`.`course_id` AS `word__course_id` from (`english_repeat_times` join `english_word` on((`yunzhicms`.`english_word`.`id` = `yunzhicms`.`english_repeat_times`.`word_id`)));
-
--- ----------------------------
---  View structure for `english_test_student_test_percent_course_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_test_student_test_percent_course_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_test_student_test_percent_course_view` AS select `yunzhicms`.`english_course`.`id` AS `course__id`,`yunzhicms`.`english_student`.`id` AS `student__id`,`yunzhicms`.`english_test`.`id` AS `id`,`yunzhicms`.`english_test`.`grade` AS `grade`,`yunzhicms`.`english_test_percent`.`percent` AS `percent`,`yunzhicms`.`english_test_percent`.`type` AS `type`,`yunzhicms`.`english_test`.`time` AS `time`,`yunzhicms`.`english_course`.`title` AS `course__title` from (((`english_test` left join `english_student` on((`yunzhicms`.`english_test`.`student_id` = `yunzhicms`.`english_student`.`id`))) left join `english_test_percent` on((`yunzhicms`.`english_test`.`test_percent_id` = `yunzhicms`.`english_test_percent`.`id`))) left join `english_course` on((`yunzhicms`.`english_test_percent`.`course_id` = `yunzhicms`.`english_course`.`id`)));
-
--- ----------------------------
---  View structure for `english_test_test_percent_course_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_test_test_percent_course_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_test_test_percent_course_view` AS select `yunzhicms`.`english_test`.`id` AS `id`,`yunzhicms`.`english_test`.`time` AS `time`,`yunzhicms`.`english_test`.`grade` AS `grade`,`yunzhicms`.`english_test`.`student_id` AS `student_id`,`yunzhicms`.`english_test`.`test_percent_id` AS `test_percent_id`,`yunzhicms`.`english_test_percent`.`type` AS `type`,`yunzhicms`.`english_test_percent`.`percent` AS `percent`,`yunzhicms`.`english_test_percent`.`course_id` AS `course_id`,`yunzhicms`.`english_course`.`title` AS `course__title` from ((`english_test` left join `english_test_percent` on((`yunzhicms`.`english_test`.`test_percent_id` = `yunzhicms`.`english_test_percent`.`id`))) left join `english_course` on((`yunzhicms`.`english_test_percent`.`course_id` = `yunzhicms`.`english_course`.`id`)));
-
--- ----------------------------
---  View structure for `english_user_department_post_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_user_department_post_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_user_department_post_view` AS select `yunzhicms`.`english_department`.`title` AS `department__title`,`yunzhicms`.`english_department`.`is_son` AS `department__is_son`,`yunzhicms`.`english_post`.`name` AS `post__title`,`yunzhicms`.`english_post`.`is_son` AS `post__is_son`,`yunzhicms`.`english_user`.`id` AS `id`,`yunzhicms`.`english_user`.`username` AS `username`,`yunzhicms`.`english_user`.`name` AS `name`,`yunzhicms`.`english_user`.`phonenumber` AS `phonenumber`,`yunzhicms`.`english_user`.`email` AS `email`,`yunzhicms`.`english_department_post`.`department_id` AS `department_id`,`yunzhicms`.`english_department_post`.`post_id` AS `post_id`,`yunzhicms`.`english_post`.`is_admin` AS `post__is_admin` from (((`english_user` left join `english_department_post` on((`yunzhicms`.`english_user`.`department_post_id` = `yunzhicms`.`english_department_post`.`id`))) left join `english_department` on((`yunzhicms`.`english_department_post`.`department_id` = `yunzhicms`.`english_department`.`id`))) left join `english_post` on((`yunzhicms`.`english_department_post`.`post_id` = `yunzhicms`.`english_post`.`id`)));
-
--- ----------------------------
---  View structure for `english_user_klass_student_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_user_klass_student_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_user_klass_student_view` AS select `yunzhicms`.`english_student`.`id` AS `id`,`yunzhicms`.`english_student`.`name` AS `name`,`yunzhicms`.`english_klass`.`id` AS `klass__id`,`yunzhicms`.`english_klass`.`name` AS `klass__name`,`yunzhicms`.`english_user`.`id` AS `user__id`,`yunzhicms`.`english_user`.`name` AS `user__name`,`yunzhicms`.`english_department`.`id` AS `department__id`,`yunzhicms`.`english_department`.`is_son` AS `department__is_son`,`yunzhicms`.`english_post`.`id` AS `post__id`,`yunzhicms`.`english_post`.`is_admin` AS `post__is_admin`,`yunzhicms`.`english_student`.`status` AS `status`,`yunzhicms`.`english_student`.`username` AS `username`,`yunzhicms`.`english_student`.`creation_date` AS `creation_date`,`yunzhicms`.`english_student`.`user_id` AS `user_id` from (((((`english_student` left join `english_klass` on((`yunzhicms`.`english_klass`.`id` = `yunzhicms`.`english_student`.`klass_id`))) left join `english_user` on((`yunzhicms`.`english_user`.`id` = `yunzhicms`.`english_klass`.`user_id`))) left join `english_department_post` on((`yunzhicms`.`english_department_post`.`id` = `yunzhicms`.`english_user`.`department_post_id`))) left join `english_department` on((`yunzhicms`.`english_department`.`id` = `yunzhicms`.`english_department_post`.`department_id`))) left join `english_post` on((`yunzhicms`.`english_post`.`id` = `yunzhicms`.`english_department_post`.`post_id`)));
-
--- ----------------------------
---  View structure for `english_user_menu_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_user_menu_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_user_menu_view` AS select `yunzhicms`.`english_user`.`id` AS `id`,`yunzhicms`.`english_user`.`name` AS `name`,`yunzhicms`.`english_department_post`.`post_id` AS `post_id`,`yunzhicms`.`english_menu_post`.`menu_id` AS `menu_id` from ((`english_user` left join `english_department_post` on((`yunzhicms`.`english_user`.`department_post_id` = `yunzhicms`.`english_department_post`.`id`))) left join `english_menu_post` on((`yunzhicms`.`english_department_post`.`post_id` = `yunzhicms`.`english_menu_post`.`post_id`)));
-
--- ----------------------------
---  View structure for `english_word_progress_login_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_word_progress_login_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_word_progress_login_view` AS select `yunzhicms`.`english_word_progress`.`id` AS `id`,`yunzhicms`.`english_word_progress`.`time` AS `time`,`yunzhicms`.`english_word_progress`.`is_new` AS `is_new`,`yunzhicms`.`english_word_progress`.`word_id` AS `word_id`,`yunzhicms`.`english_word_progress`.`login_id` AS `login_id`,`yunzhicms`.`english_login`.`time` AS `login__time`,`yunzhicms`.`english_login`.`student_id` AS `student_id`,`yunzhicms`.`english_student`.`name` AS `student__name` from ((`english_word_progress` left join `english_login` on((`yunzhicms`.`english_word_progress`.`login_id` = `yunzhicms`.`english_login`.`id`))) left join `english_student` on((`yunzhicms`.`english_student`.`id` = `yunzhicms`.`english_login`.`student_id`)));
-
--- ----------------------------
---  View structure for `english_word_progress_login_word_course_view`
--- ----------------------------
-DROP VIEW IF EXISTS `english_word_progress_login_word_course_view`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`english_study`@`%` SQL SECURITY DEFINER VIEW `english_word_progress_login_word_course_view` AS select `yunzhicms`.`english_word_progress`.`id` AS `id`,`yunzhicms`.`english_word_progress`.`word_id` AS `word_id`,`yunzhicms`.`english_word`.`title` AS `word__title`,`yunzhicms`.`english_word_progress`.`login_id` AS `login_id`,`yunzhicms`.`english_word`.`course_id` AS `word__course_id`,`yunzhicms`.`english_login`.`time` AS `login__time`,`yunzhicms`.`english_login`.`student_id` AS `login__student_id`,`yunzhicms`.`english_course`.`title` AS `course__title`,`yunzhicms`.`english_word_progress`.`is_new` AS `is_new`,`yunzhicms`.`english_word_progress`.`time` AS `time` from (((`english_word_progress` left join `english_word` on((`yunzhicms`.`english_word_progress`.`word_id` = `yunzhicms`.`english_word`.`id`))) left join `english_login` on((`yunzhicms`.`english_word_progress`.`login_id` = `yunzhicms`.`english_login`.`id`))) left join `english_course` on((`yunzhicms`.`english_word`.`course_id` = `yunzhicms`.`english_course`.`id`)));
 
 SET FOREIGN_KEY_CHECKS = 1;

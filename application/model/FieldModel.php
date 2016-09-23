@@ -14,12 +14,18 @@ class FieldModel extends ModelModel
     protected $config       = null;             // 配置信息
     protected $filter       = null;             // 过滤器信息
     protected $token        = null;             // token
+    protected $simpleConfig = null;             // 简单配置信息
 
     private $getDataByKeyId = null;
     private $getDataByKeyId_KeyId = null;
     private $FieldTypeModel = null;             // 字段类型模型
     private $FieldModel = null;
 
+    /**
+     * 供继承于此类的 子类 使用
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-19T09:03:50+0800
+     */
     public function FieldModel()
     {
         if (null === $this->FieldModel) {
@@ -39,8 +45,21 @@ class FieldModel extends ModelModel
     {
         return Loader::parseName($this->name);
     }
+
+    /**
+     * 获取字段配置信息 
+     * @return   array
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-12T09:45:37+0800
+     */
+    public function getConfigAttr()
+    {
+        return json_decode($this->getData('config'), true);
+    }
+
     /**
      * 获取合并后，可以供CV使用的配置信息   
+     * 供继承本类的XXXModel扩展字段使用
      * @return array 
      */
     public function getConfig()
@@ -69,10 +88,28 @@ class FieldModel extends ModelModel
             }
 
             // todo:合并配置信息
-            // $this->config = Common::configMerge($this->BlockTypeModel()->getConfig(), $this->getConfigAttr());
+            $this->config = Common::configMerge($this->config, $this->FieldModel()->getConfigAttr());
         }
 
         return $this->config;
+    }
+
+    /**
+     * 获取 简单配置信息
+     * @return   array                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-12T09:51:36+0800
+     */
+    public function getSimpleConfig()
+    {
+        if (null === $this->simpleConfig) {
+            $this->simpleConfig = [];
+            foreach ($this->getconfig() as $key => $config) {
+                $this->simpleConfig[$key] = $config['value'];
+            }
+        }
+
+        return $this->simpleConfig;
     }
 
     public function getFilter()
@@ -136,21 +173,10 @@ class FieldModel extends ModelModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-05T09:35:46+0800
      */
-    public function render(&$XXXModel)
+    public function render($action)
     {
-        // 根据关键字得到字段的模型 支持id与name关键字
-        if ($XXXModel->getData('id') !== '')
-        {
-            $keyId = $XXXModel->getData('id');
-        } else {
-            $keyId = $XXXModel->getData('name');
-        }
-
-        // 获取 扩展字段模型
-        $FieldDataXXXModel = $this->getFieldDataXXXModelByKeyId($keyId);
-
         // 对扩展字段模型进行标签的渲染
-        return FieldController::renderFieldDataModel($this, $FieldDataXXXModel);
+        return FieldController::renderFieldDataModel($this, $action);
     }
 
     /**
@@ -220,12 +246,44 @@ class FieldModel extends ModelModel
 
         // 获取过滤器信息
         $filter = $this->FieldModel()->getFilter();
+
         if (null === $filter) {
             return $value;
         }
 
-        // 调用过滤器进行过滤
-        $className = 'app\filter\server\\' . $filter['type'] . 'Server';
-        return call_user_func_array([$className, $filter['function']], [$value, $filter['param']]);
+        if (isset($filter['type'])) {
+            // 调用过滤器进行过滤
+            $className = 'app\filter\server\\' . $filter['type'] . 'Server';
+            if (isset($filter['param'])) {
+                $param = $filter['param'];
+            } else {
+                $param = [];
+            }
+
+            return call_user_func_array([$className, $filter['function']], [$value, $param]);
+        } else {
+            return $value;
+        }
+    }
+
+    
+    /**
+     * 生成前台可以直接调用的token
+     * @param    string                   $action 
+     * @return   string                           
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-08T09:47:07+0800
+     */
+    public function makeToken($action, $data = [])
+    {
+        // // 对权限进行判断，没有权限，则返回空字符串
+        // if (AccessUserGroupBlockModel::checkCurrentUserIsAllowedByBlockIdAndAction($this->getData('id'), $action)) {
+        //     $data = array_merge(['id' => $this->getData('id')], $data);
+        //     $token = Common::makeTokenByMCAData('block', $this->BlockTypeModel()->getData('name'), $action, $data);
+        // } else {
+        //     $token = '';
+        // }
+        
+        // return $token;
     }
 }

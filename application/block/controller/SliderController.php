@@ -6,36 +6,60 @@ use think\Request;                          // 请求
 use app\Common;                             // 通用模型
 use app\model\BlockModel;                   // 区块模型
 use app\model\FieldModel;                   // 字段模型
+use app\model\AccessUserGroupBlockModel;    // 用户组区块权限
 
 /**
  * 幻灯片
  */
 class SliderController extends BlockController
 {
-    public function fetchHtml()
+    public function index()
     {
-        // 生成token并送入V层，用于编辑该区块
-        $token = $this->BlockModel->makeToken('Slider', 'edit');
-
+        // 生成token并送入V层，用于编辑该区块.首先进行权限的判断
+        $token = $this->BlockModel->makeToken('edit');
         $this->assign('token', $token);
+
+        // 获取扩展字段列表, 并传入V层
+        $this->assign('titles',         $this->BlockModel->FieldModel('titles')->filter());
+        $this->assign('urls',           $this->BlockModel->FieldModel('urls')->filter());
+        $this->assign('images',         $this->BlockModel->FieldModel('images')->filter());
+        $this->assign('headers',        $this->BlockModel->FieldModel('headers')->filter());
+        $this->assign('descriptions',   $this->BlockModel->FieldModel('descriptions')->filter());
+        
+        $totalCount = count($this->BlockModel->FieldModel('titles')->filter());
+        $totalCount = (count($this->BlockModel->FieldModel('urls')->filter()) < $totalCount) ? count($this->BlockModel->FieldModel('urls')->filter()) : $totalCount;
+        $totalCount = count($this->BlockModel->FieldModel('images')->filter()) < $totalCount ? count($this->BlockModel->FieldModel('images')->filter()) : $totalCount;
+        $totalCount = count($this->BlockModel->FieldModel('headers')->filter()) < $totalCount ? count($this->BlockModel->FieldModel('headers')->filter()) : $totalCount;
+        $totalCount = count($this->BlockModel->FieldModel('descriptions')->filter()) < $totalCount ? count($this->BlockModel->FieldModel('descriptions')->filter()) : $totalCount;
+
+        $this->assign('totalCount', $totalCount);
+
         return $this->fetch();
     }
     
     static public function save($data = [])
     {
+        // 实例化
+        $Object = new self();
+
         // 得到请求信息
         $Request = Request::instance();
         $param = $Request->param();
-
-        // todo:判断传入的各个字段的个数是否相同，如果不同，报错提示各个字段个数必须相同!
         
+        // 判断传入的各个字段的个数是否相同，如果不同，报错提示各个字段个数必须相同!
+        $fields = $param['field_'];
+        $count = count(array_pop($fields));
+        foreach ($fields as $value) {
+            if ($count !== count($value)) {
+                return $Object->error('各字段设置的参数个数不统一，请检查');
+            }
+        }
         
         // 更新扩展数据字段
         if (isset($param['field_'])) {
             FieldModel::updateLists($param['field_'], $data['id']);
         }
 
-        $Object = new self();
         $Object->success('操作成功', $Request->server('HTTP_REFERER'));
     }
 
@@ -57,7 +81,7 @@ class SliderController extends BlockController
         // 请学习new self()与new static()方法的区别
         $Object = new self();
         $Object->assign('BlockModel', $BlockModel);
-        $Object->assign('token', Common::makeTokenByMCAData('block', 'Slider', 'save', ['id' => $BlockModel->getData('id')]));
+        $Object->assign('token', $BlockModel->makeToken('save'));
 
         return $Object->fetch();
     }

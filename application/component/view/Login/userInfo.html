@@ -1,0 +1,7 @@
+{layout name="index" /}
+<section>
+    <a href="{:app\\Common::url('/logout')}">注销</a>
+    用户名：
+    姓名：   
+    当前用户组：{:$UserModel->UserGroupModel()->getData('name')}
+</section>

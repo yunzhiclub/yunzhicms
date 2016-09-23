@@ -40,8 +40,7 @@ class BlockController extends Controller
         $Object->BlockModel = $BlockModel;
 
         // 取配置过滤器信息
-        $Object->config = $BlockModel->getConfig();;
-        $Object->filter = $BlockModel->getFilter();
+        $Object->config = $BlockModel->getSampleConfig();;
 
         // 获取当前主题信息
         $Object->currentThemeModel = ThemeModel::getCurrentThemeModel();
@@ -52,7 +51,6 @@ class BlockController extends Controller
 
         // 送配置 过滤器至V层
         $Object->assign('config', $Object->config);
-        $Object->assign('filter', $Object->filter);
 
         return $Object;
     }
@@ -78,7 +76,7 @@ class BlockController extends Controller
             {
                 // 实例化类 并调用
                 $Object = call_user_func_array([$className, 'instance'], [$blockModel]); 
-                $result = $Object->fetchHtml(); 
+                $result = $Object->index(); 
                 if ($result)
                 {
                     $resultHtml .= $result;
@@ -130,7 +128,21 @@ class BlockController extends Controller
             $template = 'block@' . $controller . '/' . $action;
         }
 
-        // 渲染模板(直接调用$this->fetch()将导致死循环)
-        return parent::fetch($template);
+        // 初始化html css js字符串
+        $html = $css = $js = '';
+
+        // 渲染html
+        $html = parent::fetch($template);
+
+        // 尝试渲染js及css
+        try {
+            $js = parent::fetch('block@' . $controller . '/' . $action . 'Javascript');
+        } catch (\Exception $e) {}
+
+        try {
+            $css = parent::fetch('block@' . $controller . '/' . $action . 'Css');
+        } catch (\Exception $e) {}
+
+        return $html . $js . $css;
     }
 }

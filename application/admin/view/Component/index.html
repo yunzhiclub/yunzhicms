@@ -1,4 +1,4 @@
-{layout name="index" /}
+
 <div class="row">
     <div class="span16">
         <div class="box pattern pattern-sandstone">
@@ -13,7 +13,7 @@
                     <thead>
                         <tr>
                             <th>标题</th>
-                            <th>name</th>
+                            <th>机读名称</th>
                             <th>描述信息</th>
                             <th>作者</th>
                             <th>版本</th>
@@ -29,7 +29,7 @@
                             <td>{$Component->author}</td>
                             <td>{$Component->version}</td>
                             <td class="td-actions">
-                                <a href="{:url('@admin/Component/' . $Component->name)}" class="btn btn-small btn-info">
+                                <a href="{:url('Component/read?name=' . $Component->name)}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 查看配置信息
                                 </a>
                             </td>

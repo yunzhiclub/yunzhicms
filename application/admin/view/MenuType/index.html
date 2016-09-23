@@ -25,22 +25,24 @@
                             <td>{$MenuTypeModel->name}</td>
                             <td>{$MenuTypeModel->description}</td>
                             <td class="td-actions">
-                                <a href="{:url('@admin/MenuType/' . $MenuTypeModel->name)}" class="btn btn-small btn-info">
+                                <a href="{:url('read?name=' . $MenuTypeModel->name)}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 查看
                                 </a>
-                                <a href="{:url('@admin/MenuType/' . $MenuTypeModel->name . '/delete')}" class="btn btn-small btn-danger"> 
+                                <a href="{:url('delete?name=' . $MenuTypeModel->name)}" class="btn btn-small btn-danger"> 
                                     <i class="btn-icon-only icon-remove"></i> 删除
                                 </a>
                             </td>
                         </tr>
                         {/volist}
+
                         <div style="text-align:right;">
-                            <a href="{:url('@admin/MenuType/create')}" class="btn btn-small btn-info">
+                            <a href="{:url('create')}" class="btn btn-small btn-info">
                                 <i class="btn-icon-only icon-edit"></i> 新增
                             </a>
                         </div>
                     </tbody>
                 </table>
+                 {$MenuTypeModels->render()}
             </div>
         </div>
     </div>
