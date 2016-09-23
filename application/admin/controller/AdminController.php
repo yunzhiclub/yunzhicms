@@ -14,7 +14,7 @@ class AdminController extends Controller
 
         //添加session数据
         Session('username', 'admin@mengyunzhi.com');
-        Session('loginTime', '1474536251');
+        Session('loginTime', '1474546251');
 
         //获取用户登录信息
         $username = session('username');
