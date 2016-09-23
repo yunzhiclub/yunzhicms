@@ -1,0 +1,7 @@
+name:{$UserModel->getData('name')}
+groupname:{$UserModel->getData('user_group_name')}
+group:{$UserModel->UserGroupModel()->getData('title')}
+<neq name="token" value="">
+<br />
+<a target="_blank" class="mu-read-more-btn" href="{:url('api/api/index?token=' . $token)}">编辑</a>
+</neq>
