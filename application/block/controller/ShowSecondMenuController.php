@@ -7,7 +7,7 @@ use app\model\MenuModel;                        // 菜单模型
  */
 class ShowSecondMenuController extends BlockController
 {
-	protected $currentMenuModel         = null;         // 当前菜单
+	protected $currentMenuModel = null; 		//当前菜单
     public function index()
     {
     	// 取当前菜单信息
