@@ -12,10 +12,6 @@ class AdminController extends Controller
     {
         parent::__construct();
 
-        //添加session数据
-        Session('username', 'admin@mengyunzhi.com');
-        Session('loginTime', '1474546251');
-
         //获取用户登录信息
         $username = session('username');
         $loginTime = session('loginTime');
