@@ -75,6 +75,25 @@ class UserModel extends ModelModel
         return false;    
     }
     /**
+     * 验证登录用户是否为管理员，是则登录
+     * @Author   litian,                  1181551049@qq.com
+     * @DateTime 2016-09-23T17:38:20+0800
+     * @param                             $username
+     * @return                            boolean
+     */
+    static public function isAdmin($username)
+    {
+        //将用户取出
+        $map = array('username' => $username);
+        $UserModel = UserModel::get($map);
+        
+        // 判断用户是否为管理员
+        if ('admin' === $UserModel->getData('user_group_name')) {
+            return true;
+        }
+        return false;
+    }
+    /**
      * 验证密码
      * @param  string $password 密码
      * @return bool           密码正确  true 错误 false
