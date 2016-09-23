@@ -16,9 +16,15 @@ class LoginController extends Controller
 	public function loginAction()
 	{
 		//验证用户名 密码
-		if (UserModel::login(input('post.username'), input('post.password'))) {			
+		if (UserModel::login(input('post.username'), input('post.password'))) {
+			//验证用户是否有登录后台的权限
+			if (UserModel::getAccessPermission())
+			{
 			return $this->success('登陆成功', url('@admin/index'));
-		} else{
+			} else {
+				return $this->success('对不起，您无权限访问');
+			}		
+		} else {
 			return $this->error('用户名或密码错误');
 		}		
 	}

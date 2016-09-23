@@ -215,12 +215,12 @@ class UserModel extends ModelModel
      * @return bool 
      * @author chuhang 
      */
-    public function getAccessPermission()
+    static public function getAccessPermission()
     {
         $map['username'] = session('username');
         $userGroup = self::get($map)->getData('user_group_name');
-        $admin = "admin";
-        if ($userGroup === $admin)
+        $admin = array('admin');
+        if (in_array($userGroup, $admin))
         {
             return true;
         } else {
