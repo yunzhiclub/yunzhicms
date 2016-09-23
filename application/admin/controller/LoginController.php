@@ -1,11 +1,12 @@
 <?php
 namespace app\admin\controller;
 use app\model\UserModel;
+use think\Controller;
 /**
  * 后台登陆
  * @author huangshuaibin
  */
-class LoginController extends AdminController
+class LoginController extends Controller
 {
 	public function indexAction()
 	{		
