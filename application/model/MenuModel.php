@@ -264,6 +264,34 @@ class MenuModel extends ModelModel
     }
 
     /**
+     * 获取当前菜单树中的第二级菜单与第三级菜单
+     * @return array MenuModel
+     * @author  gaoliming
+     */
+    public function getSecondMenuModle()
+    {
+        $MenuModel = $this;
+
+        //一级菜单
+        if (0 === $MenuModel->pid) {
+            //取出二级菜单
+            return $MenuModel->sonMenuModels();
+        }
+
+        //二级菜单
+        $FirstMenuModel = MenuModel::get($MenuModel->pid);
+        if (0 === $FirstMenuModel->pid) {
+            //取出二级菜单
+            return $FirstMenuModel->sonMenuModels();
+        }
+
+        //三级菜单
+        $FirstMenuModel = MenuModel::get($FirstMenuModel->pid);
+        //取出二级菜单
+        return $FirstMenuModel->sonMenuModels();
+    }
+
+    /**
      * 获取指定上级ID的菜单列表 
      * @param  int $pid 上级ID
      * @return lists      MenuModels
