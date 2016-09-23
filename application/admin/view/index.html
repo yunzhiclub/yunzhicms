@@ -71,7 +71,7 @@
                     </ul>
                     <ul class="nav pull-right">
                         <li>
-                            <a href="login.html">Logout</a>
+                            <a href="{:url('@admin/Login/LogOut')}">注销</a>
                         </li>
                     </ul>
                 </div>
@@ -84,42 +84,42 @@
                 <div class="container">
                     <ul>
                         <li>
-                            <a href="{:url('@admin')}">
+                            <a href="{:url('admin/Index/index')}">
                                 <i class="icon-dashboard icon-large"></i> 首页
                             </a>
                         </li>
                         <li>
-                            <a href="{:url('@admin/menutype')}">
+                            <a href="{:url('admin/menuType/index')}">
                                 <i class="icon-calendar icon-large"></i> 菜单管理
                             </a>
                         </li>
                         <li>
-                            <a href="{:url('@admin/contenttype')}">
+                            <a href="{:url('admin/contentType/index')}">
                                 <i class="icon-map-marker icon-large"></i> 类别管理
                             </a>
                         </li>
                         <li>
-                            <a href="{:url('@admin/extend')}">
+                            <a href="{:url('admin/extend/index')}">
                                 <i class="icon-tasks icon-large"></i> 扩展管理
                             </a>
                         </li>
                         <li>
-                            <a href="{:url('@admin/system')}">
+                            <a href="{:url('admin/system/index')}">
                                 <i class="icon-cogs icon-large"></i> 系统设置
                             </a>
-                        </li>
+                        </li><!-- 
                         <li>
-                            <a href="{:url('@admin/component')}">
+                            <a href="{:url('admin/component/index')}">
                                 <i class="icon-list-alt icon-large"></i> 组件管理
                             </a>
-                        </li>
+                        </li> -->
                         <li>
-                            <a href="{:url('@admin/block')}">
+                            <a href="{:url('admin/block/index')}">
                                 <i class="icon-bar-chart icon-large"></i> 区块管理
                             </a>
                         </li>
                         <li>
-                            <a href="{:url('@admin/user')}">
+                            <a href="{:url('admin/User/index')}">
                                 <i class="icon-user icon-large"></i> 用户管理
                             </a>
                         </li>
@@ -129,13 +129,18 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{:url('@admin/theme')}">
+                            <a href="{:url('admin/theme/index')}">
                                 <i class="icon-briefcase icon-large"></i> 主题管理
                             </a>
                         </li>
                         <li>
-                            <a href="{:url('@admin/Template')}">
+                            <a href="{:url('admin/Template/index')}">
                                 <i class="icon-bar-chart icon-large"></i> 查看模板
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('@admin/Personal')}">
+                                <i class="icon-bar-chart icon-large"></i> 个人中心
                             </a>
                         </li>
                     </ul>
