@@ -113,7 +113,35 @@ class LoginController extends ComponentController
      */
     public function userInfo()
     {
-        $this->assign('UserModel', UserModel::getCurrentUserModel());
+        $UserModel = new UserModel;
+
+        //取出当前用户数据
+        $username = UserModel::getCurrentUser();
+        $map['username'] = $username;
+        $userModel = $UserModel::get($map);
+
+        // 传入V层
+        $this->assign('userModel', $userModel);
         return $this->fetch('component@Login/userInfo'); 
+    }
+
+    /**
+     * 个人信息修改
+     * @return
+     * @author fanhaoling
+     */
+    public function saveAction()
+    {
+       echo "hello";
+    }
+
+    /**
+     * 新用户注册
+     * @return                      
+     * @author fanhaoling
+     */
+    public function registerAction()
+    {
+        return $this->fetch('component@Login/register');
     }
 }

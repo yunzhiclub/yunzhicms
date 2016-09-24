@@ -19,4 +19,16 @@ return [
         'value'         => ['', 'GET']        
     ],
     
+    'register' => [
+        'title'         => '注册',
+        'description'   => '新用户注册信息',
+        'value'         => ['/register', 'GET']
+    ],
+
+    'save' => [
+        'title'         => '保存',
+        'description'   => '保存用户注册信息',
+        'value'         => ['/save', 'POST']
+    ],
+
 ];
