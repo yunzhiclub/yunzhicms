@@ -230,20 +230,15 @@ class UserModel extends ModelModel
     }
 
     /**
-     * 判断用户是否拥有后台访问权限
-     * @return bool 
-     * @author chuhang 
+     * [getCurrentUser 获取后台当前登录用户]
+     * @Author   litian,                  1181551049@qq.com
+     * @DateTime 2016-09-23T20:52:42+0800
+     * @return
      */
-    public function getAccessPermission()
+    static public function getCurrentUser()
     {
-        $map['username'] = session('username');
-        $userGroup = self::get($map)->getData('user_group_name');
-        $admin = "admin";
-        if ($userGroup === $admin)
-        {
-            return true;
-        } else {
-            return false;
-        }
+        $username = Session::get('username');
+        return $username;
     }
+
 }
