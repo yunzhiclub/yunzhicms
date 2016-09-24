@@ -13,6 +13,9 @@
                     <thead>
                         <tr>
                             <th>名称</th>
+                            <th>对应的菜单</th>
+                            <th>机读字段</th>
+                            <th>权重</th>
                             <th>描述</th>
                             <th class="td-actions">操作</th>
                         </tr>
@@ -21,20 +24,28 @@
                         {volist name="ContentTypeModels" id="_ContentTypeModel"}
                         <tr>
                             <td>{$_ContentTypeModel->title}</td>
+                            <td>{$_ContentTypeModel->getMenu($_ContentTypeModel->menu_id)->title}</td>
+                            <td>{$_ContentTypeModel->name}</td>
+                            <td>{$_ContentTypeModel->weight}</td>
                             <td>{$_ContentTypeModel->description}</td>
                             <td class="td-actions">
-                                <a href="{:url('@admin/MenuType/' . $_ContentTypeModel->name)}" class="btn btn-small btn-info">
-                                    <i class="btn-icon-only icon-edit"></i> 查看
+                                <a href="{:url('read?name=' . $_ContentTypeModel->name)}" class="btn btn-small btn-info">
+                                    <i class="btn-icon-only icon-ok"></i> 查看
                                 </a>
-                                <a href="" class="btn btn-small btn-info">
-                                    <i class="btn-icon-only icon-ok"></i>
+                                <a href="{:url('edit?name=' . $_ContentTypeModel->name)}" class="btn btn-small btn-info">
+                                    <i class="btn-icon-only icon-edit"></i> 编辑
                                 </a>
-                                <a href="javascript:;" class="btn btn-small btn-danger">
-                                    <i class="btn-icon-only icon-remove"></i>
+                                <a href="{:url('delete?name=' . $_ContentTypeModel->name)}" class="btn btn-small btn-danger">
+                                    <i class="btn-icon-only icon-remove"></i> 删除
                                 </a>
                             </td>
                         </tr>
                         {/volist}
+                        <div style="text-align:right;">
+                        <a href="{:url('create')}" class="btn btn-small btn-info">
+                            <i class="btn-icon-only icon-edit"></i> 新增
+                        </a>
+                        </div>
                     </tbody>
                 </table>
             </div>
