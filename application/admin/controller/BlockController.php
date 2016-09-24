@@ -66,6 +66,12 @@ class BlockController extends AdminController
             $BlockModel->setData('filter', json_encode($filter));
         }
 
+        //验证标题
+        $title = array('title' => $param['title']);
+        if (false === $BlockModel->validate(true)->save($title))
+        {
+            return $this->error($BlockModel->getError());
+        }
         $BlockModel->save();
 
         // 更新block-menu关联表
@@ -160,6 +166,12 @@ class BlockController extends AdminController
         $BlockModel->setData('status', $param['status']);
         $BlockModel->setData('weight', $param['weight']);
 
+        //验证标题
+        $title = array('title' => $param['title']);
+        if (false === $BlockModel->validate(true)->save($title))
+        {
+            return $this->error($BlockModel->getError());
+        }
         $BlockModel->save();
 
         //直接将menu数据存入表
