@@ -67,14 +67,35 @@
                                     </ul>
                                 </div>
                                 <div>
-                                    <label for="">对哪些用户组可见</label>
+                                    <label for="">对用户组的权限</label>
                                     <ul>
-                                        {foreach name="UserGroupModels" id="_UserGroupModel"}
-                                        <input type="checkbox" name="usergroupname[{$_UserGroupModel->name}]" />
+                                        {volist name="UserGroupModels" id="_UserGroupModel"}
+                                <li>
+                                    {$_UserGroupModel->title}
+                                    <ul>
                                         <li>
-                                            {$_UserGroupModel->title}
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" />浏览</label>
                                         </li>
-                                        {/foreach}
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" />查看</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" />新增</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" />编辑</label>
+                                        </li>
+                                        <li>
+                                            <label for="">
+                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" />删除</label>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {/volist}
                                     </ul>
                                 </div>
                                 <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
