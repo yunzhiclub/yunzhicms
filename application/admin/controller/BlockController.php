@@ -36,6 +36,8 @@ class BlockController extends AdminController
         //将位置信息传入
         $map['type'] = "block";
         $PositionModels = PositionModel::get($map)->select();
+    
+
         $this->assign('PositionModels', $PositionModels);
 
         $MenuModels = MenuModel::getTreeList(0, 2);
@@ -82,21 +84,26 @@ class BlockController extends AdminController
             $AccessMenuBlockModel->saveAll($datas);
         }
 
-        //更新user_group_block表
+        // 更新user_group_block表
         $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
         $map = ['block_id' => $id];
         $AccessUserGroupBlockModel->where($map)->delete();
 
-        $AccessUserGroupBlockDatas = array();
-        if (array_key_exists('usergroupname', $param))
-        {
-            foreach ($param['usergroupname'] as $key => $value) {
-                array_push($AccessUserGroupBlockDatas, ['block_id' => $id, 'user_group_name' => $key]);
+        
+        //拼接user_group_name block_id 存入其中间表
+        if (array_key_exists('access', $param)) {
+            $datas = array();
+            foreach ($param['access'] as $key => $value) {
+                foreach ($param['access'][$key] as  $key1 => $value1) {
+                    array_push($datas, ['user_group_name' => $key, 'block_id' => $id, 'action' => $key1]);
+                }
             }
-            $AccessUserGroupBlockModel->saveAll($AccessUserGroupBlockDatas);
+            $AccessUserGroupBlockModel->saveAll($datas);
         }
+        
         return $this->success('操作成功', url('index'));
     }
+
     /**
     * 删除区块方法
     * @param  int $id 区块id
@@ -111,7 +118,7 @@ class BlockController extends AdminController
         $map = ['block_id' => $id];
         $AccessMenuBlockModel->where($map)->delete();
 
-        //删除usergroup-menu关联表中已经删除的区块信息
+        // 删除usergroup-menu关联表中已经删除的区块信息
         $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
         $AccessUserGroupBlockModel->where($map)->delete();
         
@@ -150,7 +157,7 @@ class BlockController extends AdminController
     public function saveAction()
     {
         $param = input('param.');
-
+       
         //将Block的信息，保存到数据表
         $BlockModel = new BlockModel;
         $BlockModel->setData('title', $param['title']);
@@ -166,9 +173,7 @@ class BlockController extends AdminController
         $id = $BlockModel->id;
 
         $AccessMenuBlockModel = new AccessMenuBlockModel;
-        // $map = ['block_id' => $id];
-        // $AccessMenuBlockModel->where($map)->delete();
-
+        
         //拼接menu_id block_id 存入其中间表
         if (array_key_exists('menuids', $param)) {
             $datas = array();
@@ -181,10 +186,12 @@ class BlockController extends AdminController
         $AccessUserGroupBlockModel = new AccessUserGroupBlockModel;
         
         //拼接user_group_name block_id 存入其中间表
-        if (array_key_exists('usergroupname', $param)) {
+        if (array_key_exists('access', $param)) {
             $datas = array();
-            foreach ($param['usergroupname'] as $key => $value) {
-                array_push($datas, ['user_group_name' => $key, 'block_id' => $id]);
+            foreach ($param['access'] as $key => $value) {
+                foreach ($param['access'][$key] as  $key1 => $value1) {
+                    array_push($datas, ['user_group_name' => $key, 'block_id' => $id, 'action' => $key1]);
+                }
             }
             $AccessUserGroupBlockModel->saveAll($datas);
         }

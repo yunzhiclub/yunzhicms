@@ -31,6 +31,29 @@ class UserGroupModel extends ModelModel
     }
 
     /**
+     * 获取 区块 对本用户组的权限
+     * @param BlockModel  &$BlockModel  [description]
+     * @return boolean                  [description]
+     */
+    public function isAllowedByBlockModelAction(BlockModel &$BlockModel, $action)
+    {
+        // 查找是否存在当前权限值
+        $map = [];
+        $map['block_id']         = $BlockModel->getData('id');
+        $map['user_group_name'] = $this->getData('name');
+        $map['action']          = $action;
+        $AccessUserGroupBlockModel = AccessUserGroupBlockModel::get($map);
+        if ('' !== $AccessUserGroupBlockModel->getData('block_id'))
+        {
+            // 返回非默认值，有权限
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
      * 是否当前菜单的的 列表(10000) 权限
      * @param  MenuModel &$MenuModel 菜单
      * @return boolean               
@@ -81,6 +104,55 @@ class UserGroupModel extends ModelModel
         return $this->isAllowedByMenuModelAction($MenuModel, 'delete');
     }
 
+    /**
+     * 是否拥有当前区块 列表权限
+     * @param BlockModel &$MenuModel [description]
+     * @return boolean               [description]
+     */
+     public function isIndexAllowedByBlockModel(BlockModel &$BlockModel)
+     {
+        return $this->isAllowedByBlockModelAction($BlockModel, 'index'); 
+     } 
+
+     /**
+     * 是否拥有当前区块 创建权限
+     * @param BlockModel &$MenuModel [description]
+     * @return boolean               [description]
+     */
+     public function isCreateAllowedByBlockModel(BlockModel &$BlockModel)
+     {
+        return $this->isAllowedByBlockModelAction($BlockModel, 'create'); 
+     } 
+
+     /**
+     * 是否拥有当前区块 更新权限
+     * @param BlockModel &$MenuModel [description]
+     * @return boolean               [description]
+     */
+     public function isUpdateAllowedByBlockModel(BlockModel &$BlockModel)
+     {
+        return $this->isAllowedByBlockModelAction($BlockModel, 'update'); 
+     } 
+
+     /**
+     * 是否拥有当前区块 删除权限
+     * @param BlockModel &$MenuModel [description]
+     * @return boolean               [description]
+     */
+     public function isDeleteAllowedByBlockModel(BlockModel &$BlockModel)
+     {
+        return $this->isAllowedByBlockModelAction($BlockModel, 'delete'); 
+     } 
+
+     /**
+     * 是否拥有当前区块 查看权限
+     * @param BlockModel &$MenuModel [description]
+     * @return boolean               [description]
+     */
+     public function isReadAllowedByBlockModel(BlockModel &$BlockModel)
+     {
+        return $this->isAllowedByBlockModelAction($BlockModel, 'read'); 
+     } 
     /**
      * 获取当前用户组的所有用户
      * @param  string  $name 用户组name键值
