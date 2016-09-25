@@ -9,7 +9,7 @@
                 </h5>
             </div>
             <div class="box-content">
-                <form class="form-horizontal" action="{:url('update')}" method="post">
+                <form class="form-horizontal" action="{:url('update?name=' . $ComponentModel->name)}" method="post">
                 <input type="hidden" name="_method" value="POST" />
                     <div class="control-group">
                         <label class="control-label" for="_title">标题</label>
@@ -20,13 +20,25 @@
                     <div class="control-group">
                         <label class="control-label" for="_name">机读字段(禁用中文)</label>
                         <div class="controls">
-                            {$ComponentModel->name}
+                        {$ComponentModel->name}
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="_description">描述</label>
                         <div class="controls">
                             <input type="text" id="_description" name="description" value="{$ComponentModel->description}"/>                    
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_description">作者</label>
+                        <div class="controls">
+                            <input type="text" id="_description" name="author" value="{$ComponentModel->author}"/>                    
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_description">版本</label>
+                        <div class="controls">
+                            <input type="text" id="_description" name="version" value="{$ComponentModel->version}"/>                    
                         </div>
                     </div>
                     <div class="form-horizontal">
