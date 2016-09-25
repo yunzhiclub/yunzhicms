@@ -5,7 +5,7 @@
             <div class="box-header">
                 <i class="icon-table"></i>
                 <h5>
-                区块列表
+                插件列表
                 </h5>
             </div>
             <div class="box-content box-table">
@@ -13,8 +13,8 @@
                     <thead>
                         <tr>
                             <th>序号</th>
-                            <th>组件名</th>
-                            <th>组件类型</th>
+                            <th>插件名</th>
+                            <th>插件类型</th>
                             <th>描述</th>
                             <th>状态</th>
                             <th>位置</th>
@@ -31,19 +31,17 @@
                             <td>{$_pluginModel->status}</td>
                             <td>{$_pluginModel->position_name}</td>
                             <td>
-                                <a href="#" class="btn btn-small btn-info">
+                                <a href="{:url('edit?id=' . $_pluginModel->getData('id'))}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 编辑
                                 </a>
-                                <a href="#" class="btn btn-small btn-danger">
+                                <a href="{:url('delete?id=' . $_pluginModel->getData('id'))}" class="btn btn-small btn-danger">
                                     <i class="btn-icon-only icon-remove"></i>
                                 </a>
                             </td>
                         </tr>
                         {/volist}
                         <div style="text-align:right;">
-                            <a href="#" class="btn btn-small btn-primary">
-                                     新增
-                                </a>
+                            <a href="{:url('create')}" class="btn btn-small btn-primary"> 新增</a>                                
                         </div>
                     </tbody>
                 </table>
