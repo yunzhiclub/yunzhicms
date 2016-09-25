@@ -8,6 +8,7 @@
                 个人中心管理
                 </h5>
             </div>
+            <div class="box-content">
             <form action="{:url('save')}" method="post" class="form-horizontal">
                 <div class="control-group">
                     <label class="control-label" for="_name">姓名</label>
@@ -18,13 +19,13 @@
                 <div class="control-group">
                     <label class="control-label" for="_email">邮箱</label>
                     <div class="controls">
-                        <input readonly="true" type="email" id="_email" value="{$userModel->getData('username')}" name="username" placeholder="请输入邮箱" />
+                        <p id="_email" name="username">{$userModel->getData('username')}</p>
                     </div>
                 </div>
                  <div class="control-group">
                     <label class="control-label" for="_user_group_name">用户组</label>
                     <div class="controls">
-                        <input readonly="true" type="text" id="_user_group_name" value="{$userModel->getData('user_group_name')}" name="user_group_name" />
+                        <p id="_user_group_name" name="user_group_name">{$userModel->getData('user_group_name')}</p>
                     </div>
                 </div>
                 <div class="control-group">
@@ -53,6 +54,7 @@
                     </label>
                 </div>
             </form>
+            </div>
         </div>
     </div>
 </div>
