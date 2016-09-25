@@ -1,4 +1,4 @@
-
+{layout name="index" /}
 <div class="row">
     <div class="span16">
         <div class="box pattern pattern-sandstone">
@@ -28,13 +28,19 @@
                             <td>{$Component->description}</td>
                             <td>{$Component->author}</td>
                             <td>{$Component->version}</td>
-                            <td class="td-actions">
-                                <a href="{:url('Component/read?name=' . $Component->name)}" class="btn btn-small btn-info">
-                                    <i class="btn-icon-only icon-edit"></i> 查看配置信息
+                            <td>
+                                <a href="{:url('Component/edit?name=' . $Component->name)}" class="btn btn-small btn-info">
+                                    <i class="btn-icon-only icon-edit"></i> 编辑
+                                </a>
+                                <a href="{:url('delete?id=' . $Component->id)}" class="btn btn-small btn-danger">
+                                    <i class="btn-icon-only icon-remove"></i>
                                 </a>
                             </td>
                         </tr>
                     {/volist}
+                    <div style="text-align:right;">
+                        <a href="{:url('create')}" class="btn btn-small btn-primary">新增</a>
+                    </div>
                     </tbody>
                 </table>
             </div>

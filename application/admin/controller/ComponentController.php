@@ -23,4 +23,16 @@ class ComponentController extends AdminController
 
         return $this->fetch();
     }
+
+    public function createAction()
+    {
+        return $this->fetch('Component/create');
+    }
+
+    public function editAction($name)
+    {
+        $ComponentModel = ComponentModel::get($name);
+        $this->assign('ComponentModel', $ComponentModel);
+        return $this->fetch();
+    }
 }
