@@ -72,10 +72,6 @@ class ComponentController extends AdminController
         $ComponentModel->setData('description', $data['description']);
         $ComponentModel->setData('version', $data['version']);
 
-        if (array_key_exists('config', $data))
-        {
-            $ComponentModel->setData('config', json_encode($data['config']));
-        }
         //验证并更新信息
         array_shift($data);
         if (false === $ComponentModel->validate(true)->save($data))
@@ -91,9 +87,11 @@ class ComponentController extends AdminController
         //获取删除的对象
         $ComponentModel = ComponentModel::get($name);
 
-        // todo
         //判断是否有菜单
-
+        if (!empty($ComponentModel->getAllMenuModels($name)))
+        {
+            return $this->error('该组件含有菜单项，不能删除');
+        }
         //删除组件
         $ComponentModel->setData('is_deleted', 1)->save();
 
