@@ -45,12 +45,10 @@ class MenuController extends AdminController
         return $this->fetch('menu/edit');
     }
 
-    public function updateAction()
+    public function updateAction($id)
     {
         $data = Request::instance()->param();
-        $id =  $data['id'];
-        
-
+    
         $MenuModel = MenuModel::get($id);
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);
@@ -64,10 +62,12 @@ class MenuController extends AdminController
         $MenuModel->setData('description', $data['description']);
        
         // 配置信息
-        $MenuModel->setData('config', json_encode($data['config']));
-
+        if (array_key_exists('config', $data)) {
+            $MenuModel->setData('config', json_encode($data['config']));
+        }
+        
         // 过滤器信息
-        if (array_key_exists('filter', $data)){
+        if (array_key_exists('filter', $data)) {
             $filter = Common::makeFliterArrayFromPostArray($data['filter']);
             $MenuModel->setData('filter', json_encode($filter));
         }

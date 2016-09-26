@@ -7,9 +7,8 @@
                 <h5>{$MenuModel->title}</h5>
             </div>
             <div class="box-content">
-                <form class="form-horizontal" action="{:url('update')}" method="post">
+                <form class="form-horizontal" action="{:url('update?id=' . $MenuModel->id)}" method="post">
                     <input type="hidden" name="_method" value="POST" />
-                    <input type="hidden" name="id" value="{$MenuModel->id}" />
                     <div class="control-group">
                         <label class="control-label" for="_title">标题</label>
                         <div class="controls">
