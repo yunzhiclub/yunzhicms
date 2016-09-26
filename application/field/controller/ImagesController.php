@@ -13,7 +13,7 @@ class ImagesController extends FieldController
     {   
         $this->assign('token', $this->FieldDataXXXModel->makeToken('upload'));
         $this->assign('addSubToken', Common::makeTokenByMCAData('field', 'Images', 'addSubCount', ['id' => $this->FieldDataXXXModel->getData('id')]));
-        return parent::renderAction('edit');
+        return $this->fetch();
     }
 
     /**

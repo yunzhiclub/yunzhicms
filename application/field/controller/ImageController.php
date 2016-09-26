@@ -10,7 +10,7 @@ class ImageController extends FieldController
 
     public function index()
     {
-        return parent::renderAction('index');
+        return $this->fetch();
     }
 
 
@@ -52,6 +52,6 @@ class ImageController extends FieldController
     public function edit()
     {
         $this->assign('token', $this->FieldDataXXXModel->makeToken('upload'));
-        return parent::renderAction('edit');
+        return $this->fetch();
     }
 }

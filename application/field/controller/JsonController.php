@@ -13,7 +13,7 @@ class JsonController extends FieldController
         $token = $this->FieldDataXXXModel->makeToken('addSubCount');
         $this->assign('token', $token);
 
-        return parent::renderAction('edit');
+        return $this->fetch();
     }
 
     /**

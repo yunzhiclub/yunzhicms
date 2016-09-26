@@ -6,6 +6,7 @@ use app\Common;
 use think\Loader;
 use think\Request;
 
+use app\model\ThemeModel;                           // 主题
 use app\model\AccessUserGroupFieldModel;            // 用户组字段权限
 
 class FieldController extends Controller
@@ -15,6 +16,14 @@ class FieldController extends Controller
     private $nameTag;                                       // 字段输出时的 name 标签
     private $token;                                         // token
     protected $config;                                      // 配置信息
+    protected $currentThemeModel        = null;         // 当前主题
+
+    public function __construct()
+    {
+        // 取出当前主题信息，供模板渲染使用
+        $this->currentThemeModel = ThemeModel::getCurrentThemeModel();
+        parent::__construct();
+    }
 
     public function init(&$FieldDataXXXModel = null)
     {
@@ -34,7 +43,7 @@ class FieldController extends Controller
         $this->config = $FieldDataXXXModel->getSimpleConfig();
         $this->assign('config', $this->config);
         $this->assign('FieldDataXXXModel', $FieldDataXXXModel);
-        $this->assign('rand', rand(0,1000));
+        $this->assign('randId', rand(1,1023));    // 建立1个1023以内的随机数，防止ID重复
     }
 
 
@@ -67,32 +76,57 @@ class FieldController extends Controller
     }
 
     /**
-     * 获取处理后的html代码
-     * @return   String                   
-     * @author panjie panjie@mengyunzhi.com
-     * @DateTime 2016-09-05T09:51:51+0800
+     * 加载模板输出
+     * @access protected
+     * @param string    $template 模板文件名
+     * @param array     $vars     模板输出变量
+     * @param array     $replace     模板替换
+     * @param array     $config     模板参数
+     * @return mixed
      */
-    public function renderAction($action)
+    protected function fetch($template = '', $vars = [], $replace = [], $config = [])
     {
-        // 建立1个1024以内的随机数，防止ID重复
-        $this->assign('randId', mt_rand(1, 1024));
+        $controller = Common::getControllerName(get_called_class());
+        $action = debug_backtrace()[1]['function'];
 
-        $calledClassName = Common::getControllerName(get_called_class());
+        // 拼接主题模板信息
+        $themeTemplate = APP_PATH . 
+            'theme' . DS . 
+            $this->currentThemeModel->getData('name') . DS .
+            'field' . DS .
+            $controller . DS .
+            $action . '.html';
+
+        // 路径格式化，如果文件不存在，则返回false
+        $themeTemplate = realpath($themeTemplate);
+
+        // 主题文件存在，则调用主题文件进行渲染
+        if (false !== $themeTemplate)
+        {   
+            $template = $themeTemplate;
+
+        // 不存在，则进行同模块VIEW规则渲染
+        } else {
+            $template = 'field@' . $controller . '/' . $action;
+        }
+
+        // 初始化html css js字符串
         $html = $css = $js = '';
 
-        $html = $this->fetch('field@' . $calledClassName . '/' . $action);
+        // 渲染html
+        $html = parent::fetch($template);
 
+        // 尝试渲染js及css
         try {
-            $js = $this->fetch('field@' . $calledClassName . '/' . $action . 'Js');
+            $js = parent::fetch('field@' . $controller . '/' . $action . 'Js');
         } catch (\Exception $e) {}
 
         try {
-            $css = $this->fetch('field@' . $calledClassName . '/' . $action . 'Css');
+            $css = parent::fetch('field@' . $controller . '/' . $action . 'Css');
         } catch (\Exception $e) {}
 
         return $html . $js . $css;
     }
-
 
 
 }
