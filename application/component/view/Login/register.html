@@ -9,7 +9,7 @@
                 </h5>
             </div>
             <div class="box-content">
-            <form action="{:url('#')}" method="post" class="form-horizontal col-md-offset-3">
+            <form action="{:app\\Common::url('/newsave')}" method="post" class="form-horizontal col-md-offset-3">
                 <div class="control-group">
                     <label class="control-label" for="_name">姓名</label>
                     <div class="controls">
@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="_email">邮箱</label>
+                    <label class="control-label" for="_email">用户名</label>
                     <div class="controls">
                         <input type="text" id="_email" name="email" placeholder="请输入有效邮箱" />
                     </div>

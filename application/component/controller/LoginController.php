@@ -28,14 +28,14 @@ class LoginController extends ComponentController
      * @DateTime 2016-09-13T11:16:29+0800
      */
     public function loginAction()
-    {
+    { 
         // 获取请求信息
         $param = Request::instance()->param();
 
         // 登录
         if (array_key_exists('username', $param) && array_key_exists('password', $param)) {
             if (UserModel::login($param['username'], $param['password'])) {
-                return $this->success('登录成功');
+                return $this->success('登录成功', url('@'));
             } else {
                 return $this->error('用户名或密码错误');
             }
@@ -126,13 +126,45 @@ class LoginController extends ComponentController
     }
 
     /**
-     * 个人信息修改
+     * 个人信息保存
      * @return
      * @author fanhaoling
      */
     public function saveAction()
     {
-       echo "hello";
+        $datas = Request::instance()->param();
+
+        if ($datas['newpassword'] !== $datas['repassword']) {
+            return $this->error('两次密码不相同，请重新输入');
+        }
+       
+        $id = (int)$datas['id'];
+       
+        $UserModel = UserModel::get($id);
+        $UserModel->setData('name', $datas['name']);
+        $UserModel->setData('password', $datas['repassword']);
+        $UserModel->save();
+        return $this->success('更新成功', Common::url('/userInfo'));
+    }
+
+    /**
+     * 个人信息修改
+     * @return
+     * @author fanhaoling
+     */
+    public function editAction()
+    {
+
+        $UserModel = new UserModel;
+
+        //取出当前用户数据
+        $username = UserModel::getCurrentUser();
+        $map['username'] = $username;
+        $userModel = $UserModel::get($map);
+
+        // 传入V层
+        $this->assign('userModel', $userModel);
+        return $this->fetch('component@Login/edit');
     }
 
     /**
@@ -144,4 +176,15 @@ class LoginController extends ComponentController
     {
         return $this->fetch('component@Login/register');
     }
+
+    /**
+     * 新用户信息保存
+     * @return                      
+     * @author fanhaoling
+     */
+    public function newsaveAction()
+    {
+        echo "string";
+    }
+
 }

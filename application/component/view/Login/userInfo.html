@@ -6,49 +6,29 @@
     <div class="span16">
         <div class="box pattern pattern-sandstone">
             <div class="box-content">
-            <form action="{:app\\Common::url('/save')}" method="post" class="control-label col-md-offset-3">
+            <form class="control-label col-md-offset-3">
                 <div class="control-group">
-                    <label class="control-label" for="_name">姓名</label>
+                    <label class="control-label">姓名</label>
                     <div class="controls">
-                        <input type="text" id="_name" value="{$userModel->getData('name')}" name="name" placeholder="姓名" />
+                        <p>{$userModel->getData('name')}</p>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="_email">邮箱</label>
+                    <label class="control-label">邮箱</label>
                     <div class="controls">
-                        <p id="_email" name="username">{$userModel->getData('username')}</p>
+                        <p>{$userModel->getData('username')}</p>
                     </div>
                 </div>
                  <div class="control-group">
-                    <label class="control-label" for="_user_group_name">用户组</label>
+                    <label class="control-label">用户组</label>
                     <div class="controls">
-                        <p id="_user_group_name" name="user_group_name">{$userModel->getData('user_group_name')}</p>
+                        <p>{$userModel->getData('user_group_name')}</p>
                     </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="_password">原密码</label>
-                    <div class="controls">
-                        <input type="password" id="_password" name="password" placeholder="请输入原密码" />
-                    </div>
-                </div>
-                <div class="control-group">
-                     <label class="control-label" for="_newpassword" >新密码</label>
-                     <div class="controls">
-                         <input type="password" id="_newpassword" name="newpassword" placeholder="请输入新密码"  />
-                     </div>
-                </div>
-                <div class="control-group">
-                     <label class="control-label" for="_repassword">确认密码</label>
-                      <div class="controls">
-                         <input type="password" id="_repassword" name="repassword" placeholder="再次输入新密码"  />
-                      </div>
-               </div>
-                <div class="control-group"  style="margin-left:95px">
+                    <div class="control-group"  style="margin-left:95px">
                     <label class="control-label">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="icon-ok"></i>提交
-                        </button>
+                            <a href="{:app\\Common::url('/edit')}"><i class="icon-ok"></i>编辑</a>
                     </label>
+                </div>
                 </div>
             </form>
             </div>
