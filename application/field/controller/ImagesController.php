@@ -13,7 +13,6 @@ class ImagesController extends FieldController
     {   
         $this->assign('token', Common::makeTokenByMCAData('field', 'Images', 'upload'));
         $this->assign('addSubToken', Common::makeTokenByMCAData('field', 'Images', 'addSubCount', ['id' => $this->FieldDataXXXModel->getData('id')]));
-        $this->assign('rand', rand(0,1000));
         return parent::renderAction('edit');
     }
 

@@ -11,6 +11,8 @@ use app\model\MenuModel;                        // 菜单模型
 use app\model\UserModel;                        // 用户
 use app\model\ThemeModel;                       // 主题
 
+use think\Session;
+
 class ComponentController extends Controller
 {
     protected $config                   = null;         // 配置信息
@@ -42,9 +44,10 @@ class ComponentController extends Controller
             return $this->error('您无权限访问该页面或您访问的页面不存在. TODO:404页面', url('@/'));
         }
 
+        var_dump(Session::get('tokens'));
         // 清空原来的tokens
         Common::clearTokens();
-
+        var_dump(Session::get('tokens'));
         // 传Common供前台使用
         $this->assign('Common', new Common);
 

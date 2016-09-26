@@ -629,6 +629,7 @@ class Common{
         // 存token
         Session::set('tokens', $tokens);
         
+        var_dump($token);
         // 返回生成并且注册的token
         return $token;
     }
@@ -654,7 +655,7 @@ class Common{
     static public function getInfoByToken(&$token)
     {
         $tokens = Session::get('tokens');
-
+        var_dump($tokens);
         if (null !== $tokens && array_key_exists($token, $tokens)) {
             return $tokens[$token];
         } else {

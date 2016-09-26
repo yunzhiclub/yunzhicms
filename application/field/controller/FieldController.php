@@ -34,6 +34,7 @@ class FieldController extends Controller
         $this->config = $FieldDataXXXModel->getSimpleConfig();
         $this->assign('config', $this->config);
         $this->assign('FieldDataXXXModel', $FieldDataXXXModel);
+        $this->assign('rand', rand(0,1000));
     }
 
 
@@ -82,7 +83,7 @@ class FieldController extends Controller
         $html = $this->fetch('field@' . $calledClassName . '/' . $action);
 
         try {
-            $js = $this->fetch('field@' . $calledClassName . '/' . $action . 'Javascript');
+            $js = $this->fetch('field@' . $calledClassName . '/' . $action . 'Js');
         } catch (\Exception $e) {}
 
         try {
