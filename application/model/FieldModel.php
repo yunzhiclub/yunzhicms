@@ -279,7 +279,6 @@ class FieldModel extends ModelModel
         $data = array_merge(['id' => $this->getData('id')], $data);
         // $token = Common::makeTokenByMCAData('filed', $this->FieldDataXXXXModel()->getData('name'), $action, $data);
         $controller = $this->FieldModel()->getData('field_type_name');
-        var_dump($controller);
         $token = Common::makeTokenByMCAData('field', $controller, $action, $data);
         return $token;
     }

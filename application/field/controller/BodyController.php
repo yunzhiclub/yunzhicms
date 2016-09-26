@@ -45,7 +45,7 @@ class BodyController extends FieldController
 
     public function edit()
     {
-        $this->assign('token', Common::makeTokenByMCAData('field', 'Body', 'upload'));
+        $this->assign('token', $this->FieldDataXXXModel->makeToken('upload'));
         return parent::renderAction('edit');
     }
 }

@@ -51,7 +51,7 @@ class ImageController extends FieldController
 
     public function edit()
     {
-        $this->assign('token', Common::makeTokenByMCAData('field', 'Image', 'upload'));
+        $this->assign('token', $this->FieldDataXXXModel->makeToken('upload'));
         return parent::renderAction('edit');
     }
 }
