@@ -8,6 +8,7 @@ use app\model\AccessUserGroupMenuModel; // 用户组 菜单 权限
 use app\model\ComponentModel;           // 组件
 use app\model\AccessMenuBlockModel;     // 菜单 区块
 use app\model\AccessMenuPluginModel;    // 菜单 组件
+use think\Request;                      // 请求类
 
 class MenuController extends AdminController
 {
@@ -44,11 +45,10 @@ class MenuController extends AdminController
         return $this->fetch('menu/edit');
     }
 
-    public function updateAction()
+    public function updateAction($id)
     {
-        $id = input('param.id');
-        $data = input('param.');
-
+        $data = Request::instance()->param();
+    
         $MenuModel = MenuModel::get($id);
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);
@@ -62,10 +62,12 @@ class MenuController extends AdminController
         $MenuModel->setData('description', $data['description']);
        
         // 配置信息
-        $MenuModel->setData('config', json_encode($data['config']));
-
+        if (array_key_exists('config', $data)) {
+            $MenuModel->setData('config', json_encode($data['config']));
+        }
+        
         // 过滤器信息
-        if (array_key_exists('filter', $data)){
+        if (array_key_exists('filter', $data)) {
             $filter = Common::makeFliterArrayFromPostArray($data['filter']);
             $MenuModel->setData('filter', json_encode($filter));
         }
@@ -88,11 +90,24 @@ class MenuController extends AdminController
 
         $MenuModel->save();
 
-        //若未返回数值，则置为空数组
-        $data['access'] = isset($data['access'])?$data['access']:array();
+        // 更新user_group_menu表
+        $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
+        $map = ['menu_id' => $id];
+        $AccessUserGroupMenuModel->where($map)->delete();
+
 
         // 更新 菜单 用户组 权限
-        AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
+        //拼接user_group_name menu_id 存入其中间表
+        if (array_key_exists('access', $data)) {
+            $datas = array();
+            foreach ($data['access'] as $key => $value) {
+                foreach ($data['access'][$key] as  $key1 => $value1) {
+                    array_push($datas, ['user_group_name' => $key, 'menu_id' => $id, 'action' => $key1]);
+                }
+            }
+
+            $AccessUserGroupMenuModel->saveAll($datas);
+        }
 
         return $this->success('操作成功', url('MenuType/read', ['name' => $menuType]));
     }
@@ -122,7 +137,7 @@ class MenuController extends AdminController
 
     public function saveAction()
     {
-        $data = input('param.');
+        $data = Request::instance()->param();
 
         $MenuModel = new MenuModel;
         $MenuModel->setData('title', $data['title']);
@@ -151,11 +166,18 @@ class MenuController extends AdminController
         }
         $id = $MenuModel->save();
 
-        // 判断是否传入用户组权限信息
-        if (isset($data['access'])) {
+     
+        //拼接user_group_name menu_id 存入其中间表
+        if (array_key_exists('access', $data)) {
+            $datas = array();
+            foreach ($data['access'] as $key => $value) {
+                foreach ($data['access'][$key] as  $key1 => $value1) {
+                    array_push($datas, ['user_group_name' => $key, 'menu_id' => $id, 'action' => $key1]);
+                }
+            }
 
-            // 更新菜单用户组关联表
-            AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
+            $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
+            $AccessUserGroupMenuModel->saveAll($datas);
         }
       
         return $this->success('保存成功', url('MenuType/read', ['name' => $menuType]));
