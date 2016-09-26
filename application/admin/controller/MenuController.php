@@ -48,7 +48,7 @@ class MenuController extends AdminController
     public function updateAction($id)
     {
         $data = Request::instance()->param();
-    
+         
         $MenuModel = MenuModel::get($id);
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);

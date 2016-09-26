@@ -80,9 +80,9 @@ class UserGroupModel extends ModelModel
      * @param  MenuModel &$MenuModel [description]
      * @return boolean               [description]
      */
-    public function isUpdateAllowedByMenuModel(MenuModel &$MenuModel)
+    public function isEditAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->isAllowedByMenuModelAction($MenuModel, 'update');
+        return $this->isAllowedByMenuModelAction($MenuModel, 'edit');
     }
 
     /**
@@ -130,9 +130,9 @@ class UserGroupModel extends ModelModel
      * @param BlockModel &$MenuModel [description]
      * @return boolean               [description]
      */
-     public function isUpdateAllowedByBlockModel(BlockModel &$BlockModel)
+     public function isEditAllowedByBlockModel(BlockModel &$BlockModel)
      {
-        return $this->isAllowedByBlockModelAction($BlockModel, 'update'); 
+        return $this->isAllowedByBlockModelAction($BlockModel, 'edit'); 
      } 
 
      /**
