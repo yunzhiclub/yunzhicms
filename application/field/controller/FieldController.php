@@ -25,6 +25,13 @@ class FieldController extends Controller
         parent::__construct();
     }
 
+    /**
+     * 正式渲染字段模型的初始化工作，主要完成对CSS，JS信息的抓取。对其它配置信息的抓取。
+     * @param    某个字段类型                   &$FieldDataXXXModel 
+     * @return                                          
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-26T13:56:15+0800
+     */
     public function init(&$FieldDataXXXModel = null)
     {
         $this->FieldDataXXXModel    = $FieldDataXXXModel;
@@ -64,8 +71,7 @@ class FieldController extends Controller
 
         $typeName = $FieldDataXXXModel->FieldModel()->getData('field_type_name');
         $className = 'app\field\controller\\' . ucfirst($typeName) . 'Controller';
-        if (class_exists($className))
-        {
+        if (class_exists($className)) {
             // 实例化字段,然后调用init()进行实始化 ，调用fetchHtml()进行渲染
             $FieldXXXController = new $className();
             $FieldXXXController->init($FieldDataXXXModel);
@@ -86,6 +92,7 @@ class FieldController extends Controller
      */
     protected function fetch($template = '', $vars = [], $replace = [], $config = [])
     {
+        // 获取调用此方法的控制器名及方法名
         $controller = Common::getControllerName(get_called_class());
         $action = debug_backtrace()[1]['function'];
 

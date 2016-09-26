@@ -1,6 +1,7 @@
 <?php
 namespace app\model;
 use app\Common;
+use think\File;
 /**
  * 附件字段
  */
@@ -17,25 +18,25 @@ class FieldDataAttachmentModel extends FieldModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-07T10:45:52+0800
      */
-    public function upload(File $file)
+    public function upload(File &$file, $config = [])
     {
-
         // 配置规则初始化
         $rule = [];
+        $config = array_merge($this->getSimpleConfig(), $config);
 
         // 文件大小
-        if (array_key_exists('size', $this->getSimpleConfig())) {
-            $rule['size'] = $this->getSimpleConfig()['size'];
+        if (array_key_exists('size', $config)) {
+            $rule['size'] = $config['size'];
         }
 
         // 文件类型MIME
-        if (array_key_exists('type', $this->getSimpleConfig())) {
-            $rule['type'] = $this->getSimpleConfig()['type'];
+        if (array_key_exists('type', $config)) {
+            $rule['type'] = $config['type'];
         }
 
         // 扩展名
-        if (array_key_exists('ext', $this->getSimpleConfig())) {
-            $rule['ext'] = $this->getSimpleConfig()['ext'];
+        if (array_key_exists('ext', $config)) {
+            $rule['ext'] = $config['ext'];
         }
         
         // 对文件进行检测
@@ -47,31 +48,34 @@ class FieldDataAttachmentModel extends FieldModel
         $map = [];
         $map['sha1'] = $sha1 = $file->sha1();
         $map['md5'] = $md5 = $file->md5();
-        $data = self::get($map);
+
+        // 使用new self() 避免了其它类继承本类后，仍然可以对应找到正确的数据表名。
+        $Object = new self();
+        $data = $Object::get($map);
 
         // 文件存在，则去除field_id 及key_id后复制一份进行数据库
         if ('' !== $data->getData('id')) {
-            $this->data = $data->getData();
-            $this->setData('field_id', 0);
-            $this->setData('key_id', 0);
-            unset($this->data['id']);
+            $Object->data = $data->getData();
+            $Object->setData('field_id', 0);
+            $Object->setData('key_id', 0);
+            unset($Object->data['id']);
 
         // 文件不存在，则执行upload 操作
         } else { 
-            $info = $file->move($this->getUploadPath());
-            // $this->setData('user_name', ); todo:取当前用户信息
-            $this->setData('name', $info->getInfo('name'));
-            $this->setData('save_name', $info->getSaveName());
-            $this->setData('ext',   $info->getExtension());
-            $this->setData('sha1',  $sha1);
-            $this->setData('md5',   $md5);
-            $this->setData('size',  $info->getInfo('size'));
-            $this->setData('mime',  $info->getMime());
+            $info = $file->move($Object->getUploadPath());
+            // $Object->setData('user_name', ); todo:取当前用户信息
+            $Object->setData('name', $info->getInfo('name'));
+            $Object->setData('save_name', $info->getSaveName());
+            $Object->setData('ext',   $info->getExtension());
+            $Object->setData('sha1',  $sha1);
+            $Object->setData('md5',   $md5);
+            $Object->setData('size',  $info->getInfo('size'));
+            $Object->setData('mime',  $info->getMime());
         }
 
         // 新建数据，并将当前对象返回
-        $this->save();
-        return $this;
+        $Object->save();
+        return $Object;
     }
 
     /**

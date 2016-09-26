@@ -3,7 +3,7 @@ namespace app\field\controller;
 use app\Common;
 use think\Request;
 
-use app\model\FieldDataImageModel;          // 扩展字段  图片
+use app\model\FieldDataImageModel;          // 附件
 
 class ImageController extends FieldController
 {

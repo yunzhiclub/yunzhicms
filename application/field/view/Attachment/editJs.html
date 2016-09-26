@@ -1,23 +1,28 @@
 <script type="text/javascript">
-$(function() {
-    $('#filed_attachment_{$rand}').uploadify({
-        'swf': '{:__ROOT__}/lib/uploadify/uploadify.swf',
-        'uploader': '{:url("api/Api/index?token=" . $token)}',
-        'debug': true,
-        'onUploadSuccess': function(file, data, response) {
-            if (!response) {
-                alert('目标地址无响应');
-            } else {
-                var data = JSON.parse(data);
-                if (data.status === 'error') {
-                    alert('上传发生错误:' + data.message);
-                } else {
-                    var image = data.data;
-                    $('#field_data_image_show_{$randId}').attr('src', image.url);
-                    $('#field_data_image_{$randId}').val(image.id);
-                }
-            }
-        }
-    });
-});
+ngApp_field_data_attachment = angular.module('body', ['ngFileUpload']);   
+ngApp_field_data_attachment.controller('field_data_attachment_{$randId}', ['$scope', 'Upload', function($scope, Upload){
+    $scope.attachment = {:json_encode($FieldDataXXXModel->getData())},
+    console.log($scope.attachment);
+
+    // upload on file select or drop
+    $scope.upload = function (file, key) {
+        Upload.upload({
+            url: '{:url("api/api/index?token=" . $token)}',
+            data: {Filedata: file}
+        }).then(function (resp) {
+            var imageInfo = resp.data.data;
+            console.log(imageInfo);
+            $scope.images[key] = imageInfo.url;
+        }, function (resp) {
+            console.log('Error status: ' + resp.status);
+        }, function (evt) {
+            // var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
+
+    $scope.delete = function(attachment) {
+        // TODO：使用$http触发删除URL
+    }
+}]);
 </script>
