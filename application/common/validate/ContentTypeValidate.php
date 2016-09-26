@@ -11,6 +11,6 @@ class ContentTypeValidate extends Validate
     protected $rule = [
         'title'         => 'require',
         'menu_id'       => 'require|number',
-        'name'          => 'require|max:100',
+        'name'          => 'require|alphaDash|max:100',
     ];
 }

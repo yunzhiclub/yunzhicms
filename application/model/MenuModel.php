@@ -418,14 +418,20 @@ class MenuModel extends ModelModel
      * 更新菜单权重
      * author liuxi
      */
-    public function updateMenuWeightById($id,$weight)
+    public function updateMenuWeightById($weight)
     {
-        if (!$id || !is_numeric($id)) {
-            throw new Exception("ID不合法");
+        //判断是否为空数组
+        if (!empty($weight)) {
+            foreach ($weight as $menuId => $value) {
+                $data = array(
+                    'weight' => $value,
+                    );
+                if ($this->get($menuId)->getData('weight')
+                    != $value) {
+                    $this->get($menuId)->save($data);
+                 }
+            }
         }
-        $data = array(
-            'weight' => intval($weight),
-            );
-        return $this->where('id','=',$id)->find()->save($data);
+        return true;
     }
 }
