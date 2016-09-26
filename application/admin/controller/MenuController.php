@@ -105,6 +105,7 @@ class MenuController extends AdminController
                     array_push($datas, ['user_group_name' => $key, 'menu_id' => $id, 'action' => $key1]);
                 }
             }
+
             $AccessUserGroupMenuModel->saveAll($datas);
         }
 
@@ -174,6 +175,8 @@ class MenuController extends AdminController
                     array_push($datas, ['user_group_name' => $key, 'menu_id' => $id, 'action' => $key1]);
                 }
             }
+
+            $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
             $AccessUserGroupMenuModel->saveAll($datas);
         }
       
