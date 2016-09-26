@@ -1,0 +1,55 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box">
+            <div class="box-header">
+                <i class="icon-book"></i>
+                <h5>内容类别新增</h5>
+            </div>
+            <div class="box-content">
+                <form class="form-horizontal" action="{:url('update')}" method="post">
+                    <div class="control-group">
+                        <label class="control-label" for="_title">名称</label>
+                        <div class="controls">
+                            <input type="text" id="_title" name="title" value="{$ContentTypeModel->title}" />
+                            <input type="hidden" name="name" value="{$ContentTypeModel->name}">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_pid">对应的菜单</label>
+                        <div class="controls">
+                            <select class="form-control" name="menu_id" id="_pid">
+                                {volist name="MenuModels" id="_MenuModel"}
+                                    <option value="{$_MenuModel->id}" {eq value="$_MenuModel->id" name="$ContentTypeModel->menu_id"}selected="selected"{/eq}>{$_MenuModel->title}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_url">机读字段</label>
+                        <div class="controls">
+                            <input type="text" name="name" id="_url" disabled="disabled" value="{$ContentTypeModel->name}" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_weight">权重</label>
+                        <div class="controls">
+                            <input type="text" name="weight" id="_weight" value="{$ContentTypeModel->weight}" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_description">描述信息</label>
+                        <div class="controls">
+                            <input type="text" name="description" id="_description" value="{$ContentTypeModel->description}" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> 保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

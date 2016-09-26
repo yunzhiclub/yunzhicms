@@ -1,0 +1,58 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5>
+                    {$ContentTypeModel->title}
+                </h5>
+            </div>
+            <div class="box-content box-table">
+                <table id="sample-table" class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>冻结</th>
+                            <th>权重</th>
+                            <th>点击量</th>
+                            <th class="td-actions">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {volist name="ContentModels" id="_ContentModel"}
+                        <tr>
+                            <td>{$_ContentModel->title}</td>
+                            <td>{eq value="1" name="$_ContentModel->getData('is_freezed')"}
+                                    <span class="badge span_backgroud_color">
+                                        {$_ContentModel->is_freezed}
+                                    </span>
+                                    {else /}
+                                    <span class="badge">
+                                        {$_ContentModel->is_freezed}
+                                    </span>
+                                {/eq}
+                            </td>
+                            <td>{$_ContentModel->weight}</td>
+                            <th>{$_ContentModel->hit}</th>
+                            <td class="td-actions">
+                                <a href="{:url('edit?name=' . $_ContentModel->name)}" class="btn btn-small btn-info">
+                                    <i class="btn-icon-only icon-ok"></i> 编辑
+                                </a>
+                                <a href="{:url('delete?name=' . $_ContentModel->name)}" class="btn btn-small btn-danger">
+                                    <i class="btn-icon-only icon-remove"></i> 删除
+                                </a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        <div style="text-align:right;">
+                        <a href="{:url('Content/create')}" class="btn btn-small btn-info">
+                            <i class="btn-icon-only icon-edit"></i> 新增
+                        </a>
+                        </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

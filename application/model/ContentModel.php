@@ -100,4 +100,37 @@ class ContentModel extends ModelModel
         }
         return $this->nextContentModel;
     }
+
+    /**
+     * 获取某个内容类型的所有的列表
+     * 先转化为树状，先转化为列表，这样顺序输出后，就有了上下级的结构
+     * @param  string $menuTypeName 菜单类型名 string pname $pname 父级菜单的id int $is_deleted 是否删除标记
+     * @return lists               
+     * @author gaoliming
+     */
+    public function getListsByContentTypeNamePname($ContentTypeModel, $is_deleted)
+    {
+        $map = array('content_type_name' => $ContentTypeModel,
+                      'is_deleted'       => $is_deleted,
+         );
+
+        $ContentModels = $this->where($map)->order('weight desc')->select();
+        return $ContentModels;
+    }
+
+    /**
+     * 将冻结显示为是否
+     * @param int $value 
+     * @author gaoliming
+     */
+    public function getIsFreezedAttr($value)
+    {
+        $status = array('0' => '一',
+                        '1' => '是',
+         );
+
+        if ($value === 0 || $value === 1) {
+            return $status[$value];
+        }
+    }
 }
