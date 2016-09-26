@@ -9,6 +9,7 @@
             <div class="box-content">
                 <form class="form-horizontal" action="{:url('update')}" method="post">
                     <input type="hidden" name="_method" value="POST" />
+                    <input type="hidden" name="id" value="{$MenuModel->id}" />
                     <div class="control-group">
                         <label class="control-label" for="_title">标题</label>
                         <div class="controls">
@@ -21,14 +22,12 @@
                             <select class="form-control" name="pid" id="_pid">
                                 <option {eq value="0" name="$MenuModel->pid" }selected="selected" {/eq}value="0">根菜单</option>
                                 {volist name="MenuModels" id="_MenuModel"}
-                                    <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">{$_MenuModel->title}</option>
-                                    {volist name="_MenuModel->sonMenuModels()" id="_MenuModel"}
-                                        <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">|----{$_MenuModel->title}</option>
-                                        {volist name="_MenuModel->sonMenuModels()" id="_MenuModel"}
-                                            <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">|----|----{$_MenuModel->title}</option>
-                                        {/volist}
-                                    {/volist}
-                                {/volist}
+                                <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">{$_MenuModel->title}</option>
+                                {volist name="_MenuModel->sonMenuModels()" id="_MenuModel"}
+                                <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">|----{$_MenuModel->title}</option>
+                                {volist name="_MenuModel->sonMenuModels()" id="_MenuModel"}
+                                <option {eq value="$_MenuModel->id" name="$MenuModel->pid" }selected="selected" {/eq}value="{$_MenuModel->id}">|----|----{$_MenuModel->title}</option>
+                                {/volist} {/volist} {/volist}
                             </select>
                         </div>
                     </div>
@@ -37,7 +36,7 @@
                         <div class="controls">
                             <select class="form-control" name="component_name">
                                 {volist name="Components" id="Component"}
-                                    <option value="{$Component->name}" {eq name="Component->name" value="$MenuModel->component_name" }selected="selected" {/eq}>{$Component->name}</option>
+                                <option value="{$Component->name}" {eq name="Component->name" value="$MenuModel->component_name" }selected="selected" {/eq}>{$Component->name}</option>
                                 {/volist}
                             </select>
                         </div>
@@ -47,7 +46,7 @@
                         <div class="controls">
                             <select class="form-control" name="menu_type_name" id="_menu_type_name">
                                 {volist name="MenuTypeModels" id="MenuTypeModel"}
-                                    <option value="{$MenuTypeModel->name}" {eq name="$MenuTypeModel->name" value="$MenuModel->menu_type_name" }selected="selected" {/eq}>{$MenuTypeModel->name}</option>
+                                <option value="{$MenuTypeModel->name}" {eq name="$MenuTypeModel->name" value="$MenuModel->menu_type_name" }selected="selected" {/eq}>{$MenuTypeModel->name}</option>
                                 {/volist}
                             </select>
                         </div>
@@ -55,7 +54,7 @@
                     <div class="control-group">
                         <label class="control-label" for="_url">url</label>
                         <div class="controls">
-                            <input type="text" name="url" value="{$MenuModel->url}" id="_url"/>
+                            <input type="text" name="url" value="{$MenuModel->url}" id="_url" />
                         </div>
                     </div>
                     <div class="control-group">
@@ -63,7 +62,7 @@
                         <div class="controls">
                             <select class="form-control" name="is_hidden" id="_is_hidden">
                                 <option value="1">否</option>
-                                <option value="0" {eq name="$MenuModel->getData('is_hidden')" value="0"}selected="selected"{/eq}>是</option>
+                                <option value="0" {eq name="$MenuModel->getData('is_hidden')" value="0" }selected="selected" {/eq}>是</option>
                             </select>
                         </div>
                     </div>
@@ -84,7 +83,7 @@
                         <div class="controls">
                             <select class="form-control" name="status" id="_status">
                                 <option value="1">禁用</option>
-                                <option value="0" {eq name="$MenuModel->getData('status')" value="0"}selected="selected"{/eq}>启用</option>
+                                <option value="0" {eq name="$MenuModel->getData('status')" value="0" }selected="selected" {/eq}>启用</option>
                             </select>
                         </div>
                     </div>
