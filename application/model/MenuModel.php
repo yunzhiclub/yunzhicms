@@ -428,8 +428,12 @@ class MenuModel extends ModelModel
                     );
                 if ($this->get($menuId)->getData('weight')
                     != $value) {
-                    $this->get($menuId)->save($data);
-                 }
+                    //如果有一个保存失败，则返回false
+                    if (false === $this->get($menuId)->save($data))
+                    {
+                        return false;
+                    }
+                }
             }
         }
         return true;
