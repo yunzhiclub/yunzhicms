@@ -3,6 +3,7 @@ namespace app\admin\controller;
 use app\Common;                         // 通用函数库
 use app\model\ComponentModel;
 use app\model\MenuModel;
+use think\Request;
 class ComponentController extends AdminController
 {
     public function indexAction()
@@ -41,7 +42,7 @@ class ComponentController extends AdminController
 
     public function saveAction()
     {
-        $data = input('post.');
+        $data = Request::instance()->Param();
         
         //保存数据
         $ComponentModel = new ComponentModel;
@@ -63,7 +64,7 @@ class ComponentController extends AdminController
 
     public function updateAction($name)
     {
-        $data = input('post.');
+        $data = Request::instance()->Post();
 
         //存入信息
         $ComponentModel = ComponentModel::get($name);
@@ -72,8 +73,18 @@ class ComponentController extends AdminController
         $ComponentModel->setData('description', $data['description']);
         $ComponentModel->setData('version', $data['version']);
 
-        //验证并更新信息
+        //给配置信息赋值
+        if (array_key_exists('config', $data))
+        {
+            foreach ($data['config'] as $key => $value) {
+                $data['config'][$key] = $value;
+            }
+        }
+        //TODO更改该组件对应的配置文件信息
+
+         //验证并更新信息
         array_shift($data);
+        unset($data['config']);
         if (false === $ComponentModel->validate(true)->save($data))
         {
             return $this->error($ComponentModel->getError());
@@ -92,6 +103,7 @@ class ComponentController extends AdminController
         {
             return $this->error('该组件含有菜单项，不能删除');
         }
+
         //删除组件
         $ComponentModel->setData('is_deleted', 1)->save();
 
