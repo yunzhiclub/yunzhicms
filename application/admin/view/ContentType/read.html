@@ -36,10 +36,10 @@
                             <td>{$_ContentModel->weight}</td>
                             <th>{$_ContentModel->hit}</th>
                             <td class="td-actions">
-                                <a href="{:url('edit?name=' . $_ContentModel->name)}" class="btn btn-small btn-info">
-                                    <i class="btn-icon-only icon-ok"></i> 编辑
+                                <a href="{:url('content/edit?id=' . $_ContentModel->id)}" class="btn btn-small btn-info">
+                                    <i class="btn-icon-only icon-edit"></i> 编辑
                                 </a>
-                                <a href="{:url('delete?name=' . $_ContentModel->name)}" class="btn btn-small btn-danger">
+                                <a href="{:url('content/delete?id=' . $_ContentModel->id)}" class="btn btn-small btn-danger">
                                     <i class="btn-icon-only icon-remove"></i> 删除
                                 </a>
                             </td>
