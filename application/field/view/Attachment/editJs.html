@@ -1,0 +1,30 @@
+<script type="text/javascript">
+ngApp_field_data_attachment = angular.module('body', ['ngFileUpload']);   
+ngApp_field_data_attachment.controller('field_data_attachment_{$randId}', ['$scope', 'Upload', function($scope, Upload){
+    $scope.attachment = {:json_encode($FieldDataXXXModel->getData())},
+    console.log($scope.attachment);
+
+    // upload on file select or drop
+    $scope.upload = function (file, key) {
+        Upload.upload({
+            url: '{:url("api/api/index?token=" . $uploadToken)}',
+            data: {Filedata: file}
+        }).then(function (resp) {
+            if (resp.data.status === 'success') {
+                $scope.attachment = resp.data.data;
+            } else {
+                alert('系统错误：' + resp.data.message);
+            }
+        }, function (resp) {
+            console.log('Error status: ' + resp.status);
+        }, function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
+
+    $scope.delete = function(attachment) {
+        // TODO：使用$http触发删除URL
+    }
+}]);
+</script>

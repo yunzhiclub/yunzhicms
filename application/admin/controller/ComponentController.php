@@ -8,7 +8,7 @@ class ComponentController extends AdminController
 {
     public function indexAction()
     {
-        $map = array('is_deleted' => 0);
+        $map = array('is_delete' => 0);
         $ComponentModel = new ComponentModel;
         $Components = $ComponentModel->where($map)->paginate();
         $this->assign('Components', $Components);

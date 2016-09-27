@@ -10,10 +10,10 @@ class JsonController extends FieldController
     public function edit()
     {
         // 增加token,用于字段个数的修改
-        $token = Common::makeTokenByMCAData('field', 'Json', 'addSubCount', ['id' => $this->FieldDataXXXModel->getData('id')]);
+        $token = $this->FieldDataXXXModel->makeToken('addSubCount');
         $this->assign('token', $token);
 
-        return parent::renderAction('edit');
+        return $this->fetch();
     }
 
     /**
