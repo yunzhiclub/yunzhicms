@@ -1,0 +1,48 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5 style="display:inline;">
+                新用户注册
+                </h5>
+            </div>
+            <div class="box-content">
+            <form action="{:app\\Common::url('/newsave')}" method="post" class="form-horizontal col-md-offset-3">
+                <div class="control-group">
+                    <label class="control-label" for="_name">姓名</label>
+                    <div class="controls">
+                        <input type="text" id="_name" name="name" placeholder="姓名" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_email">用户名</label>
+                    <div class="controls">
+                        <input type="text" id="_email" name="email" placeholder="请输入有效邮箱" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_password">密码</label>
+                    <div class="controls">
+                        <input type="password" id="_password" name="password" placeholder="请输入密码" />
+                    </div>
+                </div>
+                <div class="control-group">
+                     <label class="control-label" for="_repassword">确认密码</label>
+                      <div class="controls">
+                         <input type="password" id="_repassword" name="repassword" placeholder="再次输入密码"  />
+                      </div>
+               </div>
+                <div class="control-group"  style="margin-left:95px">
+                    <label class="control-label">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="icon-ok"></i>提交
+                        </button>
+                    </label>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
