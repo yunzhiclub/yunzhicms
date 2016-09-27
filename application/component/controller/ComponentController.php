@@ -44,7 +44,7 @@ class ComponentController extends Controller
             return $this->error('您无权限访问该页面或您访问的页面不存在. TODO:404页面', url('@/'));
         }
 
-        // 清空原来的tokens
+        // 清空原来的tokens.有了安全性，同时也要求我们不能出现多余的默认请求。
         Common::clearTokens();
         
         // 传Common供前台使用

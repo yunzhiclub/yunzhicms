@@ -53,7 +53,7 @@ class FieldDataAttachmentModel extends FieldModel
         $Object = new self();
         $data = $Object::get($map);
 
-        // 文件存在，则去除field_id 及key_id后复制一份进行数据库
+        // 文件存在，则去除field_id 及key_id后复制一份进入数据库
         if ('' !== $data->getData('id')) {
             $Object->data = $data->getData();
             $Object->setData('field_id', 0);
@@ -130,19 +130,20 @@ class FieldDataAttachmentModel extends FieldModel
 
     /**
      * 更新扩展字段
-     * @param    int                   $fieldId 字段id
-     * @param    int                   $keyId   关键字id
-     * @param    |||                   $id   关键字
+     * @param    int                   $fieldId 关联字段id
+     * @param    int                   $keyId   关联关键字id
+     * @param    |||                   $id      关键字
      * @return    更新的id值                          
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-07T15:21:43+0800
      */
     static public function updateList($fieldId, $keyId, $id)
     {
-        $Object = self::get(['id' => $id]);
+        $self = new self();
+        $Object = $self::get(['id' => $id]);
         if ( '' !== $Object->getData('id')) {
             // 如果存在历史信息，先删除历史信息
-            $oldObject = self::get(['field_id' => $fieldId, 'key_id' => $keyId]);
+            $oldObject = $self::get(['field_id' => $fieldId, 'key_id' => $keyId]);
             if ('' !== $oldObject && ($oldObject->getData('id') !== $Object->getData('id'))) {
                 $oldObject->delete();
             }
