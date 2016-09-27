@@ -1,0 +1,13 @@
+<div class="row" ng-controller="field_data_attachment_{$randId}"">
+    <div class="col-md-12 col-lg-12">
+        <input type="hidden" name="field_[{:$FieldDataXXXModel->FieldModel()->getData('id')}]"  ng-value="attachment.id"/>
+        <label for="">
+            {$FieldDataXXXModel->FieldModel()->getData('title')} :
+        </label>
+        <span ng-show="attachment.id">
+            {{attachment.name}}&nbsp;&nbsp;[{{attachment.size}}B]&nbsp;&nbsp;&nbsp;&nbsp;<a ng-click="delete(attachment)" href="javascript:void(0);"><i class="text-danger glyphicon glyphicon-remove"></i>&nbsp;Delete</a>
+        </span>
+         
+        <button type="button" ngf-select="upload($file, key)">上传</button>
+    </div>
+</div>

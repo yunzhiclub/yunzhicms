@@ -35,7 +35,7 @@ class BlockController extends AdminController
 
         //将位置信息传入
         $map['type'] = "block";
-        $PositionModels = PositionModel::get($map)->select();
+        $PositionModels = PositionModel::where($map)->select();
         $this->assign('PositionModels', $PositionModels);
 
         $MenuModels = MenuModel::getTreeList(0, 2);
