@@ -19,10 +19,10 @@ return [
         'value'         => ['', 'GET']        
     ],
     
-    'register' => [
-        'title'         => '注册',
-        'description'   => '新用户注册信息',
-        'value'         => ['/register', 'GET']
+    'add' => [
+        'title'         => '增加',
+        'description'   => '增加新用户注册信息',
+        'value'         => ['/add', 'GET']
     ],
 
     'edit' => [
@@ -31,16 +31,16 @@ return [
         'value'         => ['/edit', 'GET']
     ],
 
-    'save' => [
+    'update' => [
         'title'         => '保存',
         'description'   => '保存用户注册信息',
-        'value'         => ['/save', 'POST']
+        'value'         => ['/update', 'POST']
     ],
 
-    'newsave' => [
+    'save' => [
         'title'         => '新用户保存',
         'description'   => '保存新用户用户注册信息',
-        'value'         => ['/newsave', 'POST']
+        'value'         => ['/save', 'POST']
     ],
 
 ];

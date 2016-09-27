@@ -130,13 +130,9 @@ class LoginController extends ComponentController
      * @return
      * @author fanhaoling
      */
-    public function saveAction()
+    public function updateAction()
     {
         $datas = Request::instance()->param();
-
-        if ($datas['newpassword'] !== $datas['repassword']) {
-            return $this->error('两次密码不相同，请重新输入');
-        }
        
         $id = (int)$datas['id'];
        
@@ -172,9 +168,9 @@ class LoginController extends ComponentController
      * @return                      
      * @author fanhaoling
      */
-    public function registerAction()
+    public function addAction()
     {
-        return $this->fetch('component@Login/register');
+        return $this->fetch('component@Login/add');
     }
 
     /**
@@ -182,7 +178,7 @@ class LoginController extends ComponentController
      * @return                      
      * @author fanhaoling
      */
-    public function newsaveAction()
+    public function saveAction()
     {
         echo "string";
     }
