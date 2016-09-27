@@ -1,0 +1,52 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box">
+            <div class="box-header">
+                <i class="icon-book"></i>
+                <h5>内容编辑</h5>
+            </div>
+            <div class="box-content">
+                <form class="form-horizontal" action="{:url('update')}" method="post">
+                    <div class="control-group">
+                        <label class="control-label" for="_title">名称</label>
+                        <div class="controls">
+                            <input type="hidden" name="id" value="{$ContentModel->id}">
+                            <input type="text" id="_title" name="title" value="{$ContentModel->title}" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_pid">内容类型</label>
+                        <div class="controls">
+                            <select class="form-control" name="content_type_name" id="_pid">
+                                {volist name="ContentTypeModels" id="_ContentTypeModel"}
+                                    <option value="{$_ContentTypeModel->name}" {eq value="$ContentModel->content_type_name" name="$_ContentTypeModel->name"} selected="selected"{/eq}>{$_ContentTypeModel->title}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_url">是否冻结</label>
+                        <div class="controls">
+                            <select class="form-control" name="is_freezed" id="_pid">
+                                <option value="0" {eq value="0" name="$ContentModel->is_freezed" }selected="selected"{/eq}>否</option>
+                                <option value="1" {eq value="1" name="$ContentModel->is_freezed" }selected="selected"{/eq}>是</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="_weight">权重</label>
+                        <div class="controls">
+                            <input type="text" name="weight" id="_weight" value="{$ContentModel->weight}" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> 更新</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

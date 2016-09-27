@@ -69,7 +69,9 @@ class ContentTypeController extends AdminController
         $this->assign('ContentTypeModel', $ContentTypeModel);
 
         //取出所有的菜单
-        $MenuModels = MenuModel::all();
+        $map = array('is_deleted' => 0);
+        $MenuModel  = new MenuModel;
+        $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
         return $this->fetch('ContentType/edit');
     }
@@ -105,7 +107,10 @@ class ContentTypeController extends AdminController
     public function createAction()
     {
         //取出所有的menu
-        $MenuModels = MenuModel::all();
+        //取出所有的菜单
+        $map = array('is_deleted' => 0);
+        $MenuModel  = new MenuModel;
+        $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
 
         //返回模板
