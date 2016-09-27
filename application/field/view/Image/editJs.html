@@ -3,7 +3,8 @@ $(function() {
     $('#file_upload').uploadify({
         'swf': '{:__ROOT__}/lib/uploadify/uploadify.swf',
         'uploader': '{:url("api/Api/index?token=" . $token)}',
-        // 'debug': true,
+        // 'button_image_url' : '{:__ROOT__}/lib/uploadify/browse-btn.png',
+        'debug': true,
         'onUploadSuccess': function(file, data, response) {
             if (!response) {
                 alert('目标地址无响应');

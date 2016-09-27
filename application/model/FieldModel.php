@@ -276,14 +276,10 @@ class FieldModel extends ModelModel
      */
     public function makeToken($action, $data = [])
     {
-        // // 对权限进行判断，没有权限，则返回空字符串
-        // if (AccessUserGroupBlockModel::checkCurrentUserIsAllowedByBlockIdAndAction($this->getData('id'), $action)) {
-        //     $data = array_merge(['id' => $this->getData('id')], $data);
-        //     $token = Common::makeTokenByMCAData('block', $this->BlockTypeModel()->getData('name'), $action, $data);
-        // } else {
-        //     $token = '';
-        // }
-        
-        // return $token;
+        $data = array_merge(['id' => $this->getData('id')], $data);
+        // $token = Common::makeTokenByMCAData('filed', $this->FieldDataXXXXModel()->getData('name'), $action, $data);
+        $controller = $this->FieldModel()->getData('field_type_name');
+        $token = Common::makeTokenByMCAData('field', $controller, $action, $data);
+        return $token;
     }
 }

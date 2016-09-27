@@ -6,7 +6,12 @@ return [
         'type'          => 'text',
         'value'         => '/bower_components/ng-file-upload/ng-file-upload-all.min.js'
     ],
-
+    'css'   => [
+        'title'         => 'css第三方类库',
+        'description'   => '相对于public的相对路径, 以"/"开头。多链接 使用 "," 相隔',
+        'type'          => 'text',
+        'value'         => '/lib/uploadify/uploadify.css'
+    ],
     'uploadPath'   => [
         'title'         => '上传文件夹',
         'description'   => '相对于public的相对路径, 以"/"开头',
@@ -23,6 +28,6 @@ return [
         'title'         => '允许上传文件的扩展名',
         'description'   => '支持多个扩展名，使用 , 相隔',
         'type'          => 'text',
-        'value'         => 'png,jpg,jpeg,gif,bmp,doc,pdf',
+        'value'         => 'doc,pdf,zip,rar,docx,xls,xlsx,ppt,pptx',
     ],
 ];
