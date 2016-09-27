@@ -7,12 +7,12 @@ class EmptyModel
 {
     public function __call($name, $args) 
     {
-        return new self;
+        return new self();
     }
 
     public function __callStatic($name, $args)
     {
-        return new self;
+        return new self();
     }
 
     public function __get($name)
@@ -22,6 +22,6 @@ class EmptyModel
 
     public function __set($name, $value)
     {
-        return new self;
+        return new self();
     }
 }
