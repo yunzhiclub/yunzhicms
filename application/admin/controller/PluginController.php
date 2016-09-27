@@ -7,6 +7,7 @@ use app\model\AccessUserGroupPluginModel;
 use app\model\UserGroupModel;
 use app\model\MenuModel; 
 use app\model\PositionModel; 
+use think\Request;
 /**
  * 插件管理
  * @author huangshuaibin
@@ -52,7 +53,7 @@ class PluginController extends AdminController
 
 	public function updateAction($id)
 	{
-		$param = input('param.');
+		$param = Request::instance()->param();
 
 		//取出当前插件，保存数据
 		$PluginModel = PluginModel::get($id);
@@ -134,7 +135,7 @@ class PluginController extends AdminController
 
 	public function saveAction()
 	{
-		$param = input('param.');
+		$param = Request::instance()->param();
 
 		//保存插件信息
 		$PluginModel = new PluginModel;
@@ -149,7 +150,7 @@ class PluginController extends AdminController
 		$PluginModel->save();
 
 		//保存 菜单-插件 关联表信息
-		$id = $PluginModel->id;
+		$id = $PluginModel->getData('id');
 		$AccessMenuPluginModel = new AccessMenuPluginModel;
 		$datas = array();
 		if (array_key_exists('menuids', $param)) {
