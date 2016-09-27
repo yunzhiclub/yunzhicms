@@ -84,12 +84,12 @@ class MenuTypeController extends AdminController
 
         //判断传过来的值是否为空
         $weight = isset($_POST['weight'])?$_POST['weight']:array();
-
+        
         //执行更新
         $MenuModel = new MenuModel;
         $id = $MenuModel->updateMenuWeightById($weight);
         if (false === $id) {
-            $data['message'][] = $menuId;
+            $data['message'][] = $id;
         }
 
         //更新成功，返回
