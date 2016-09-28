@@ -113,12 +113,8 @@ class LoginController extends ComponentController
      */
     public function userInfo()
     {
-        $UserModel = new UserModel;
-
         //取出当前用户数据
-        $username = UserModel::getCurrentUser();
-        $map['username'] = $username;
-        $userModel = $UserModel::get($map);
+        $userModel = UserModel::getCurrentFrontUserModel();
 
         // 传入V层
         $this->assign('userModel', $userModel);
@@ -180,7 +176,21 @@ class LoginController extends ComponentController
      */
     public function saveAction()
     {
-        echo "string";
+        $data = Request::instance()->Param();
+       
+        //保存数据
+        $UserModel = new UserModel;
+        $UserModel->setData('name', $data['name']);
+        $UserModel->setData('username', $data['username']);
+        $UserModel->setData('password', $data['password']);
+
+        //验证并保存数据
+        if (false === $UserModel->save($data))
+        {
+            return $this->error($UserModel->getError());
+        }
+
+        return $this->success('注册成功', Common::url('/loginInfo'));
     }
 
 }
