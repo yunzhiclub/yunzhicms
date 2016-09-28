@@ -286,4 +286,54 @@ class FieldModel extends ModelModel
         
         // return $token;
     }
+
+    /**
+     * 根据relate_value的取出相应的菜单
+     * @return  array 
+     * @author  gaoliming 
+     */
+    public function getallrelatetypefield($relate_type)
+    {
+        if (null === $relate_type) {
+            $FieldModels = $this->select();
+            } else {
+            $FieldModels = $this->where('relate_type', 'like', '%' . $relate_type . '%')->select();
+        }
+            
+        $number      = count($FieldModels);
+        $map         = array($FieldModels['0']->relate_value);
+        for ($i=1; $i < $number; $i++) { 
+            $j = 0;
+            foreach ($map as $value) {
+                if ($FieldModels[$i]->relate_value === $value) {
+                    break;
+                }
+                $j++;
+            }
+            if ($j === count($map)) {
+                array_push($map, $FieldModels[$i]->relate_value);
+            }
+        }
+        $FieldModelArray = array();
+        foreach ($map as $value) {
+            $data = array('relate_value' => $value);
+            array_push($FieldModelArray, $this->where($data)->find());
+        }
+
+        return $FieldModelArray;
+    }
+
+    /**
+     * 获取相应字段类型
+     * @return object
+     * @author gaoliming
+     */
+    public function getFieldTypebyfieldtypename()
+    {
+        //制定索引
+        $map = array('name' => $this->field_type_name);
+
+        $FieldTypeModel = new FieldTypeModel;
+        return $FieldTypeModel->where($map)->find(); 
+    }
 }
