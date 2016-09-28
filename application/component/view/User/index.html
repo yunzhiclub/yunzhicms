@@ -18,7 +18,7 @@
                 <a href="{:url('@user/edit')}" class="mu-post-btn">编辑</a>
             </td>
             <td>
-                <a href="{:url('@user/frozen')}" class="mu-post-btn">冻结</a>
+                <a href="{:url('@user/frozen?id=' . $_user->getData('id'))}" class="mu-post-btn">{eq name="0" value="$_user->getData('status')"}<span class="badge">冻结</span>{else /}<span class="badge span_backgroud_color">已激活</span>{/eq}</a>
             </td>
             <td>
                 <a href="{:url('@user/reset')}" class="mu-post-btn">重置密码</a>
@@ -27,3 +27,8 @@
         {/volist}
     </tbody>
 </table>
+<style>
+    .span_backgroud_color{
+        background-color: green;
+    }
+</style>
