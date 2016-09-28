@@ -14,7 +14,10 @@ class ThemeController extends AdminController
      */
     public function indexAction()
     {
-    	$ThemeModels = ThemeModel::All();
+        $ThemeModel = new ThemeModel;
+
+        //获取未删除的组件
+        $ThemeModels = $ThemeModel->paginate(config('paginate.var_page'));
     	$this->assign('ThemeModels', $ThemeModels);
     	return $this->fetch();
     }
