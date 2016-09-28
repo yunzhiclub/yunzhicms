@@ -11,17 +11,17 @@
     <tbody>
         {volist name="$UserModel" id="_user"}
         <tr>
-            <td>{$key}</td>
+            <td>{$key}{$_user->getData('id')}</td>
             <td>{$_user->getData('username')}</td>
             <td>{$_user->getData('user_group_name')}</td>
             <td>
-                <a href="{:url('@user/edit')}" class="mu-post-btn">编辑</a>
+                <a href="{:url('@user/' .$_user->getData('id'). '/edit')}" class="mu-post-btn">编辑</a>
             </td>
             <td>
                 <a href="{:url('@user/frozen')}" class="mu-post-btn">冻结</a>
             </td>
             <td>
-                <a href="{:url('@user/reset')}" class="mu-post-btn">重置密码</a>
+                <a href="{:url('@user/' .$_user->getData('id'). '/reset')}" class="mu-post-btn">重置密码</a>
             </td>
         </tr>
         {/volist}

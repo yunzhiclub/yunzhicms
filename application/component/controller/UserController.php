@@ -26,8 +26,22 @@ class UserController extends ComponentController
         return 'frozen';
     }
 
-    public function resetAction()
+    /**
+     * 重置密码
+     * @param  id $id
+     * @return string
+     * @author fanhaoling
+     */
+    public function resetAction($id)
     {
-        return 'reset';
+        $UserModel = UserModel::get($id);
+
+        //密码重置
+        $status = $UserModel->resetPassword($id);
+        if ($status !== false) {
+           return $this ->success('您的密码已重置，新密码为:' . config('resetPassword'),  Common::url('/index'));
+        } else {
+            return $this->error('重置密码失败');
+        }
     }
 }
