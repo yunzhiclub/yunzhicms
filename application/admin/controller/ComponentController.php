@@ -105,7 +105,7 @@ class ComponentController extends AdminController
         }
 
         //删除组件
-        $ComponentModel->setData('is_delete', 1)->save();
+        $ComponentModel->setData('is_delete', 1)->save(); 
 
         return $this->success('删除成功', url('index'));
     }
