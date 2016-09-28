@@ -93,13 +93,20 @@ class BlockController extends AdminController
         $map = ['block_id' => $id];
         $AccessUserGroupBlockModel->where($map)->delete();
 
-        $AccessUserGroupBlockDatas = array();
+        $datas = array();
         if (array_key_exists('usergroupname', $param))
         {
+            $datas2 = [];
             foreach ($param['usergroupname'] as $key => $value) {
-                array_push($AccessUserGroupBlockDatas, ['block_id' => $id, 'user_group_name' => $key]);
+                $data = [];
+                $data['block_id'] = $id;
+                $data['user_group_name'] = $key;
+                array_push($datas, $data);
+                foreach ($variable as $key => $value) {
+                    # code...
+                }
             }
-            $AccessUserGroupBlockModel->saveAll($AccessUserGroupBlockDatas);
+            $AccessUserGroupBlockModel->saveAll($datas);
         }
         return $this->success('操作成功', url('index'));
     }
