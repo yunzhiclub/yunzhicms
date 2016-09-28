@@ -32,10 +32,18 @@ class UserModel extends ModelModel
     static public function getCurrentFrontUserModel()
     {
         if (null === self::$currentUserModel) {
-            self::$currentUserModel = new UserModel;
+            $username = Session::get('username');
+            // 判断是否是登录用户
+            if (null === $username) {
+                self::$currentUserModel = new UserModel;
+                return self::$currentUserModel;
+            }
+            $map['username'] = $username;
+            $currentUserModel = UserModel::get($map);
+            return $currentUserModel;
         }
 
-        return self::$currentUserModel;
+        return  self::$currentUserModel;
     }
 
     static public function getCurrentUserModel()
@@ -227,18 +235,6 @@ class UserModel extends ModelModel
     {
         $encryptedpassword = sha1(md5($password));
         return $encryptedpassword;
-    }
-
-    /**
-     * [getCurrentUser 获取后台当前登录用户]
-     * @Author   litian,                  1181551049@qq.com
-     * @DateTime 2016-09-23T20:52:42+0800
-     * @return
-     */
-    static public function getCurrentUser()
-    {
-        $username = Session::get('username');
-        return $username;
     }
 
 }
