@@ -25,12 +25,16 @@ class UserController extends ComponentController
     {
         $id = Request::instance()->param('id');
         $UserModel = UserModel::get($id);
-
+        $status = (int)$UserModel->getData('status');
         //判断是否解冻
-        $UserModel->setData('status', $UserModel->isFrozen($UserModel->getData('status')));
+        $UserModel->setData('status', $UserModel->isFrozen($status));
 
         $UserModel->save();
-        return $this->success('修改成功');
+        if ($status ===1)
+        {
+            return $this->success('解冻成功');
+        }
+        return $this->success('冻结成功');
     }
 
     public function resetAction()
