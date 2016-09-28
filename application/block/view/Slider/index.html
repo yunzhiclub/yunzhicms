@@ -1,25 +1,24 @@
 <!-- Start Slider -->
 <section id="mu-slider">
     <?php for ($key=0; $key < $totalCount; $key++) : ?>
-        <!-- Start single slider item -->
-        <div class="mu-slider-single">
-            <div class="mu-slider-img">
-                <figure>
-                    <img src="{:__ROOT__}\theme\varsity\img\newslist\1.png">
-                </figure>
-            </div>
-            <div class="mu-slider-content">
-                
-                <span></span>
-                <h2>计算机科学与软件学院</h2>
-                <p>学院有计算机科学与技术、软件工程、网络工程、物联网工程4个本科专业；计算机科学与技术、控制科学与工程两个一级硕士点</p>
-                <a href="{$urls[$key]}" class="mu-read-more-btn">Read More</a>
-                {neq name="token" value=""}
-                    <a target="_blank" class="mu-read-more-btn" href="{:url('api/api/index?token=' . $token)}">编辑</a>
-                {/neq} 
-            </div>
+    <!-- Start single slider item -->
+    <div class="mu-slider-single">
+        <div class="mu-slider-img">
+            <figure>
+                <img src="{$images[$key]}">
+            </figure>
         </div>
-        <!-- Start single slider item -->
+        <div class="mu-slider-content">
+            <span></span>
+            <h2>{$headers[$key]}</h2>
+            <p>{$descriptions[$key]}</p>
+            <a href="{$urls[$key]}" class="mu-read-more-btn">更多</a>
+            {neq name="token" value=""}
+            <a target="_blank" class="mu-read-more-btn" href="{:url('api/api/index?token=' . $token)}">编辑</a> 
+            {/neq}
+        </div>
+    </div>
+    <!-- Start single slider item -->
     <?php endfor; ?>
 </section>
 <!-- End Slider -->
