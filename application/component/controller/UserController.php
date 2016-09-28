@@ -23,9 +23,9 @@ class UserController extends ComponentController
 
     public function frozenAction()
     {
-        $id = input('id');
+        $id = Request::instance()->param('id');
         $UserModel = UserModel::get($id);
-        
+
         //判断是否解冻
         $UserModel->setData('status', $UserModel->isFrozen($UserModel->getData('status')));
 
