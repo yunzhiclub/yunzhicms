@@ -38,11 +38,11 @@
                                     <td>{$Component->getData('description')}</td>
                                     <td>{$Component->getData('author')}</td>
                                     <td>{$Component->getData('version')}</td>
-                                    
                                 </tr>
                             {/volist}
                             </tbody>
                         </table>
+                       {$Components->render()}
                     </div>
                 </div>
             </div>
@@ -82,6 +82,7 @@
                                 {/volist}
                             </tbody>
                         </table>
+                        {$BlockTypeModels->render()}
                     </div>
                 </div>
             </div>
@@ -125,6 +126,7 @@
                                 {/volist}
                             </tbody>
                         </table>
+                        {$ThemeModels->render()}
                     </div>
                 </div>
             </div>
