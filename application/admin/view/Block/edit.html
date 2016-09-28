@@ -101,7 +101,7 @@
                                                 </li>
                                                 <li>
                                                     <label for="">
-                                                        <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" {eq name="_UserGroupModel->isUpdateAllowedByBlockModel($BlockModel)" value="true" }checked="checked" {/eq} />编辑</label>
+                                                        <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][edit]" {eq name="_UserGroupModel->isEditAllowedByBlockModel($BlockModel)" value="true" }checked="checked" {/eq} />编辑</label>
                                                 </li>
                                                 <li>
                                                     <label for="">

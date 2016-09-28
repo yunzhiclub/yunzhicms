@@ -96,6 +96,7 @@ class MenuModel extends ModelModel
             // 定义路由关键字
             $routeKeys = ['edit', ':id', 'delete', 'create', 'save'];
             $routeInfo = Request::instance()->routeInfo();
+        
             $rule = $routeInfo['rule'];
             
             // 如果是空信息，则说明执行的为首页。手动添加首页路由规则
