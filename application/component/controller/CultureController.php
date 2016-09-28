@@ -9,7 +9,7 @@ use app\model\FieldModel;                   // 扩展字段
 /**
  * todo:权限判断。即当前新闻，是否属于当前这个菜单对应的那个 新闻类别
  */
-class ContentListController extends ComponentController
+class CultureController extends ComponentController
 {
     public function indexAction()
     {
