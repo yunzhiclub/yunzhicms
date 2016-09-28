@@ -193,7 +193,7 @@ class PluginController extends AdminController
     	$AccessMenuPluginModel->where($map)->delete();
 
     	//软删除插件
-    	if (false === $PluginModel) {
+    	if ('' === $PluginModel->getData('id')) {
     		return $this->error('该插件不存在', url('index'));
     	}
 
