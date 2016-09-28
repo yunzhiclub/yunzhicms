@@ -23,7 +23,14 @@ class UserController extends ComponentController
 
     public function frozenAction()
     {
-        return 'frozen';
+        $id = input('id');
+        $UserModel = UserModel::get($id);
+        
+        //判断是否解冻
+        $UserModel->setData('status', $UserModel->isFrozen($UserModel->getData('status')));
+
+        $UserModel->save();
+        return $this->success('修改成功');
     }
 
     public function resetAction()
