@@ -17,9 +17,7 @@ class PersonalController extends AdminController
         $UserModel = new UserModel;
 
         //取出当前用户数据
-    	$username = UserModel::getCurrentUser();
-        $map['username'] = $username;
-        $userModel = $UserModel::get($map);
+    	$userModel = UserModel::getCurrentUserModel();
 
         // 传入V层
         $this->assign('userModel', $userModel);

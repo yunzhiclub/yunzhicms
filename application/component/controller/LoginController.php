@@ -113,12 +113,8 @@ class LoginController extends ComponentController
      */
     public function userInfo()
     {
-        $UserModel = new UserModel;
-
         //取出当前用户数据
-        $username = UserModel::getCurrentUser();
-        $map['username'] = $username;
-        $userModel = $UserModel::get($map);
+        $userModel = UserModel::getCurrentFrontUserModel();
 
         // 传入V层
         $this->assign('userModel', $userModel);
