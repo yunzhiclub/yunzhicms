@@ -22,11 +22,11 @@ class MenuController extends AdminController
     public function editAction($id)
     {
         $MenuModel = MenuModel::get($id);
+    
         $this->assign('MenuModel', $MenuModel);
 
         // 所有的pid=0的菜单
         $map = array('pid' => 0, 'is_deleted' => 0);
-        $MenuModel = new MenuModel;
         $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
 
@@ -42,13 +42,28 @@ class MenuController extends AdminController
         $userGroupModels = UserGroupModel::all();
         $this->assign('userGroupModels', $userGroupModels);
 
+        // 传入组件对应的route信息
+
+        // 拼出地址
+        $routePath = APP_PATH . 'component' . DS . 'route' . DS . $MenuModel->getData('component_name') . 'Route.php';
+
+        // 规范化绝对路径, 如果没有改文件就返回false
+        $routePath = realpath($routePath);
+        if (false === $routePath) {
+            $route = [];
+        }
+
+        // 取出文件内容
+        $route = include $routePath;
+        $this->assign('route', $route);
+
         return $this->fetch('menu/edit');
     }
 
     public function updateAction($id)
     {
         $data = Request::instance()->param();
-    
+         
         $MenuModel = MenuModel::get($id);
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);
@@ -97,7 +112,7 @@ class MenuController extends AdminController
 
 
         // 更新 菜单 用户组 权限
-        //拼接user_group_name menu_id 存入其中间表
+        // 拼接user_group_name menu_id 存入其中间表
         if (array_key_exists('access', $data)) {
             $datas = array();
             foreach ($data['access'] as $key => $value) {
@@ -127,10 +142,6 @@ class MenuController extends AdminController
         // 所有的组件
         $Components = ComponentModel::all();
         $this->assign('Components', $Components);
-
-        // 将用户组信息传入
-        $userGroupModels = UserGroupModel::all();
-        $this->assign('userGroupModels', $userGroupModels);
 
         return $this->fetch('menu/create');
     }
@@ -165,20 +176,6 @@ class MenuController extends AdminController
             return $this->error('title不能为空', url('MenuType/read', ['name' => $menuType]));
         }
         $id = $MenuModel->save();
-
-     
-        //拼接user_group_name menu_id 存入其中间表
-        if (array_key_exists('access', $data)) {
-            $datas = array();
-            foreach ($data['access'] as $key => $value) {
-                foreach ($data['access'][$key] as  $key1 => $value1) {
-                    array_push($datas, ['user_group_name' => $key, 'menu_id' => $id, 'action' => $key1]);
-                }
-            }
-
-            $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
-            $AccessUserGroupMenuModel->saveAll($datas);
-        }
       
         return $this->success('保存成功', url('MenuType/read', ['name' => $menuType]));
 

@@ -88,40 +88,6 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">用户组权限：</label>
-                        <div class="controls">
-                            <ul>
-                                {volist name="userGroupModels" id="_UserGroupModel"}
-                                <li>
-                                    {$_UserGroupModel->title}
-                                    <ul>
-                                        <li>
-                                            <label for="">
-                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" />浏览</label>
-                                        </li>
-                                        <li>
-                                            <label for="">
-                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" />查看</label>
-                                        </li>
-                                        <li>
-                                            <label for="">
-                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" />新增</label>
-                                        </li>
-                                        <li>
-                                            <label for="">
-                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][update]" />编辑</label>
-                                        </li>
-                                        <li>
-                                            <label for="">
-                                                <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" />删除</label>
-                                        </li>
-                                    </ul>
-                                </li>
-                                {/volist}
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="control-group">
                         <div class="controls">
                             <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> 保存</button>
                         </div>
