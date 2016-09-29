@@ -25,7 +25,7 @@ class UserController extends ComponentController
     public function editAction($id)
     {
         //根据id取数据
-        $id = input('id');
+        $id = Request::instance()->param('id');
         $UserModel = UserModel::get($id);
         //把取到的数据传进V层
         $this->assign('UserModel', $UserModel);
@@ -43,7 +43,7 @@ class UserController extends ComponentController
      */
     public function updateAction($id)
     {
-        $data = input('param.');
+        $data = Request::instance()->param();
         $UserModel = UserModel::get($data['id']);
         
         //先判断邮箱或者用户名是否为空

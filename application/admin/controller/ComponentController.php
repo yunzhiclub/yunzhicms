@@ -10,7 +10,7 @@ class ComponentController extends AdminController
     {
         $map = array('is_delete' => 0);
         $ComponentModel = new ComponentModel;
-        $Components = $ComponentModel->where($map)->paginate(config('paginate.var_page'));
+        $Components = $ComponentModel->where($map)->paginate();
 
         $this->assign('Components', $Components);
         return $this->fetch();
