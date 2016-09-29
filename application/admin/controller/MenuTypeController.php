@@ -87,7 +87,7 @@ class MenuTypeController extends AdminController
         
         //执行更新
         $MenuModel = new MenuModel;
-        $id = $MenuModel->updateMenuWeightById($weight);
+        $id = $MenuModel->updateMenuWeight($weight);
         if (false === $id) {
             $data['message'][] = $id;
         }

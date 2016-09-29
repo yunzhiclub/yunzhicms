@@ -419,7 +419,7 @@ class MenuModel extends ModelModel
      * 更新菜单权重
      * author liuxi
      */
-    public function updateMenuWeightById($weight)
+    public function updateMenuWeight($weight)
     {
         //判断是否为空数组
         if (!empty($weight)) {
