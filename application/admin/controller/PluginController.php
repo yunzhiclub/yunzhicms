@@ -19,7 +19,7 @@ class PluginController extends AdminController
 		$PluginModel = new PluginModel;
 
 		//获取未删除的组件
-		$PluginModels = $PluginModel->where('is_delete', '=', '0')->paginate(config('paginate.var_page'));
+		$PluginModels = $PluginModel->where('is_delete', '=', '0')->paginate();
 		$this->assign('PluginModels', $PluginModels);
 		return $this->fetch();
 	}
