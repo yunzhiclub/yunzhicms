@@ -27,11 +27,9 @@
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="_url">是否冻结</label>
-                        <div class="controls">
-                            <select class="form-control" name="is_freezed" id="_pid">
-                                <option value="0" {eq value="0" name="$ContentModel->is_freezed" }selected="selected"{/eq}>否</option>
-                                <option value="1" {eq value="1" name="$ContentModel->is_freezed" }selected="selected"{/eq}>是</option>
-                            </select>
+                        <div class="controls" class="row">
+                            <input type="radio" name="is_freezed" value="1" {eq value="1" name="$ContentModel->getData('is_freezed')" }checked="checked"{/eq} /> 是&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="is_freezed" value="0" {eq value="0" name="$ContentModel->getData('is_freezed')" }checked="checked"{/eq} /> 否
                         </div>
                     </div>
                     <div class="control-group">
