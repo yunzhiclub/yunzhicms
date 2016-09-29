@@ -20,4 +20,9 @@ return [
         'description'   => '站点编辑对用户进行操作',
         'value'         => ['/:id/reset', 'GET']
     ],
+    'update' => [
+        'title'         => '保存',
+        'description'   => '保存用户修改信息',
+        'value'         => ['/:id/update', 'POST']
+    ],
 ];
