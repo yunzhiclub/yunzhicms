@@ -47,4 +47,55 @@ class UserGroupModel extends ModelModel
         return $UserModel->where($map)->select();
     }
 
+    /**
+     * 是否当前菜单的的 列表(10000) 权限
+     * @param  MenuModel &$MenuModel 菜单
+     * @return boolean               
+     */
+    public function isIndexAllowedByMenuModel(MenuModel &$MenuModel)
+    {
+        return $this->isAllowedByMenuModelAction($MenuModel, 'index');
+    }
+
+
+    /**
+     * 是否有当前菜单的 创建(01000) 权限
+     * @param  MenuModel &$MenuModel [description]
+     * @return boolean               [description]
+     */
+    public function isCreateAllowedByMenuModel(MenuModel &$MenuModel)
+    {
+        return $this->isAllowedByMenuModelAction($MenuModel, 'create');
+    }
+
+    /**
+     * 是否拥有当前菜单的 更新（00100） 权限
+     * @param  MenuModel &$MenuModel [description]
+     * @return boolean               [description]
+     */
+    public function isEditAllowedByMenuModel(MenuModel &$MenuModel)
+    {
+        return $this->isAllowedByMenuModelAction($MenuModel, 'edit');
+    }
+
+    /**
+     * 是否当前菜单的的 读(00010) 权限
+     * @param  MenuModel &$MenuModel 菜单
+     * @return boolean               
+     */
+    public function isReadAllowedByMenuModel(MenuModel &$MenuModel)
+    {
+        return $this->isAllowedByMenuModelAction($MenuModel, 'read');
+    }
+
+    /**
+     * 是否拥有当前菜单的 删除(00001) 权限
+     * @param  MenuModel &$MenuModel [description]
+     * @return boolean               [description]
+     */
+    public function isDeleteAllowedByMenuModel(MenuModel &$MenuModel)
+    {
+        return $this->isAllowedByMenuModelAction($MenuModel, 'delete');
+    }
+
 }
