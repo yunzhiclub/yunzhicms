@@ -237,4 +237,20 @@ class UserModel extends ModelModel
         return $encryptedpassword;
     }
 
+    /**
+     * 判断是否解冻
+     * @param  int  $status 
+     * @return int         
+     * @author chuhang 
+     */
+    public function isFrozen($status)
+    {
+        if ($status === 0) {
+            $result = 1;
+            return $result;
+        }
+        $result = 0;
+        return $result;
+    }
+
 }
