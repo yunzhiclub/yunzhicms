@@ -5,6 +5,7 @@ use think\Controller;
 use app\Common;
 use think\Loader;
 use think\Request;
+use think\Config;
 
 use app\model\ThemeModel;                           // 主题
 use app\model\AccessUserGroupFieldModel;            // 用户组字段权限
@@ -92,21 +93,37 @@ class FieldController extends Controller
      */
     protected function fetch($template = '', $vars = [], $replace = [], $config = [])
     {
+        // 未传入模板值，则高用当前 action 对应模板
+        if ('' === $template) {
+            $template = debug_backtrace()[1]['function'];
+        }
+
+        // 获取模板扩展名
+        $viewSuffix = Config::get('template.view_suffix');
+
         // 获取调用此方法的控制器名及方法名
         $controller = Common::getControllerName(get_called_class());
-        $action = debug_backtrace()[1]['function'];
 
-        // 拼接主题模板信息
-        $themeTemplate = APP_PATH . 
+        // 拼接主题路径
+        $themeTemplatePath = APP_PATH . 
             'theme' . DS . 
             $this->currentThemeModel->getData('name') . DS .
             'field' . DS .
-            $controller . DS .
-            $action . '.html';
+            $controller . DS . 
+            $template . '.';
 
+        // 查看字段对象是否被重写
+        $themeTemplate = $themeTemplatePath . $this->FieldDataXXXModel->getData('field_id') . '.' . $viewSuffix;
         // 路径格式化，如果文件不存在，则返回false
         $themeTemplate = realpath($themeTemplate);
 
+        // 查看字段模型是否被重写
+        if (false === $themeTemplate) {
+            $themeTemplate = $themeTemplatePath . $viewSuffix;
+            // 路径格式化，如果文件不存在，则返回false
+            $themeTemplate = realpath($themeTemplate);
+        }
+        
         // 主题文件存在，则调用主题文件进行渲染
         if (false !== $themeTemplate)
         {   
@@ -114,25 +131,11 @@ class FieldController extends Controller
 
         // 不存在，则进行同模块VIEW规则渲染
         } else {
-            $template = 'field@' . $controller . '/' . $action;
+            $template = 'field@' . $controller . '/' . $template;
         }
 
-        // 初始化html css js字符串
-        $html = $css = $js = '';
-
         // 渲染html
-        $html = parent::fetch($template);
-
-        // 尝试渲染js及css
-        try {
-            $js = parent::fetch('field@' . $controller . '/' . $action . 'Js');
-        } catch (\Exception $e) {}
-
-        try {
-            $css = parent::fetch('field@' . $controller . '/' . $action . 'Css');
-        } catch (\Exception $e) {}
-
-        return $html . $js . $css;
+        return parent::fetch($template);
     }
 
 
