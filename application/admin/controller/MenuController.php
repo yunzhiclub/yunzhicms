@@ -26,7 +26,7 @@ class MenuController extends AdminController
         $this->assign('MenuModel', $MenuModel);
 
         // 所有的pid=0的菜单
-        $map = array('pid' => 0, 'is_deleted' => 0);
+        $map = array('pid' => 0, 'is_delete' => 0);
         $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
 
@@ -130,7 +130,7 @@ class MenuController extends AdminController
     public function createAction()
     {
         // 所有的pid=0的菜单
-        $map = array('pid' => 0, 'is_deleted' => 0);
+        $map = array('pid' => 0, 'is_delete' => 0);
         $MenuModel = new MenuModel;
         $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
@@ -208,7 +208,7 @@ class MenuController extends AdminController
         }
 
         //删除菜单
-        $MenuModel->setData('is_deleted', 1)->save();
+        $MenuModel->setData('is_delete', 1)->save();
 
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('删除成功', url('MenuType/read', ['name' => $menuType]));

@@ -12,7 +12,7 @@ class ContentTypeController extends AdminController
         $PageSize = config('paginate.var_page');
 
         $ContentTypeModel = new ContentTypeModel;
-        $map = array('is_deleted' => 0);
+        $map = array('is_delete' => 0);
 
         $ContentTypeModels =$ContentTypeModel->where($map)->paginate($PageSize);
         $this->assign('ContentTypeModels', $ContentTypeModels);
@@ -53,7 +53,7 @@ class ContentTypeController extends AdminController
             return $this->error('不能删除因为此类型里面含有文章');
         }
         //删除并保存
-        $ContentTypeModel->setData('is_deleted', 1)->save();
+        $ContentTypeModel->setData('is_delete', 1)->save();
         return $this->success('删除成功', url('ContentType/index'));
     }
 
@@ -69,7 +69,7 @@ class ContentTypeController extends AdminController
         $this->assign('ContentTypeModel', $ContentTypeModel);
 
         //取出所有的菜单
-        $map = array('is_deleted' => 0);
+        $map = array('is_delete' => 0);
         $MenuModel  = new MenuModel;
         $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
@@ -108,7 +108,7 @@ class ContentTypeController extends AdminController
     {
         //取出所有的menu
         //取出所有的菜单
-        $map = array('is_deleted' => 0);
+        $map = array('is_delete' => 0);
         $MenuModel  = new MenuModel;
         $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);

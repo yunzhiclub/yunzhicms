@@ -124,13 +124,13 @@ class MenuModel extends ModelModel
     /**
      * 获取某个菜单类型的所有的列表
      * 先转化为树状，先转化为列表，这样顺序输出后，就有了上下级的结构
-     * @param  string $menuTypeName 菜单类型名 int pid $pid 父级菜单的id int $is_deleted 是否删除标记
+     * @param  string $menuTypeName 菜单类型名 int pid $pid 父级菜单的id int $is_delete 是否删除标记
      * @return lists               
      * 
      */
-    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_deleted = null )
+    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_delete = null )
     {
-        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_deleted' => $is_deleted];
+        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_delete' => $is_delete];
         $MenuModels = $this->where($map)->order('weight desc')->select();
         return $MenuModels;
     }
@@ -244,7 +244,7 @@ class MenuModel extends ModelModel
      */
     public function sonMenuModels()
     {
-        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_deleted' => 0];
+        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_delete' => 0];
         $menuModels = $this->where($map)->order('weight desc')->select();
         return $menuModels;
     }

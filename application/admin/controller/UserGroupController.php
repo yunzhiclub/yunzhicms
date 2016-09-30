@@ -20,7 +20,7 @@ class UserGroupController extends AdminController
 
         //获取config.php中的分页配置信息
         $pageSize = config('paginate.var_page');
-        $map      = array('is_deleted' => 0);
+        $map      = array('is_delete' => 0);
     	$UserGroupModels = $UserGroupModel->where($map)->paginate($pageSize);
     	$this->assign('UserGroupModels', $UserGroupModels);
         // return $this->fetch();
@@ -122,7 +122,7 @@ class UserGroupController extends AdminController
         }
 
         //将用户组删除
-        $UserGroupModel->setData('is_deleted', 1)->save();
+        $UserGroupModel->setData('is_delete', 1)->save();
 
         //返回首页
         return $this->success('删除成功', url('index')); 

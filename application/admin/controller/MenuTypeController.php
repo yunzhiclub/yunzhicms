@@ -8,9 +8,7 @@ class MenuTypeController extends AdminController
     public function indexAction()
     {
         $MenuTypeModel = new MenuTypeModel;
-        $map = array(
-            'is_deleted' => 0
-            );
+        $map = array('is_delete' => 0);
 
         //设置分页
         $MenuTypeModels = $MenuTypeModel->where($map)->paginate(config('paginate.var_page'));
@@ -49,7 +47,7 @@ class MenuTypeController extends AdminController
             return $this->error('含有下一级菜单不能删除');
         }
 
-        $MenuTypeModel->setData('is_deleted', 1)->save();
+        $MenuTypeModel->setData('is_delete', 1)->save();
 
         return $this->success('删除成功', url('menuType/index'));
     }
