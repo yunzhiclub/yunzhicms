@@ -38,13 +38,13 @@ class FieldController extends Controller
         $this->FieldDataXXXModel    = $FieldDataXXXModel;
 
         // 送入依赖css, 用于在footer中进行统一引用。
-        if (isset($FieldDataXXXModel->getConfig()['css'])) {
-            Common::addCss($FieldDataXXXModel->getConfig()['css']['value']);
+        if (array_key_exists('css', $FieldDataXXXModel->getSimpleConfig())) {
+            Common::addCss($FieldDataXXXModel->getSimpleConfig()['css']);
         }
 
         // 送入依赖js, 用于在footer中进行统一引用。
-        if (isset($FieldDataXXXModel->getConfig()['js'])) {
-            Common::addJs($FieldDataXXXModel->getConfig()['js']['value']);
+        if (array_key_exists('js', $FieldDataXXXModel->getSimpleConfig())) {
+            Common::addJs($FieldDataXXXModel->getSimpleConfig()['js']);
         }
 
         // 传入配置信息
@@ -93,7 +93,7 @@ class FieldController extends Controller
      */
     protected function fetch($template = '', $vars = [], $replace = [], $config = [])
     {
-        // 未传入模板值，则高用当前 action 对应模板
+        // 未传入模板值，则调用当前 action 对应模板
         if ('' === $template) {
             $template = debug_backtrace()[1]['function'];
         }
