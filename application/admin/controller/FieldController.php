@@ -32,4 +32,36 @@ class FieldController extends AdminController
 
         return $this->fetch('Field/read');
     }
+
+    /**
+     * 更新权重
+     * @return  
+     * @author  gaoliming 
+     */
+    public function weightAction()
+    {
+        $data['status']  = 'ERROR';
+        $data['message'] = '';
+
+        //判断传过来的值是否为空
+        $weight = $_POST['weight'];
+        $weight = isset($weight) ? $weight : array();
+
+        //执行更新
+        $FieldModel = new FieldModel;
+        $id         = $FieldModel->updateFieldWeight($weight);
+        if (false === $id) {
+            $data['message'][] = $id;
+        }
+
+        //更新成功,返回
+        if ("" === $data['message']) {
+            $data['status'] = 'SUCCESS';
+            return $data;
+        }
+
+        //更新失败
+        $data['message'] = '排序失败-' . implode(',', $data['message']);
+        return $data;
+    }
 }
