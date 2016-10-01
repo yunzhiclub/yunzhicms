@@ -5,10 +5,12 @@ return [
     'edit' => [
         'title'         => '编辑',
         'description'   => '编辑',
+        'action'        => 'edit',  
     ],
 
     'save'  => [
         'title'         => '保存',
         'description'   => '保存用于数据的更新',
+        'action'        => 'save',
     ],
 ];
