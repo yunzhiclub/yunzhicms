@@ -23,7 +23,7 @@ class ContentController extends AdminController
     public function createAction()
     {
         //取出内容类型
-        $map = array('is_deleted' => 0);
+        $map = array('is_delete' => 0);
         $ContentTypeModel  = new ContentTypeModel;
         $ContentTypeModels = $ContentTypeModel->where($map)->select();
         $this->assign('ContentTypeModels', $ContentTypeModels);
@@ -55,7 +55,7 @@ class ContentController extends AdminController
         //获取删除时间并保存
         $time = time();
         $ContentModel->setData('delete_time', $time);
-        $ContentModel->setData('is_deleted', 1)->save();
+        $ContentModel->setData('is_delete', 1)->save();
 
         //返回成功
         $contentType = $ContentModel->content_type_name;
@@ -69,7 +69,7 @@ class ContentController extends AdminController
         $this->assign('ContentModel', $ContentModel);
 
         //取出内容类型
-        $map = array('is_deleted' => 0);
+        $map = array('is_delete' => 0);
         $ContentTypeModel  = new ContentTypeModel;
         $ContentTypeModels = $ContentTypeModel->where($map)->select();
         $this->assign('ContentTypeModels', $ContentTypeModels);
