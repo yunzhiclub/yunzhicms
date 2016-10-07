@@ -333,4 +333,25 @@ class FieldModel extends ModelModel
         return $FieldTypeModel->where($map)->find();   
     }  
 
+
+    /**
+     * 字段排序
+     * @return  bool 
+     * @author  gaoliming 
+     */
+    public function updateFieldWeight($weight)
+    {
+        //判断数组是否是空数组
+        if (!empty($weight)) {
+            foreach ($weight as $key => $value) {
+                $FieldModel = $this->get($key);
+                if ($FieldModel->weight != $value) {
+                    if (false === $FieldModel->setData('weight', $value)->save()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }
