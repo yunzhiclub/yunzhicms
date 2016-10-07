@@ -84,10 +84,13 @@
                                     <label for="">对哪些用户组可见</label>
                                     <ul>
                                         {foreach name="UserGroupModels" id="_UserGroupModel"}
-                                        <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}]" {eq name="BlockModel->checkIsHave($_UserGroupModel)" value="true" }checked="" {/eq} />
+                                        {$_UserGroupModel->title}
+                                        {volist name="BlockModel->getRoute()" id="_route"}
                                         <li>
-                                            {$_UserGroupModel->title}
+                                                <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}][{$_route['action']}]" {eq name="_UserGroupModel->isAllowedByBlockModelAction($BlockModel, $_route['action'])" value="true" }checked="checked"{/eq}>
+                                                <label>{$_route['title']}</label>
                                         </li>
+                                        {/volist}
                                         {/foreach}
                                     </ul>
                                 </div>

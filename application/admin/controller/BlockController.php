@@ -46,7 +46,7 @@ class BlockController extends AdminController
     public function updateAction($id)
     {
         $param = input('param.');
-
+        
         $BlockModel = BlockModel::get($id);
         $BlockModel->setData('title', $param['title']);
         $BlockModel->setData('block_type_name', $param['block_type_name']);
@@ -93,13 +93,20 @@ class BlockController extends AdminController
         $map = ['block_id' => $id];
         $AccessUserGroupBlockModel->where($map)->delete();
 
-        $AccessUserGroupBlockDatas = array();
+        $datas = array();
         if (array_key_exists('usergroupname', $param))
         {
             foreach ($param['usergroupname'] as $key => $value) {
-                array_push($AccessUserGroupBlockDatas, ['block_id' => $id, 'user_group_name' => $key]);
-            }
-            $AccessUserGroupBlockModel->saveAll($AccessUserGroupBlockDatas);
+                
+                foreach ($param['usergroupname'][$key] as $key1 => $value1) {
+                    $data = [];
+                    $data['block_id'] = $id;
+                    $data['user_group_name'] = $key;
+                    $data['action'] = $key1;
+                    array_push($datas, $data);
+                }
+            } 
+            $AccessUserGroupBlockModel->saveAll($datas);
         }
         return $this->success('操作成功', url('index'));
     }
