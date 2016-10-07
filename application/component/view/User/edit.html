@@ -1,0 +1,48 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header col-md-offset-3">
+                <i class="icon-table"></i>
+                <h5>
+                修改用户信息
+                </h5>
+            </div>
+            <br>
+            <form action="{:url('@user/' .$UserModel->getData('id'). '/update')}" method="post" class="form-horizontal col-md-offset-3">
+                <div class="control-group">
+                    <label class="control-label" for="_title">邮箱</label>
+                    <div class="controls">
+                        <input type="hidden" name="id" value="{$UserModel->id}">
+                        <input type="email" id="_title" value="{$UserModel->username}" name="username" placeholder="请输入邮箱" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">姓名</label>
+                    <div class="controls">
+                        <input type="text" id="_title" value="{$UserModel->name}" name="name" placeholder="姓名" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">用户组</label>
+                    <div class="controls">
+                        <select style="width:250px;" name="user_group_name" class="form-control">
+                            {volist name="UserGroups" id="UserGroup"}
+                            <option value="{$UserGroup->name}" selected="selected">
+                                {$UserGroup->title}
+                            </option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group"  style="margin-left:95px">
+                    <label class="control-label">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="icon-ok"></i>保存
+                        </button>
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
