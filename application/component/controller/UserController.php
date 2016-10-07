@@ -46,21 +46,8 @@ class UserController extends ComponentController
         $data = Request::instance()->param();
         $UserModel = UserModel::get($data['id']);
         
-        //先判断邮箱或者用户名是否为空
-        if ('' === $data['name'] || '' === $data['username']){
-            return $this->error('姓名或者邮箱不能为空');
-        }
-
-        //再判断邮箱是否重复
-        if ($UserModel->getData('username') !== $data['username']) {
-            if ($UserModel->isSameEmail($data['username'])) {
-                return $this->error('邮箱重复');
-            }
-        }
-
         //存进各项数据
         $UserModel->setData('name', $data['name']);
-        $UserModel->setData('username', $data['username']);
         $UserModel->setData('user_group_name', $data['user_group_name']);
         $UserModel->save(); 
 
