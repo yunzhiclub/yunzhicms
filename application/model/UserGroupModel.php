@@ -31,6 +31,30 @@ class UserGroupModel extends ModelModel
     }
 
     /**
+     * 获取 用户组 对 区块的操作权限
+     * @param  BlockModel &$BlockModel 区块对象
+     * @param  string     $action      操作
+     * @return boolean                 存在操作返回 true 不存在 false
+     * @author huangshuaibin
+     */
+    public function isAllowedByBlockModelAction(BlockModel &$BlockModel, $action)
+    {
+        //查找是否存在当前权限值
+        $map = [];
+        $map['block_id']        = $BlockModel->getData('id');
+        $map['user_group_name'] = $this->getData('name');
+        $map['action']          = $action;
+        $AccessUserGroupBlockModel = AccessUserGroupBlockModel::get($map);
+        
+        if ('' !== $AccessUserGroupBlockModel->getData('block_id')) {
+            //返回非默认值有权限
+            return true;
+        } else {
+            return false;
+        }       
+    }
+
+    /**
      * 是否当前菜单的的 列表(10000) 权限
      * @param  MenuModel &$MenuModel 菜单
      * @return boolean               
@@ -95,5 +119,6 @@ class UserGroupModel extends ModelModel
         $UserModel = new UserModel;
         return $UserModel->where($map)->select();
     }
+
 
 }
