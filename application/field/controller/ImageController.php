@@ -52,6 +52,6 @@ class ImageController extends FieldController
     public function edit()
     {
         $this->assign('token', $this->FieldDataXXXModel->makeToken('upload'));
-        return $this->fetch();
+        return $this->fetch() . $this->fetch('editCss') . $this->fetch('editJs');
     }
 }

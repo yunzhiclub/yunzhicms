@@ -17,7 +17,7 @@ class AttachmentController extends FieldController
     {
         $this->assign('uploadToken', $this->FieldDataXXXModel->makeToken('upload'));
         $this->assign('deleteToken', $this->FieldDataXXXModel->makeToken('delete'));
-        return $this->fetch();
+        return $this->fetch() . $this->fetch('editJs');
     }
 
     /**
