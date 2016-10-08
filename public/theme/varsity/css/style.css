@@ -454,7 +454,7 @@ img {
   display: inline;
   float: left;
   width: 100%;
-  padding: 100px 0;
+  padding: 50px 0;
 }
 #mu-about-us .mu-about-us-area {
   display: inline;
@@ -2495,3 +2495,7 @@ img {
     font-size: 100px;
   }
 }
+
+#header{  }
+#header div h4{ color:#0BCFE6; text-align:left; }
+#header div h5{ color:#01bafd; text-align:right;margin-top:20px; }
