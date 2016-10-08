@@ -1,30 +1,37 @@
 {layout name="index" /}
-<table>
-    <thead>
-        <tr>
-            <th>序号</th>
-            <th>用户名</th>
-            <th>用户组</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        {volist name="$UserModel" id="_user"}
-        <tr>
-            <td>{$key}</td>
-            <td>{$_user->getData('username')}</td>
-            <td>{$_user->getData('user_group_name')}</td>
-            <td>
-                <a href="{:url('@user/' .$_user->getData('id'). '/edit')}" class="mu-post-btn">编辑</a>
-            </td>
-            <td>
-                <a href="{:url('@user/frozen?id=' . $_user->getData('id'))}" class="mu-post-btn">{eq name="0" value="$_user->getData('status')"}<span>冻结</span>{else /}<span class="btn btn-primary btn-sl">解冻</span>{/eq}</a>
-            </td>
-            <td>
-                <a href="{:url('@user/' .$_user->getData('id'). '/reset')}" class="mu-post-btn">重置密码</a>
-            </td>
-        </tr>
-        {/volist}
-    </tbody>
-</table>
+<section id="mu-features">
+    <div class="container">
+        <div class="row">
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>用户名</th>
+                        <th>用户组</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="$UserModel" id="_user"}
+                    <tr>
+                        <td>{$key}</td>
+                        <td>{$_user->getData('username')}</td>
+                        <td>{$_user->getData('user_group_name')}</td>
+                        <td>
+                            <a href="{:url('@user/' .$_user->getData('id'). '/edit')}" class="mu-post-btn">编辑</a>
+                        </td>
+                        <td>
+                            <a href="{:url('@user/frozen?id=' . $_user->getData('id'))}" class="mu-post-btn">{eq name="0" value="$_user->getData('status')"}<span>冻结</span>{else /}<span class="btn btn-primary btn-sl">解冻</span>{/eq}</a>
+                        </td>
+                        <td>
+                            <a href="{:url('@user/' .$_user->getData('id'). '/reset')}" class="mu-post-btn">重置密码</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
 
