@@ -126,7 +126,7 @@ class UserModel extends ModelModel
         //索引
         $map = array(
             'is_admin'   => 0,
-            'is_deleted' => 0,
+            'is_delete' => 0,
             );
         $UserGroupModel = new UserGroupModel;
         return $UserGroupModel->where($map)->select();
@@ -158,7 +158,7 @@ class UserModel extends ModelModel
     public function isSameEmail($email)            
     {
         $map = array(
-            'is_deleted' => 0,
+            'is_delete' => 0,
             'username'  => $email
             );
         $UserModel = new UserModel;

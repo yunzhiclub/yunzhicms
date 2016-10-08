@@ -18,7 +18,7 @@ class ContentListController extends ComponentController
         $map = [];
         $map['content_type_name'] = $this->config['contentTypeName']['value'];
         $map['is_freezed'] = '0';
-        $map['is_deleted'] = '0';
+        $map['is_delete'] = '0';
         $ContentModels = $ContentModel->where($map)->paginate($this->config['count']['value']);
 
         $this->assign('ContentModels', $ContentModels);
