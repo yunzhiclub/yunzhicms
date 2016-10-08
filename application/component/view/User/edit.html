@@ -11,6 +11,12 @@
             <br>
             <form action="{:url('@user/' .$UserModel->getData('id'). '/update')}" method="post" class="form-horizontal col-md-offset-3">
                 <div class="control-group">
+                    <label class="control-label" for="_email">邮箱</label>
+                    <div class="controls">
+                        <p id="_email" name="username">{$UserModel->getData('username')}</p>
+                    </div>
+                </div>
+                <div class="control-group">
                     <label class="control-label" for="_title">姓名</label>
                     <div class="controls">
                         <input type="text" id="_title" value="{$UserModel->name}" name="name" placeholder="姓名" />
