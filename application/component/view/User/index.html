@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {volist name="$UserModel" id="_user"}
+                    {volist name="$UserModel" id="_user" key="key"}
                     <tr>
                         <td>{$key}</td>
                         <td>{$_user->getData('username')}</td>
