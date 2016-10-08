@@ -67,15 +67,19 @@
                                     <label for="">对哪些菜单显示</label>
                                     <ul>
                                         {foreach name="MenuModels" id="_MenuModel"}
-                                        <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="BlockModel->checkIsShow($_MenuModel)" value="true" } checked="checked" {/eq} />
+                                        
                                         <li>
+                                           
+                                            <label> 
+                                            <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="BlockModel->checkIsShow($_MenuModel)" value="true" } checked="checked" {/eq} />
                                             <?php
-                                               for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
-                                              {
+                                                for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
+                                                {
                                                   echo '|--';
-                                              }
-                                          ?>
-                                                {$_MenuModel->title}
+                                                }
+                                            ?>
+                                            {$_MenuModel->title}
+                                            </label>
                                         </li>
                                         {/foreach}
                                     </ul>
@@ -84,15 +88,17 @@
                                     <label for="">对哪些用户组可见</label>
                                     <ul>
                                         {foreach name="UserGroupModels" id="_UserGroupModel"}
+                                        <li>
                                         {$_UserGroupModel->title}
                                         {volist name="BlockModel->getRoute()" id="_route"}
                                         <ul>
-                                                <li>
-                                                    <label>
-                                                    <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}][{$_route['action']}]" {eq name="_UserGroupModel->isAllowedByBlockModelAction($BlockModel, $_route['action'])" value="true" }checked="checked"{/eq}>
-                                                    {$_route['title']}</label>
-                                                </li>
+                                            <li>
+                                                <label>
+                                                <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}][{$_route['action']}]" {eq name="_UserGroupModel->isAllowedByBlockModelAction($BlockModel, $_route['action'])" value="true" }checked="checked"{/eq}>
+                                                {$_route['title']}</label>
+                                            </li>
                                         </ul>
+                                        </li>
                                         {/volist}
                                         {/foreach}
                                     </ul>
