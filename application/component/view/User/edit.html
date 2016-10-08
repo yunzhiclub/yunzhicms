@@ -11,10 +11,9 @@
             <br>
             <form action="{:url('@user/' .$UserModel->getData('id'). '/update')}" method="post" class="form-horizontal col-md-offset-3">
                 <div class="control-group">
-                    <label class="control-label" for="_title">邮箱</label>
+                    <label class="control-label" for="_email">邮箱</label>
                     <div class="controls">
-                        <input type="hidden" name="id" value="{$UserModel->id}">
-                        <input type="email" id="_title" value="{$UserModel->username}" name="username" placeholder="请输入邮箱" />
+                        <p>{$UserModel->getData('username')}</p>
                     </div>
                 </div>
                 <div class="control-group">
@@ -28,7 +27,7 @@
                     <div class="controls">
                         <select style="width:250px;" name="user_group_name" class="form-control">
                             {volist name="UserGroups" id="UserGroup"}
-                            <option value="{$UserGroup->name}" selected="selected">
+                            <option {eq name="$UserGroup->title" value="$UserModel->user_group_name"} selected="selected" {/eq}>
                                 {$UserGroup->title}
                             </option>
                             {/volist}
