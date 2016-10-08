@@ -14,12 +14,12 @@ class LoginController extends AdminController
 
 	public function loginAction()
 	{
-		//验证用户名 密码
-		if (UserModel::login(input('post.username'), input('post.password'))) {			
-			return $this->success('登陆成功', url('@admin/index'));
-		} else{
-			return $this->error('用户名或密码错误');
-		}		
+		// //验证用户名 密码
+		// if (UserModel::login(input('post.username'), input('post.password'))) {			
+		// 	return $this->success('登陆成功', url('@admin/index'));
+		// } else{
+		// 	return $this->error('用户名或密码错误');
+		// }		
 	}
 
 	public function logoutAction()
