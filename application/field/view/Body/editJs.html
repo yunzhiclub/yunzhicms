@@ -1,0 +1,9 @@
+<script type="text/javascript">
+    $(function(){
+        var editor = new wangEditor('field_data_body_{$randId}');
+         // 上传图片地址配置
+        editor.config.uploadImgUrl = '{:url("api/Api/index?token=" . $token)}';
+        editor.config.uploadImgFileName = 'Filedata';
+        editor.create();
+    });
+</script>

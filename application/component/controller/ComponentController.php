@@ -2,6 +2,7 @@
 namespace app\component\controller;
 use think\Controller;
 use think\Request;                              // think请求内置类
+use think\Config;                               // 配置
 use app\Common;                                 // 通用接口
 
 use app\component\ComponentInterface;           // 组件接口
@@ -10,6 +11,8 @@ use app\model\ComponentModel;                   // 组件
 use app\model\MenuModel;                        // 菜单模型
 use app\model\UserModel;                        // 用户
 use app\model\ThemeModel;                       // 主题
+
+use think\Session;
 
 class ComponentController extends Controller
 {
@@ -42,9 +45,9 @@ class ComponentController extends Controller
             return $this->error('您无权限访问该页面或您访问的页面不存在. TODO:404页面', url('@/'));
         }
 
-        // 清空原来的tokens
+        // 清空原来的tokens.有了安全性，同时也要求我们不能出现多余的默认请求。
         Common::clearTokens();
-
+        
         // 传Common供前台使用
         $this->assign('Common', new Common);
 
@@ -69,16 +72,26 @@ class ComponentController extends Controller
      */
     protected function fetch($template = '', $vars = [], $replace = [], $config = [])
     {
-        // 拼接主题模板信息
-        $themeTemplate = APP_PATH . 
+        // 获取配置信息的模板后缀
+        $viewSuffix = Config::get('template.view_suffix');
+
+        // 获取主题模板路径
+        $themeTemplatePath = APP_PATH . 
             'theme' . DS . 
             $this->currentThemeModel->getData('name') . DS .
             'component' . DS .
-            $this->Request->controller() . DS .
-            $this->Request->action() .
-            '.html';
+            $this->Request->controller() . DS . $this->Request->action() . '.';
+
+        // 判断是否对当前菜单进行了重写
+        $themeTemplate = $themeTemplatePath . $this->currentMenuModel->getData('id') . '.' . $viewSuffix;
+
         // 路径格式化，如果文件不存在，则返回false
         $themeTemplate = realpath($themeTemplate);
+
+        if (false === $themeTemplate) {
+            $themeTemplate = $themeTemplatePath . $viewSuffix;
+            $themeTemplate = realpath($themeTemplate);
+        }        
         
         // 主题文件存在，则调用主题文件进行渲染
         if (false !== $themeTemplate)

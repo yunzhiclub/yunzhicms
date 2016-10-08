@@ -276,14 +276,82 @@ class FieldModel extends ModelModel
      */
     public function makeToken($action, $data = [])
     {
-        // // 对权限进行判断，没有权限，则返回空字符串
-        // if (AccessUserGroupBlockModel::checkCurrentUserIsAllowedByBlockIdAndAction($this->getData('id'), $action)) {
-        //     $data = array_merge(['id' => $this->getData('id')], $data);
-        //     $token = Common::makeTokenByMCAData('block', $this->BlockTypeModel()->getData('name'), $action, $data);
-        // } else {
-        //     $token = '';
-        // }
-        
-        // return $token;
+        $data = array_merge(['id' => $this->getData('id')], $data);
+        // $token = Common::makeTokenByMCAData('filed', $this->FieldDataXXXXModel()->getData('name'), $action, $data);
+        $controller = $this->FieldModel()->getData('field_type_name');
+        $token = Common::makeTokenByMCAData('field', $controller, $action, $data);
+        return $token;
+    }
+
+    /**  
+     * 根据relate_value的取出相应的菜单  
+     * @return  array   
+     * @author  gaoliming   
+    */  
+   public function getallrelatetypefield($relate_type)  
+    {  
+        if (null === $relate_type) {  
+            $FieldModels = $this->select();  
+            } else {  
+            $FieldModels = $this->where('relate_type', 'like', '%' . $relate_type . '%')->select();  
+       }  
+             
+        $number      = count($FieldModels);  
+        $map         = array($FieldModels['0']->relate_value);  
+        for ($i=1; $i < $number; $i++) {   
+            $j = 0;  
+            foreach ($map as $value) {  
+                if ($FieldModels[$i]->relate_value === $value) {  
+                   break;  
+                }  
+               $j++;  
+            }  
+            if ($j === count($map)) {  
+               array_push($map, $FieldModels[$i]->relate_value);  
+            }  
+        }  
+        $FieldModelArray = array();  
+        foreach ($map as $value) {  
+            $data = array('relate_value' => $value);  
+            array_push($FieldModelArray, $this->where($data)->find());  
+        }  
+ 
+        return $FieldModelArray;  
+    }  
+  
+    /**  
+     * 获取相应字段类型  
+     * @return object  
+     * @author gaoliming  
+     */  
+   public function getFieldTypebyfieldtypename()  
+   {  
+        //制定索引  
+        $map = array('name' => $this->field_type_name);  
+ 
+        $FieldTypeModel = new FieldTypeModel;  
+        return $FieldTypeModel->where($map)->find();   
+    }  
+
+
+    /**
+     * 字段排序
+     * @return  bool 
+     * @author  gaoliming 
+     */
+    public function updateFieldWeight($weight)
+    {
+        //判断数组是否是空数组
+        if (!empty($weight)) {
+            foreach ($weight as $key => $value) {
+                $FieldModel = $this->get($key);
+                if ($FieldModel->weight != $value) {
+                    if (false === $FieldModel->setData('weight', $value)->save()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

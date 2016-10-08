@@ -37,4 +37,14 @@ class ContentTypeModel extends ModelModel
         return $this->FieldModels;
     }
 
+    /**
+     * 获取对应的menu
+     * @param int  $menu_id 
+     * @return  object menu
+     * @author  gaoliming 
+     */
+    public function getMenu($menu_id)
+    {
+        return MenuModel::get($menu_id);
+    }
 }

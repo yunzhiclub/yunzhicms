@@ -3,14 +3,14 @@ namespace app\field\controller;
 use app\Common;
 use think\Request;
 
-use app\model\FieldDataImageModel;          // 扩展字段  图片
+use app\model\FieldDataImageModel;          // 附件
 
 class ImageController extends FieldController
 {
 
     public function index()
     {
-        return parent::renderAction('index');
+        return $this->fetch();
     }
 
 
@@ -51,7 +51,7 @@ class ImageController extends FieldController
 
     public function edit()
     {
-        $this->assign('token', Common::makeTokenByMCAData('field', 'Image', 'upload'));
-        return parent::renderAction('edit');
+        $this->assign('token', $this->FieldDataXXXModel->makeToken('upload'));
+        return $this->fetch() . $this->fetch('editCss') . $this->fetch('editJs');
     }
 }

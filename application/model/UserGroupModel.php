@@ -20,6 +20,7 @@ class UserGroupModel extends ModelModel
         $map['menu_id']         = $MenuModel->getData('id');
         $map['user_group_name'] = $this->getData('name');
         $map['action']          = $action;
+       
         $AccessUserGroupMenuModel = AccessUserGroupMenuModel::get($map);
         if ('' !== $AccessUserGroupMenuModel->getData('menu_id'))
         {
@@ -28,6 +29,22 @@ class UserGroupModel extends ModelModel
         } else {
             return false;
         }
+    }
+
+   
+    /**
+     * 获取当前用户组的所有用户
+     * @param  string  $name 用户组name键值
+     * @author  gaoliming
+     */
+    public function getAllUserModel($name)
+    {
+        //制定索引
+        $map = array('user_group_name' => $name);
+
+        //取出所有用户
+        $UserModel = new UserModel;
+        return $UserModel->where($map)->select();
     }
 
     /**
@@ -56,9 +73,9 @@ class UserGroupModel extends ModelModel
      * @param  MenuModel &$MenuModel [description]
      * @return boolean               [description]
      */
-    public function isUpdateAllowedByMenuModel(MenuModel &$MenuModel)
+    public function isEditAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->isAllowedByMenuModelAction($MenuModel, 'update');
+        return $this->isAllowedByMenuModelAction($MenuModel, 'edit');
     }
 
     /**
@@ -79,21 +96,6 @@ class UserGroupModel extends ModelModel
     public function isDeleteAllowedByMenuModel(MenuModel &$MenuModel)
     {
         return $this->isAllowedByMenuModelAction($MenuModel, 'delete');
-    }
-
-    /**
-     * 获取当前用户组的所有用户
-     * @param  string  $name 用户组name键值
-     * @author  gaoliming
-     */
-    public function getAllUserModel($name)
-    {
-        //制定索引
-        $map = array('user_group_name' => $name);
-
-        //取出所有用户
-        $UserModel = new UserModel;
-        return $UserModel->where($map)->select();
     }
 
 }
