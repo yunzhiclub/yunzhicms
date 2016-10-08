@@ -86,10 +86,13 @@
                                         {foreach name="UserGroupModels" id="_UserGroupModel"}
                                         {$_UserGroupModel->title}
                                         {volist name="BlockModel->getRoute()" id="_route"}
-                                        <li>
-                                                <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}][{$_route['action']}]" {eq name="_UserGroupModel->isAllowedByBlockModelAction($BlockModel, $_route['action'])" value="true" }checked="checked"{/eq}>
-                                                <label>{$_route['title']}</label>
-                                        </li>
+                                        <ul>
+                                                <li>
+                                                    <label>
+                                                    <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}][{$_route['action']}]" {eq name="_UserGroupModel->isAllowedByBlockModelAction($BlockModel, $_route['action'])" value="true" }checked="checked"{/eq}>
+                                                    {$_route['title']}</label>
+                                                </li>
+                                        </ul>
                                         {/volist}
                                         {/foreach}
                                     </ul>
