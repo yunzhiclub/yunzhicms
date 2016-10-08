@@ -83,12 +83,33 @@
                                 <div>
                                     <label for="">对哪些用户组可见</label>
                                     <ul>
-                                        {foreach name="UserGroupModels" id="_UserGroupModel"}
-                                        <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}]" {eq name="BlockModel->checkIsHave($_UserGroupModel)" value="true" }checked="" {/eq} />
+                                        {volist name="UserGroupModels" id="_UserGroupModel"}
                                         <li>
                                             {$_UserGroupModel->title}
+                                            <ul>
+                                                <li>
+                                                    <label for="">
+                                                        <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][index]" {eq name="_UserGroupModel->isIndexAllowedByBlockModel($BlockModel)" value="true" }checked="checked" {/eq} />浏览</label>
+                                                </li>
+                                                <li>
+                                                    <label for="">
+                                                        <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][read]" {eq name="_UserGroupModel->isReadAllowedByBlockModel($BlockModel)" value="true" }checked="checked" {/eq} />查看</label>
+                                                </li>
+                                                <li>
+                                                    <label for="">
+                                                        <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][create]" {eq name="_UserGroupModel->isCreateAllowedByBlockModel($BlockModel)" value="true" }checked="checked" {/eq} />新增</label>
+                                                </li>
+                                                <li>
+                                                    <label for="">
+                                                        <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][edit]" {eq name="_UserGroupModel->isEditAllowedByBlockModel($BlockModel)" value="true" }checked="checked" {/eq} />编辑</label>
+                                                </li>
+                                                <li>
+                                                    <label for="">
+                                                        <input type="checkbox" name="access[{$_UserGroupModel->getData('name')}][delete]" {eq name="_UserGroupModel->isDeleteAllowedByBlockModel($BlockModel)" value="true" }checked="checked" {/eq} />删除</label>
+                                                </li>
+                                            </ul>
                                         </li>
-                                        {/foreach}
+                                        {/volist}
                                     </ul>
                                 </div>
                                 <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
