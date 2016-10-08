@@ -40,7 +40,7 @@ class BlockController extends Controller
         $Object->BlockModel = $BlockModel;
 
         // 取配置过滤器信息
-        $Object->config = $BlockModel->getSampleConfig();;
+        $Object->config = $BlockModel->getSampleConfig();
 
         // 获取当前主题信息
         $Object->currentThemeModel = ThemeModel::getCurrentThemeModel();

@@ -1,0 +1,12 @@
+<!-- start single sidebar -->
+<div class="mu-single-sidebar">
+	{volist name="MenuModels" id="_MenuModel"}
+	<h3><a href="#">{$_MenuModel->title}</a></h3>
+		<ul class="mu-sidebar-catg">
+		{volist name="_MenuModel->sonMenuModels()" id="__MenuModel"}
+			<li><a href="#">{$__MenuModel->title}</a></li>
+		{/volist}
+		</ul>
+	{/volist}
+</div>
+<!-- end single sidebar -->

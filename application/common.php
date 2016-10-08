@@ -654,7 +654,6 @@ class Common{
     static public function getInfoByToken(&$token)
     {
         $tokens = Session::get('tokens');
-
         if (null !== $tokens && array_key_exists($token, $tokens)) {
             return $tokens[$token];
         } else {
