@@ -44,7 +44,7 @@
                             </tr>
                             {/volist}
                             <div style="text-align:right;">
-                                <a href="{:url('create')}" class="btn btn-small btn-info">
+                                <a href="{:url('create', ['relate_type' => $FieldModel->relate_type, 'relate_value' => $FieldModel->relate_value, 'action' => $action])}" class="btn btn-small btn-info">
                                     <i class="btn-icon-only icon-edit"></i> 新增
                                 </a>
                             </div>
