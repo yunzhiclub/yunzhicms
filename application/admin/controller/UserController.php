@@ -18,7 +18,7 @@ class UserController extends AdminController
         $userModels = new UserModel;
 
         //设置条件
-        $map = array( 'is_deleted' => 0 );
+        $map = array( 'is_delete' => 0 );
 
         //取出数据并传进V层
         $userModels = $userModels->where($map)->paginate($pageSize);
@@ -131,7 +131,7 @@ class UserController extends AdminController
     public function deleteAction($id)
     {
         $UserModel = UserModel::get($id);
-        $UserModel->setData('is_deleted', 1)->save();
+        $UserModel->setData('is_delete', 1)->save();
         return $this->success('删除成功', url('index'));
     }
 
