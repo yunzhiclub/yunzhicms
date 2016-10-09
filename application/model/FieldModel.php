@@ -290,10 +290,11 @@ class FieldModel extends ModelModel
     */  
    public function getallrelatetypefield($relate_type)  
     {  
-        if (null === $relate_type) {  
-            $FieldModels = $this->select();  
+        $map = array('is_delete' => 0);
+        if (null === $relate_type) {
+            $FieldModels = $this->where($map)->select();  
             } else {  
-            $FieldModels = $this->where('relate_type', 'like', '%' . $relate_type . '%')->select();  
+            $FieldModels = $this->where($map)->where('relate_type', 'like', '%' . $relate_type . '%')->select();  
        }  
              
         $number      = count($FieldModels);  
@@ -353,5 +354,21 @@ class FieldModel extends ModelModel
             }
         }
         return true;
+    }
+
+    /**
+     * 获取跳转时正确的参数
+     * @return  string
+     * @author  gaoliming
+     */
+    public function getRightParam($map = array())
+    {
+        //第一个界面的时候
+        if (1 === count($map)) {
+            return null;
+        }
+
+        //第二界面的时候
+        return $map['relate_value'];
     }
 }
