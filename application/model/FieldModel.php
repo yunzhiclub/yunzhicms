@@ -284,21 +284,27 @@ class FieldModel extends ModelModel
     }
 
     /**  
-     * 根据relate_value的取出相应的菜单  
+     * 根据realte_type与relate_value分类 
+     * @param string $ralte_type 查询是的键值
      * @return  array   
      * @author  gaoliming   
     */  
    public function getallrelatetypefield($relate_type)  
     {  
         $map = array('is_delete' => 0);
+
+        //取出所有的数据库数据
         if (null === $relate_type) {
             $FieldModels = $this->where($map)->select();  
-            } else {  
+            } else {
+            //查询功能  
             $FieldModels = $this->where($map)->where('relate_type', 'like', '%' . $relate_type . '%')->select();  
        }  
              
         $number      = count($FieldModels);  
-        $map         = array($FieldModels['0']->relate_value);  
+        $map         = array($FieldModels['0']->relate_value);
+
+        //对数据进行遍历找出所有不同realte_value  
         for ($i=1; $i < $number; $i++) {   
             $j = 0;  
             foreach ($map as $value) {  
@@ -310,18 +316,22 @@ class FieldModel extends ModelModel
             if ($j === count($map)) {  
                array_push($map, $FieldModels[$i]->relate_value);  
             }  
-        }  
+        }
+
+        //在所有不同的ralte_value中各取出一个记录  
         $FieldModelArray = array();  
         foreach ($map as $value) {  
             $data = array('relate_value' => $value);  
             array_push($FieldModelArray, $this->where($data)->find());  
         }  
- 
+        
+
+        //分类完成
         return $FieldModelArray;  
     }  
   
     /**  
-     * 获取相应字段类型  
+     * 获取字段相应字段类型  
      * @return object  
      * @author gaoliming  
      */  
@@ -346,6 +356,8 @@ class FieldModel extends ModelModel
         if (!empty($weight)) {
             foreach ($weight as $key => $value) {
                 $FieldModel = $this->get($key);
+
+                //将有所变动的数据进行保存
                 if ($FieldModel->weight != $value) {
                     if (false === $FieldModel->setData('weight', $value)->save()) {
                         return false;
