@@ -1,0 +1,61 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5>
+                编辑字段
+                </h5>
+            </div>
+            <br>
+            <form action="{:url('update')}" method="post" class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="_title">标题</label>
+                    <div class="controls">
+                        <input type="hidden" name="id" value="{$FieldModel->id}">
+                        <input type="hidden" name="param" value="{$FieldModel->relate_value}">
+                        <input type="text" id="_title" name="title" value="{$FieldModel->title}" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">机读字段(不能有中文)</label>
+                    <div class="controls">
+                        <input type="text" id="_title" name="name" value="{$FieldModel->name}" disabled="disabled" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">relate_type</label>
+                    <div class="controls">
+                        <input type="text" name="relate_type"value="{$FieldModel->relate_type}" >
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">relate_value</label>
+                    <div class="controls">
+                        <input type="text" name="relate_value" placeholder="relate_value" value="{$FieldModel->relate_value}" >
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="_title">字段类型</label>
+                    <div class="controls">
+                        <select name="field_type_name" class="form-control">
+                            {volist name="FieldTypeModels" id="_FieldTypeModel"}
+                            <option value="{$_FieldTypeModel->name}" {eq value="$_FieldTypeModel->name" name="$FieldModel->field_type_name"}selected="selected"{/eq}>
+                                {$_FieldTypeModel->title}
+                            </option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group" style="margin-left:95px">
+                    <label class="control-label">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="icon-ok"></i> 更新
+                        </button>
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
