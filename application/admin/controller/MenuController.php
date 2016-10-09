@@ -8,6 +8,7 @@ use app\model\AccessUserGroupMenuModel; // 用户组 菜单 权限
 use app\model\ComponentModel;           // 组件
 use app\model\AccessMenuBlockModel;     // 菜单 区块
 use app\model\AccessMenuPluginModel;    // 菜单 组件
+use think\Request;                      // 请求类
 
 class MenuController extends AdminController
 {
@@ -21,11 +22,11 @@ class MenuController extends AdminController
     public function editAction($id)
     {
         $MenuModel = MenuModel::get($id);
+    
         $this->assign('MenuModel', $MenuModel);
 
         // 所有的pid=0的菜单
-        $map = array('pid' => 0, 'is_deleted' => 0);
-        $MenuModel = new MenuModel;
+        $map = array('pid' => 0, 'is_delete' => 0);
         $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
 
@@ -41,14 +42,28 @@ class MenuController extends AdminController
         $userGroupModels = UserGroupModel::all();
         $this->assign('userGroupModels', $userGroupModels);
 
+        // 传入组件对应的route信息
+
+        // 拼出地址
+        $routePath = APP_PATH . 'component' . DS . 'route' . DS . $MenuModel->getData('component_name') . 'Route.php';
+
+        // 规范化绝对路径, 如果没有改文件就返回false
+        $routePath = realpath($routePath);
+        if (false === $routePath) {
+            $route = [];
+        }
+
+        // 取出文件内容
+        $route = include $routePath;
+        $this->assign('route', $route);
+
         return $this->fetch('menu/edit');
     }
 
-    public function updateAction()
+    public function updateAction($id)
     {
-        $id = input('param.id');
-        $data = input('param.');
-
+        $data = Request::instance()->param();
+         
         $MenuModel = MenuModel::get($id);
         $MenuModel->setData('title', $data['title']);
         $MenuModel->setData('pid', $data['pid']);
@@ -62,10 +77,12 @@ class MenuController extends AdminController
         $MenuModel->setData('description', $data['description']);
        
         // 配置信息
-        $MenuModel->setData('config', json_encode($data['config']));
-
+        if (array_key_exists('config', $data)) {
+            $MenuModel->setData('config', json_encode($data['config']));
+        }
+        
         // 过滤器信息
-        if (array_key_exists('filter', $data)){
+        if (array_key_exists('filter', $data)) {
             $filter = Common::makeFliterArrayFromPostArray($data['filter']);
             $MenuModel->setData('filter', json_encode($filter));
         }
@@ -80,27 +97,40 @@ class MenuController extends AdminController
             ]
         );
 
+        $menuType = $MenuModel->getData('menu_type_name');
         if(true !== $result){
             // 验证失败 输出错误信息
-            return $this->error('title不能为空', url('MenuType/read'));
+            return $this->error('title不能为空', url('MenuType/read', ['name' => $menuType]));
         }
 
         $MenuModel->save();
 
-        //若未返回数值，则置为空数组
-        $data['access'] = isset($data['access'])?$data['access']:array();
+        // 更新user_group_menu表
+        $AccessUserGroupMenuModel = new AccessUserGroupMenuModel;
+        $map = ['menu_id' => $id];
+        $AccessUserGroupMenuModel->where($map)->delete();
+
 
         // 更新 菜单 用户组 权限
-        AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
+        // 拼接user_group_name menu_id 存入其中间表
+        if (array_key_exists('access', $data)) {
+            $datas = array();
+            foreach ($data['access'] as $key => $value) {
+                foreach ($data['access'][$key] as  $key1 => $value1) {
+                    array_push($datas, ['user_group_name' => $key, 'menu_id' => $id, 'action' => $key1]);
+                }
+            }
 
-        $menuType = $MenuModel->getData('menu_type_name');
+            $AccessUserGroupMenuModel->saveAll($datas);
+        }
+
         return $this->success('操作成功', url('MenuType/read', ['name' => $menuType]));
     }
 
     public function createAction()
     {
         // 所有的pid=0的菜单
-        $map = array('pid' => 0, 'is_deleted' => 0);
+        $map = array('pid' => 0, 'is_delete' => 0);
         $MenuModel = new MenuModel;
         $MenuModels = $MenuModel->where($map)->select();
         $this->assign('MenuModels', $MenuModels);
@@ -113,16 +143,12 @@ class MenuController extends AdminController
         $Components = ComponentModel::all();
         $this->assign('Components', $Components);
 
-        // 将用户组信息传入
-        $userGroupModels = UserGroupModel::all();
-        $this->assign('userGroupModels', $userGroupModels);
-
         return $this->fetch('menu/create');
     }
 
     public function saveAction()
     {
-        $data = input('param.');
+        $data = Request::instance()->param();
 
         $MenuModel = new MenuModel;
         $MenuModel->setData('title', $data['title']);
@@ -143,20 +169,14 @@ class MenuController extends AdminController
                 'title'  => 'require',
             ]
         );
+
+        $menuType = $MenuModel->getData('menu_type_name');
         if(true !== $result){
             // 验证失败 输出错误信息
-            return $this->error('title不能为空', url('MenuType/read'));
+            return $this->error('title不能为空', url('MenuType/read', ['name' => $menuType]));
         }
         $id = $MenuModel->save();
-
-        // 判断是否传入用户组权限信息
-        if (isset($data['access'])) {
-
-            // 更新菜单用户组关联表
-            AccessUserGroupMenuModel::updateByMenuIdAndUserGroups($id, $data['access']);
-        }
       
-        $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('保存成功', url('MenuType/read', ['name' => $menuType]));
 
     }
@@ -188,7 +208,7 @@ class MenuController extends AdminController
         }
 
         //删除菜单
-        $MenuModel->setData('is_deleted', 1)->save();
+        $MenuModel->setData('is_delete', 1)->save();
 
         $menuType = $MenuModel->getData('menu_type_name');
         return $this->success('删除成功', url('MenuType/read', ['name' => $menuType]));
