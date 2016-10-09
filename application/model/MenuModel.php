@@ -96,6 +96,7 @@ class MenuModel extends ModelModel
             // 定义路由关键字
             $routeKeys = ['edit', ':id', 'delete', 'create', 'save'];
             $routeInfo = Request::instance()->routeInfo();
+        
             $rule = $routeInfo['rule'];
             
             // 如果是空信息，则说明执行的为首页。手动添加首页路由规则
@@ -123,13 +124,13 @@ class MenuModel extends ModelModel
     /**
      * 获取某个菜单类型的所有的列表
      * 先转化为树状，先转化为列表，这样顺序输出后，就有了上下级的结构
-     * @param  string $menuTypeName 菜单类型名 int pid $pid 父级菜单的id int $is_deleted 是否删除标记
+     * @param  string $menuTypeName 菜单类型名 int pid $pid 父级菜单的id int $is_delete 是否删除标记
      * @return lists               
      * 
      */
-    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_deleted = null )
+    public function getListsByMenuTypeNamePid($menuTypeName, $pid, $is_delete = null )
     {
-        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_deleted' => $is_deleted];
+        $map = ['menu_type_name' => $menuTypeName, 'pid' => $pid, 'is_delete' => $is_delete];
         $MenuModels = $this->where($map)->order('weight desc')->select();
         return $MenuModels;
     }
@@ -243,7 +244,7 @@ class MenuModel extends ModelModel
      */
     public function sonMenuModels()
     {
-        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_deleted' => 0];
+        $map = ['pid' => $this->id, 'status' => 0, 'is_hidden' => '0', 'is_delete' => 0];
         $menuModels = $this->where($map)->order('weight desc')->select();
         return $menuModels;
     }
@@ -261,6 +262,34 @@ class MenuModel extends ModelModel
             $MenuModel = $MenuModel->fatherMenuModel();
         } while ('' !== $MenuModel->getData('id'));
         return array_reverse($tree);
+    }
+
+    /**
+     * 获取当前菜单树中的第二级菜单与第三级菜单
+     * @return array MenuModel
+     * @author  gaoliming
+     */
+    public function getSecondMenuModle()
+    {
+        $MenuModel = $this;
+
+        //一级菜单
+        if (0 === $MenuModel->pid) {
+            //取出二级菜单
+            return $MenuModel->sonMenuModels();
+        }
+
+        //二级菜单
+        $FirstMenuModel = MenuModel::get($MenuModel->pid);
+        if (0 === $FirstMenuModel->pid) {
+            //取出二级菜单
+            return $FirstMenuModel->sonMenuModels();
+        }
+
+        //三级菜单
+        $FirstMenuModel = MenuModel::get($FirstMenuModel->pid);
+        //取出二级菜单
+        return $FirstMenuModel->sonMenuModels();
     }
 
     /**
@@ -390,14 +419,24 @@ class MenuModel extends ModelModel
      * 更新菜单权重
      * author liuxi
      */
-    public function updateMenuWeightById($id,$weight)
+    public function updateMenuWeight($weight)
     {
-        if (!$id || !is_numeric($id)) {
-            throw new Exception("ID不合法");
+        //判断是否为空数组
+        if (!empty($weight)) {
+            foreach ($weight as $menuId => $value) {
+                $data = array(
+                    'weight' => $value,
+                    );
+                if ($this->get($menuId)->getData('weight')
+                    != $value) {
+                    //如果有一个保存失败，则返回false
+                    if (false === $this->get($menuId)->save($data))
+                    {
+                        return false;
+                    }
+                }
+            }
         }
-        $data = array(
-            'weight' => intval($weight),
-            );
-        return $this->where('id','=',$id)->find()->save($data);
+        return true;
     }
 }

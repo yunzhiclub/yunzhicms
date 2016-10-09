@@ -8,9 +8,7 @@ class MenuTypeController extends AdminController
     public function indexAction()
     {
         $MenuTypeModel = new MenuTypeModel;
-        $map = array(
-            'is_deleted' => 0
-            );
+        $map = array('is_delete' => 0);
 
         //设置分页
         $MenuTypeModels = $MenuTypeModel->where($map)->paginate();
@@ -49,7 +47,7 @@ class MenuTypeController extends AdminController
             return $this->error('含有下一级菜单不能删除');
         }
 
-        $MenuTypeModel->setData('is_deleted', 1)->save();
+        $MenuTypeModel->setData('is_delete', 1)->save();
 
         return $this->success('删除成功', url('menuType/index'));
     }
@@ -84,17 +82,12 @@ class MenuTypeController extends AdminController
 
         //判断传过来的值是否为空
         $weight = isset($_POST['weight'])?$_POST['weight']:array();
-
-        //判断是否为空数组
-        if (!empty($weight)) {
-            foreach ($weight as $menuId=>$value) {
-                //执行更新
-                $MenuModel = new MenuModel;
-                $id = $MenuModel->updateMenuWeightById($menuId, $value);
-                if (false === $id) {
-                    $data['message'][] = $menuId;
-                }
-            }
+        
+        //执行更新
+        $MenuModel = new MenuModel;
+        $id = $MenuModel->updateMenuWeight($weight);
+        if (false === $id) {
+            $data['message'][] = $id;
         }
 
         //更新成功，返回
