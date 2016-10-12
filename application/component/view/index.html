@@ -3,17 +3,39 @@
 {include file="../head"}
 
 <body>
-        <div class="container-fluid">
+    <div class="container">
         <div class="row">
-            <div class="col-md-2 col-lg-2" >
-            <img src="{:__ROOT__}\theme\varsity\img\newslist\logo.png" style="max-height:100px;border-radius:30px;margin-left:30px;" class="img-responsive">
+            <div class="col-md-8 col-lg-8">
+                <img src="{:__ROOT__}\theme\varsity\img\newslist\logo.jpg" style="max-height:100px;border-radius:30px;margin-left:30px;" class="img-responsive">
             </div>
-            <div class="col-md-8 col-lg-8" >
-            <center><img src="{:__ROOT__}\theme\varsity\img\newslist\title.jpg" style="height:80px;display:inline;margin-top:10px;" alt="">
-            </div></center>
-            
-            <div class="col-md-2 col-lg-2" >
-            <img src="{:__ROOT__}\theme\varsity\img\newslist\title-right.png" style="height:100%;margin-top:25px;">
+            <div class="col-md-4 col-lg-4">
+                <div class="row" style="margin-top:10px;color:blue;">
+                    <div class="col-md-3">
+                    <a href="#">邮箱登陆</a>
+                    </div>
+                    <div class="col-md-3">
+                    <a href="#">旧版回顾</a>
+                    </div>
+                    <div class="col-md-3">
+                    <a href="#">加入我们</a>
+                    </div>
+                    <div class="col-md-3">
+                    
+                    </div>
+                </div>
+                <div class="row" style="margin-top:34px">
+                    <div class="col-md-12">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="请输入关键字">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">搜索</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
