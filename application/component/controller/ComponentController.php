@@ -98,7 +98,7 @@ class ComponentController extends Controller
         {   
             $template = $themeTemplate;
         }
-
+        trace('可以在这里进行调试的输入与输出');
         // 获取当前主题
         return $this->view->fetch($template, $vars, $replace, $config);
     }
