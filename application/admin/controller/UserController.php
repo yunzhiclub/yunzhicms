@@ -170,7 +170,6 @@ class UserController extends AdminController
         }
         $UserModel->setData('status', 0)->save();
         return $this->success('激活成功', url('index'));
-        
     }
 
 }
