@@ -16,7 +16,6 @@
                             <th>邮箱</th>
                             <th>姓名</th>
                             <th>用户组</th>
-                            <th>状态</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -28,15 +27,6 @@
                             <td>{$_UserModel->getData('username')}</td>
                             <td>{$_UserModel->getData('name')}</td>
                             <td>{$_UserModel->getData('user_group_name')}</td>
-                            <td>
-                                {eq value="1" name="$_UserModel->getData('status')"}
-                                <span class="badge">
-                                    禁用 
-                                </span> {else /}
-                                <span class="badge span_backgroud_color">
-                                    激活 
-                                </span> {/eq}
-                            </td>
                             <td>{$_UserModel->create_time}</td>
                             <td>
                                 {eq value="1" name="$_UserModel->get_Usergroup($_UserModel->user_group_name)->is_admin"}{else /}
@@ -45,11 +35,11 @@
                                 <a href="{:url( 'resetPassword?id=' . $_UserModel->getData('id'))}" class="btn btn-small btn-primary">
                                     <i class="btn-icon-only icon-edit"></i> 重置密码
                                 </a>
-                                <a href="{:url('whetherForbid?id=' . $_UserModel->id)}" class="btn btn-small btn-warning">{eq value="1" name="$_UserModel->getData('status')"}
-                                    激活 
+                                {eq value="1" name="$_UserModel->getData('status')"}
+                                    <a href="{:url('whetherForbid?id=' . $_UserModel->id)}" class="btn btn-small btn-success">激活</a> 
                                 {else /}
-                                    禁用 
-                              {/eq}</a> {/eq}
+                                    <a href="{:url('whetherForbid?id=' . $_UserModel->id)}" class="btn btn-small btn-danger">禁用 </a>
+                              {/eq} {/eq}
                             </td>
                         </tr>
                         {/volist}
