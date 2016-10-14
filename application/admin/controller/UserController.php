@@ -162,12 +162,18 @@ class UserController extends AdminController
      */
     public function whetherForbidAction($id)
     {
+        //取得用户id
         $UserModel = UserModel::get($id);
-        if( $UserModel->getData('status') ===0)
+
+        //判断用户是否被禁用
+        //否 => 显示是否禁用
+        if( $UserModel->getData('status') === 0)
         {
             $UserModel->setData('status', 1)->save();
             return $this->success('禁用成功', url('index'));
         }
+
+        //是 => 显示是否激活
         $UserModel->setData('status', 0)->save();
         return $this->success('激活成功', url('index'));
     }
