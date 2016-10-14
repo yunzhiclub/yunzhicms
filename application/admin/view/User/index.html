@@ -31,10 +31,10 @@
                         <td>
                             {eq value="1" name="$_UserModel->getData('status')"}
                             <span class="badge">
-                                    已删除
+                                    <a href="{:url('whetherForbid?id=' . $_UserModel->id)}" style="color:#fff;">禁用 </a>
                                 </span> {else /}
                             <span class="badge span_backgroud_color">
-                                    激活
+                                    <a href="{:url('whetherForbid?id=' . $_UserModel->id)}" style="color:#fff;">激活 </a>
                                 </span> {/eq}
                         </td>
                         <td>{$_UserModel->create_time}</td>
