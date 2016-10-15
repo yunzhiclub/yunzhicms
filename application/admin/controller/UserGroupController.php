@@ -9,6 +9,7 @@ use app\model\AccessUserGroupMenuModel;    //AccessUserGroupMenuModel
 
 class UserGroupController extends AdminController
 {
+    
     /**
      * 显示用户组信息
      * @author liuyanzhao
@@ -23,7 +24,7 @@ class UserGroupController extends AdminController
         $map      = array('is_delete' => 0);
     	$UserGroupModels = $UserGroupModel->where($map)->paginate($pageSize);
     	$this->assign('UserGroupModels', $UserGroupModels);
-        // return $this->fetch();
+        
         return $this->fetch('UserGroup/index');
     }
 
