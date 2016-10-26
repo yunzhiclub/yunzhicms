@@ -15,6 +15,8 @@ return [
     // +----------------------------------------------------------------------
     // 应用调试模式
     'app_debug'              => true,
+    // 应用Trace
+    'app_trace'              => true,
     // 默认全局过滤方法 用逗号分隔多个
     'default_filter'         => 'htmlspecialchars',
     // 是否启用控制器类后缀
@@ -64,4 +66,10 @@ return [
 
     //设置默认密码
     'defaultPassword' => 111111,
+
+
+    'trace'                  => [
+        // 内置Html Console 支持扩展
+        'type' => 'console',
+    ],
 ];

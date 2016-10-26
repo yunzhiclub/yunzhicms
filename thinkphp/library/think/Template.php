@@ -374,8 +374,8 @@ class Template
         $this->parseLiteral($content);
         // 解析继承
         $this->parseExtend($content, $template);
-        // 解析布局
-        $this->parseLayout($content);
+        // 解析布局 检查layout
+        $this->parseLayout($content, $template);
         // 检查include语法
         $this->parseInclude($content, $template);
         // 替换包含文件中literal标签内容
@@ -439,9 +439,10 @@ class Template
      * 解析模板中的布局标签
      * @access private
      * @param string $content 要解析的模板内容
+     * @param string $template 当前被解析模板的物理位置
      * @return void
      */
-    private function parseLayout(&$content)
+    private function parseLayout(&$content, $template = '')
     {
         // 读取模板中的布局标签
         if (preg_match($this->getRegex('layout'), $content, $matches)) {
@@ -451,7 +452,7 @@ class Template
             $array = $this->parseAttr($matches[0]);
             if (!$this->config['layout_on'] || $this->config['layout_name'] != $array['name']) {
                 // 读取布局模板
-                $layoutFile = $this->parseTemplateFile($array['name']);
+                $layoutFile = $this->parseTemplateFile($array['name'], $template);
                 if ($layoutFile) {
                     $replace = isset($array['replace']) ? $array['replace'] : $this->config['layout_item'];
                     // 替换布局的主体内容
@@ -1070,9 +1071,10 @@ class Template
      * 解析模板文件名
      * @access private
      * @param  string $template 文件名
+     * @param string $sonTemplate 子文件（布局文件）
      * @return string|false
      */
-    private function parseTemplateFile($template)
+    private function parseTemplateFile($template, $sonTemplate = '')
     {
         if ('' == pathinfo($template, PATHINFO_EXTENSION)) {
             if (strpos($template, '@')) {
@@ -1081,7 +1083,12 @@ class Template
                 $template = APP_PATH . str_replace('@', '/' . basename($this->config['view_path']) . '/', $template);
             } else {
                 $template = str_replace(['/', ':'], $this->config['view_depr'], $template);
-                $template = $this->config['view_path'] . $template;
+                // 如果传入了子模板信息，则取子模板的父文件夹位置为布局文件的根位置
+                if ('' !== $sonTemplate) {
+                    $template = dirname(dirname($sonTemplate)). DS . $template;
+                } else {
+                    $template = $this->config['view_path'] . $template; 
+                }
             }
             $template .= '.' . ltrim($this->config['view_suffix'], '.');
         }
