@@ -21,7 +21,7 @@ return [
     // 密码
     'password'       => 'yunzhi.club',
     // 端口
-    'hostport'       => '',
+    'hostport'       => '3633',
     // 连接dsn
     'dsn'            => '',
     // 数据库连接参数
