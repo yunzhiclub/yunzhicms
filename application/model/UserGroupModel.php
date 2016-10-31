@@ -20,7 +20,6 @@ class UserGroupModel extends ModelModel
         $map['menu_id']         = $MenuModel->getData('id');
         $map['user_group_name'] = $this->getData('name');
         $map['action']          = $action;
-       
         $AccessUserGroupMenuModel = AccessUserGroupMenuModel::get($map);
         if ('' !== $AccessUserGroupMenuModel->getData('menu_id'))
         {
@@ -31,20 +30,28 @@ class UserGroupModel extends ModelModel
         }
     }
 
-   
     /**
-     * 获取当前用户组的所有用户
-     * @param  string  $name 用户组name键值
-     * @author  gaoliming
+     * 获取 用户组 对 区块的操作权限
+     * @param  BlockModel &$BlockModel 区块对象
+     * @param  string     $action      操作
+     * @return boolean                 存在操作返回 true 不存在 false
+     * @author huangshuaibin
      */
-    public function getAllUserModel($name)
+    public function isAllowedByBlockModelAction(BlockModel &$BlockModel, $action)
     {
-        //制定索引
-        $map = array('user_group_name' => $name);
-
-        //取出所有用户
-        $UserModel = new UserModel;
-        return $UserModel->where($map)->select();
+        //查找是否存在当前权限值
+        $map = [];
+        $map['block_id']        = $BlockModel->getData('id');
+        $map['user_group_name'] = $this->getData('name');
+        $map['action']          = $action;
+        $AccessUserGroupBlockModel = AccessUserGroupBlockModel::get($map);
+        
+        if ('' !== $AccessUserGroupBlockModel->getData('block_id')) {
+            //返回非默认值有权限
+            return true;
+        } else {
+            return false;
+        }       
     }
 
     /**
@@ -73,9 +80,9 @@ class UserGroupModel extends ModelModel
      * @param  MenuModel &$MenuModel [description]
      * @return boolean               [description]
      */
-    public function isEditAllowedByMenuModel(MenuModel &$MenuModel)
+    public function isUpdateAllowedByMenuModel(MenuModel &$MenuModel)
     {
-        return $this->isAllowedByMenuModelAction($MenuModel, 'edit');
+        return $this->isAllowedByMenuModelAction($MenuModel, 'update');
     }
 
     /**
@@ -97,5 +104,21 @@ class UserGroupModel extends ModelModel
     {
         return $this->isAllowedByMenuModelAction($MenuModel, 'delete');
     }
+
+    /**
+     * 获取当前用户组的所有用户
+     * @param  string  $name 用户组name键值
+     * @author  gaoliming
+     */
+    public function getAllUserModel($name)
+    {
+        //制定索引
+        $map = array('user_group_name' => $name);
+
+        //取出所有用户
+        $UserModel = new UserModel;
+        return $UserModel->where($map)->select();
+    }
+
 
 }

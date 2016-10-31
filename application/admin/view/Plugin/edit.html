@@ -5,51 +5,51 @@
             <div class="box-header">
                 <i class="icon-table"></i>
                 <h5>
-                {:$BlockModel->title}编辑
+                插件编辑:&nbsp;{:$PluginModel->title}
                 </h5>
             </div>
             <div class="box-content">
                 <div class="form-horizontal">
                     <div class="control-group">
                         <div class="controls">
-                            <form action="{:url('update?id=' . $BlockModel->id)}" method="post">
+                            <form action="{:url('update?id=' . $PluginModel->id)}" method="post">
                                 <input type="hidden" name="_method" value="POST" />
                                 <div>
-                                    <label for="">名称</label>
-                                    <input type="text" name="title" value="{$BlockModel->title}" />
+                                    <label for="">插件名称</label>
+                                    <input type="text" name="title" value="{$PluginModel->title}" />
                                 </div>
                                 <div>
-                                    <label for="">区块类型</label>
-                                    <select name="block_type_name" class="form-control">
-                                        {volist name="BlockTypeModels" id="BlockTypeModel"}
-                                        <option {eq name="$BlockTypeModel->name" value="$BlockModel->block_type_name" } selected="selected" {/eq}>{$BlockTypeModel->name}</option>
+                                    <label for="">插件类型</label>
+                                    <select name="plugin_type_name" class="form-control">
+                                        {volist name="PluginTypeModels" id="PluginTypeModel"}
+                                        <option {eq name="$PluginTypeModel->name" value="$PluginModel->plugin_type_name" } selected="selected" {/eq}>{$PluginTypeModel->name}</option>
                                         {/volist}
                                     </select>
                                 </div>
                                 <div>
                                     <label for="">描述</label>
-                                    <input type="text" name="description" value="{$BlockModel->description}" />
+                                    <input type="text" name="description" value="{$PluginModel->description}" />
                                 </div>
                                 <div>
                                     <label for="">所处位置</label>
                                     <select name="position_name" class="form-control">
                                         {volist name="PositionModels" id="PositionModel"}
-                                        <option {eq name="$PositionModel->name" value="$BlockModel->position_name" } selected="selected" {/eq}>{$PositionModel->name}</option>
+                                        <option {eq name="$PositionModel->name" value="PluginModel->position_name" } selected="selected" {/eq}>{$PositionModel->name}</option>
                                         {/volist}
                                     </select>
                                 </div>
                                 <div>
                                     <label for="">状态</label>
-                                    <input type="text" name="status" value="{$BlockModel->status}" />
+                                    <input type="text" name="status" value="{$PluginModel->status}" />
                                 </div>
                                 <div>
                                     <label for="">权重</label>
-                                    <input type="text" name="weight" value="{$BlockModel->weight}" />
+                                    <input type="text" name="weight" value="{$PluginModel->weight}" />
                                 </div>
                                 <div>
                                     <label for="">配置信息</label>
                                     <ol>
-                                        {foreach name="$BlockModel->getConfig()" key="key" id="_config"}
+                                        {foreach name="$PluginModel->getConfig()" key="key" id="_config"}
                                         <li>
                                             <label>{$_config['title']}</label>
                                             <input type="text" name="config[{$key}]" value="{$_config['value']}">
@@ -60,26 +60,22 @@
                                 <div>
                                     <label for="">过滤器信息</label>
                                     <ol>
-                                        {foreach name="$BlockModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
+                                        {foreach name="$PluginModel->getFilterModels()" key="key" id="_FilterModel"} {include file="../editFilter" /} {/foreach}
                                     </ol>
                                 </div>
                                 <div>
                                     <label for="">对哪些菜单显示</label>
                                     <ul>
                                         {foreach name="MenuModels" id="_MenuModel"}
-                                        
+                                        <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="PluginModel->checkIsShow($_MenuModel)" value="true" } checked="checked" {/eq} />
                                         <li>
-                                           
-                                            <label> 
-                                            <input type="checkbox" name="menuids[{$_MenuModel->id}]" {eq name="BlockModel->checkIsShow($_MenuModel)" value="true" } checked="checked" {/eq} />
                                             <?php
-                                                for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
-                                                {
+                                               for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
+                                              {
                                                   echo '|--';
-                                                }
-                                            ?>
-                                            {$_MenuModel->title}
-                                            </label>
+                                              }
+                                          ?>
+                                                {$_MenuModel->title}
                                         </li>
                                         {/foreach}
                                     </ul>
@@ -88,18 +84,10 @@
                                     <label for="">对哪些用户组可见</label>
                                     <ul>
                                         {foreach name="UserGroupModels" id="_UserGroupModel"}
+                                        <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}]" {eq name="PluginModel->checkIsHave($_UserGroupModel)" value="true" }checked="checked" {/eq} />
                                         <li>
-                                        {$_UserGroupModel->title}
-                                        {volist name="BlockModel->getRoute()" id="_route"}
-                                        <ul>
-                                            <li>
-                                                <label>
-                                                <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}][{$_route['action']}]" {eq name="_UserGroupModel->isAllowedByBlockModelAction($BlockModel, $_route['action'])" value="true" }checked="checked"{/eq}>
-                                                {$_route['title']}</label>
-                                            </li>
-                                        </ul>
+                                            {$_UserGroupModel->title}
                                         </li>
-                                        {/volist}
                                         {/foreach}
                                     </ul>
                                 </div>
