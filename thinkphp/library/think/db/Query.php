@@ -1894,6 +1894,10 @@ class Query
         } else {
             $data = null;
         }
+
+        if (null === $data) {
+            $data = new $this->model;
+        }
         return $data;
     }
 

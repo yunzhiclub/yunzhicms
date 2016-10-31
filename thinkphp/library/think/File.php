@@ -209,10 +209,10 @@ class File extends SplFileObject
         }
 
         /* 检查图像文件 */
-        if (!$this->checkImg()) {
-            $this->error = '非法图像文件！';
-            return false;
-        }
+        // if (!$this->checkImg()) {
+        //     $this->error = '非法图像文件！';
+        //     return false;
+        // }
 
         return true;
     }
@@ -227,13 +227,23 @@ class File extends SplFileObject
         if (is_string($ext)) {
             $ext = explode(',', $ext);
         }
-        $extension = strtolower(pathinfo($this->getInfo('name'), PATHINFO_EXTENSION));
+        $extension = $this->getExtension();
         if (!in_array($extension, $ext)) {
             return false;
         }
         return true;
     }
 
+    /**
+     * 获取扩展名
+     * @return   string                   
+     * @author panjie panjie@mengyunzhi.com
+     * @DateTime 2016-09-07T10:31:23+0800
+     */
+    public function getExtension()
+    {
+        return strtolower(pathinfo($this->getInfo('name'), PATHINFO_EXTENSION));
+    }
     /**
      * 检测图像文件
      * @return bool
@@ -242,7 +252,7 @@ class File extends SplFileObject
     {
         $extension = strtolower(pathinfo($this->getInfo('name'), PATHINFO_EXTENSION));
         /* 对图像文件进行严格检测 */
-        if (in_array($extension, ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && !in_array($this->getImageType($this->filename), [1, 2, 3, 4, 6])) {
+        if (!in_array($extension, ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) || !in_array($this->getImageType($this->filename), [1, 2, 3, 4, 6])) {
             return false;
         }
         return true;

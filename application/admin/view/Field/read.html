@@ -1,0 +1,65 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5>
+                字段列表
+                </h5>
+            </div>
+            <div class="box-content box-table">
+                <form id="yunzhicms-weight">
+                    <table id="sample-table" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>权重</th>
+                                <th>机读名称</th>
+                                <th>字段类型</th>
+                                <th>relate_type</th>
+                                <th>relate_value</th>
+                                <th class="td-actions">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="FieldModels" id="_FieldModel"}
+                            <tr>
+                                <td>{$_FieldModel->title}</td>
+                                <td>
+                                    <input style="width:100px" size="4" type="text" name="weight[{$_FieldModel->id}]" value="{$_FieldModel->weight}" />
+                                </td>
+                                <td>{$_FieldModel->name}</td>
+                                <td>{$_FieldModel->getFieldTypebyfieldtypename()->title}</td>
+                                <td>{$_FieldModel->relate_type}</td>
+                                <td>{$_FieldModel->relate_value}</td>
+                                <td class="td-actions">
+                                    <a href="{:url('edit?id=' . $_FieldModel->id)}" class="btn btn-small btn-info">
+                                        <i class="btn-icon-only icon-edit"></i> 编辑
+                                    </a>
+                                    <a href="{:url('delete?id=' . $_FieldModel->id)}" class="btn btn-small btn-danger">
+                                        <i class="btn-icon-only icon-remove"></i> 删除
+                                    </a>
+                                </td>
+                            </tr>
+                            {/volist}
+                            <div style="text-align:right;">
+                                <a href="{:url('create')}" class="btn btn-small btn-info">
+                                    <i class="btn-icon-only icon-edit"></i> 新增
+                                </a>
+                            </div>
+                        </tbody>
+                    </table>
+                </form>
+                <div>
+                    <button id="button-weight" type="button" class="btn btn-primary">更新字段顺序</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var SCOPE = {
+        'weight_url' : "{:url('Field/weight')}",
+    }
+</script>

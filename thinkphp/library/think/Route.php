@@ -48,6 +48,17 @@ class Route
         'delete' => ['DELETE', '/:id', 'delete'],
     ];
 
+    // CURD路由操作方法及定义
+    private static $curd = [
+        'index'  => ['GET', '', 'index'],
+        'create' => ['GET', '/create', 'create'],
+        'edit'   => ['GET', '/:id/edit', 'edit'],
+        'read'   => ['GET', '/:id', 'read'],
+        'save'   => ['POST', '', 'save'],
+        'update' => ['POST', '/:id', 'update'],
+        'delete' => ['GET', '/:id/delete', 'delete'],
+    ];
+
     // 不同请求类型的方法前缀
     private static $methodPrefix = [
         'GET'    => 'get',
@@ -174,6 +185,12 @@ class Route
             unset($rule['__rest__']);
         }
 
+        // 检查CURD路由
+        if (isset($rule['__curd__']))
+        {
+            self::curd($rule['__curd__']);
+            unset($rule['__curd__']);
+        }
         self::registerRules($rule, strtoupper($type));
     }
 
@@ -498,13 +515,24 @@ class Route
         } else {
             if (strpos($rule, '.')) {
                 // 注册嵌套资源路由
-                $array = explode('.', $rule);
-                $last  = array_pop($array);
-                $item  = [];
+                $rules      = explode('/', $rule);  
+                $lastRule   = array_pop($rules);            // 取出嵌套路由
+                $firstRule  = array_pop($rules);            // 取出嵌套路由前的模块名
+
+                $array  = explode('.', $lastRule);
+                $last   = array_pop($array);
+                $item   = [];
                 foreach ($array as $val) {
+
                     $item[] = $val . '/:' . (isset($option['var'][$val]) ? $option['var'][$val] : $val . '_id');
                 }
                 $rule = implode('/', $item) . '/' . $last;
+
+                // 存在模块名，则进行模块名的拼接
+                if (isset($firstRule))
+                {
+                    $rule = $firstRule . '/' . $rule;
+                }
             }
             // 注册资源路由
             foreach (self::$rest as $key => $val) {
@@ -523,6 +551,64 @@ class Route
         }
     }
 
+
+    /**
+     * 注册CURD路由 
+     * copy of resource()
+     * @access public
+     * @param string    $rule 路由规则
+     * @param string    $route 路由地址
+     * @param array     $option 路由参数
+     * @param array     $pattern 变量规则
+     * @return void
+     */
+    public static function curd($rule, $route = '', $option = [], $pattern = [])
+    {
+        if (is_array($rule)) {
+            foreach ($rule as $key => $val) {
+                if (is_array($val)) {
+                    list($val, $option, $pattern) = array_pad($val, 3, []);
+                }
+                self::curd($key, $val, $option, $pattern);
+            }
+        } else {
+            if (strpos($rule, '.')) {
+                // 注册嵌套资源路由
+                $rules      = explode('/', $rule);  
+                $lastRule   = array_pop($rules);            // 取出嵌套路由
+                $firstRule  = array_pop($rules);            // 取出嵌套路由前的模块名
+
+                $array  = explode('.', $lastRule);
+                $last   = array_pop($array);
+                $item   = [];
+                foreach ($array as $val) {
+
+                    $item[] = $val . '/:' . (isset($option['var'][$val]) ? $option['var'][$val] : $val . '_id');
+                }
+                $rule = implode('/', $item) . '/' . $last;
+
+                // 存在模块名，则进行模块名的拼接
+                if (isset($firstRule))
+                {
+                    $rule = $firstRule . '/' . $rule;
+                }
+            }
+            // 注册资源路由
+            foreach (self::$curd as $key => $val) {
+                if ((isset($option['only']) && !in_array($key, $option['only']))
+                    || (isset($option['except']) && in_array($key, $option['except']))) {
+                    continue;
+                }
+                if (isset($last) && strpos($val[1], ':id') && isset($option['var'][$last])) {
+                    $val[1] = str_replace(':id', ':' . $option['var'][$last], $val[1]);
+                } elseif (strpos($val[1], ':id') && isset($option['var'][$rule])) {
+                    $val[1] = str_replace(':id', ':' . $option['var'][$rule], $val[1]);
+                }
+                $item = ltrim($rule . $val[1], '/');
+                self::rule($item . '$', $route . '/' . $val[2], $val[0], $option, $pattern);
+            }
+        }
+    }
     /**
      * 注册控制器路由 操作方法对应不同的请求后缀
      * @access public

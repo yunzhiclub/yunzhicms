@@ -1,0 +1,88 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-header">
+                <i class="icon-table"></i>
+                <h5>
+                新增插件
+                </h5>
+            </div>
+            <div class="box-content">
+                <div class="form-horizontal">
+                    <div class="control-group">
+                        <div class="controls">
+                            <form action="{:url('save')}" method="post">
+                                <input type="hidden" name="_method" value="POST" />
+                                <div>
+                                    <label for="">插件名称</label>
+                                    <input type="text" name="title" />
+                                </div>
+                                <div>
+                                    <label for="">插件类型</label>
+                                    <select name="plugin_type_name" class="form-control">
+                                        {volist name="PluginTypeModels" id="PluginTypeModel"}
+                                        <option value="{$PluginTypeModel->name}"> {$PluginTypeModel->name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="">描述</label>
+                                    <input type="text" name="description" />
+                                </div>
+                                <div>
+                                    <label for="">所处位置</label>
+                                    <select name="position_name" class="form-control">
+                                        {volist name="PositionModels" id="PositionModel"}
+                                        <option value="{$PositionModel->name}">{$PositionModel->name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="">状态</label>
+                                    <input type="text" name="status" />
+                                </div>
+                                <div>
+                                    <label for="">权重</label>
+                                    <input type="text" name="weight" />
+                                </div>
+                               
+                                
+                                <div>
+                                    <label for="">对哪些菜单显示</label>
+                                    <ul>
+                                        {foreach name="MenuModels" id="_MenuModel"}
+                                        <input type="checkbox" name="menuids[{$_MenuModel->id}]"/>
+                                        <li>
+                                            <?php
+                                               for ($depth = 0; $depth < $_MenuModel->getDepth(); $depth++)
+                                              {
+                                                  echo '|--';
+                                              }
+                                          ?>
+                                                {$_MenuModel->title}
+                                        </li>
+                                        {/foreach}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <label for="">对哪些用户组可见</label>
+                                    <ul>
+                                        {foreach name="UserGroupModels" id="_UserGroupModel"}
+                                        <input type="checkbox" name="usergroupname[{$_UserGroupModel->getData('name')}]">
+                                        <li>
+                                            {$_UserGroupModel->title}
+                                        </li>
+                                        {/foreach}
+                                    </ul>
+                                </div>
+                                <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

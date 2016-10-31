@@ -44,7 +44,7 @@ class Template
         'taglib_end'         => '}', // 标签库标签结束标记
         'taglib_load'        => true, // 是否使用内置标签库之外的其它标签库，默认自动检测
         'taglib_build_in'    => 'cx', // 内置标签库名称(标签使用不必指定标签库名称),以逗号分隔 注意解析顺序
-        'taglib_pre_load'    => '', // 需要额外加载的标签库(须指定标签库名称)，多个以逗号分隔
+        'taglib_pre_load'    => 'yz', // 需要额外加载的标签库(须指定标签库名称)，多个以逗号分隔
         'display_cache'      => false, // 模板渲染缓存
         'cache_id'           => '', // 模板缓存ID
         'tpl_replace_string' => [],
@@ -184,7 +184,7 @@ class Template
             if (!$this->checkCache($cacheFile)) {
                 // 缓存无效 重新模板编译
                 $content = file_get_contents($template);
-                $this->compiler($content, $cacheFile);
+                $this->compiler($content, $cacheFile, $template);
             }
             // 页面缓存
             ob_start();
@@ -315,7 +315,7 @@ class Template
      * @param string    $cacheFile 缓存文件名
      * @return void
      */
-    private function compiler(&$content, $cacheFile)
+    private function compiler(&$content, $cacheFile, $template)
     {
         // 判断是否启用布局
         if ($this->config['layout_on']) {
@@ -335,7 +335,9 @@ class Template
         }
 
         // 模板解析
-        $this->parse($content);
+        $this->parse($content, $template);
+
+
         if ($this->config['strip_space']) {
             /* 去除html空格与换行 */
             $find    = ['~>\s+<~', '~>(\s+\n|\r)~'];
@@ -362,7 +364,7 @@ class Template
      * @param string $content 要解析的模板内容
      * @return void
      */
-    public function parse(&$content)
+    public function parse(&$content, $template = '')
     {
         // 内容为空不解析
         if (empty($content)) {
@@ -371,11 +373,11 @@ class Template
         // 替换literal标签内容
         $this->parseLiteral($content);
         // 解析继承
-        $this->parseExtend($content);
-        // 解析布局
-        $this->parseLayout($content);
+        $this->parseExtend($content, $template);
+        // 解析布局 检查layout
+        $this->parseLayout($content, $template);
         // 检查include语法
-        $this->parseInclude($content);
+        $this->parseInclude($content, $template);
         // 替换包含文件中literal标签内容
         $this->parseLiteral($content);
         // 检查PHP语法
@@ -437,9 +439,10 @@ class Template
      * 解析模板中的布局标签
      * @access private
      * @param string $content 要解析的模板内容
+     * @param string $template 当前被解析模板的物理位置
      * @return void
      */
-    private function parseLayout(&$content)
+    private function parseLayout(&$content, $template = '')
     {
         // 读取模板中的布局标签
         if (preg_match($this->getRegex('layout'), $content, $matches)) {
@@ -449,7 +452,7 @@ class Template
             $array = $this->parseAttr($matches[0]);
             if (!$this->config['layout_on'] || $this->config['layout_name'] != $array['name']) {
                 // 读取布局模板
-                $layoutFile = $this->parseTemplateFile($array['name']);
+                $layoutFile = $this->parseTemplateFile($array['name'], $template);
                 if ($layoutFile) {
                     $replace = isset($array['replace']) ? $array['replace'] : $this->config['layout_item'];
                     // 替换布局的主体内容
@@ -468,16 +471,17 @@ class Template
      * @param  string $content 要解析的模板内容
      * @return void
      */
-    private function parseInclude(&$content)
+    private function parseInclude(&$content, $template = '')
     {
         $regex = $this->getRegex('include');
-        $func  = function ($template) use (&$func, &$regex, &$content) {
-            if (preg_match_all($regex, $template, $matches, PREG_SET_ORDER)) {
+        $func  = function ($originContent) use (&$func, &$regex, &$content, &$template) {
+            if (preg_match_all($regex, $originContent, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $array = $this->parseAttr($match[0]);
                     $file  = $array['file'];
                     unset($array['file']);
                     // 分析模板文件名并读取内容
+                    $file = dirname($template) . DS . $file . '.'. $this->config['view_suffix'];
                     $parseStr = $this->parseTemplateName($file);
                     foreach ($array as $k => $v) {
                         // 以$开头字符串转换成模板变量
@@ -504,34 +508,36 @@ class Template
      * @param  string $content 要解析的模板内容
      * @return void
      */
-    private function parseExtend(&$content)
+    private function parseExtend(&$content, $template = '')
     {
         $regex  = $this->getRegex('extend');
         $array  = $blocks  = $baseBlocks  = [];
         $extend = '';
-        $func   = function ($template) use (&$func, &$regex, &$array, &$extend, &$blocks, &$baseBlocks) {
-            if (preg_match($regex, $template, $matches)) {
+        $func   = function ($content, $template) use (&$func, &$regex, &$array, &$extend, &$blocks, &$baseBlocks) {
+            if (preg_match($regex, $content, $matches)) {
                 if (!isset($array[$matches['name']])) {
                     $array[$matches['name']] = 1;
                     // 读取继承模板
-                    $extend = $this->parseTemplateName($matches['name']);
+                    $template = dirname($template) . DS . $matches['name'] . '.' . $this->config['view_suffix'];
+                    $extend = $this->parseTemplateName($template);
+                    
                     // 递归检查继承
-                    $func($extend);
+                    $func($extend,  $template);
                     // 取得block标签内容
-                    $blocks = array_merge($blocks, $this->parseBlock($template));
+                    $blocks = array_merge($blocks, $this->parseBlock($content));
                     return;
                 }
             } else {
                 // 取得顶层模板block标签内容
-                $baseBlocks = $this->parseBlock($template, true);
+                $baseBlocks = $this->parseBlock($content, true);
                 if (empty($extend)) {
                     // 无extend标签但有block标签的情况
-                    $extend = $template;
+                    $extend = $content;
                 }
             }
         };
 
-        $func($content);
+        $func($content, $template);
         if (!empty($extend)) {
             if ($baseBlocks) {
                 $children = [];
@@ -1065,9 +1071,10 @@ class Template
      * 解析模板文件名
      * @access private
      * @param  string $template 文件名
+     * @param string $sonTemplate 子文件（布局文件）
      * @return string|false
      */
-    private function parseTemplateFile($template)
+    private function parseTemplateFile($template, $sonTemplate = '')
     {
         if ('' == pathinfo($template, PATHINFO_EXTENSION)) {
             if (strpos($template, '@')) {
@@ -1076,10 +1083,16 @@ class Template
                 $template = APP_PATH . str_replace('@', '/' . basename($this->config['view_path']) . '/', $template);
             } else {
                 $template = str_replace(['/', ':'], $this->config['view_depr'], $template);
-                $template = $this->config['view_path'] . $template;
+                // 如果传入了子模板信息，则取子模板的父文件夹位置为布局文件的根位置
+                if ('' !== $sonTemplate) {
+                    $template = dirname(dirname($sonTemplate)). DS . $template;
+                } else {
+                    $template = $this->config['view_path'] . $template; 
+                }
             }
             $template .= '.' . ltrim($this->config['view_suffix'], '.');
         }
+
 
         if (is_file($template)) {
             // 记录模板文件的更新时间

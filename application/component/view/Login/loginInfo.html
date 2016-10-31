@@ -1,0 +1,13 @@
+{layout name="index" /}
+<section class="col-md-offset-3">
+    <form action="{:app\\Common::url('/login')}" method="post">
+        <label for="">用户名:</label>
+        <input type="text" name="username" />
+        <br />
+        <label for="">密  码:</label>
+        <input type="password" name="password" />
+        <br />
+        <button>登录</button>   
+    </form>
+    <a href="{:app\\Common::url('/add')}" class="btn btn-primary active" role="button">注册新用户</a>
+</section>

@@ -1,0 +1,12 @@
+<div ng-controller="field_data_images_{$randId}">
+   <label for="">
+        {{title}}(点击图片进行上传):
+    </label> 
+    <div ng-repeat="(key, image) in images" >
+        <input type="hidden" name="field_[{:$FieldDataXXXModel->FieldModel()->getData('id')}][]" value="{{image}}" />
+        <img ng-src="{{image}}" class="field_data_images" ngf-select="upload($file, key)"/> 
+        <button type="button" ngf-select="upload($file, key)">上传</button>
+    </div>
+</div>
+<a href="{:url('api/api/index?token=' . $addSubToken) . '?type=add'}">+1</a>
+<a href="{:url('api/api/index?token=' . $addSubToken) . '?type=sub'}">-1</a>

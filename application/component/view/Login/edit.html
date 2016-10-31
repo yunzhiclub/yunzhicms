@@ -1,0 +1,37 @@
+{layout name="index" /}
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-content">
+            <form action="{:app\\Common::url('/update')}" method="post" class="control-label col-md-offset-3">
+             <input type="hidden" value="{$userModel->getData('id')}" name="id" />
+                <div class="control-group">
+                    <label class="control-label" for="_name">姓名</label>
+                    <div class="controls">
+                        <input type="text" id="_name" value="{$userModel->getData('name')}" name="name" placeholder="姓名" />
+                    </div>
+                </div>
+                <div class="control-group">
+                     <label class="control-label" for="_newpassword" >新密码</label>
+                     <div class="controls">
+                         <input type="password" id="_newpassword" name="newpassword" placeholder="请输入新密码"  />
+                     </div>
+                </div>
+                <div class="control-group">
+                     <label class="control-label" for="_repassword">确认密码</label>
+                      <div class="controls">
+                         <input type="password" id="_repassword" name="repassword" placeholder="再次输入新密码"  />
+                      </div>
+               </div>
+                <div class="control-group"  style="margin-left:95px">
+                    <label class="control-label">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="icon-ok"></i>提交
+                        </button>
+                    </label>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>

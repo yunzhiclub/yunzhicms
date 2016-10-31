@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+{include file="../head" /}
+
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <button class="btn btn-navbar" data-toggle="collapse" data-target="#app-nav-top-bar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="{:url('@/')}" target="_blank" class="brand"><i class="icon-home">查看站点首页</i></a>
+                <div id="app-nav-top-bar" class="nav-collapse">
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">TRY ME!
+                                        <b class="caret hidden-phone"></b>
+                                    </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="dashboard.html">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a href="form.html">Form</a>
+                                </li>
+                                <li>
+                                    <a href="custom-view.html">Custom View</a>
+                                </li>
+                                <li>
+                                    <a href="login.html">Login Page</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">CHANGE NAV BAR
+                                        <b class="caret hidden-phone"></b>
+                                    </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="demo-horizontal-nav.html">Horizontal</a>
+                                </li>
+                                <li>
+                                    <a href="demo-horizontal-fixed-nav.html">Horizontal Fixed</a>
+                                </li>
+                                <li>
+                                    <a href="demo-vertical-nav.html">Vertical</a>
+                                </li>
+                                <li>
+                                    <a href="demo-vertical-fixed-nav.html">Vertical Fixed</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li>
+                            <a href="{:url('@admin/Login/LogOut')}">注销</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <div id="body-content">
+            <div class="body-nav body-nav-horizontal body-nav-fixed">
+                <div class="container">
+                    <ul>
+                        <li>
+                            <a href="{:url('admin/Index/index')}">
+                                <i class="icon-dashboard icon-large"></i> 首页
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/menuType/index')}">
+                                <i class="icon-calendar icon-large"></i> 菜单管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/contentType/index')}">
+                                <i class="icon-map-marker icon-large"></i> 类别管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/extend/index')}">
+                                <i class="icon-tasks icon-large"></i> 扩展管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/system/index')}">
+                                <i class="icon-cogs icon-large"></i> 系统设置
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/component/index')}">
+                                <i class="icon-list-alt icon-large"></i> 组件管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/block/index')}">
+                                <i class="icon-bar-chart icon-large"></i> 区块管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/plugin/index')}">
+                                <i class="icon-bar-chart icon-large"></i> 插件管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/User/index')}">
+                                <i class="icon-user icon-large"></i> 用户管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/UserGroup/index')}">
+                                <i class="icon-briefcase icon-large"></i> 用户组管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/theme/index')}">
+                                <i class="icon-briefcase icon-large"></i> 主题管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/Template/index')}">
+                                <i class="icon-bar-chart icon-large"></i> 查看模板
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('@admin/Personal')}">
+                                <i class="icon-bar-chart icon-large"></i> 个人中心
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('admin/Field/index')}">
+                                <i class="icon-calendar icon-large"></i> 字段管理
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <section class="nav nav-page">
+                <div class="container">
+                    <div class="row">
+                        <div class="span7">
+                            <header class="page-header">
+                                <h3>Dashboard Demo<br/>
+                            <small>Additional Bootstrap Components</small>
+                        </h3>
+                            </header>
+                        </div>
+                        <div class="page-nav-options">
+                            <div class="span9">
+                                <ul class="nav nav-pills">
+                                    <li>
+                                        <a href="#"><i class="icon-home icon-large"></i></a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#"><i class="icon-home"></i>Home</a>
+                                    </li>
+                                    <li><a href="#">Maps</a></li>
+                                    <li><a href="#">Admin</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="page container">
+                {__CONTENT__}
+            </section>
+        </div>
+    </div>
+    {include file="../footer" /}
+</body>
+
+</html>

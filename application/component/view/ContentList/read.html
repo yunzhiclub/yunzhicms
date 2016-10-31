@@ -1,0 +1,39 @@
+{layout name="index" /}
+<section id="mu-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-contact-area">
+                    <!-- start title -->
+                    <div class="mu-title">
+                        <div class="text-right"><a href="{:app\\Common::getEditUrl()}">编辑</a></div>
+                        <h2>{$ContentModel->title}</h2>
+                        <div class="mu-meta">
+                            <span>By Admin</span>
+                            <span>{$ContentModel->create_time | $filterModels['date']->filter}</span>
+                            <span><i class="fa fa-comments-o"></i>{$ContentModel->hit}</span>
+                        </div>
+                    </div>                   
+                    <!-- end title -->
+                    <!-- start contact content -->
+                    <div class="mu-contact-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                {yz:plugin position="beforeContent" object="ContentModel"}
+                            </div>
+                            <div class="col-md-12">
+                                 {foreach name="ContentModel->FieldXXXXModels()" id="_FieldXXXXModel"}
+                                    {$_FieldXXXXModel->render('index')}
+                                {/foreach}
+                            </div>
+                            <div class="col-md-12">
+                                {yz:plugin position="afterContent"  object="ContentModel"}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end contact content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
