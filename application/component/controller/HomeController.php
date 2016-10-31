@@ -16,7 +16,7 @@ class HomeController extends ComponentController
         $ContentFrontpageModel = new ContentFrontpageModel;
         $ContentFrontpageModels = $ContentFrontpageModel->order($order)->limit(0, $offset)->select();
         $this->assign('ContentFrontpageModels', $ContentFrontpageModels);
-        
+
         unset($ContentFrontpageModels);
         unset($ContentFrontpageModel);
         return $this->fetch();
