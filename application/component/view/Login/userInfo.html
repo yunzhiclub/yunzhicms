@@ -1,7 +1,37 @@
 {layout name="index" /}
 <section>
-    <a href="{:app\\Common::url('/logout')}">注销</a>
-    用户名：
-    姓名：   
-    当前用户组：{:$UserModel->UserGroupModel()->getData('name')}
+<a href="{:app\\Common::url('/logout')}" class="btn btn-primary active" role="button">注销</a>
 </section>
+<div class="row">
+    <div class="span16">
+        <div class="box pattern pattern-sandstone">
+            <div class="box-content">
+            <form class="control-label col-md-offset-3">
+                <div class="control-group">
+                    <label class="control-label">姓名</label>
+                    <div class="controls">
+                        <p>{$userModel->getData('name')}</p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">邮箱</label>
+                    <div class="controls">
+                        <p>{$userModel->getData('username')}</p>
+                    </div>
+                </div>
+                 <div class="control-group">
+                    <label class="control-label">用户组</label>
+                    <div class="controls">
+                        <p>{$userModel->getData('user_group_name')}</p>
+                    </div>
+                    <div class="control-group"  style="margin-left:95px">
+                    <label class="control-label">
+                            <a href="{:app\\Common::url('/edit')}" class="btn btn-primary active" role="button"><i class="icon-ok"></i>编辑</a>
+                    </label>
+                </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>

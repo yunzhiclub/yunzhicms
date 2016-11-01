@@ -98,4 +98,18 @@ class ComponentModel extends ModelModel
 
         return $this->filter;
     }
+
+    /**
+     * 获取该组件类型的菜单
+     * @param  string $name 组建名
+     * @return array       
+     * @author chuhang 
+     */
+    public function getAllMenuModels($name)
+    {
+        $map['component_name'] = $name;
+        $MenuModel = new MenuModel;
+        $result = $MenuModel->where($map)->select();
+        return $result;
+    }
 }

@@ -15,7 +15,7 @@ class BlockModel extends ModelModel
     protected $config = null;           // 配置信息
     protected $filter = null;           // 过滤器信息
     protected $sampleConfig = null;     // 简单配置信息
-
+    protected $route =null;             //类似路由信息
 
     /**
      * 默认的一些非 空字符串 的设置
@@ -227,5 +227,28 @@ class BlockModel extends ModelModel
         } else {
             return true;
         }
+    }
+
+    /**
+     * 获取route文件中信息
+     * @return array 
+     * @author huangshuaibin
+     */
+    public function getRoute()
+    {
+        if (null === $this->route) {
+            $routeFilePath = APP_PATH . 
+                'block' . DS . 
+                'route' . DS .
+                $this->getData('block_type_name') . 'Route.php';
+            $routeFilePath = realpath($routeFilePath);
+            if (false === $routeFilePath) {
+                $this->route = [];
+            } else {
+                $this->route = include $routeFilePath;
+            }
+        }
+
+        return $this->route;
     }
 }

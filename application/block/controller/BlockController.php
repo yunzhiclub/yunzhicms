@@ -125,7 +125,7 @@ class BlockController extends Controller
 
         // 不存在，则进行同模块VIEW规则渲染
         } else {
-            $template = 'block@' . $controller . '/' . $action;
+            $template = 'block@' . $controller . DS . $action;
         }
 
         // 初始化html css js字符串
@@ -136,11 +136,11 @@ class BlockController extends Controller
 
         // 尝试渲染js及css
         try {
-            $js = parent::fetch('block@' . $controller . '/' . $action . 'Javascript');
+            $js = parent::fetch('block@' . $controller . DS . $action . 'Javascript');
         } catch (\Exception $e) {}
 
         try {
-            $css = parent::fetch('block@' . $controller . '/' . $action . 'Css');
+            $css = parent::fetch('block@' . $controller . DS . $action . 'Css');
         } catch (\Exception $e) {}
 
         return $html . $js . $css;

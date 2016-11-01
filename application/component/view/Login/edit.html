@@ -2,36 +2,13 @@
 <div class="row">
     <div class="span16">
         <div class="box pattern pattern-sandstone">
-            <div class="box-header">
-                <i class="icon-table"></i>
-                <h5 style="display:inline;">
-                个人中心管理
-                </h5>
-            </div>
             <div class="box-content">
-            <form action="{:url('save')}" method="post" class="form-horizontal">
+            <form action="{:app\\Common::url('/update')}" method="post" class="control-label col-md-offset-3">
+             <input type="hidden" value="{$userModel->getData('id')}" name="id" />
                 <div class="control-group">
                     <label class="control-label" for="_name">姓名</label>
                     <div class="controls">
                         <input type="text" id="_name" value="{$userModel->getData('name')}" name="name" placeholder="姓名" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="_email">邮箱</label>
-                    <div class="controls">
-                        <p id="_email" name="username">{$userModel->getData('username')}</p>
-                    </div>
-                </div>
-                 <div class="control-group">
-                    <label class="control-label" for="_user_group_name">用户组</label>
-                    <div class="controls">
-                        <p id="_user_group_name" name="user_group_name">{$userModel->getData('user_group_name')}</p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="_password">原密码</label>
-                    <div class="controls">
-                        <input type="password" id="_password" name="password" placeholder="请输入原密码" />
                     </div>
                 </div>
                 <div class="control-group">
