@@ -484,6 +484,7 @@ class Common{
     static public function getUpdateUrl()
     {
         $requestUri = $_SERVER['REQUEST_URI'];
+        // var_dump($requestUri);
         return str_replace('/edit', '', $requestUri);
     }
 

@@ -33,7 +33,7 @@ class ContentTypeModel extends ModelModel
         if (null === $this->FieldModels) {
             $this->FieldModels = FieldModel::getListsByRelateTypeRelateValue('Content', $this->getData('name'));
         }
-
+        // var_dump($this->FieldModels);
         return $this->FieldModels;
     }
 

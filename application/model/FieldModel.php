@@ -29,9 +29,12 @@ class FieldModel extends ModelModel
     public function FieldModel()
     {
         if (null === $this->FieldModel) {
-            $this->FieldModel = FieldModel::get(['id' => $this->getData('field_id')]);
+            if ('' === $this->getData('field_id')) {
+                $this->FieldModel = FieldModel::get(['id' => $this->getData('id')]);
+            } else {
+                $this->FieldModel = FieldModel::get(['id' => $this->getData('field_id')]);
+            }
         }
-
         return $this->FieldModel;
     }
 

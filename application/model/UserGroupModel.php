@@ -20,6 +20,7 @@ class UserGroupModel extends ModelModel
         $map['menu_id']         = $MenuModel->getData('id');
         $map['user_group_name'] = $this->getData('name');
         $map['action']          = $action;
+        //var_dump($map);
         $AccessUserGroupMenuModel = AccessUserGroupMenuModel::get($map);
         if ('' !== $AccessUserGroupMenuModel->getData('menu_id'))
         {

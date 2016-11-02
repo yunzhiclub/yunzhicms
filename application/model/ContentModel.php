@@ -18,7 +18,7 @@ class ContentModel extends ModelModel
             $map = ['name' => $this->getData('content_type_name')];
             $this->ContentTypeModel = ContentTypeModel::get($map);
         }
-
+        // var_dump($this->ContentTypeModel);
         return $this->ContentTypeModel;
     }
 
@@ -61,13 +61,13 @@ class ContentModel extends ModelModel
             $this->FieldXXXXModels = [];
             // 获取对应的全部字段的信息
             $FieldModels = $this->ContentTypeModel()->FieldModels();
-            
+            // var_dump($FieldModels);
             // 遍历当前 内容类型 的扩展字段信息.
             foreach ($FieldModels as $FieldModel) {
                 array_push($this->FieldXXXXModels, $FieldModel->getFieldDataXXXModelByKeyId($this->getData('id')));
             } 
         }
-        
+        // var_dump($this->FieldXXXXModels);
         return $this->FieldXXXXModels;
     }
 

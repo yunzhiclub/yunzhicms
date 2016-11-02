@@ -30,14 +30,18 @@ class ComponentController extends Controller
 
         // 取组件对应的当前菜单。及组件的配置、过滤器信息.
         $this->currentMenuModel = MenuModel::getCurrentMenuModel();
+        //var_dump($this->currentMenuModel);
         // 取当前登陆用户信息
         $this->currentFrontUserModel = UserModel::getCurrentFrontUserModel();
+        //var_dump($this->currentFrontUserModel);
         // 获取当前主题信息
         $this->currentThemeModel = ThemeModel::getCurrentThemeModel();
+        //var_dump($this->currentThemeModel);
         // 获取当前请求信息
         $this->Request = Request::instance();
         // 根据action，计算访问权限值index->list
         $action = $this->Request->action();
+        //var_dump($action);
 
         // 根据路由表中的action值，查找权限表,做出权限判断
         if (!$this->currentFrontUserModel->UserGroupModel()->isAllowedByMenuModelAction($this->currentMenuModel, $action))

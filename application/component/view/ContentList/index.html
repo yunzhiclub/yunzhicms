@@ -15,18 +15,15 @@
                                             <figure class="mu-blog-single-img">
                                                 <a href="#"><img src="{:__ROOT__}/theme/varsity/img/newslist/003.jpg" alt="img"></a>
                                                 <figcaption class="mu-blog-caption">
-                                                    <h3><a href="#">{$ContentModel->title}</a></h3>
+                                                    <h3>{$ContentModel->title}</h3>
                                                 </figcaption>
                                             </figure>
                                             <div class="mu-blog-meta">
-                                                <span>By 教务处</span>
-                                                <span>{$ContentModel->create_time}
-                                                </span>
+                                                <span>By 教务处&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 <span><i class="fa fa-comments-o"></i>{$ContentModel->hit}
                                                 </span>
                                             </div>
                                             <div class="mu-blog-description">
-                                                <p></p>
                                                 <a class="mu-read-more-btn" href='{:app\\Common::url("/$ContentModel->id")}'>查看更多</a>
                                             </div>
                                         </article>

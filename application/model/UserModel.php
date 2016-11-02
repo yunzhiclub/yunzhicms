@@ -39,6 +39,7 @@ class UserModel extends ModelModel
                 return self::$currentUserModel;
             }
             $map['username'] = $username;
+            //var_dump($map);
             $currentUserModel = UserModel::get($map);
             return $currentUserModel;
         }
