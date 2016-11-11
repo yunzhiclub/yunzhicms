@@ -26,7 +26,11 @@ class ImagesController extends FieldController
     {
         $result = ['status' => 'success'];
         // todo:讲解new self()与 new ImageController()的区别
-        $FieldDataAttachmentModel = new FieldDataAttachmentModel;        
+        $FieldDataAttachmentModel = new FieldDataAttachmentModel;
+
+        //取出images中的配置信息
+        $ImagesModel = new FieldDataImagesModel();
+        $config      = $ImagesModel->getConfig();        
         $file = Request::instance()->file('Filedata');
 
         // 查看是否传入了文件信息
@@ -38,7 +42,7 @@ class ImagesController extends FieldController
         } else {
             // 调用上传操作
             try {
-                $result['data'] = $FieldDataAttachmentModel->upload($file);
+                $result['data'] = $FieldDataAttachmentModel->upload($file, $config);
             } catch (\Exception $e) {
                 $result = [
                     'status' => 'error',

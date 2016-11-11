@@ -11,7 +11,7 @@ return [
         'type'          => 'text',
         'title'         => '每页大小',
         'description'   => '每页显示多少篇文章',
-        'value'         => '1',
+        'value'         => '3',
     ],
     
     'order' => [

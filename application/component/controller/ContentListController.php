@@ -71,6 +71,6 @@ class ContentListController extends ComponentController
         }
 
         // 成功返回
-        return $this->success('操作成功', url('@' . $this->currentMenuModel->getData('url')));
+        return $this->success('操作成功', url('@' . $this->currentMenuModel->getData('url') . '/' . $id));
     }
 }

@@ -18,4 +18,10 @@ return [
         'description'   => '用户登陆前和登陆后的form表单显示',
         'value'         => ['', 'GET']        
     ],
+
+    'update' => [
+        'title'         => '更新',
+        'description'   => '更新',
+        'value'         => ['/:id/update', 'POST']
+    ],
 ];

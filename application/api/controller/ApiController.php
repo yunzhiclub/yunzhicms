@@ -31,8 +31,7 @@ class ApiController
         $data       = $info['data'];
 
         // 接接要调用的类名
-        $className  = '\app\\' . $module . '\controller\\' . $controller . 'Controller';
-
+        $className  = '\app\\' . $module . '\controller\\' . ucfirst($controller) . 'Controller';
         // 生成当token时的用户触发的menuId及action
         return call_user_func_array([$className, $action], [$data]);
     }

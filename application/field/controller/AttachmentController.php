@@ -58,7 +58,7 @@ class AttachmentController extends FieldController
         } else {
             // 调用上传操作
             try {
-                $result['data'] = $FieldDataAttachmentModel->upload($file);
+                $result['data'] = $FieldDataAttachmentModel->upload($file, $config);
             } catch (\Exception $e) {
                 $result = [
                     'status' => 'error',

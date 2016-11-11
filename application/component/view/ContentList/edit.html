@@ -12,7 +12,7 @@
                                 <label>标题:</label>
                                 <input type="text" name="title" value="{$ContentModel->getData('title')}" />
                             </div>
-                                {foreach name="ContentModel->ContentTypeModel()->FieldModels()" id="_FieldModel"}
+                                {foreach name="ContentModel->FieldXXXXModels()" id="_FieldModel"}
                                 <div>
                                 {:$_FieldModel->render('edit')}
                                 </div>

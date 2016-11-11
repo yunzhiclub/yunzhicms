@@ -9,6 +9,9 @@ $(function() {
             if (!response) {
                 alert('目标地址无响应');
             } else {
+                // console.log(response);
+                // console.log(data);
+                // break;
                 var data = JSON.parse(data);
                 if (data.status === 'error') {
                     alert('上传发生错误:' + data.message);

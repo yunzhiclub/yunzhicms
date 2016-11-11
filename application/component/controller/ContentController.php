@@ -37,6 +37,7 @@ class ContentController extends ComponentController
     {
         // 获取数据
         $data = Request::instance()->param();
+        // var_dump($data);
 
         // 更新当前新闻信息
         $this->ContentModel->setData('title', $data['title']);

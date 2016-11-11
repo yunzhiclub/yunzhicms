@@ -29,11 +29,7 @@ class FieldModel extends ModelModel
     public function FieldModel()
     {
         if (null === $this->FieldModel) {
-            if ('' === $this->getData('field_id')) {
-                $this->FieldModel = FieldModel::get(['id' => $this->getData('id')]);
-            } else {
-                $this->FieldModel = FieldModel::get(['id' => $this->getData('field_id')]);
-            }
+            $this->FieldModel = FieldModel::get(['id' => $this->getData('field_id')]);
         }
         return $this->FieldModel;
     }
@@ -107,6 +103,7 @@ class FieldModel extends ModelModel
     {
         if (null === $this->simpleConfig) {
             $this->simpleConfig = [];
+
             foreach ($this->getconfig() as $key => $config) {
                 $this->simpleConfig[$key] = $config['value'];
             }
@@ -194,9 +191,11 @@ class FieldModel extends ModelModel
     {
         foreach ($lists as $fieldId => $value) {
             try {
+                // var_dump($value);
                 $FieldModel = self::get(['id' => $fieldId]);
                 $dataName = ucfirst($FieldModel->getData('field_type_name'));
                 $className = 'app\model\FieldData' . $dataName . 'Model';
+                // var_dump($className);
                 call_user_func_array([$className, 'updateList'], [$fieldId, $keyId, $value]);
             } catch (\Exception $e){
                 throw $e;
@@ -279,10 +278,15 @@ class FieldModel extends ModelModel
      */
     public function makeToken($action, $data = [])
     {
+        // var_dump($action);
+        // var_dump($data);
+        // var_dump($this->getData('id'));
         $data = array_merge(['id' => $this->getData('id')], $data);
         // $token = Common::makeTokenByMCAData('filed', $this->FieldDataXXXXModel()->getData('name'), $action, $data);
         $controller = $this->FieldModel()->getData('field_type_name');
+        // var_dump($controller);
         $token = Common::makeTokenByMCAData('field', $controller, $action, $data);
+        // var_dump($token);
         return $token;
     }
 

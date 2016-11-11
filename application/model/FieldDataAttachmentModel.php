@@ -121,7 +121,7 @@ class FieldDataAttachmentModel extends FieldModel
      * @author panjie panjie@mengyunzhi.com
      * @DateTime 2016-09-07T13:58:56+0800
      */
-    public function jsonSerialize() 
+    public function jsonSerialize()
     {
         $data = $this->getData();
         $data['url'] = $this->getUrl();
@@ -139,7 +139,7 @@ class FieldDataAttachmentModel extends FieldModel
      */
     static public function updateList($fieldId, $keyId, $id)
     {
-        $self = new self();
+        $self = new static();
         $Object = $self::get(['id' => $id]);
         if ( '' !== $Object->getData('id')) {
             // 如果存在历史信息，先删除历史信息
@@ -147,7 +147,7 @@ class FieldDataAttachmentModel extends FieldModel
             if ('' !== $oldObject && ($oldObject->getData('id') !== $Object->getData('id'))) {
                 $oldObject->delete();
             }
-
+            // var_dump($Object);
             // 更新当前数据
             $Object->setData('field_id', $fieldId);
             $Object->setData('key_id', $keyId);

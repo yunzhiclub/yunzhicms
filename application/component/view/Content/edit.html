@@ -13,6 +13,7 @@
                                 <input type="text" name="title" value="{$ContentModel->getData('title')}" />
                             </div>
                                 {foreach name="ContentModel->FieldXXXXModels()" id="_FieldXXXXModel"}
+                                <!-- {:var_dump($_FieldXXXXModel)} -->
                                 <div>
                                 {:$_FieldXXXXModel->render('edit')}
                                 </div>

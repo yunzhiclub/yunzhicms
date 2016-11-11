@@ -10,9 +10,13 @@ ngApp{$randId}.controller('field_data_images_{$randId}', ['$scope', 'Upload', fu
             url: '{:url("api/api/index?token=" . $token)}',
             data: {Filedata: file}
         }).then(function (resp) {
-            var imageInfo = resp.data.data;
-            console.log(imageInfo);
-            $scope.images[key] = imageInfo.url;
+            if (resp.data.status === 'success') {
+                var imageInfo = resp.data.data;
+                $scope.images[key] = imageInfo.url;
+            } else {
+                console.log(resp.data.message);
+                return;
+            }
         }, function (resp) {
             console.log('Error status: ' + resp.status);
         }, function (evt) {

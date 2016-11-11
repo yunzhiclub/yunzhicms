@@ -46,12 +46,14 @@ class ImageController extends FieldController
         }
 
         // 返回信息
+        // var_dump(json_encode($result));
         return json_encode($result);
     }
 
     public function edit()
     {
-        $this->assign('token', $this->FieldDataXXXModel->makeToken('upload'));
+        $token  = $this->FieldDataXXXModel->makeToken('upload');
+        $this->assign('token', $token);
         return $this->fetch() . $this->fetch('editCss') . $this->fetch('editJs');
     }
 }
