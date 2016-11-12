@@ -14,7 +14,7 @@ class UserController extends BlockController
 
         $token = $this->BlockModel->makeToken('edit');
         $this->assign('token', $token);
-        var_dump($token);
+        // var_dump($token);
         return $this->fetch();
     }
 

@@ -1,4 +1,4 @@
-
+{layout name="index" /}
 <div class="row">
     <div class="span16">
         <div class="box pattern pattern-sandstone">
@@ -23,20 +23,27 @@
                     <tbody>
                     {volist name="Components" id="Component"}
                         <tr>
-                            <td>{$Component->title}</td>
-                            <td>{$Component->name}</td>
-                            <td>{$Component->description}</td>
-                            <td>{$Component->author}</td>
-                            <td>{$Component->version}</td>
-                            <td class="td-actions">
-                                <a href="{:url('Component/read?name=' . $Component->name)}" class="btn btn-small btn-info">
-                                    <i class="btn-icon-only icon-edit"></i> 查看配置信息
+                            <td>{$Component->getData('title')}</td>
+                            <td>{$Component->getData('name')}</td>
+                            <td>{$Component->getData('description')}</td>
+                            <td>{$Component->getData('author')}</td>
+                            <td>{$Component->getData('version')}</td>
+                            <td>
+                                <a href="{:url('Component/edit?name=' . $Component->getData('name'))}" class="btn btn-small btn-info">
+                                    <i class="btn-icon-only icon-edit"></i> 编辑
+                                </a>
+                                <a href="{:url('delete?name=' . $Component->getData('name'))}" class="btn btn-small btn-danger">
+                                    <i class="btn-icon-only icon-remove"></i>
                                 </a>
                             </td>
                         </tr>
                     {/volist}
+                    <div style="text-align:right;">
+                        <a href="{:url('create')}" class="btn btn-small btn-primary">新增</a>
+                    </div>
                     </tbody>
                 </table>
+                {$Components->render()}
             </div>
         </div>
     </div>

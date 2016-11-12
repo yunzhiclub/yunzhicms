@@ -95,8 +95,27 @@ class PluginModel extends ModelModel
         $map = [];
         $map['plugin_id']    = $this->data['id'];
         $map['menu_id']     = $MenuModel->getData('id');
-        $AccessPluginMenuModel = AccessPluginMenuModel::get($map);
-        if ('' === $AccessPluginMenuModel->getData('menu_id'))
+        $AccessMenuPluginModel = AccessMenuPluginModel::get($map);
+        if ('' === $AccessMenuPluginModel->getData('menu_id'))
+        {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 检查是否存在 组件-用户组 数据
+     * @param  UserGroupModel &$UserGroupModel 传入用户组对象
+     * @return bool                          存在 true 不存在 false
+     * @author huangshuaibin
+     */
+    public function checkIsHave(UserGroupModel &$UserGroupModel)
+    {
+        $map = [];
+        $map['plugin_id']           = $this->data['id'];
+        $map['user_group_name']     = $UserGroupModel->getData('name');
+        if (empty(AccessUserGroupPluginModel::get($map)->getData()))
         {
             return false;
         } else {

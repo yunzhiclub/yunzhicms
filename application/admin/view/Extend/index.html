@@ -9,7 +9,44 @@
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="component">
-        {include file="../Component/index"}
+        <div class="row">
+            <div class="span16">
+                <div class="box pattern pattern-sandstone">
+                    <div class="box-header">
+                        <i class="icon-table"></i>
+                        <h5>
+                        组件列表
+                        </h5>
+                    </div>
+                    <div class="box-content box-table">
+                        <table id="sample-table" class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>标题</th>
+                                    <th>机读名称</th>
+                                    <th>描述信息</th>
+                                    <th>作者</th>
+                                    <th>版本</th>
+                                    <th class="td-actions">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {volist name="Components" id="Component"}
+                                <tr>
+                                    <td>{$Component->getData('title')}</td>
+                                    <td>{$Component->getData('name')}</td>
+                                    <td>{$Component->getData('description')}</td>
+                                    <td>{$Component->getData('author')}</td>
+                                    <td>{$Component->getData('version')}</td>
+                                </tr>
+                            {/volist}
+                            </tbody>
+                        </table>
+                       {$Components->render()}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="tab-pane" id="plugin">
         插件
@@ -45,6 +82,7 @@
                                 {/volist}
                             </tbody>
                         </table>
+                        {$BlockTypeModels->render()}
                     </div>
                 </div>
             </div>
@@ -88,6 +126,7 @@
                                 {/volist}
                             </tbody>
                         </table>
+                        {$ThemeModels->render()}
                     </div>
                 </div>
             </div>
