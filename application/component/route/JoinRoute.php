@@ -19,4 +19,7 @@ return [
         'value'         => ['', 'GET']        
     ],
 
+    'send' => [
+        'value'         => ['', 'POST']        
+    ],
 ];
