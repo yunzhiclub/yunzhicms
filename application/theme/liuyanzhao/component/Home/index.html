@@ -1,0 +1,130 @@
+{layout name="index" /}
+<div class="banner">
+    <div class="container">
+        <div id="top" class="callbacks_container">
+            <ul class="rslides" id="slider4">
+                <li>
+                    <div class="banner-info">
+                        <h3>We will take you</h3>
+                        <h4>一起努力</h4>
+                    </div>
+                </li>
+                <li>
+                    <div class="banner-info">
+                        <h3>Call Us : 139 2078 8296</h3>
+                        <h4>联系我们</h4>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--- banner Slider starts Here --->
+        <script src="js/responsiveslides.min.js"></script>
+        <script>
+        // You can also use "$(window).load(function() {"
+        $(function() {
+            // Slideshow 4
+            $("#slider4").responsiveSlides({
+                auto: true,
+                pager: false,
+                nav: true,
+                speed: 500,
+                namespace: "callbacks",
+                before: function() {
+                    $('.events').append("<li>before event fired.</li>");
+                },
+                after: function() {
+                    $('.events').append("<li>after event fired.</li>");
+                }
+            });
+
+        });
+        </script>
+    </div>
+</div>
+</div>
+<!--//end-slider-->
+
+
+<!--start-about-->
+<div class="about">
+    <div class="container">
+        <h3 class="tittle wel">Welcome</h3>
+        <div class="about-top">
+            <div class="col-md-7 about-top-right">
+                <h4>梦云智团队简介</h4>
+                <p>河北工业大学梦云智软件开发团队成立于2014年12月。依托于计算机科学与软件学院，团队现拥有自身独立的实验室，经过一年多不懈的努力，团队学习氛围越来越浓厚，团队精神越来越多地被我们诠释。 自团队成立以来，已先后完成”“众筹海淘” 微信购物平台系统 、 “天职师大”绩效管理系统、“洛克酒店”管理系统、 “河北工业大学材料学院”论文送审系统、“一鑫教育”英语在线学习系统等项目。在项目的开发过程中，我们也深深的认识到团队发展中分工、合作及设计模式等方面的不足，并不断的在新技术、新模式领域进行探索。 团队项目开源github地址：https://github.com/yunzhiclub
+                </p>
+            </div>
+            <div class="col-md-5 about-top-left">
+                <img src="{:__ROOT__}/theme/liuyanzhao_theme/images/us.jpg" class="img-responsive" alt="" />
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<!--start-services-->
+<div class="service-section">
+    <div class="container">
+        <div class="tittle-head">
+            <h3 class="tittle">Project</h3>
+        </div>
+        <div class="serve-grids">
+            <div class="col-md-6 serve-left">
+                <div class="col-md-6 service-grid">
+                    <div class="icon">
+                        <i class="glyphicon glyphicon-time"></i>
+                    </div>
+                    <h5>考勤制度</h5>
+                    <p>严格的考勤制度保证了团队工作的正常进行，为团队的进步提供了稳定的空间.</p>
+                </div>
+                <div class="col-md-6 service-grid">
+                    <div class="icon">
+                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                    </div>
+                    <h5>经验分享</h5>
+                    <p>在这里大家都毫无保留的分享自己的学习心得和项目经验，我们紧紧团结在一起.</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-6 serve-img">
+                <img src="{:__ROOT__}/theme/liuyanzhao_theme/images/s1.jpg" />
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-6 serve-img two">
+                <img src="{:__ROOT__}/theme/liuyanzhao_theme/images/s2.jpg" />
+            </div>
+            <div class="col-md-6 serve-left two">
+                <div class="col-md-6 service-grid">
+                    <div class="icon">
+                        <i class="glyphicon glyphicon-cog"></i>
+                    </div>
+                    <h5>周汇报</h5>
+                    <p>大家分享自己的项目经验和最近的学习心得。</p>
+                </div>
+                <div class="col-md-6 service-grid">
+                    <div class="icon">
+                        <i class="glyphicon glyphicon-briefcase"></i>
+                    </div>
+                    <h5>制度</h5>
+                    <p>我们执行严格的考勤的请假制度.</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<!--//services-->
+<!--start-services-->
+<!--start-mid-section-->
+<div class="mid-section">
+    <div class="container">
+        <div class="mid-top">
+            <h2>我们会一直加油</h2>
+            <p font="20px;">
+                Where there is a will
+                <br> there is a way.
+            </p>
+        </div>
+    </div>
+</div>
