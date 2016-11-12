@@ -4,11 +4,14 @@
         <div class="row">
             <div class="col-md-12">
                 <form action="{:app\\Common::url('')}" method="post" role="form">
+                    <label for="">姓名</label>
+                    <input type="text" class="form-control" name="name" placeholder="梦云智">
+                    <br />
                     <label for="">邮箱</label>
                     <input type="email" class="form-control" name="email" placeholder="example@126.com">
                     <br />
                     <label for="">自我介绍</label>
-                    <input class="form-control" name="apliciation"></input>
+                    <textarea class="form-control" name="apliciation" rows="5"></textarea>
                     <br />
                     <button type="" class="btn btn-md btn-success">发送邮件</button> 
                 </form>

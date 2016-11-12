@@ -42,7 +42,7 @@ class JoinController extends ComponentController
 		//$mail->SMTPSecure = 'tls';             // tls
 		//$mail->Port = 587;                     // TCP端口号码
 
-		$mail->setFrom('myquilt@aliyun.com', 'aliyun'); //发送方
+		$mail->setFrom('myquilt@aliyun.com', input('post.name')); //发送方
 		$mail->addAddress('myquilt@sina.com', 'sina');  //接收方，第二项参数可选
 		$mail->addReplyTo('myquilt@aliyun.com', 'aliyun'); //依赖方
 
@@ -51,6 +51,7 @@ class JoinController extends ComponentController
 		//下面把从V层得到的数据发送
 		$mail->Subject = input('post.email');	//主题
 		$mail->Body    = input('post.apliciation');	//正文
+		$mail->AltBody = input('post.name');  //姓名
 
 		if($mail->send()) {
     			return $this->success('发送成功', url('@/'));
