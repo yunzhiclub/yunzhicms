@@ -1,0 +1,19 @@
+<section id="mu-page-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-page-breadcrumb-area">
+                    <?php $currentMenuModel = array_pop($MenuModels); ?>
+                    <h2>{$currentMenuModel->title}</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{:url('@/')}">首页</a></li>
+                        {volist name="MenuModels" key="key" id="menuModel"}
+                        <li><a href="{:url('@' . $menuModel->url)}">{$menuModel->title}</a></li>
+                        {/volist}
+                        <li><a href="{:url('@' . $currentMenuModel->url)}" class="active">{$currentMenuModel->title}</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -4,18 +4,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">    
     <title>Home</title>
 
-    <!--liuyanzhao_theme-->
-    <link href="{:__ROOT__}/theme/liuyanzhao_theme/css/bootstrap.css" rel='stylesheet' type='text/css' />
-    <!-- Custom Theme files -->
-    <link href="{:__ROOT__}/theme/liuyanzhao_theme/css/style.css" rel='stylesheet' type='text/css' />  
-    <script src="{:__ROOT__}/theme/liuyanzhao_theme/js/jquery.min.js"> </script>
-    <!--webfonts-->
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{:__ROOT__}/theme/varsity/img/favicon.ico" type="image/x-icon">
+
+    <!-- Font awesome -->
+    <link href="{:__ROOT__}/theme/varsity/css/font-awesome.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="{:__ROOT__}/theme/varsity/css/bootstrap.css" rel="stylesheet">   
+    <!-- Slick slider -->
+    <link rel="stylesheet" type="text/css" href="{:__ROOT__}/theme/varsity/css/slick.css">          
+    <!-- Fancybox slider -->
+    <link rel="stylesheet" href="{:__ROOT__}/theme/varsity/css/jquery.fancybox.css" type="text/css" media="screen" /> 
+    <!-- Theme color -->
+    <link id="switcher" href="{:__ROOT__}/theme/varsity/css/theme-color/default-theme.css" rel="stylesheet">          
+
+    <!-- Main style sheet -->
+    <link href="{:__ROOT__}/theme/varsity/css/style.css" rel="stylesheet">    
+
     
-    <!--//webfonts-->
-    <script type="text/javascript" src="{:__ROOT__}/theme/liuyanzhao_theme/js/move-top.js"></script>
-    <script type="text/javascript" src="{:__ROOT__}/theme/liuyanzhao_theme/js/easing.js"></script>
-    <script src="{:__ROOT__}/theme/liuyanzhao_theme/js/jquery.min.js"> </script>
-    <script src="{:__ROOT__}/theme/liuyanzhao_theme/js/bootstrap.min.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,12 +29,5 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script type="text/javascript">
-            jQuery(document).ready(function($) {
-                $(".scroll").click(function(event){     
-                    event.preventDefault();
-                    $('html,body').animate({scrollTop:$(this.hash).offset().top},900);
-                });
-            });
-    </script>
+
   </head>
