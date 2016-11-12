@@ -1,0 +1,28 @@
+<div id="home" class="header">
+					<div class="top-header">
+						<div class="container">
+					     <div class="top-menu">
+							<span class="menu"> </span>
+								
+								{volist name="menuModels" id="menuModel"} {eq name="menuModel->isHaveAvailableSonMenus()" value="1"}
+                            
+                            {else /}
+                            <li {eq name="menuModel->isActive()" value="1" }class="active" {/eq}><a href="{:url('@' . $menuModel->url)}"><span>{$menuModel->title}</a></span>
+                            </li>
+                            {/eq} {/volist}
+
+							</div>
+							<div class="logo">
+							  <a href="#"><h1>梦<span>云智</span></h1></a>
+						    </div>
+							<!-- script-for-menu -->
+								<script>
+									$("span.menu").click(function(){
+										$(".top-menu ul").slideToggle("slow" , function(){
+										});
+									});
+								</script>
+								<!-- script-for-menu -->
+							<div class="clearfix"> </div>
+					</div>
+				</div>
