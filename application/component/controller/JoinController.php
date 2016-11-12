@@ -52,9 +52,9 @@ class JoinController extends ComponentController
 		$mail->Subject = input('post.email');	//主题
 		$mail->Body    = input('post.apliciation');	//正文
 		if(!$mail->send()) {
-    			return $this->success('登录成功', url('Home/index'));
+    			return $this->success('发送成功', url('@/'));
 		} else {
-    		return $this->error('登录失败', url('index'));
+    		return $this->error('发送失败', url('@/'));
 				}
 	}
 }

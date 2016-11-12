@@ -3,14 +3,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <form action="{:url('send')}" method="post" role="form">
+                <form action="{:app\\Common::url('')}" method="post" role="form">
                     <label for="">邮箱</label>
                     <input type="email" class="form-control" name="email" placeholder="example@126.com">
                     <br />
                     <label for="">自我介绍</label>
                     <input class="form-control" name="apliciation"></input>
                     <br />
-                    <a class="btn btn-md btn-success" href="{:url('send')}">发送邮件</a>
+                    <button type="" class="btn btn-md btn-success">发送邮件</button> 
                 </form>
             </div>
         </div>
