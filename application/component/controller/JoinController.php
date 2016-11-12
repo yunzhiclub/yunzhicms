@@ -51,7 +51,8 @@ class JoinController extends ComponentController
 		//下面把从V层得到的数据发送
 		$mail->Subject = input('post.email');	//主题
 		$mail->Body    = input('post.apliciation');	//正文
-		if(!$mail->send()) {
+
+		if($mail->send()) {
     			return $this->success('发送成功', url('@/'));
 		} else {
     		return $this->error('发送失败', url('@/'));
