@@ -1,12 +1,16 @@
 {layout name="index" /}
-<section>
-    <form action="{:app\\Common::url('/login')}" method="post">
-        <label for="">用户名:</label>
-        <input type="text" name="username" />
-        <br />
-        <label for="">密码:</label>
-        <input type="password" name="password" />
-        <br />
-        <button>submit</button>
-    </form>
-</section>
+<div class="col-md-4">
+    <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <hr />
+        <input type="email" class="form-control" placeholder="Email address" required autofocus>
+        <hr />
+        <input type="password" class="form-control" placeholder="Password" required>
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>456
+</div>
+<!-- /container -->
+
