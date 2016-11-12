@@ -16,7 +16,7 @@ class ExtendController extends AdminController
     public function indexAction()
     {
         // 将区块类型信息传入V层
-        $BlockTypeModels = BlockTypeModel::all();
+        $BlockTypeModels = BlockTypeModel::paginate();
         $this->assign('BlockTypeModels', $BlockTypeModels);
 
         // 将组件信息传入V层
@@ -24,7 +24,7 @@ class ExtendController extends AdminController
         $this->assign('Components', $Components);
 
         // 将主题信息传入V层
-        $ThemeModels = ThemeModel::all();
+        $ThemeModels = ThemeModel::paginate();
         $this->assign('ThemeModels', $ThemeModels);
 
         return $this->fetch();

@@ -32,10 +32,18 @@ class UserModel extends ModelModel
     static public function getCurrentFrontUserModel()
     {
         if (null === self::$currentUserModel) {
-            self::$currentUserModel = new UserModel;
+            $username = Session::get('username');
+            // 判断是否是登录用户
+            if (null === $username) {
+                self::$currentUserModel = new UserModel;
+                return self::$currentUserModel;
+            }
+            $map['username'] = $username;
+            $currentUserModel = UserModel::get($map);
+            return $currentUserModel;
         }
 
-        return self::$currentUserModel;
+        return  self::$currentUserModel;
     }
 
     static public function getCurrentUserModel()
@@ -73,6 +81,25 @@ class UserModel extends ModelModel
             }
         }        
         return false;    
+    }
+    /**
+     * 验证登录用户是否为管理员，是则登录
+     * @Author   litian,                  1181551049@qq.com
+     * @DateTime 2016-09-23T17:38:20+0800
+     * @param                             $username
+     * @return                            boolean
+     */
+    static public function isAdmin($username)
+    {
+        //将用户取出
+        $map = array('username' => $username);
+        $UserModel = UserModel::get($map);
+        
+        // 判断用户是否为管理员
+        if ('admin' === $UserModel->getData('user_group_name')) {
+            return true;
+        }
+        return false;
     }
     /**
      * 验证密码
@@ -211,20 +238,19 @@ class UserModel extends ModelModel
     }
 
     /**
-     * 判断用户是否拥有后台访问权限
-     * @return bool 
+     * 判断是否解冻
+     * @param  int  $status 
+     * @return int         
      * @author chuhang 
      */
-    public function getAccessPermission()
+    public function isFrozen($status)
     {
-        $map['username'] = session('username');
-        $userGroup = self::get($map)->getData('user_group_name');
-        $admin = "admin";
-        if ($userGroup === $admin)
-        {
-            return true;
-        } else {
-            return false;
+        if ($status === 0) {
+            $result = 1;
+            return $result;
         }
+        $result = 0;
+        return $result;
     }
+
 }

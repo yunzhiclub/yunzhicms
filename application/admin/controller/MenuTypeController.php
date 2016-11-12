@@ -11,7 +11,7 @@ class MenuTypeController extends AdminController
         $map = array('is_delete' => 0);
 
         //设置分页
-        $MenuTypeModels = $MenuTypeModel->where($map)->paginate(config('paginate.var_page'));
+        $MenuTypeModels = $MenuTypeModel->where($map)->paginate();
         $this->assign('MenuTypeModels', $MenuTypeModels);
         return $this->fetch('MenuType/index');
     }
