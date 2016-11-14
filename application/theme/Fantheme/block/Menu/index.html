@@ -1,0 +1,90 @@
+<!-- banner -->
+<!-- header -->
+	<div class="banner">
+		<div class="header">
+		<div class="container">
+			<div class="banner-nav">
+				<span class="menu"><img src="{:__ROOT__}/theme/Fan/images/menu.png" alt=" "/></span>	
+					<ul class="nav1">
+								<nav class="cl-effect-3">
+									<li><a href="{:__ROOT__}/theme/Fan/index.html" class="act">Home</a></li>
+									<li><a href="{:__ROOT__}/theme/Fan/about.html">About Us</a></li>
+									<li><a class="scroll" href="#team">Team</a></li>
+									<li><a class="scroll" href="#services">Services</a></li>
+									<li><a href="{:__ROOT__}/theme/Fan/blog.html">Blog</a></li>
+									<li><a class="scroll" href="#contact">Contact Us</a></li>				
+								</nav>
+					</ul>
+							
+				<div class="logo">
+					<a href="index.html"><img src="{:__ROOT__}/theme/Fan/images/logo.png" alt=" " /></a>
+				</div>
+			</div>
+				<!-- script for menu -->
+						<script> 
+							$( "span.menu" ).click(function() {
+							$( "ul.nav1" ).slideToggle( 300, function() {
+							 // Animation complete.
+							});
+							});
+						</script>
+					<!-- //script for menu -->
+		</div>
+		</div>
+<!-- //header-->
+<!-- Slider-starts-Here -->		
+				<script src="{:__ROOT__}/theme/Fan/js/responsiveslides.min.js"></script>
+				 <script>
+				    // You can also use "$(window).load(function() {"
+				    $(function () {
+				      // Slideshow 4
+				      $("#slider3").responsiveSlides({
+				        auto: true,
+				        pager: true,
+				        nav: false,
+				        speed: 500,
+				        namespace: "callbacks",
+				        before: function () {
+				          $('.events').append("<li>before event fired.</li>");
+				        },
+				        after: function () {
+				          $('.events').append("<li>after event fired.</li>");
+				        }
+				      });
+				
+				    });
+				  </script>
+			<!--//End-slider-script -->
+			<div  id="top" class="callbacks_container">
+				<ul class="rslides" id="slider3">
+					<li>
+							<div class="banner-info">
+								<h3>We build it with passion</h3>
+								<p>Just to be clear, we do this for fun not for you, just kidding.</p>
+								<div class="more">
+									<a href="#">READ MORE</a>
+								</div>
+							</div>
+					</li>
+					<li>
+							<div class="banner-info">
+								<h3>We Protect it with Security</h3>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+								<div class="more">
+									<a href="#">READ MORE</a>
+								</div>
+							</div>
+					</li>
+					<li>
+							<div class="banner-info">
+								<h3>We build it with passion</h3>
+								<p>Vivamus varius nec diam vitae hendrerit bigus mit consectetur adipiscing.</p>
+								<div class="more">
+									<a href="#">READ MORE</a>
+								</div>
+							</div>
+					</li>
+				</ul>
+			</div>
+	</div>
+<!-- //banner -->
