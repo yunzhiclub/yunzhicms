@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="mu-page-breadcrumb-area" >
+                <div class="mu-page-breadcrumb-area">
                     <?php $currentMenuModel = array_pop($MenuModels); ?>
-                    <h2><font color="#fff;">{$currentMenuModel->title}</font></h2>
+                    <h2>{$currentMenuModel->title}</h2>
                     <ol class="breadcrumb">
                         <li><a href="{:url('@/')}">首页</a></li>
                         {volist name="MenuModels" key="key" id="menuModel"}
