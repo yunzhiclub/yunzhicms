@@ -50,32 +50,32 @@ class FieldDataAttachmentModel extends FieldModel
         $map['md5'] = $md5 = $file->md5();
 
         // 使用new self() 避免了其它类继承本类后，仍然可以对应找到正确的数据表名。
-        $Object = new self();
-        $data = $Object::get($map);
+        $static = new static();
+        $data = $static::get($map);
 
         // 文件存在，则去除field_id 及key_id后复制一份进入数据库
         if ('' !== $data->getData('id')) {
-            $Object->data = $data->getData();
-            $Object->setData('field_id', 0);
-            $Object->setData('key_id', 0);
-            unset($Object->data['id']);
+            $static->data = $data->getData();
+            $static->setData('field_id', 0);
+            $static->setData('key_id', 0);
+            unset($static->data['id']);
 
         // 文件不存在，则执行upload 操作
         } else { 
-            $info = $file->move($Object->getUploadPath());
-            // $Object->setData('user_name', ); todo:取当前用户信息
-            $Object->setData('name', $info->getInfo('name'));
-            $Object->setData('save_name', $info->getSaveName());
-            $Object->setData('ext',   $info->getExtension());
-            $Object->setData('sha1',  $sha1);
-            $Object->setData('md5',   $md5);
-            $Object->setData('size',  $info->getInfo('size'));
-            $Object->setData('mime',  $info->getMime());
+            $info = $file->move($static->getUploadPath());
+            // $static->setData('user_name', ); todo:取当前用户信息
+            $static->setData('name', $info->getInfo('name'));
+            $static->setData('save_name', $info->getSaveName());
+            $static->setData('ext',   $info->getExtension());
+            $static->setData('sha1',  $sha1);
+            $static->setData('md5',   $md5);
+            $static->setData('size',  $info->getInfo('size'));
+            $static->setData('mime',  $info->getMime());
         }
 
         // 新建数据，并将当前对象返回
-        $Object->save();
-        return $Object;
+        $static->save();
+        return $static;
     }
 
     /**
@@ -139,11 +139,11 @@ class FieldDataAttachmentModel extends FieldModel
      */
     static public function updateList($fieldId, $keyId, $id)
     {
-        $self = new self();
-        $Object = $self::get(['id' => $id]);
+        $static = new static();
+        $Object = $static::get(['id' => $id]);
         if ( '' !== $Object->getData('id')) {
             // 如果存在历史信息，先删除历史信息
-            $oldObject = $self::get(['field_id' => $fieldId, 'key_id' => $keyId]);
+            $oldObject = $static::get(['field_id' => $fieldId, 'key_id' => $keyId]);
             if ('' !== $oldObject && ($oldObject->getData('id') !== $Object->getData('id'))) {
                 $oldObject->delete();
             }
