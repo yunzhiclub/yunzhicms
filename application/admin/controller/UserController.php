@@ -153,4 +153,29 @@ class UserController extends AdminController
             return $this->error('重置密码失败');
         }
     }
+
+    /**
+     * 禁用用户
+     * @param  [string] $id 
+     * @return template
+     * @author liuyanzhao
+     */
+    public function whetherForbidAction($id)
+    {
+        //取得用户id
+        $UserModel = UserModel::get($id);
+
+        //判断用户是否被禁用
+        //否 => 显示是否禁用
+        if( $UserModel->getData('status') === 0)
+        {
+            $UserModel->setData('status', 1)->save();
+            return $this->success('禁用成功', url('index'));
+        }
+
+        //是 => 显示是否激活
+        $UserModel->setData('status', 0)->save();
+        return $this->success('激活成功', url('index'));
+    }
+
 }

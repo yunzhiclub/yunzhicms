@@ -14,7 +14,7 @@
                     <label class="control-label" for="_title">邮箱</label>
                     <div class="controls">
                         <input type="hidden" name="id" value="{$UserModel->id}">
-                        <input type="email" id="_title" value="{$UserModel->username}" name="username" placeholder="请输入邮箱" />
+                        <input type="email" id="_title" value="{$UserModel->username}" name="username" placeholder="请输入邮箱" readonly="ture" />
                     </div>
                 </div>
                 <div class="control-group">
@@ -28,7 +28,7 @@
                     <div class="controls">
                         <select name="user_group_name" class="form-control">
                             {volist name="UserGroups" id="UserGroup"}
-                            <option value="{$UserGroup->name}" selected="selected">
+                            <option value="{$UserGroup->name}" {eq name="$UserModel->user_group_name" value="$UserGroup->name"}selected="selected"{/eq}>
                                 {$UserGroup->title}
                             </option>
                             {/volist}

@@ -12,7 +12,7 @@
                                 <ul>
                                     {volist name="menuModel->getAvailableSonMenuModels()" id="sonMenuModel"}
                                     <li class="has-sub" >
-                                        <a href="{:url('@' . $sonMenuModel->url)}"><span>{$sonMenuModel->title}</span> {eq name="sonMenuModel->isHaveAvailableSonMenus()" value="1"}<span class="glyphicon glyphicon-chevron-right" style="float:right;line-height:200%">{/eq}</span></a>
+                                        <a href="{:url('@' . $sonMenuModel->url)}"><span>{$sonMenuModel->title}</span> {eq name="sonMenuModel->isHaveAvailableSonMenus()" value="1"}<span class="glyphicon glyphicon-chevron-right" style="float:right;line-height:200%"></span>{/eq}</a>
                                         {eq name="sonMenuModel->isHaveAvailableSonMenus()" value="1"}
                                             <ul>
                                                 {volist name="sonMenuModel->getAvailableSonMenuModels()" id="_sonMenuModel"}
