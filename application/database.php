@@ -17,11 +17,11 @@ return [
     // 数据库名
     'database'       => 'yunzhicms',
     // 用户名
-    'username'       => '',
+    'username'       => 'root',
     // 密码
     'password'       => '',
     // 端口
-    'hostport'       => '',
+    'hostport'       => '3306',
     // 连接dsn
     'dsn'            => '',
     // 数据库连接参数
